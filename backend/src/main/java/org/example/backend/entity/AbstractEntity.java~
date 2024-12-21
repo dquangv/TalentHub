@@ -1,0 +1,38 @@
+package org.example.backend.entity;
+
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.MappedSuperclass;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.io.Serializable;
+
+@MappedSuperclass
+@Getter
+@Setter
+@EntityListeners(AuditingEntityListener.class)
+public abstract class AbstractEntity<T extends Serializable> implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private T id;
+
+    @CreatedBy
+    @Column(name = "created_By", nullable = false, updatable = false)
+    private T createdBy;
+
+    @LastModifiedBy
+    @Column(name = "updated_By", insertable = false)
+    private T updatedBy;
+
+    @Column(name = "created_At", nullable = false, updatable = false)
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
+
+    @Column(name = "updated_At", insertable = false)
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedAt;
+}
