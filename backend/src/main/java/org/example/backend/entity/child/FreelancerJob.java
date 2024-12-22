@@ -1,0 +1,47 @@
+package org.example.backend.entity.child;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.checkerframework.common.aliasing.qual.MaybeAliased;
+import org.example.backend.entity.AbstractEntity;
+import org.example.backend.enums.StatusFreelancerJob;
+import org.hibernate.annotations.ManyToAny;
+
+@Table(name = "freelancer_job")
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class FreelancerJob extends AbstractEntity<Long> {
+
+    @Column(name = "is_save")
+    private Boolean isSave;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private StatusFreelancerJob status;
+
+    @ManyToOne
+    @JoinColumn(name = "freelancer_id")
+    private Freelancer freelancer;
+
+    @ManyToOne
+    @JoinColumn(name = "job_id")
+    private Job job;
+
+    @ManyToOne
+    @JoinColumn(name = "freelancer_review_id")
+    private FreelancerReview freelancerReview;
+
+    @ManyToOne
+    @JoinColumn(name = "client_review_id")
+    private ClientReview clientReview;
+
+    @ManyToOne
+    @JoinColumn(name = "CV_id")
+    private CV CV;
+}

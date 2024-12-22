@@ -1,0 +1,86 @@
+package org.example.backend.entity.child;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.example.backend.entity.AbstractEntity;
+import org.example.backend.enums.StatusJob;
+import org.example.backend.enums.TypePayment;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+@Table(name = "job")
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class Job extends AbstractEntity<Long> {
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "title", nullable = false)
+    private String title;
+
+    @Lob
+    @Column(name = "scope")
+    private String scope;
+
+    @Column(name = "hour_work", precision = 10, scale = 2)
+    private BigDecimal hourWork;
+
+    @Column(name = "job_opportunity")
+    private Boolean jobOpportunity;
+
+    @Column(name = "from_price", precision = 10, scale = 2)
+    private BigDecimal fromPrice;
+
+    @Column(name = "to_price", precision = 10, scale = 2)
+    private BigDecimal toPrice;
+
+    @Lob
+    @Column(name = "type_price")
+    private String typePrice;
+
+
+    @Enumerated(EnumType.STRING) // Sử dụng kiểu chuỗi cho enum
+    @Column(name = "type_Payment")
+    private TypePayment typePayment; // Trường status sẽ lưu enum
+
+    @Enumerated(EnumType.STRING) // Sử dụng kiểu chuỗi cho enum
+    @Column(name = "status")
+    private StatusJob status; // Trường status sẽ lưu enum
+
+    @Column(name = "created_at")
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id")
+    private Client client;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<FreelancerJob> freelancerJobs = new ArrayList<>();
+
+    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<JobSkill> jobSkills = new ArrayList<>();
+}

@@ -1,0 +1,25 @@
+package org.example.backend.entity.child;
+
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.example.backend.entity.AbstractEntity;
+
+@Table(name = "client")
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class Client extends AbstractEntity<Long> {
+
+    private Double formPrice;
+
+    private Double toPrice;
+
+    private String 
+}

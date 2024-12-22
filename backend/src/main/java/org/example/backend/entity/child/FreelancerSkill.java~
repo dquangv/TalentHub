@@ -1,0 +1,21 @@
+package org.example.backend.entity.child;
+
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.example.backend.entity.AbstractEntity;
+
+@Table(name = "freelancer_skill")
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class FreelancerSkill extends AbstractEntity<Long> {
+
+    
+}

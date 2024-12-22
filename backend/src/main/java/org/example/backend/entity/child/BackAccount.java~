@@ -1,0 +1,39 @@
+package org.example.backend.entity.child;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.example.backend.entity.AbstractEntity;
+
+import java.util.Date;
+
+@Table(name = "back_account")
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class BackAccount extends AbstractEntity<Long> {
+
+    @Column(name = "back_name")
+    private String backName;
+
+    @Column(name = "back_account_number")
+    private int backAccountNumber;
+
+    @Column(name = "branch")
+    private String branch;
+
+    @Column(name = "start_date")
+    private Date startDate;
+
+    @Column(name = "status")
+    private Boolean status;
+
+    @Column(name = "amount_Id")
+    private Account amountId;
+}
