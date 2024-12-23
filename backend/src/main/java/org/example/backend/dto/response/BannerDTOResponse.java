@@ -1,4 +1,3 @@
 package org.example.backend.dto.response;
-
-public class AccountDTOResponse {
+public class BannerDTOResponse {
 }

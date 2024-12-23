@@ -1,0 +1,17 @@
+package org.example.backend.mapper;
+
+import java.util.List;
+
+public interface BaseMapper<E, D> {
+    // Chuyển đổi từ Entity sang DTO
+    D toDto(E entity);
+
+    // Chuyển đổi từ DTO sang Entity
+    E toEntity(D dto);
+
+    // Chuyển đổi danh sách Entity sang danh sách DTO
+    List<D> toDtoList(List<E> entityList);
+
+    // Chuyển đổi danh sách DTO sang danh sách Entity
+    List<E> toEntityList(List<D> dtoList);
+}

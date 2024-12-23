@@ -19,7 +19,6 @@ import java.util.List;
 @AllArgsConstructor
 public class Degree extends AbstractEntity<Long> {
 
-    @Column(name = "degree_title", nullable = false)
     private String degreeTitle;
 
     @OneToMany(mappedBy = "degree", cascade = CascadeType.ALL, orphanRemoval = true)

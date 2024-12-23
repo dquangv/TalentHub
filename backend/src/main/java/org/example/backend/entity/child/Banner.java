@@ -18,9 +18,14 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Banner extends AbstractEntity<Long> {
+
+    @Column(name = "title", nullable = false)
     private String title;
+    @Column(name = "image", nullable = false)
     private String image;
+    @Column(name = "status", nullable = false)
     private String status;
+    @Column(name = "vendor", nullable = false)
     private String vendor;
 
     @Column(name = "created_at", nullable = false, updatable = false)
