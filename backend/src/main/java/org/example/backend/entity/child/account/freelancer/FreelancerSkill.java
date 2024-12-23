@@ -1,4 +1,4 @@
-package org.example.backend.entity.child;
+package org.example.backend.entity.child.account.freelancer;
 
 
 import jakarta.persistence.Entity;
@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.backend.entity.AbstractEntity;
+import org.example.backend.entity.child.job.Skill;
 
 @Table(name = "freelancer_skill")
 @Entity

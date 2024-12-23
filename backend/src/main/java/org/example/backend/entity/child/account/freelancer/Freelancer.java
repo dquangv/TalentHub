@@ -1,4 +1,4 @@
-package org.example.backend.entity.child;
+package org.example.backend.entity.child.account.freelancer;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -9,9 +9,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.backend.entity.AbstractEntity;
+import org.example.backend.entity.child.account.User;
+import org.example.backend.entity.child.job.Category;
+import org.example.backend.entity.child.job.FreelancerJob;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "freelancer")
@@ -48,7 +50,6 @@ public class Freelancer extends AbstractEntity<Long> {
     @JsonIgnore
     private List<FreelancerSkill> freelancerSkills;
 
-
     @OneToMany(mappedBy = "freelancer", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<CV> CVs;
@@ -56,7 +57,5 @@ public class Freelancer extends AbstractEntity<Long> {
     @JsonIgnore
     @OneToMany(mappedBy = "freelancer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Education> educations;
-
-
 
 }

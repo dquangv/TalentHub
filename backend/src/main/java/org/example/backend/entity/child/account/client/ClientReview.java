@@ -1,5 +1,4 @@
-package org.example.backend.entity.child;
-
+package org.example.backend.entity.child.account.client;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -8,30 +7,30 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.backend.entity.AbstractEntity;
+import org.example.backend.entity.child.job.FreelancerJob;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
-@Table(name = "freelancer_review")
+@Table(name = "client_review")
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FreelancerReview extends AbstractEntity<Long> {
+public class ClientReview extends AbstractEntity<Long> {
 
-
-    @Column(name = "on_Time")
-    @CreationTimestamp
-    private LocalDateTime onTime;
+    @Column(name = "on_time")
+    private Float onTime;
 
     @Column(name = "note")
     private String note;
 
-    @OneToMany(mappedBy = "freelancerReview", cascade = CascadeType.ALL, orphanRemoval = true)
+
+    /*@OneToMany(mappedBy = "clientReview" , cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<FreelancerJob> freelancerJobs;
+    private List<FreelancerJob> freelancerJobs;*/
 
 }

@@ -1,4 +1,4 @@
-package org.example.backend.entity.child;
+package org.example.backend.entity.child.account.freelancer;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.backend.entity.AbstractEntity;
+import org.example.backend.entity.child.job.FreelancerJob;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class CV extends AbstractEntity<Long> {
     @JoinColumn(name = "freelancer_id")
     private Freelancer freelancer;
 
-    @OneToMany(mappedBy = "CV", cascade = CascadeType.ALL, orphanRemoval = true)
+    /*@OneToMany(mappedBy = "CV", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<FreelancerJob> freelancerJobs;
+    private List<FreelancerJob> freelancerJobs;*/
 }

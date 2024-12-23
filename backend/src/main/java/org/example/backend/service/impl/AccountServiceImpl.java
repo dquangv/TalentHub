@@ -1,7 +1,6 @@
 package org.example.backend.service.impl;
 
-import lombok.RequiredArgsConstructor;
-import org.example.backend.entity.child.Account;
+import org.example.backend.entity.child.account.Account;
 import org.example.backend.repository.AccountRepository;
 import org.example.backend.service.intf.AccountService;
 import org.springframework.stereotype.Service;
@@ -9,13 +8,18 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
+
 
     private final AccountRepository accountRepository;
 
+    public AccountServiceImpl(AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
+    }
+
     @Override
-    public Account create(Account account) {
+    public Account create(  Account account) {
         try {
             return accountRepository.save(account);
         } catch (Exception e) {

@@ -1,4 +1,4 @@
-package org.example.backend.entity.child;
+package org.example.backend.entity.child.account.freelancer;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -21,7 +21,7 @@ public class School extends AbstractEntity<Long> {
     @Column(name = "school_name")
     private String schoolName;
 
-    @JsonIgnore
+    /*@JsonIgnore
     @OneToMany(mappedBy = "school" , cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Education> educations;
+    private List<Education> educations;*/
 }

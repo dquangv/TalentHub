@@ -1,4 +1,4 @@
-package org.example.backend.entity.child;
+package org.example.backend.entity.child.account.freelancer;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -19,7 +19,6 @@ import java.util.List;
 @AllArgsConstructor
 public class Degree extends AbstractEntity<Long> {
 
-    @Column(name = "degree_title")
     private String degreeTitle;
 
     @OneToMany(mappedBy = "degree", cascade = CascadeType.ALL, orphanRemoval = true)

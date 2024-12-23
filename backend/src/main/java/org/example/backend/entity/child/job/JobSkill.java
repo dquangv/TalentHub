@@ -1,4 +1,4 @@
-package org.example.backend.entity.child;
+package org.example.backend.entity.child.job;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package org.example.backend.entity.child;
+package org.example.backend.entity.child.account.client;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -22,21 +22,21 @@ public abstract class AbstractEntity<T extends Serializable> implements Serializ
     @Column(name = "id")
     private T id;
 
-    @CreatedBy
-    @Column(name = "created_By", nullable = false, updatable = false)
+    /*@CreatedBy
+    @Column(name = "created_by", nullable = false, updatable = false)
     private T createdBy;
 
     @LastModifiedBy
-    @Column(name = "updated_By", insertable = false)
-    private T updatedBy;
+    @Column(name = "updated_by", insertable = false)
+    private T updatedBy;*/
 
-    @Column(name = "created_At", nullable = false, updatable = false)
+    /*@Column(name = "created_at", nullable = false, updatable = false)
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
-    @Column(name = "updated_At", insertable = false)
+    @Column(name = "updated_at", insertable = false)
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
+    private Date updatedAt;*/
 }

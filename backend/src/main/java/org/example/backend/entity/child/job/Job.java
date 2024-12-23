@@ -1,4 +1,4 @@
-package org.example.backend.entity.child;
+package org.example.backend.entity.child.job;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.backend.entity.AbstractEntity;
+import org.example.backend.entity.child.account.client.Client;
 import org.example.backend.enums.StatusJob;
 import org.example.backend.enums.TypePayment;
 import org.hibernate.annotations.CreationTimestamp;
@@ -16,7 +17,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Table(name = "job")
@@ -51,22 +52,23 @@ public class Job extends AbstractEntity<Long> {
     @Column(name = "type_price")
     private String typePrice;
 
-
     @Enumerated(EnumType.STRING) // Sử dụng kiểu chuỗi cho enum
-    @Column(name = "type_Payment")
+    @Column(name = "type_payment")
     private TypePayment typePayment; // Trường status sẽ lưu enum
 
     @Enumerated(EnumType.STRING) // Sử dụng kiểu chuỗi cho enum
     @Column(name = "status")
     private StatusJob status; // Trường status sẽ lưu enum
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false, updatable = false)
     @CreationTimestamp
-    private LocalDateTime createdAt;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
 
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", insertable = false)
     @UpdateTimestamp
-    private LocalDateTime updatedAt;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
