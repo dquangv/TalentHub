@@ -1,5 +1,6 @@
 package org.example.backend.entity.child.payment;
 
+import com.google.type.DateTime;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,6 +24,9 @@ public class EWalletAccount extends AbstractEntity<Long> {
 
     @Column(name = "email")
     private String email;
+
+    @Column(name = "start_date")
+    private DateTime startDate;
 
     @OneToOne(mappedBy = "eWalletAccount")
     private Payment payment;

@@ -1,6 +1,7 @@
 package org.example.backend.entity.child.account;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.type.DateTime;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,12 +35,12 @@ public class Account extends AbstractEntity<Long> {
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
+    private DateTime createdAt;
 
     @Column(name = "updated_at", insertable = false)
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
+    private DateTime updatedAt;
 
     @Column(name = "status")
     private boolean status;

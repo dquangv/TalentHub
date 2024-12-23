@@ -1,5 +1,6 @@
 package org.example.backend.entity.child.payment;
 
+import com.google.type.DateTime;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,7 +28,7 @@ public class BankAccount extends AbstractEntity<Long> {
     private String branch;
 
     @Column(name = "start_date")
-    private Date startDate;
+    private DateTime startDate;
 
     @Column(name = "status")
     private Boolean status;
