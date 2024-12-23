@@ -7,5 +7,5 @@ import org.example.backend.mapper.BaseMapper;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface AccountMapper extends BaseMapper<Account, AccountDTORequest> {
+public interface AccountMapper extends BaseMapper<Account, AccountDTORequest, AccountDTOResponse> {
 }
