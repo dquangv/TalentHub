@@ -1,0 +1,4 @@
+package org.example.backend.dto.request.payment;
+
+public class BankAccountRequest {
+}
