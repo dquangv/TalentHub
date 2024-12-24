@@ -1,4 +1,4 @@
 package org.example.backend.dto.request.job;
 
-public class JobSKillRequest {
+public class JobSkillDTORequest {
 }

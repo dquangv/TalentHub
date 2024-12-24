@@ -2,6 +2,7 @@ package org.example.backend.service.impl.account.client;
 
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.account.client.ClientDTORequest;
+import org.example.backend.dto.response.account.client.ClientDTOResponse;
 import org.example.backend.entity.child.account.client.Client;
 import org.example.backend.service.intf.account.client.ClientService;
 import org.springframework.stereotype.Service;
@@ -14,17 +15,17 @@ import java.util.Optional;
 public class ClientServiceImpl implements ClientService {
 
     @Override
-    public ClientDTORequest create(ClientDTORequest clientDTORequest) {
+    public ClientDTOResponse create(ClientDTORequest clientDTORequest) {
         return null;
     }
 
     @Override
-    public Optional<ClientDTORequest> getById(Long aLong) {
+    public Optional<ClientDTOResponse> getById(Long aLong) {
         return Optional.empty();
     }
 
     @Override
-    public List<ClientDTORequest> getAll() {
+    public List<ClientDTOResponse> getAll() {
         return List.of();
     }
 

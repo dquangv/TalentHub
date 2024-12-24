@@ -2,8 +2,8 @@ package org.example.backend.service.impl.account.freelancer;
 
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.account.freelancer.CVDTORequest;
-import org.example.backend.entity.child.account.freelancer.CV;
-import org.example.backend.service.intf.account.Freelancer.CVService;
+import org.example.backend.dto.response.account.freelancer.CVDTOResponse;
+import org.example.backend.service.intf.account.freelancer.CVService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,17 +14,17 @@ import java.util.Optional;
 public class CVServiceImpl implements CVService {
 
     @Override
-    public CVDTORequest create(CVDTORequest cvdtoRequest) {
+    public CVDTOResponse create(CVDTORequest cvdtoRequest) {
         return null;
     }
 
     @Override
-    public Optional<CVDTORequest> getById(Long aLong) {
+    public Optional<CVDTOResponse> getById(Long aLong) {
         return Optional.empty();
     }
 
     @Override
-    public List<CVDTORequest> getAll() {
+    public List<CVDTOResponse> getAll() {
         return List.of();
     }
 

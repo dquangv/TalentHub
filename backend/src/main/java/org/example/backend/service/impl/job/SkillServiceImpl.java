@@ -2,6 +2,7 @@ package org.example.backend.service.impl.job;
 
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.job.SkillDTORequest;
+import org.example.backend.dto.response.job.SkillDTOResponse;
 import org.example.backend.entity.child.job.Skill;
 import org.example.backend.service.intf.job.SkillService;
 import org.springframework.stereotype.Service;
@@ -15,17 +16,17 @@ import java.util.Optional;
 public class SkillServiceImpl implements SkillService {
 
     @Override
-    public SkillDTORequest create(SkillDTORequest skillDTORequest) {
+    public SkillDTOResponse create(SkillDTORequest skillDTORequest) {
         return null;
     }
 
     @Override
-    public Optional<SkillDTORequest> getById(Long aLong) {
+    public Optional<SkillDTOResponse> getById(Long aLong) {
         return Optional.empty();
     }
 
     @Override
-    public List<SkillDTORequest> getAll() {
+    public List<SkillDTOResponse> getAll() {
         return List.of();
     }
 

@@ -2,6 +2,7 @@ package org.example.backend.service.impl.job;
 
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.job.FreelancerJobDTORequest;
+import org.example.backend.dto.response.job.FreelancerJobDTOResponse;
 import org.example.backend.entity.child.job.FreelancerJob;
 import org.example.backend.service.intf.job.FreelancerJobService;
 import org.springframework.stereotype.Service;
@@ -15,17 +16,17 @@ import java.util.Optional;
 public class FreelancerJobServiceImpl implements FreelancerJobService {
 
     @Override
-    public FreelancerJobDTORequest create(FreelancerJobDTORequest freelancerJobDTORequest) {
+    public FreelancerJobDTOResponse create(FreelancerJobDTORequest freelancerJobDTORequest) {
         return null;
     }
 
     @Override
-    public Optional<FreelancerJobDTORequest> getById(Long aLong) {
+    public Optional<FreelancerJobDTOResponse> getById(Long aLong) {
         return Optional.empty();
     }
 
     @Override
-    public List<FreelancerJobDTORequest> getAll() {
+    public List<FreelancerJobDTOResponse> getAll() {
         return List.of();
     }
 

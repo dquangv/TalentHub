@@ -1,9 +1,9 @@
 package org.example.backend.service.impl.account.freelancer;
 
 import lombok.RequiredArgsConstructor;
-import org.example.backend.dto.request.account.freelancer.MajorDTORequst;
-import org.example.backend.entity.child.account.freelancer.Major;
-import org.example.backend.service.intf.account.Freelancer.MajorService;
+import org.example.backend.dto.request.account.freelancer.MajorDTORequest;
+import org.example.backend.dto.response.account.freelancer.MajorDTOResponse;
+import org.example.backend.service.intf.account.freelancer.MajorService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,22 +15,22 @@ import java.util.Optional;
 public class MajorServiceImpl implements MajorService {
 
     @Override
-    public MajorDTORequst create(MajorDTORequst majorDTORequst) {
+    public MajorDTOResponse create(MajorDTORequest majorDTORequst) {
         return null;
     }
 
     @Override
-    public Optional<MajorDTORequst> getById(Long aLong) {
+    public Optional<MajorDTOResponse> getById(Long aLong) {
         return Optional.empty();
     }
 
     @Override
-    public List<MajorDTORequst> getAll() {
+    public List<MajorDTOResponse> getAll() {
         return List.of();
     }
 
     @Override
-    public Boolean deleteById(Long aLong) {
+    public Boolean deleteById(Long id) {
         return null;
     }
 }

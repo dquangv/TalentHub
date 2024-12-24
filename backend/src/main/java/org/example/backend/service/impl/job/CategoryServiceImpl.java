@@ -2,6 +2,7 @@ package org.example.backend.service.impl.job;
 
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.job.CategoryDTORequest;
+import org.example.backend.dto.response.job.CategoryDTOResponse;
 import org.example.backend.entity.child.job.Category;
 import org.example.backend.service.intf.job.CategoryService;
 import org.springframework.stereotype.Service;
@@ -14,17 +15,17 @@ import java.util.Optional;
 public class CategoryServiceImpl implements CategoryService {
 
     @Override
-    public CategoryDTORequest create(CategoryDTORequest categoryDTORequest) {
+    public CategoryDTOResponse create(CategoryDTORequest categoryDTORequest) {
         return null;
     }
 
     @Override
-    public Optional<CategoryDTORequest> getById(Long aLong) {
+    public Optional<CategoryDTOResponse> getById(Long aLong) {
         return Optional.empty();
     }
 
     @Override
-    public List<CategoryDTORequest> getAll() {
+    public List<CategoryDTOResponse> getAll() {
         return List.of();
     }
 

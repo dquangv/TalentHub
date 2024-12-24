@@ -2,7 +2,7 @@ package org.example.backend.service.impl.payment;
 
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.payment.PaymentDTORequest;
-import org.example.backend.entity.child.payment.Payment;
+import org.example.backend.dto.response.payment.PaymentDTOResponse;
 import org.example.backend.service.intf.payment.PaymentService;
 import org.springframework.stereotype.Service;
 
@@ -14,17 +14,17 @@ import java.util.Optional;
 public class PaymentServiceImpl implements PaymentService {
 
     @Override
-    public PaymentDTORequest create(PaymentDTORequest paymentDTORequest) {
+    public PaymentDTOResponse create(PaymentDTORequest paymentDTORequest) {
         return null;
     }
 
     @Override
-    public Optional<PaymentDTORequest> getById(Long aLong) {
+    public Optional<PaymentDTOResponse> getById(Long aLong) {
         return Optional.empty();
     }
 
     @Override
-    public List<PaymentDTORequest> getAll() {
+    public List<PaymentDTOResponse> getAll() {
         return List.of();
     }
 

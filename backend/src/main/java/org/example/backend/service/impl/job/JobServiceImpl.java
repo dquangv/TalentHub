@@ -2,6 +2,7 @@ package org.example.backend.service.impl.job;
 
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.job.JobDTORequest;
+import org.example.backend.dto.response.job.JobDTOResponse;
 import org.example.backend.entity.child.job.Job;
 import org.example.backend.service.intf.job.JobService;
 import org.springframework.stereotype.Service;
@@ -15,17 +16,17 @@ import java.util.Optional;
 public class JobServiceImpl implements JobService {
 
     @Override
-    public JobDTORequest create(JobDTORequest jobDTORequest) {
+    public JobDTOResponse create(JobDTORequest jobDTORequest) {
         return null;
     }
 
     @Override
-    public Optional<JobDTORequest> getById(Long aLong) {
+    public Optional<JobDTOResponse> getById(Long aLong) {
         return Optional.empty();
     }
 
     @Override
-    public List<JobDTORequest> getAll() {
+    public List<JobDTOResponse> getAll() {
         return List.of();
     }
 

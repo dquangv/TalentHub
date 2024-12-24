@@ -1,8 +1,8 @@
 package org.example.backend.service.impl.payment;
 
 import lombok.RequiredArgsConstructor;
-import org.example.backend.dto.request.payment.BankAccountRequest;
-import org.example.backend.entity.child.payment.BankAccount;
+import org.example.backend.dto.request.payment.BankAccountDTORequest;
+import org.example.backend.dto.response.payment.BankAccountDTOResponse;
 import org.example.backend.service.intf.payment.BankAccountService;
 import org.springframework.stereotype.Service;
 
@@ -12,18 +12,19 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class BankAccountServiceImpl implements BankAccountService {
+
     @Override
-    public BankAccountRequest create(BankAccountRequest bankAccountRequest) {
+    public BankAccountDTOResponse create(BankAccountDTORequest bankAccountRequest) {
         return null;
     }
 
     @Override
-    public Optional<BankAccountRequest> getById(Long aLong) {
+    public Optional<BankAccountDTOResponse> getById(Long aLong) {
         return Optional.empty();
     }
 
     @Override
-    public List<BankAccountRequest> getAll() {
+    public List<BankAccountDTOResponse> getAll() {
         return List.of();
     }
 

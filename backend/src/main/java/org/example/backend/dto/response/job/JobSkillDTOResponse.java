@@ -1,4 +1,4 @@
 package org.example.backend.dto.response.job;
 
-public class JobSKillResponse {
+public class JobSkillDTOResponse {
 }

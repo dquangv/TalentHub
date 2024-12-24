@@ -2,6 +2,7 @@ package org.example.backend.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.BannerDTORequest;
+import org.example.backend.dto.response.BannerDTOResponse;
 import org.example.backend.entity.child.Banner;
 import org.example.backend.service.intf.BannerService;
 import org.springframework.stereotype.Service;
@@ -14,17 +15,17 @@ import java.util.Optional;
 public class BannerServiceImpl implements BannerService {
 
     @Override
-    public BannerDTORequest create(BannerDTORequest bannerDTORequest) {
+    public BannerDTOResponse create(BannerDTORequest bannerDTORequest) {
         return null;
     }
 
     @Override
-    public Optional<BannerDTORequest> getById(Long aLong) {
+    public Optional<BannerDTOResponse> getById(Long aLong) {
         return Optional.empty();
     }
 
     @Override
-    public List<BannerDTORequest> getAll() {
+    public List<BannerDTOResponse> getAll() {
         return List.of();
     }
 

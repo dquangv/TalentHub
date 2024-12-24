@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class EWalletAccountRequestDTO {
+public class EWalletAccountDTORequest {
 
     @NotBlank(message = "E-Wallet name is required")
     private String eWalletName;

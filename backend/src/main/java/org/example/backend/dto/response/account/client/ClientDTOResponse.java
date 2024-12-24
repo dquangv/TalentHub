@@ -1,4 +1,4 @@
 package org.example.backend.dto.response.account.client;
 
-public class ClientDTORequest {
+public class ClientDTOResponse {
 }

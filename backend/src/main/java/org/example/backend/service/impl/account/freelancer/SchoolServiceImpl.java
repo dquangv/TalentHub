@@ -1,9 +1,9 @@
 package org.example.backend.service.impl.account.freelancer;
 
 import lombok.RequiredArgsConstructor;
-import org.example.backend.dto.request.account.freelancer.SchoolDTORequst;
-import org.example.backend.entity.child.account.freelancer.School;
-import org.example.backend.service.intf.account.Freelancer.SchoolService;
+import org.example.backend.dto.request.account.freelancer.SchoolDTORequest;
+import org.example.backend.dto.response.account.freelancer.SchoolDTOResponse;
+import org.example.backend.service.intf.account.freelancer.SchoolService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,17 +14,17 @@ import java.util.Optional;
 public class SchoolServiceImpl implements SchoolService {
 
     @Override
-    public SchoolDTORequst create(SchoolDTORequst schoolDTORequst) {
+    public SchoolDTOResponse create(SchoolDTORequest schoolDTORequst) {
         return null;
     }
 
     @Override
-    public Optional<SchoolDTORequst> getById(Long aLong) {
+    public Optional<SchoolDTOResponse> getById(Long aLong) {
         return Optional.empty();
     }
 
     @Override
-    public List<SchoolDTORequst> getAll() {
+    public List<SchoolDTOResponse> getAll() {
         return List.of();
     }
 

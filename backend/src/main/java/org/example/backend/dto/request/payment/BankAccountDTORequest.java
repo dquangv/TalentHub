@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BankAccountRequestDTO {
+public class BankAccountDTORequest {
     @NotBlank(message = "Bank name cannot be blank")
     @Size(max = 100, message = "Bank name cannot exceed 100 characters")
     private String bankName;

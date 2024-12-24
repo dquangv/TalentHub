@@ -10,12 +10,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BankAccountResponseDTO {
+public class BankAccountDTOResponse {
     private Long id;
     private String bankName;
     private int bankAccountNumber;
     private String branch;
     private DateTime startDate;
     private Boolean status;
-    private PaymentResponseDTO payment;
+    private PaymentDTOResponse payment;
 }
