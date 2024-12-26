@@ -1,5 +1,6 @@
 package org.example.backend.entity.child.account;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,6 +35,7 @@ public class User extends AbstractEntity<Long> {
     private String introduction;
 
     @OneToOne
+    @JsonIgnore
     @JoinColumn(name = "account_id")
     private Account account;
 }
