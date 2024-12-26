@@ -44,10 +44,7 @@ public class AccountServiceImpl implements AccountService {
         if (accounts.isEmpty()) {
             throw new NotFoundException("No accounts found");
         }
-
-        return accounts.stream()
-                .map(accountMapper::toResponseDto)
-                .collect(Collectors.toList());
+        return accountMapper.toResponseDtoList(accounts);
     }
 
     @Override

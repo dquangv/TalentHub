@@ -1,0 +1,56 @@
+package org.example.backend.controller.account;
+
+import com.nimbusds.jose.JOSEException;
+import lombok.RequiredArgsConstructor;
+import org.example.backend.dto.ResponseObject;
+import org.example.backend.dto.request.account.AuthenticationDtoRequest;
+import org.example.backend.dto.response.account.AccountDTOResponse;
+import org.example.backend.dto.response.account.AuthenticationDtoResponse;
+import org.example.backend.dto.response.payment.BankAccountDTOResponse;
+import org.example.backend.mapper.Account.AccountMapper;
+import org.example.backend.service.impl.account.AuthenticationServiceImpl;
+import org.example.backend.service.intf.account.AccountService;
+import org.example.backend.service.intf.account.AuthenticationService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/v1/auth")
+public class AccountController {
+
+    private final AuthenticationService authenticationService;
+    private final AccountService accountService;
+
+    private final AccountMapper accountMapper;
+
+    @PostMapping("/login")
+    public ResponseObject<AuthenticationDtoResponse> authenticate(@Valid @RequestBody AuthenticationDtoRequest request) throws JOSEException {
+        AuthenticationDtoResponse response = authenticationService.authenticate(request);
+
+        return ResponseObject.<AuthenticationDtoResponse>builder()
+                .result(true)
+                .message("Login successful")
+                .status(200)
+                .data(response)
+                .build();
+    }
+
+    @GetMapping("/get-all")
+    public ResponseObject<List<AccountDTOResponse>> getAll() {
+        List<AccountDTOResponse> response = accountService.getAll();
+        return ResponseObject
+                .<List<AccountDTOResponse>>builder()
+                .result(true)
+                .message("Get all account successful")
+                .status(HttpStatus.OK.value())
+                .data(response)
+                .build();
+    }
+
+
+}

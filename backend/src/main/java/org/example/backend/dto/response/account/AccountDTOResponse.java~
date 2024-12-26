@@ -7,7 +7,6 @@ import lombok.Setter;
 import org.example.backend.entity.child.account.User;
 import org.example.backend.entity.child.payment.Payment;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -18,8 +17,8 @@ public class AccountDTOResponse {
     private String email;
     private String role;
     private Boolean status;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private DateTime createdAt;
+    private DateTime updatedAt;
     private User user;
     private List<Payment> payments;
 }
