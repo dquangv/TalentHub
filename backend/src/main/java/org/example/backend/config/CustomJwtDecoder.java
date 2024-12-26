@@ -3,7 +3,7 @@ package org.example.backend.config;
 import com.nimbusds.jose.JOSEException;
 import lombok.RequiredArgsConstructor;
 
-import org.example.backend.dto.request.account.IntrospectDtoRequest;
+import org.example.backend.dto.request.account.IntrospectDTORequest;
 import org.example.backend.enums.ErrorCode;
 import org.example.backend.service.intf.account.AuthenticationService;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,7 +30,7 @@ public class CustomJwtDecoder implements JwtDecoder {
     @Override
     public Jwt decode(String token) throws JwtException {
         try {
-            var response = authenticationService.introspect(IntrospectDtoRequest.builder()
+            var response = authenticationService.introspect(IntrospectDTORequest.builder()
                     .accessToken(token)
                     .build()
             );

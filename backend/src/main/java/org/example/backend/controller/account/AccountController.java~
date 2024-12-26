@@ -3,16 +3,14 @@ package org.example.backend.controller.account;
 import com.nimbusds.jose.JOSEException;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.ResponseObject;
-import org.example.backend.dto.request.account.AuthenticationDtoRequest;
+import org.example.backend.dto.request.account.AccountDTORequest;
+import org.example.backend.dto.request.account.AuthenticationDTORequest;
 import org.example.backend.dto.response.account.AccountDTOResponse;
 import org.example.backend.dto.response.account.AuthenticationDtoResponse;
-import org.example.backend.dto.response.payment.BankAccountDTOResponse;
 import org.example.backend.mapper.Account.AccountMapper;
-import org.example.backend.service.impl.account.AuthenticationServiceImpl;
 import org.example.backend.service.intf.account.AccountService;
 import org.example.backend.service.intf.account.AuthenticationService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -29,7 +27,7 @@ public class AccountController {
     private final AccountMapper accountMapper;
 
     @PostMapping("/login")
-    public ResponseObject<AuthenticationDtoResponse> authenticate(@Valid @RequestBody AuthenticationDtoRequest request) throws JOSEException {
+    public ResponseObject<AuthenticationDtoResponse> authenticate(@Valid @RequestBody AuthenticationDTORequest request) throws JOSEException {
         AuthenticationDtoResponse response = authenticationService.authenticate(request);
 
         return ResponseObject.<AuthenticationDtoResponse>builder()
@@ -43,7 +41,24 @@ public class AccountController {
     @GetMapping("/get-all")
     public ResponseObject<List<AccountDTOResponse>> getAll() {
         List<AccountDTOResponse> response = accountService.getAll();
-        return ResponseObject.<List<AccountDTOResponse>>builder().result(true).message("Login successful").status(HttpStatus.OK.value()).data(response).build();
+        return ResponseObject
+                .<List<AccountDTOResponse>>builder()
+                .result(true)
+                .message("Get all account successful")
+                .status(HttpStatus.OK.value())
+                .data(response)
+                .build();
+    }
+
+    @PostMapping("/register")
+    public ResponseObject<AccountDTOResponse> register(@Valid @RequestBody AccountDTORequest request) {
+        AccountDTOResponse response = accountService.create(request);
+        return ResponseObject.<AccountDTOResponse>builder()
+                .result(true)
+                .message("Register successful")
+                .status(HttpStatus.OK.value())
+                .data(response)
+                .build();
     }
 
 

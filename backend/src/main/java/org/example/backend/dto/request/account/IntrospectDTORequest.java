@@ -1,4 +1,4 @@
-package org.example.freelancer.dto.Requet;
+package org.example.backend.dto.request.account;
 
 import lombok.*;
 
@@ -7,6 +7,6 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class IntrospectDtoRequest {
+public class IntrospectDTORequest {
     private String accessToken;
 }

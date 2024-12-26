@@ -6,8 +6,8 @@ import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import lombok.RequiredArgsConstructor;
-import org.example.backend.dto.request.account.AuthenticationDtoRequest;
-import org.example.backend.dto.request.account.IntrospectDtoRequest;
+import org.example.backend.dto.request.account.AuthenticationDTORequest;
+import org.example.backend.dto.request.account.IntrospectDTORequest;
 import org.example.backend.dto.response.account.AuthenticationDtoResponse;
 import org.example.backend.dto.response.account.IntrospectDtoResponse;
 import org.example.backend.entity.child.account.Account;
@@ -37,7 +37,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     protected String SECRET_KEY;
 
     @Override
-    public AuthenticationDtoResponse authenticate(AuthenticationDtoRequest request) throws JOSEException {
+    public AuthenticationDtoResponse authenticate(AuthenticationDTORequest request) throws JOSEException {
         String email = request.getEmail();
         System.out.println(request);
         var account = accountRepository.getByEmail(email).orElseThrow(
@@ -53,7 +53,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public IntrospectDtoResponse introspect(IntrospectDtoRequest request) throws JOSEException, ParseException {
+    public IntrospectDtoResponse introspect(IntrospectDTORequest request) throws JOSEException, ParseException {
         String accessToken = request.getAccessToken();
         verifyJWT(accessToken);
         return IntrospectDtoResponse.builder()

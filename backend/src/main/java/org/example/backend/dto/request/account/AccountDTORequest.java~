@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class    AccountDTORequest {
+public class AccountDTORequest {
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")
     private String email;
@@ -27,5 +27,20 @@ public class    AccountDTORequest {
     @NotNull(message = "Status is required")
     private Boolean status;
 
-    private Long userId;
+    @NotNull(message = "First name is required")
+    private String firstName;
+
+    @NotNull(message = "Last name is required")
+    private String lastName;
+
+    @NotNull(message = "Phone number is required")
+    private String phoneNumber;
+
+    @NotNull(message = "Address is required")
+    private String address;
+
+    private String title;
+
+    private String getIntroduction;
+
 }
