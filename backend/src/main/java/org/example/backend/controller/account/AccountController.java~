@@ -57,9 +57,17 @@ public class AccountController {
                 .result(true)
                 .message("Register successful")
                 .status(HttpStatus.OK.value())
-                .data(response)
                 .build();
     }
 
-
+    @GetMapping("/{id}")
+    public ResponseObject<AccountDTOResponse> get(@PathVariable Long id) {
+        AccountDTOResponse response = accountService.getById(id).get();
+        return ResponseObject.<AccountDTOResponse>builder()
+                .result(true)
+                .message("Get account successful")
+                .status(HttpStatus.OK.value())
+                .data(response)
+                .build();
+    }
 }

@@ -60,5 +60,14 @@ public class AccountController {
                 .build();
     }
 
-
+    @GetMapping("/{id}")
+    public ResponseObject<AccountDTOResponse> get(@PathVariable Long id) {
+        AccountDTOResponse response = accountService.getById(id).get();
+        return ResponseObject.<AccountDTOResponse>builder()
+                .result(true)
+                .message("Get account successful by id: " + id)
+                .status(HttpStatus.OK.value())
+                .data(response)
+                .build();
+    }
 }
