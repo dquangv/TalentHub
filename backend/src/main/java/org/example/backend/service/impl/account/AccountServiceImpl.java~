@@ -41,46 +41,59 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     @Override
     public AccountDTOResponse create(AccountDTORequest accountRequestDTO) {
+        // Kiểm tra email trùng lặp
         if (accountRepository.existsByEmail(accountRequestDTO.getEmail())) {
-            throw new IllegalArgumentException("Account with email "
-                    + accountRequestDTO.getEmail() + " already exists");
+            throw new IllegalArgumentException("Account with email " + accountRequestDTO.getEmail() + " already exists");
         }
-        Account account = accountMapper.toEntity(accountRequestDTO);
-        account.setEmail(accountRequestDTO.getEmail());
-        account.setPassword(passwordEncoder.encode(accountRequestDTO.getPassword()));
-        account.setRole(accountRequestDTO.getRole());
-        account.setStatus(accountRequestDTO.getStatus());
 
+        // Tạo entity Account từ DTO và mã hóa mật khẩu
+        Account account = accountMapper.toEntity(accountRequestDTO);
+        account.setPassword(passwordEncoder.encode(accountRequestDTO.getPassword()));
+
+        // Lưu tài khoản
         Account savedAccount = accountRepository.save(account);
 
-        User user = new User();
-        user.setFirstName(accountRequestDTO.getFirstName());
-        user.setLastName(accountRequestDTO.getLastName());
-        user.setPhoneNumber(accountRequestDTO.getPhoneNumber());
-        user.setAddress(accountRequestDTO.getAddress());
-        user.setTitle(accountRequestDTO.getTitle());
-        user.setIntroduction(accountRequestDTO.getIntroduction());
-        user.setAccount(savedAccount);
-
-        account.setUser(user);
-
-        accountRepository.save(account);
+        // Tạo entity User từ DTO và liên kết với tài khoản đã lưu
+        User user = mapUserFromDTO(accountRequestDTO, savedAccount);
         userRepository.save(user);
 
-        if (accountRequestDTO.getRole().equalsIgnoreCase("freelancer")) {
+        // Gắn user vào account và lưu lại
+        savedAccount.setUser(user);
+        accountRepository.save(savedAccount);
+
+        // Tạo thêm các entity đặc thù dựa trên vai trò
+        saveRoleSpecificEntity(accountRequestDTO.getRole(), user);
+
+        // Trả về DTO Response
+        return accountMapper.toResponseDto(savedAccount);
+    }
+
+    // Hàm tạo User từ DTO
+    private User mapUserFromDTO(AccountDTORequest dto, Account account) {
+        User user = new User();
+        user.setFirstName(dto.getFirstName());
+        user.setLastName(dto.getLastName());
+        user.setPhoneNumber(dto.getPhoneNumber());
+        user.setAddress(dto.getAddress());
+        user.setTitle(dto.getTitle());
+        user.setIntroduction(dto.getIntroduction());
+        user.setAccount(account);
+        return user;
+    }
+
+    // Hàm lưu các entity đặc thù theo vai trò
+    private void saveRoleSpecificEntity(String role, User user) {
+        if ("freelancer".equalsIgnoreCase(role)) {
             Freelancer freelancer = new Freelancer();
             freelancer.setUser(user);
             freelancerRepository.save(freelancer);
-        }
-
-        if (accountRequestDTO.getRole().equalsIgnoreCase("client")) {
+        } else if ("client".equalsIgnoreCase(role)) {
             Client client = new Client();
             client.setUser(user);
             clientRepository.save(client);
         }
-
-        return accountMapper.toResponseDto(savedAccount);
     }
+
 
 
     @Override
