@@ -19,9 +19,10 @@ public class SecurityConfig {
 
     private final String[] PUBLIC_ENDPOINTS = {
             "/api/v1/auth/login",
-            "/api/v1/auth/register"
-//            "/api/account/introspect",
-//            "/api/account/logout",
+            "/api/v1/auth/register",
+            "/api/v1/auth/refresh",
+            "/api/v1/auth/introspect",
+            "/api/v1/auth/logout",
     };
 
     @Bean
@@ -35,6 +36,7 @@ public class SecurityConfig {
 //                                .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
                                 .requestMatchers("/api/**").permitAll()
 //                                .anyRequest().authenticated()
+
                 )
                 .oauth2ResourceServer(configurer -> configurer
                         .jwt(jwtConfigurer -> jwtConfigurer
