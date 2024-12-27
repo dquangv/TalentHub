@@ -5,8 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.ResponseObject;
 import org.example.backend.dto.request.account.AccountDTORequest;
 import org.example.backend.dto.request.account.AuthenticationDTORequest;
+import org.example.backend.dto.request.account.IntrospectDTORequest;
 import org.example.backend.dto.response.account.AccountDTOResponse;
 import org.example.backend.dto.response.account.AuthenticationDtoResponse;
+import org.example.backend.dto.response.account.IntrospectDtoResponse;
 import org.example.backend.mapper.Account.AccountMapper;
 import org.example.backend.service.intf.account.AccountService;
 import org.example.backend.service.intf.account.AuthenticationService;
@@ -15,6 +17,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.text.ParseException;
 import java.util.List;
 
 @RestController
@@ -28,7 +31,7 @@ public class AccountController {
     private final AccountMapper accountMapper;
 
     @PostMapping("/login")
-    public ResponseObject<AuthenticationDtoResponse> authenticate(@Validated @RequestBody AuthenticationDTORequest request) throws JOSEException {
+    public ResponseObject<AuthenticationDtoResponse> authenticate(@Valid @RequestBody AuthenticationDTORequest request) throws JOSEException {
         AuthenticationDtoResponse response = authenticationService.authenticate(request);
 
         return ResponseObject.<AuthenticationDtoResponse>builder()
@@ -71,6 +74,25 @@ public class AccountController {
                 .data(response)
                 .build();
     }
-
+    @PostMapping("/refresh-token")
+    public ResponseObject<AuthenticationDtoResponse> refreshToken(@RequestParam String refreshToken) throws JOSEException, ParseException {
+        AuthenticationDtoResponse response = authenticationService.refreshToken(refreshToken);
+        return ResponseObject.<AuthenticationDtoResponse>builder()
+                .result(true)
+                .message("Refresh token successful")
+                .status(200)
+                .data(response)
+                .build();
+    }
+    @PostMapping("/introspect")
+    public ResponseObject<IntrospectDtoResponse> introspect(@RequestParam IntrospectDTORequest accessToken) throws JOSEException, ParseException {
+        IntrospectDtoResponse response = authenticationService.introspect(accessToken);
+        return ResponseObject.<IntrospectDtoResponse>builder()
+                .result(true)
+                .message("Introspect token successful")
+                .status(200)
+                .data(response)
+                .build();
+    }
 
 }
