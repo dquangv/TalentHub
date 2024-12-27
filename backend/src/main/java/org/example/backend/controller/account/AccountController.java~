@@ -11,6 +11,7 @@ import org.example.backend.mapper.Account.AccountMapper;
 import org.example.backend.service.intf.account.AccountService;
 import org.example.backend.service.intf.account.AuthenticationService;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -27,7 +28,7 @@ public class AccountController {
     private final AccountMapper accountMapper;
 
     @PostMapping("/login")
-    public ResponseObject<AuthenticationDtoResponse> authenticate(@Valid @RequestBody AuthenticationDTORequest request) throws JOSEException {
+    public ResponseObject<AuthenticationDtoResponse> authenticate(@Validated @RequestBody AuthenticationDTORequest request) throws JOSEException {
         AuthenticationDtoResponse response = authenticationService.authenticate(request);
 
         return ResponseObject.<AuthenticationDtoResponse>builder()
@@ -51,7 +52,7 @@ public class AccountController {
     }
 
     @PostMapping("/register")
-    public ResponseObject<AccountDTOResponse> register(@Valid @RequestBody AccountDTORequest request) {
+    public ResponseObject<AccountDTOResponse> register(@Valid @RequestBody() AccountDTORequest request) {
         AccountDTOResponse response = accountService.create(request);
         return ResponseObject.<AccountDTOResponse>builder()
                 .result(true)
@@ -60,14 +61,16 @@ public class AccountController {
                 .build();
     }
 
-    @GetMapping("/{id}")
+        @GetMapping("/{id}")
     public ResponseObject<AccountDTOResponse> get(@PathVariable Long id) {
         AccountDTOResponse response = accountService.getById(id).get();
         return ResponseObject.<AccountDTOResponse>builder()
                 .result(true)
-                .message("Get account successful")
+                .message("Get account successful by id: " + id)
                 .status(HttpStatus.OK.value())
                 .data(response)
                 .build();
     }
+
+
 }

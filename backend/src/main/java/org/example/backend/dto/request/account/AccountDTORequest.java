@@ -1,20 +1,24 @@
 package org.example.backend.dto.request.account;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class AccountDTORequest {
+
+
     @NotBlank(message = "Email is required")
+    @NotNull(message = "Email is required")
     @Email(message = "Invalid email format")
     private String email;
 
@@ -27,20 +31,19 @@ public class AccountDTORequest {
     @NotNull(message = "Status is required")
     private Boolean status;
 
-    @NotNull(message = "First name is required")
+    @NotBlank(message = "First name is required")
     private String firstName;
 
-    @NotNull(message = "Last name is required")
+    @NotBlank(message = "Last name is required")
     private String lastName;
 
-    @NotNull(message = "Phone number is required")
+    @NotBlank(message = "Phone number is required")
     private String phoneNumber;
 
-    @NotNull(message = "Address is required")
+    @NotBlank(message = "Address is required")
     private String address;
 
     private String title;
 
     private String introduction;
-
 }

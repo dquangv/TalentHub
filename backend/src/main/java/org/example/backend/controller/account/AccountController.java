@@ -11,6 +11,7 @@ import org.example.backend.mapper.Account.AccountMapper;
 import org.example.backend.service.intf.account.AccountService;
 import org.example.backend.service.intf.account.AuthenticationService;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -51,7 +52,7 @@ public class AccountController {
     }
 
     @PostMapping("/register")
-    public ResponseObject<AccountDTOResponse> register(@Valid @RequestBody AccountDTORequest request) {
+    public ResponseObject<AccountDTOResponse> register(@Valid @RequestBody() AccountDTORequest request) {
         AccountDTOResponse response = accountService.create(request);
         return ResponseObject.<AccountDTOResponse>builder()
                 .result(true)
@@ -60,7 +61,7 @@ public class AccountController {
                 .build();
     }
 
-    @GetMapping("/{id}")
+        @GetMapping("/{id}")
     public ResponseObject<AccountDTOResponse> get(@PathVariable Long id) {
         AccountDTOResponse response = accountService.getById(id).get();
         return ResponseObject.<AccountDTOResponse>builder()
@@ -70,4 +71,6 @@ public class AccountController {
                 .data(response)
                 .build();
     }
+
+
 }
