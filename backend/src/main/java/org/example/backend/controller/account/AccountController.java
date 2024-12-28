@@ -6,6 +6,7 @@ import org.example.backend.dto.ResponseObject;
 import org.example.backend.dto.request.account.AccountDTORequest;
 import org.example.backend.dto.request.account.AuthenticationDTORequest;
 import org.example.backend.dto.request.account.IntrospectDTORequest;
+import org.example.backend.dto.response.account.RefreshTokenDTOResponse;
 import org.example.backend.dto.response.account.AccountDTOResponse;
 import org.example.backend.dto.response.account.AuthenticationDtoResponse;
 import org.example.backend.dto.response.account.IntrospectDtoResponse;
@@ -13,7 +14,6 @@ import org.example.backend.mapper.Account.AccountMapper;
 import org.example.backend.service.intf.account.AccountService;
 import org.example.backend.service.intf.account.AuthenticationService;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -75,9 +75,9 @@ public class AccountController {
                 .build();
     }
     @PostMapping("/refresh-token")
-    public ResponseObject<AuthenticationDtoResponse> refreshToken(@RequestParam String refreshToken) throws JOSEException, ParseException {
-        AuthenticationDtoResponse response = authenticationService.refreshToken(refreshToken);
-        return ResponseObject.<AuthenticationDtoResponse>builder()
+    public ResponseObject<RefreshTokenDTOResponse> refreshToken(@RequestParam String refreshToken) throws JOSEException, ParseException {
+        RefreshTokenDTOResponse response = authenticationService.refreshToken(refreshToken);
+        return ResponseObject.<RefreshTokenDTOResponse>builder()
                 .result(true)
                 .message("Refresh token successful")
                 .status(200)

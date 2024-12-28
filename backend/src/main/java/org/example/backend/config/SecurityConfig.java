@@ -34,8 +34,9 @@ public class SecurityConfig {
                                 // cho phep nhung api nao chi kadmin moi dc vo
 //                        .requestMatchers("/api/v1/class/getAllClass").hasRole("ADMIN")
 //                                .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
-                                .requestMatchers("/api/**").permitAll()
-//                                .anyRequest().authenticated()
+//                                .requestMatchers("/api/**").permitAll()
+                                .anyRequest().authenticated()
+
 
                 )
                 .oauth2ResourceServer(configurer -> configurer

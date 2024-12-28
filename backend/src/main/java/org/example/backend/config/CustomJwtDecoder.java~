@@ -61,9 +61,13 @@ public class CustomJwtDecoder implements JwtDecoder {
         // Khởi tạo jwtDecoder nếu chưa được khởi tạo
         initDecoder();
 
-        Jwt decodedToken;
-        decodedToken = jwtDecoder.decode(token);
+        // Decode và kiểm tra token với jwtDecoder
+        Jwt decodedToken = jwtDecoder.decode(token);
 
+        // Kiểm tra thêm expiration nếu cần (nếu `NimbusJwtDecoder` không tự kiểm tra)
+        if (decodedToken.getExpiresAt() != null && decodedToken.getExpiresAt().isBefore(java.time.Instant.now())) {
+            throw new JwtException("Token đã hết hạn!");
+        }
 
         return decodedToken;
     }
