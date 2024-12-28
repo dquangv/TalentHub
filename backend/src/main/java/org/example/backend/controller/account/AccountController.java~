@@ -22,25 +22,13 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/api/v1/account")
 public class AccountController {
 
-    private final AuthenticationService authenticationService;
     private final AccountService accountService;
 
-    private final AccountMapper accountMapper;
 
-    @PostMapping("/login")
-    public ResponseObject<AuthenticationDtoResponse> authenticate(@Valid @RequestBody AuthenticationDTORequest request) throws JOSEException {
-        AuthenticationDtoResponse response = authenticationService.authenticate(request);
 
-        return ResponseObject.<AuthenticationDtoResponse>builder()
-                .result(true)
-                .message("Login successful")
-                .status(200)
-                .data(response)
-                .build();
-    }
 
     @GetMapping("/get-all")
     public ResponseObject<List<AccountDTOResponse>> getAll() {
@@ -74,25 +62,6 @@ public class AccountController {
                 .data(response)
                 .build();
     }
-    @PostMapping("/refresh-token")
-    public ResponseObject<RefreshTokenDTOResponse> refreshToken(@RequestParam String refreshToken) throws JOSEException, ParseException {
-        RefreshTokenDTOResponse response = authenticationService.refreshToken(refreshToken);
-        return ResponseObject.<AuthenticationDtoResponse>builder()
-                .result(true)
-                .message("Refresh token successful")
-                .status(200)
-                .data(response)
-                .build();
-    }
-    @PostMapping("/introspect")
-    public ResponseObject<IntrospectDtoResponse> introspect(@RequestBody IntrospectDTORequest accessToken) throws JOSEException, ParseException {
-        IntrospectDtoResponse response = authenticationService.introspect(accessToken);
-        return ResponseObject.<IntrospectDtoResponse>builder()
-                .result(true)
-                .message("Introspect token successful")
-                .status(200)
-                .data(response)
-                .build();
-    }
+
 
 }
