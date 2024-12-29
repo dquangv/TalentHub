@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.backend.entity.AbstractEntity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Table(name = "bank_account")
 @Entity
@@ -28,7 +28,7 @@ public class BankAccount extends AbstractEntity<Long> {
     private String branch;
 
     @Column(name = "start_date")
-    private DateTime startDate;
+    private LocalDateTime startDate;
 
     @Column(name = "status")
     private Boolean status;

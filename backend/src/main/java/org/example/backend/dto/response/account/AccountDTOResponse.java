@@ -4,6 +4,8 @@ import com.google.type.DateTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.example.backend.dto.UserDTO;
+import org.example.backend.dto.response.payment.PaymentDTOResponse;
 import org.example.backend.entity.child.account.User;
 import org.example.backend.entity.child.payment.Payment;
 
@@ -20,6 +22,6 @@ public class AccountDTOResponse {
     private Boolean status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private User user;
-    private List<Payment> payments;
+    private UserDTO user;
+    private List<PaymentDTOResponse> payments;
 }

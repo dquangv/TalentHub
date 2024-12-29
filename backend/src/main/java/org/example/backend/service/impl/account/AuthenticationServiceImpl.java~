@@ -174,25 +174,39 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     private SignedJWT verifyJWT(String accessToken) throws ParseException, JOSEException {
-        SignedJWT signedJWT = SignedJWT.parse(accessToken);
-        JWSVerifier verifier = new MACVerifier(SECRET_KEY.getBytes());
+        try {
+            // Phân tích token
+            SignedJWT signedJWT = SignedJWT.parse(accessToken);
+            JWSVerifier verifier = new MACVerifier(SECRET_KEY.getBytes());
 
-        Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
+            // Lấy thời gian hết hạn từ payload
+            Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
 
-        // Kiểm tra xem token đã hết hạn hay chưa
-        boolean isExpired = expirationTime.before(new Date());
+            // Kiểm tra xem token có chứa thời gian hết hạn không
+            if (expirationTime == null) {
+                throw new InvalidTokenException("Token không chứa thời gian hết hạn.");
+            }
 
-        // Kiểm tra tính hợp lệ của token
-        boolean isVerified = signedJWT.verify(verifier);
+            // Kiểm tra xem token đã hết hạn chưa
+            if (expirationTime.before(new Date())) {
+                throw new TokenExpiredException(
+                        "Token đã hết hạn. Hết hạn vào: " + expirationTime
+                );
+            }
 
-        // Nếu token hết hạn hoặc không hợp lệ, ném ngoại lệ riêng biệt
-        if (isExpired) {
-            throw new TokenExpiredException("Token đã hết hạn.");
-        } else if (!isVerified) {
-            throw new InvalidTokenException("Token không hợp lệ.");
+            // Kiểm tra tính hợp lệ của chữ ký
+            boolean isVerified = signedJWT.verify(verifier);
+            if (!isVerified) {
+                throw new InvalidTokenException("Chữ ký của token không hợp lệ.");
+            }
+
+            // Token hợp lệ
+            return signedJWT;
+
+        } catch (ParseException e) {
+            throw new InvalidTokenException("Token không đúng định dạng.");
+        } catch (JOSEException e) {
+            throw new InvalidTokenException("Lỗi khi xác thực token.");
         }
-
-        return signedJWT;
     }
-
 }
