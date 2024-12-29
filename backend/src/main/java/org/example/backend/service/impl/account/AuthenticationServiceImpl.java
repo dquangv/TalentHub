@@ -8,10 +8,10 @@ import com.nimbusds.jwt.SignedJWT;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.account.AuthenticationDTORequest;
 import org.example.backend.dto.request.account.IntrospectDTORequest;
+import org.example.backend.dto.response.account.RefreshTokenDTOResponse;
 import org.example.backend.dto.response.account.AuthenticationDtoResponse;
 import org.example.backend.dto.response.account.IntrospectDtoResponse;
 import org.example.backend.entity.child.account.Account;
-import org.example.backend.enums.ErrorCode;
 import org.example.backend.exception.InvalidTokenException;
 import org.example.backend.exception.TokenExpiredException;
 import org.example.backend.repository.AccountRepository;
@@ -65,16 +65,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public AuthenticationDtoResponse refreshToken(String refreshToken) throws JOSEException, ParseException {
+    public RefreshTokenDTOResponse refreshToken(String refreshToken) throws JOSEException, ParseException {
         // Kiểm tra và xác thực refresh token
         verifyRefreshToken(refreshToken);
 
         // Tạo lại access token sau khi refresh
-            Account account = getAccountFromRefreshToken(refreshToken); // Bạn cần viết phương thức này để lấy Account từ refresh token
+            Account account = getAccountFromRefreshToken(refreshToken);
         String accessToken = generateAccessToken(account);
-        return AuthenticationDtoResponse.builder()
+        return RefreshTokenDTOResponse.builder()
                 .accessToken(accessToken)
-                .refreshToken(refreshToken) // Trả về refresh token nếu cần
                 .build();
     }
 
@@ -159,7 +158,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .jwtID(generateUUID())
                 .issuer("talent_hubs.com")
                 .issueTime(new Date())
-                .expirationTime(Date.from(Instant.now().plus(30, ChronoUnit.DAYS))) // Ví dụ: refresh token hết hạn trong 30 ngày
+                .expirationTime(Date.from(Instant.now().plus(2, ChronoUnit.MINUTES))) // Ví dụ: refresh token hết hạn trong 30 ngày
                 .build();
 
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
