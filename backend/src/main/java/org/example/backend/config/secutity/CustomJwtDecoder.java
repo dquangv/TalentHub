@@ -1,4 +1,4 @@
-package org.example.backend.config;
+package org.example.backend.config.secutity;
 
 import com.nimbusds.jose.JOSEException;
 import lombok.RequiredArgsConstructor;

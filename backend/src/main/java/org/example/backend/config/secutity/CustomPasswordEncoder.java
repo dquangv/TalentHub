@@ -1,5 +1,5 @@
 
-package org.example.backend.config;
+package org.example.backend.config.secutity;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

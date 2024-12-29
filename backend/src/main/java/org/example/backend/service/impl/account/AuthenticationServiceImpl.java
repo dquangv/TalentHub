@@ -84,18 +84,22 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             JWSVerifier verifier = new MACVerifier(SECRET_KEY.getBytes());
 
             if (!signedJWT.verify(verifier)) {
-                throw new ApplicationContextException("Refresh Token không hợp lệ.");
+                throw new InvalidTokenException("Refresh Token không hợp lệ.");
             }
 
-            // Kiểm tra thời gian hết hạn của refresh token
+            // Kiểm tra thời gian hết hạn
             Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
             if (expirationTime.before(new Date())) {
-                throw new ApplicationContextException("Refresh Token đã hết hạn.");
+                throw new TokenExpiredException("Refresh Token đã hết hạn.");
             }
+
+            // Xác minh đây là Refresh Token
+            verifyTokenType(signedJWT, "refresh");
         } catch (ParseException e) {
-            throw new ApplicationContextException("Không thể parse Refresh Token.", e);
+            throw new JOSEException("Không thể parse Refresh Token.", e);
         }
     }
+
     private Account getAccountFromRefreshToken(String refreshToken) throws JOSEException, ParseException {
         // Giải mã refreshToken để lấy các claims
         SignedJWT signedJWT = SignedJWT.parse(refreshToken);
@@ -134,11 +138,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .subject(userName)
                 .jwtID(generateUUID())
                 .issuer("talent_hubs.com")
+                .claim("type", "access") // Thêm claim "type"
                 .claim("scope", roleName)
                 .issueTime(new Date())
                 .expirationTime(Date
                         .from(Instant.now()
-                                .plus(1, ChronoUnit.MINUTES)))
+                                .plus(15, ChronoUnit.MINUTES)))
                 .build();
 
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
@@ -157,8 +162,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .subject(userName)
                 .jwtID(generateUUID())
                 .issuer("talent_hubs.com")
+                .claim("type", "refresh") // Thêm claim "type"
                 .issueTime(new Date())
-                .expirationTime(Date.from(Instant.now().plus(2, ChronoUnit.MINUTES))) // Ví dụ: refresh token hết hạn trong 30 ngày
+                .expirationTime(Date.from(Instant.now().plus(30, ChronoUnit.DAYS))) // Ví dụ: refresh token hết hạn trong 30 ngày
                 .build();
 
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
@@ -172,27 +178,32 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private String generateUUID() {
         return UUID.randomUUID().toString();
     }
-
     private SignedJWT verifyJWT(String accessToken) throws ParseException, JOSEException {
         SignedJWT signedJWT = SignedJWT.parse(accessToken);
         JWSVerifier verifier = new MACVerifier(SECRET_KEY.getBytes());
 
-        Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
-
-        // Kiểm tra xem token đã hết hạn hay chưa
-        boolean isExpired = expirationTime.before(new Date());
-
-        // Kiểm tra tính hợp lệ của token
-        boolean isVerified = signedJWT.verify(verifier);
-
-        // Nếu token hết hạn hoặc không hợp lệ, ném ngoại lệ riêng biệt
-        if (isExpired) {
-            throw new TokenExpiredException("Token đã hết hạn.");
-        } else if (!isVerified) {
+        // Kiểm tra chữ ký
+        if (!signedJWT.verify(verifier)) {
             throw new InvalidTokenException("Token không hợp lệ.");
         }
 
+        // Kiểm tra thời gian hết hạn
+        Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
+        if (expirationTime.before(new Date())) {
+            throw new TokenExpiredException("Token đã hết hạn.");
+        }
+
+        // Xác minh đây là Access Token
+        verifyTokenType(signedJWT, "access");
+
         return signedJWT;
+    }
+
+    private void verifyTokenType(SignedJWT signedJWT, String expectedType) throws ParseException, JOSEException {
+        String tokenType = signedJWT.getJWTClaimsSet().getStringClaim("type");
+        if (!expectedType.equals(tokenType)) {
+            throw new InvalidTokenException("Token không hợp lệ cho mục đích này.");
+        }
     }
 
 }
