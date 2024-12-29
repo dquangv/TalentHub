@@ -41,24 +41,30 @@ public class AccountController {
     }
 
     @PostMapping("/register")
-    public ResponseObject<AccountDTOResponse> register(@Valid @RequestBody() AccountDTORequest request) {
+    public ResponseObject<AccountDTOResponse> register(@Valid @RequestBody AccountDTORequest request) {
         AccountDTOResponse response = accountService.create(request);
         return ResponseObject.<AccountDTOResponse>builder()
                 .result(true)
                 .message("Register successful")
                 .status(HttpStatus.OK.value())
+                .data(response)
                 .build();
     }
 
-        @GetMapping("/{id}")
+    @GetMapping("/{id}")
     public ResponseObject<AccountDTOResponse> get(@PathVariable Long id) {
-        AccountDTOResponse response = accountService.getById(id).get();
-        return ResponseObject.<AccountDTOResponse>builder()
-                .result(true)
-                .message("Get account successful by id: " + id)
-                .status(HttpStatus.OK.value())
-                .data(response)
-                .build();
+        return accountService.getById(id)
+                .map(response -> ResponseObject.<AccountDTOResponse>builder()
+                        .result(true)
+                        .message("Get account successful by id: " + id)
+                        .status(HttpStatus.OK.value())
+                        .data(response)
+                        .build())
+                .orElse(ResponseObject.<AccountDTOResponse>builder()
+                        .result(false)
+                        .message("Account not found with id: " + id)
+                        .status(HttpStatus.NOT_FOUND.value())
+                        .build());
     }
 
 
