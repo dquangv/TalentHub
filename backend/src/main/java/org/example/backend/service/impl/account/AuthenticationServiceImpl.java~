@@ -12,8 +12,6 @@ import org.example.backend.dto.response.account.AuthenticationDtoResponse;
 import org.example.backend.dto.response.account.IntrospectDtoResponse;
 import org.example.backend.entity.child.account.Account;
 import org.example.backend.enums.ErrorCode;
-import org.example.backend.exception.InvalidTokenException;
-import org.example.backend.exception.TokenExpiredException;
 import org.example.backend.repository.AccountRepository;
 import org.example.backend.service.intf.account.AuthenticationService;
 import org.hibernate.boot.model.naming.IllegalIdentifierException;
@@ -188,9 +186,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         // Nếu token hết hạn hoặc không hợp lệ, ném ngoại lệ riêng biệt
         if (isExpired) {
-            throw new TokenExpiredException("Token đã hết hạn.");
+            throw new ApplicationContextException("Token đã hết hạn.");
         } else if (!isVerified) {
-            throw new InvalidTokenException("Token không hợp lệ.");
+            throw new ApplicationContextException("Token không hợp lệ.");
         }
 
         return signedJWT;

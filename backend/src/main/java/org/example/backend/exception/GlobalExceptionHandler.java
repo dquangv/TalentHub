@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -60,4 +61,28 @@ public class GlobalExceptionHandler {
         });
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
+    // Xử lý ngoại lệ khi token hết hạn
+    @ExceptionHandler(TokenExpiredException.class)
+    public ResponseEntity<Map<String, Object>> handleTokenExpired(TokenExpiredException ex) {
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put("statusCode", HttpStatus.UNAUTHORIZED.value());
+        errorResponse.put("message", ex.getMessage());
+        errorResponse.put("error", "Token Expired");
+        errorResponse.put("timestamp", System.currentTimeMillis());
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+    }
+
+    // Xử lý ngoại lệ khi token không hợp lệ
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<Map<String, Object>> handleInvalidToken(InvalidTokenException ex) {
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put("statusCode", HttpStatus.BAD_REQUEST.value());
+        errorResponse.put("message", ex.getMessage());
+        errorResponse.put("error", "Invalid Token");
+        errorResponse.put("timestamp", System.currentTimeMillis());
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
 }
