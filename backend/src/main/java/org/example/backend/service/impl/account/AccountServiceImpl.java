@@ -1,7 +1,6 @@
 package org.example.backend.service.impl.account;
 
 import lombok.RequiredArgsConstructor;
-import org.example.backend.config.CustomPasswordEncoder;
 import org.example.backend.dto.request.account.AccountDTORequest;
 import org.example.backend.dto.response.account.AccountDTOResponse;
 import org.example.backend.entity.child.account.Account;
@@ -21,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
