@@ -9,10 +9,6 @@ import lombok.Data;
 @Builder
 @Schema(description = "Response Object containing message, status and data")
 public class ResponseObject<T> {
-    @JsonProperty("result")
-    @Builder.Default
-    private boolean result = true;
-
     @JsonProperty("message")
     @Schema(description = "Response message")
     private String message;

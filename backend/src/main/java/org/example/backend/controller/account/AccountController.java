@@ -35,7 +35,6 @@ public class AccountController {
         AuthenticationDtoResponse response = authenticationService.authenticate(request);
 
         return ResponseObject.<AuthenticationDtoResponse>builder()
-                .result(true)
                 .message("Login successful")
                 .status(200)
                 .data(response)
@@ -45,9 +44,7 @@ public class AccountController {
     @GetMapping("/get-all")
     public ResponseObject<List<AccountDTOResponse>> getAll() {
         List<AccountDTOResponse> response = accountService.getAll();
-        return ResponseObject
-                .<List<AccountDTOResponse>>builder()
-                .result(true)
+        return ResponseObject.<List<AccountDTOResponse>>builder()
                 .message("Get all account successful")
                 .status(HttpStatus.OK.value())
                 .data(response)
@@ -58,37 +55,35 @@ public class AccountController {
     public ResponseObject<AccountDTOResponse> register(@Valid @RequestBody() AccountDTORequest request) {
         AccountDTOResponse response = accountService.create(request);
         return ResponseObject.<AccountDTOResponse>builder()
-                .result(true)
                 .message("Register successful")
                 .status(HttpStatus.OK.value())
                 .build();
     }
 
-        @GetMapping("/{id}")
+    @GetMapping("/{id}")
     public ResponseObject<AccountDTOResponse> get(@PathVariable Long id) {
         AccountDTOResponse response = accountService.getById(id).get();
         return ResponseObject.<AccountDTOResponse>builder()
-                .result(true)
                 .message("Get account successful by id: " + id)
                 .status(HttpStatus.OK.value())
                 .data(response)
                 .build();
     }
+
     @PostMapping("/refresh-token")
     public ResponseObject<AuthenticationDtoResponse> refreshToken(@RequestParam String refreshToken) throws JOSEException, ParseException {
         AuthenticationDtoResponse response = authenticationService.refreshToken(refreshToken);
         return ResponseObject.<AuthenticationDtoResponse>builder()
-                .result(true)
                 .message("Refresh token successful")
                 .status(200)
                 .data(response)
                 .build();
     }
+
     @PostMapping("/introspect")
     public ResponseObject<IntrospectDtoResponse> introspect(@RequestBody IntrospectDTORequest accessToken) throws JOSEException, ParseException {
         IntrospectDtoResponse response = authenticationService.introspect(accessToken);
         return ResponseObject.<IntrospectDtoResponse>builder()
-                .result(true)
                 .message("Introspect token successful")
                 .status(200)
                 .data(response)
