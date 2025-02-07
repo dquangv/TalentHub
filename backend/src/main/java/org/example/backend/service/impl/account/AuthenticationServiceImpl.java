@@ -73,7 +73,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             Account account = getAccountFromRefreshToken(refreshToken);
         String accessToken = generateAccessToken(account);
         return RefreshTokenDTOResponse.builder()
-                .accessToken(accessToken)
+//                .accessToken(accessToken)
                 .build();
     }
 
