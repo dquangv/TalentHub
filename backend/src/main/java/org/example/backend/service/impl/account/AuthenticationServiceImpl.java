@@ -143,7 +143,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .issueTime(new Date())
                 .expirationTime(Date
                         .from(Instant.now()
-                                .plus(15, ChronoUnit.MINUTES)))
+                                .plus(30, ChronoUnit.DAYS))) // Ví dụ: access token hết hạn trong 30 ngày
                 .build();
 
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
