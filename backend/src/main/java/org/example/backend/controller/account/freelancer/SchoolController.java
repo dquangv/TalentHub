@@ -1,0 +1,69 @@
+package org.example.backend.controller.account.freelancer;
+
+import lombok.RequiredArgsConstructor;
+import org.example.backend.dto.ResponseObject;
+import org.example.backend.dto.request.account.freelancer.SchoolDTORequest;
+import org.example.backend.dto.response.account.freelancer.SchoolDTOResponse;
+import org.example.backend.service.intf.account.freelancer.SchoolService;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/v1/schools")
+@RequiredArgsConstructor
+public class SchoolController {
+
+    private final SchoolService schoolService;
+
+    @PostMapping("")
+    public ResponseObject<SchoolDTOResponse> createSchool(@Valid @RequestBody SchoolDTORequest schoolDTORequest) {
+        SchoolDTOResponse schoolDTOResponse = schoolService.create(schoolDTORequest);
+        return ResponseObject.<SchoolDTOResponse>builder()
+                .message("School created successfully")
+                .status(HttpStatus.CREATED.value())
+                .data(schoolDTOResponse)
+                .build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseObject<SchoolDTOResponse> getSchoolById(@PathVariable Long id) {
+        return schoolService.getById(id)
+                .map(school -> ResponseObject.<SchoolDTOResponse>builder()
+                        .message("School retrieved successfully")
+                        .status(HttpStatus.OK.value())
+                        .data(school)
+                        .build())
+                .orElse(ResponseObject.<SchoolDTOResponse>builder()
+                        .message("School not found")
+                        .status(HttpStatus.NOT_FOUND.value())
+                        .build());
+    }
+
+    @GetMapping("")
+    public ResponseObject<List<SchoolDTOResponse>> getAllSchools() {
+        List<SchoolDTOResponse> schools = schoolService.getAll();
+        return ResponseObject.<List<SchoolDTOResponse>>builder()
+                .message("All schools retrieved successfully")
+                .status(HttpStatus.OK.value())
+                .data(schools)
+                .build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseObject<Void> deleteSchool(@PathVariable Long id) {
+        boolean isDeleted = schoolService.deleteById(id);
+        if (isDeleted) {
+            return ResponseObject.<Void>builder()
+                    .message("School deleted successfully")
+                    .status(HttpStatus.NO_CONTENT.value())
+                    .build();
+        }
+        return ResponseObject.<Void>builder()
+                .message("School not found")
+                .status(HttpStatus.NOT_FOUND.value())
+                .build();
+    }
+}
