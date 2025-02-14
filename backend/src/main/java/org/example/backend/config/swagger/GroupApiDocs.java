@@ -34,7 +34,7 @@ public class GroupApiDocs {
     public GroupedOpenApi apiJob() {
         return GroupedOpenApi.builder()
                 .group("Job APIs")
-                .pathsToMatch("/api/v1/skills/**")
+                .pathsToMatch("/api/v1/jobs/**")
                 .build();
     }
 }
