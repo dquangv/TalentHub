@@ -5,20 +5,28 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 @Component
-public class GruopApiDocs {
+public class GroupApiDocs {
 
     @Bean
     public GroupedOpenApi apiAuth() {
         return GroupedOpenApi.builder()
-                .group("auth APIs")
+                .group("Auth APIs")
                 .pathsToMatch("/api/v1/auth/**")
                 .build();
     }
     @Bean
     public GroupedOpenApi apiAccount() {
         return GroupedOpenApi.builder()
-                .group("account APIs")
+                .group("Account APIs")
                 .pathsToMatch("/api/v1/account/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi apiFreelancer() {
+        return GroupedOpenApi.builder()
+                .group("Freelancer APIs")
+                .pathsToMatch("/api/v1/freelancers/**")
                 .build();
     }
 }
