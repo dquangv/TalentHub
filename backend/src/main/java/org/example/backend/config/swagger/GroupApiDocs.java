@@ -29,4 +29,12 @@ public class GroupApiDocs {
                 .pathsToMatch("/api/v1/freelancers/**")
                 .build();
     }
+
+    @Bean
+    public GroupedOpenApi apiJob() {
+        return GroupedOpenApi.builder()
+                .group("Job APIs")
+                .pathsToMatch("/api/v1/skills/**")
+                .build();
+    }
 }
