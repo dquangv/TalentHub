@@ -7,6 +7,7 @@ import org.example.backend.entity.child.account.freelancer.Freelancer;
 import org.example.backend.entity.child.job.FreelancerJob;
 import org.example.backend.entity.child.job.Job;
 import org.example.backend.enums.StatusFreelancerJob;
+import org.example.backend.exception.BadRequestException;
 import org.example.backend.repository.FreelancerJobRepository;
 import org.example.backend.repository.FreelancerRepository;
 import org.example.backend.repository.JobRepository;
@@ -40,9 +41,9 @@ public class ViewJobServiceImpl implements ViewJobService {
         }
 
         Freelancer freelancer = freelancerRepository.findById(request.getFreelancerId())
-                .orElseThrow(() -> new IllegalArgumentException("FreelancerId is not found"));
+                .orElseThrow(() -> new BadRequestException("FreelancerId is not found"));
         Job job = jobRepository.findById(request.getJobId())
-                .orElseThrow(() -> new IllegalArgumentException("JobId is not found"));
+                .orElseThrow(() -> new BadRequestException("JobId is not found"));
 
         FreelancerJob newFreelancerJob = new FreelancerJob();
         newFreelancerJob.setFreelancer(freelancer);
