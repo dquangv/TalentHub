@@ -10,7 +10,7 @@ import org.example.backend.enums.StatusFreelancerJob;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class FreelancerJobDTOResponse {
+public class ViewJobDTOResponse {
     private long id;
     private boolean isSaved;
     private StatusFreelancerJob status;

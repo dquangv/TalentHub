@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.ResponseObject;
 import org.example.backend.dto.request.account.freelancer.FreelancerDTORequest;
 import org.example.backend.dto.response.account.freelancer.FreelancerDTOResponse;
+import org.example.backend.dto.response.account.freelancer.FreelancerInfoResponse;
+import org.example.backend.service.intf.account.freelancer.FreelancerInfoService;
 import org.example.backend.service.intf.account.freelancer.FreelancerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,7 @@ import java.util.List;
 public class FreelancerController {
 
     private final FreelancerService freelancerService;
+    private final FreelancerInfoService freelancerInfoService;
 
     @PostMapping("")
     public ResponseObject<FreelancerDTOResponse> createFreelancer(@RequestBody FreelancerDTORequest freelancerDTORequest) {
@@ -64,6 +67,17 @@ public class FreelancerController {
                 .message("Freelancer not found")
                 .status(HttpStatus.NOT_FOUND.value())
                 .data(null)
+                .build();
+    }
+
+    @GetMapping("/info")
+    public ResponseObject<List<FreelancerInfoResponse>> getAllFreelancerInfo() {
+        List<FreelancerInfoResponse> freelancers = freelancerInfoService.getAllFreelancerInfo();
+
+        return ResponseObject.<List<FreelancerInfoResponse>>builder()
+                .message("Get all freelancer info successfully")
+                .status(HttpStatus.OK.value())
+                .data(freelancers)
                 .build();
     }
 }

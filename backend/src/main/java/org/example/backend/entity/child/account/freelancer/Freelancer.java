@@ -50,9 +50,9 @@ public class Freelancer extends AbstractEntity<Long> {
     @JsonIgnore
     private List<FreelancerSkill> freelancerSkills;
 
-    @OneToMany(mappedBy = "freelancer", cascade = CascadeType.ALL, orphanRemoval = true)
+    /*@OneToMany(mappedBy = "freelancer", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<CV> CVs;
+    private List<CV> CVs;*/
 
     @JsonIgnore
     @OneToMany(mappedBy = "freelancer", cascade = CascadeType.ALL, orphanRemoval = true)
