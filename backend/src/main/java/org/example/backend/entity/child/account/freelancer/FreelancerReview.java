@@ -24,8 +24,9 @@ import java.util.List;
 @AllArgsConstructor
 public class FreelancerReview extends AbstractEntity<Long> {
 
-    @Column(name = "on_time")
-    private Float onTime;
+    //change from on_time to rating, remember drop and create new database
+    @Column(name = "rating")
+    private Float rating;
 
     @Column(name = "note")
     private String note;
