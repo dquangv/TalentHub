@@ -26,7 +26,6 @@ public class AuthController {
         AuthenticationDtoResponse response = authenticationService.authenticate(request);
 
         return ResponseObject.<AuthenticationDtoResponse>builder()
-                .result(true)
                 .message("Login successful")
                 .status(200)
                 .data(response)
@@ -36,7 +35,6 @@ public class AuthController {
     public ResponseObject<RefreshTokenDTOResponse> refreshToken(@RequestParam String refreshToken) throws JOSEException, ParseException {
         RefreshTokenDTOResponse response = authenticationService.refreshToken(refreshToken);
         return ResponseObject.<RefreshTokenDTOResponse>builder()
-                .result(true)
                 .message("Refresh token successful")
                 .status(200)
                 .data(response)
@@ -46,7 +44,6 @@ public class AuthController {
     public ResponseObject<IntrospectDtoResponse> introspect(@RequestBody IntrospectDTORequest accessToken) throws JOSEException, ParseException {
         IntrospectDtoResponse response = authenticationService.introspect(accessToken);
         return ResponseObject.<IntrospectDtoResponse>builder()
-                .result(true)
                 .message("Introspect token successful")
                 .status(200)
                 .data(response)

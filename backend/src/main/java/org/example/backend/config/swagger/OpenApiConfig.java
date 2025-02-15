@@ -1,4 +1,4 @@
-package org.example.backend.config;
+package org.example.backend.config.swagger;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -10,21 +10,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class OpenApiConfig implements WebMvcConfigurer {
-
-    @Bean
-    public GroupedOpenApi apiAuth() {
-        return GroupedOpenApi.builder()
-                .group("auth APIs")
-                .pathsToMatch("/api/v1/auth/**")
-                .build();
-    }
-    @Bean
-    public GroupedOpenApi apiAccount() {
-        return GroupedOpenApi.builder()
-                .group("account APIs")
-                .pathsToMatch("/api/v1/account/**")
-                .build();
-    }
 
     @Bean
     public OpenAPI customOpenAPI() {

@@ -34,6 +34,9 @@ public class User extends AbstractEntity<Long> {
     @Column(name = "introduction")
     private String introduction;
 
+    /*@Lob
+    private byte[] avatar;*/
+
     @OneToOne
     @JsonIgnore
     @JoinColumn(name = "account_id")
