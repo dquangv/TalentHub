@@ -52,7 +52,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         return AuthenticationDtoResponse.builder()
                 .accessToken(generateAccessToken(account))
-                .refreshToken(generateRefreshToken(account))
+//                .refreshToken(generateRefreshToken(account))
                 .build();
     }
 

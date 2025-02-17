@@ -53,12 +53,14 @@ public class AccountServiceImpl implements AccountService {
         Account savedAccount = accountRepository.save(account);
 
         User user = new User();
-        user.setFirstName(accountRequestDTO.getFirstName());
-        user.setLastName(accountRequestDTO.getLastName());
-        user.setPhoneNumber(accountRequestDTO.getPhoneNumber());
-        user.setAddress(accountRequestDTO.getAddress());
-        user.setTitle(accountRequestDTO.getTitle());
-        user.setIntroduction(accountRequestDTO.getIntroduction());
+
+//        user.setFirstName(accountRequestDTO.getFirstName());
+//        user.setLastName(accountRequestDTO.getLastName());
+//        user.setPhoneNumber(accountRequestDTO.getPhoneNumber());
+//        user.setAddress(accountRequestDTO.getAddress());
+//        user.setTitle(accountRequestDTO.getTitle());
+//        user.setIntroduction(accountRequestDTO.getIntroduction());
+
         user.setAccount(savedAccount);
 
         account.setUser(user);
