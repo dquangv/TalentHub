@@ -23,6 +23,7 @@ public class SecurityConfig {
             "/api/v1/auth/introspect",
             "/api/v1/auth/logout",
             "/api/v1/account/register",
+
     };
 
     @Bean
@@ -33,10 +34,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request
                                 // cho phep nhung api nao chi kadmin moi dc vo
 //                        .requestMatchers("/api/v1/class/getAllClass").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
+//                                .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
 //                                .requestMatchers("/api/**").permitAll()
-                                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                                .anyRequest().authenticated()
+//                                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                                .anyRequest().permitAll()
 
 
                 )
