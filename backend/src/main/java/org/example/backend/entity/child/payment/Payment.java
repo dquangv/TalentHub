@@ -19,11 +19,11 @@ public class Payment extends AbstractEntity<Long> {
     @Column(name = "is_default")
     private boolean isDefault;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "bank_account_id") // Khóa ngoại trỏ đến BankAccount
     private BankAccount bankAccount;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "e_wallet_account_id") // Khóa ngoại trỏ đến EWalletAccount
     private EWalletAccount eWalletAccount;
 
