@@ -11,8 +11,6 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class EWalletAccountDTORequest {
 
     @NotBlank(message = "E-Wallet name is required")
@@ -30,4 +28,6 @@ public class EWalletAccountDTORequest {
 
     @NotBlank(message = "Payment id is required")
     private Long paymentId;
+
 }
+
