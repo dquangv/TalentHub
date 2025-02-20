@@ -36,7 +36,7 @@ public class FreelancerServiceImpl implements FreelancerService {
 
         // Map from DTO to entity
         Freelancer freelancer = new Freelancer();
-        freelancer.setImage(freelancerDTORequest.getImage());
+//        freelancer.setImage(freelancerDTORequest.getImage());
         freelancer.setHourlyRate(freelancerDTORequest.getHourlyRate());
         freelancer.setDescription(freelancerDTORequest.getDescription());
         freelancer.setCategory(category);
@@ -48,7 +48,7 @@ public class FreelancerServiceImpl implements FreelancerService {
         // Return the response DTO
         return new FreelancerDTOResponse(
                 freelancer.getId(),
-                freelancer.getImage(),
+//                freelancer.getImage(),
                 freelancer.getHourlyRate(),
                 freelancer.getDescription(),
                 freelancer.getCategory().getCategoryTitle(),
@@ -62,7 +62,7 @@ public class FreelancerServiceImpl implements FreelancerService {
         Optional<Freelancer> freelancer = freelancerRepository.findById(id);
         return freelancer.map(f -> new FreelancerDTOResponse(
                 f.getId(),
-                f.getImage(),
+//                f.getImage(),
                 f.getHourlyRate(),
                 f.getDescription(),
                 f.getCategory().getCategoryTitle(),
@@ -76,7 +76,7 @@ public class FreelancerServiceImpl implements FreelancerService {
         return freelancers.stream()
                 .map(f -> new FreelancerDTOResponse(
                         f.getId(),
-                        f.getImage(),
+//                        f.getImage(),
                         f.getHourlyRate(),
                         f.getDescription(),
                         f.getCategory().getCategoryTitle(),

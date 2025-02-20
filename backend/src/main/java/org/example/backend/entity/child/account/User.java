@@ -2,6 +2,7 @@ package org.example.backend.entity.child.account;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,8 +35,9 @@ public class User extends AbstractEntity<Long> {
     @Column(name = "introduction")
     private String introduction;
 
-    /*@Lob
-    private byte[] avatar;*/
+    @Size(max = 255)
+    @Column(name = "image")
+    private String image;
 
     @OneToOne
     @JsonIgnore
