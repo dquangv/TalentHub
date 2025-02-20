@@ -16,7 +16,6 @@ public class CorsConfig implements WebMvcConfigurer {
     }
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // Phục vụ tất cả các file trong thư mục ./uploads/images/
         registry.addResourceHandler("/uploads/images/**")
                 .addResourceLocations("file:./uploads/images/");
     }

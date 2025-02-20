@@ -5,6 +5,7 @@ import org.example.backend.dto.request.job.SkillDTORequest;
 import org.example.backend.dto.response.job.SkillDTOResponse;
 import org.example.backend.entity.child.job.Skill;
 import org.example.backend.exception.BadRequestException;
+import org.example.backend.exception.NotFoundException;
 import org.example.backend.mapper.job.SkillMapper;
 import org.example.backend.repository.SkillRepository;
 import org.example.backend.service.intf.job.SkillService;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,22 +32,45 @@ public class SkillServiceImpl implements SkillService {
         }
 
         Skill skill = skillMapper.toEntity(skillDTORequest);
-
         return skillMapper.toResponseDto(skillRepository.save(skill));
     }
 
     @Override
-    public Optional<SkillDTOResponse> getById(Long aLong) {
-        return Optional.empty();
+    public Optional<SkillDTOResponse> getById(Long id) {
+        return skillRepository.findById(id)
+                .map(skillMapper::toResponseDto);
     }
 
     @Override
     public List<SkillDTOResponse> getAll() {
-        return List.of();
+        return skillRepository.findAll().stream()
+                .map(skillMapper::toResponseDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Boolean deleteById(Long aLong) {
-        return null;
+    public Boolean deleteById(Long id) {
+        if (skillRepository.existsById(id)) {
+            skillRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public SkillDTOResponse update(Long id, SkillDTORequest skillDTORequest) {
+        if (skillDTORequest == null) {
+            throw new BadRequestException("Skill request cannot be null");
+        }
+
+        if (skillDTORequest.getSkillName() == null || skillDTORequest.getSkillName().isEmpty()) {
+            throw new BadRequestException("Skill name cannot be null or empty");
+        }
+
+        Skill skill = skillRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Skill not found with id: " + id));
+
+        skill.setSkillName(skillDTORequest.getSkillName());
+        return skillMapper.toResponseDto(skillRepository.save(skill));
     }
 }
