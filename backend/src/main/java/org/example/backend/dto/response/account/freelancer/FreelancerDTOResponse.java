@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 public class FreelancerDTOResponse {
 
     private Long id;
-    private String image;
+//    private String image;
     private BigDecimal hourlyRate;
     private String description;
     private String categoryName;

@@ -8,40 +8,35 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.backend.entity.AbstractEntity;
 
-import java.util.Date;
+import java.time.LocalDate;
 
-@Table(name = "education")
 @Entity
+@Table(name = "experiences")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Education extends AbstractEntity<Long> {
+public class Experience extends AbstractEntity<Long> {
+    @Column(name = "company_name", nullable = false)
+    private String companyName;
 
-    @Column(name = "start_date")
-    private Date startDate;
+    @Column(name = "position", nullable = false)
+    private String position;
+
+    @Column(name = "start_date", nullable = false)
+    private LocalDate startDate;
 
     @Column(name = "end_date")
-    private Date endDate;
+    private LocalDate endDate;
 
     @Column(name = "description")
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "school_id")
-    private School school;
+    @Column(name = "status")
+    private String status;
 
     @ManyToOne
-    @JoinColumn(name = "degree_id")
-    private Degree degree;
-
-    @ManyToOne
-    @JoinColumn(name = "major_id")
-    private Major major;
-
-    @ManyToOne
-    @JoinColumn(name = "freelancer_id")
+    @JoinColumn(name = "freelancer_id", nullable = false)
     @JsonIgnore
     private Freelancer freelancer;
-
 }
