@@ -44,7 +44,7 @@ public class AccountController {
         AccountDTOResponse response = accountService.create(request);
         return ResponseObject.<AccountDTOResponse>builder()
                 .message("Register successful")
-                .status(HttpStatus.OK.value())
+                .status(201)
                 .data(response)
                 .build();
     }

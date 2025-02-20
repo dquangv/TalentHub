@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.backend.entity.AbstractEntity;
 import org.example.backend.entity.child.payment.Payment;
+import org.example.backend.enums.RoleUser;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -31,7 +32,8 @@ public class Account extends AbstractEntity<Long> {
     private String password;
 
     @Column(name = "role")
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private RoleUser role;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreationTimestamp
