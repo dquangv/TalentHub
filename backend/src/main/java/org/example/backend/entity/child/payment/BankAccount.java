@@ -33,6 +33,6 @@ public class BankAccount extends AbstractEntity<Long> {
     @Column(name = "status")
     private Boolean status;
 
-    @OneToOne(mappedBy = "bankAccount")
+    @OneToOne(mappedBy = "bankAccount",  cascade = CascadeType.ALL)
     private Payment payment;
 }

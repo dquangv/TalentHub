@@ -29,6 +29,6 @@ public class EWalletAccount extends AbstractEntity<Long> {
     @Column(name = "start_date")
     private LocalDateTime startDate;
 
-    @OneToOne(mappedBy = "eWalletAccount")
+    @OneToOne(mappedBy = "eWalletAccount",  cascade = CascadeType.ALL)
     private Payment payment;
 }
