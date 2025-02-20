@@ -1,6 +1,7 @@
 package org.example.backend.entity.child.account.client;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +9,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.backend.entity.AbstractEntity;
 import org.example.backend.entity.child.account.User;
+import org.example.backend.entity.child.job.Job;
+
+import java.util.List;
 
 @Table(name = "client")
 @Entity
@@ -29,4 +33,14 @@ public class Client extends AbstractEntity<Long> {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
+
+
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Job> jobs;
+
 }

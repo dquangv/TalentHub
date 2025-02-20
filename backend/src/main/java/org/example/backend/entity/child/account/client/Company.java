@@ -1,11 +1,16 @@
 package org.example.backend.entity.child.account.client;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.backend.entity.AbstractEntity;
+import org.example.backend.entity.child.job.FreelancerJob;
+import org.example.backend.entity.child.job.Job;
+
+import java.util.List;
 
 @Table(name = "company")
 @Entity
