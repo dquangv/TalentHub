@@ -25,7 +25,7 @@ public class FreelancerJobController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseObject.<ViewJobDTOResponse>builder()
                 .message("Successfully save viewed job")
-                .status(201)
+                .status(200)
                 .data(viewJobDTOResponse)
                 .build());
     }

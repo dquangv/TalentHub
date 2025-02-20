@@ -1,6 +1,5 @@
 package org.example.backend.enums;
 
-import com.fasterxml.jackson.annotation.JsonValue;
 public enum RoleUser {
     FREELANCER("Freelancer"),
     CLIENT("Client");
