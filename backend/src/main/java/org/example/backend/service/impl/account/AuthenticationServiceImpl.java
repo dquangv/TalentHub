@@ -12,6 +12,7 @@ import org.example.backend.dto.response.account.RefreshTokenDTOResponse;
 import org.example.backend.dto.response.account.AuthenticationDtoResponse;
 import org.example.backend.dto.response.account.IntrospectDtoResponse;
 import org.example.backend.entity.child.account.Account;
+import org.example.backend.enums.RoleUser;
 import org.example.backend.exception.InvalidTokenException;
 import org.example.backend.exception.TokenExpiredException;
 import org.example.backend.repository.AccountRepository;
@@ -51,7 +52,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         return AuthenticationDtoResponse.builder()
                 .accessToken(generateAccessToken(account))
-                .refreshToken(generateRefreshToken(account))
+//                .refreshToken(generateRefreshToken(account))
                 .build();
     }
 
@@ -129,7 +130,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 //    }
 
     private String generateAccessToken(Account account) throws JOSEException {
-        String roleName = account.getRole();
+        RoleUser roleName = account.getRole();
         String userName = account.getEmail();
 
         JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS256);

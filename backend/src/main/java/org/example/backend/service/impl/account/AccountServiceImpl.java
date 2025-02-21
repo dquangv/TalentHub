@@ -7,6 +7,7 @@ import org.example.backend.entity.child.account.Account;
 import org.example.backend.entity.child.account.User;
 import org.example.backend.entity.child.account.client.Client;
 import org.example.backend.entity.child.account.freelancer.Freelancer;
+import org.example.backend.enums.RoleUser;
 import org.example.backend.exception.NotFoundException;
 import org.example.backend.mapper.Account.AccountMapper;
 import org.example.backend.repository.AccountRepository;
@@ -52,12 +53,14 @@ public class AccountServiceImpl implements AccountService {
         Account savedAccount = accountRepository.save(account);
 
         User user = new User();
-        user.setFirstName(accountRequestDTO.getFirstName());
-        user.setLastName(accountRequestDTO.getLastName());
-        user.setPhoneNumber(accountRequestDTO.getPhoneNumber());
-        user.setAddress(accountRequestDTO.getAddress());
-        user.setTitle(accountRequestDTO.getTitle());
-        user.setIntroduction(accountRequestDTO.getIntroduction());
+
+//        user.setFirstName(accountRequestDTO.getFirstName());
+//        user.setLastName(accountRequestDTO.getLastName());
+//        user.setPhoneNumber(accountRequestDTO.getPhoneNumber());
+//        user.setAddress(accountRequestDTO.getAddress());
+//        user.setTitle(accountRequestDTO.getTitle());
+//        user.setIntroduction(accountRequestDTO.getIntroduction());
+
         user.setAccount(savedAccount);
 
         account.setUser(user);
@@ -65,17 +68,25 @@ public class AccountServiceImpl implements AccountService {
         accountRepository.save(account);
         userRepository.save(user);
 
-        if (accountRequestDTO.getRole().equalsIgnoreCase("freelancer")) {
-            Freelancer freelancer = new Freelancer();
-            freelancer.setUser(user);
-            freelancerRepository.save(freelancer);
+        try {
+            RoleUser role = RoleUser.valueOf(accountRequestDTO.getRole().getValue().toUpperCase());
+
+            switch (role) {
+                case FREELANCER -> {
+                    Freelancer freelancer = new Freelancer();
+                    freelancer.setUser(user);
+                    freelancerRepository.save(freelancer);
+                }
+                case CLIENT -> {
+                    Client client = new Client();
+                    client.setUser(user);
+                    clientRepository.save(client);
+                }
+            }
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Invalid role: " + accountRequestDTO.getRole());
         }
 
-        if (accountRequestDTO.getRole().equalsIgnoreCase("client")) {
-            Client client = new Client();
-            client.setUser(user);
-            clientRepository.save(client);
-        }
 
         return accountMapper.toResponseDto(savedAccount);
     }

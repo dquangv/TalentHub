@@ -4,10 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.ResponseObject;
 import org.example.backend.dto.request.account.freelancer.FreelancerDTORequest;
 import org.example.backend.dto.response.account.freelancer.FreelancerDTOResponse;
-import org.example.backend.dto.response.account.freelancer.FreelancerInfoResponse;
+import org.example.backend.dto.response.account.freelancer.FreelancerDetailDTOResponse;
+import org.example.backend.dto.response.account.freelancer.FreelancerInfoDTOResponse;
+import org.example.backend.service.intf.account.freelancer.FreelancerDetailService;
 import org.example.backend.service.intf.account.freelancer.FreelancerInfoService;
 import org.example.backend.service.intf.account.freelancer.FreelancerService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +22,7 @@ public class FreelancerController {
 
     private final FreelancerService freelancerService;
     private final FreelancerInfoService freelancerInfoService;
+    private final FreelancerDetailService freelancerDetailService;
 
     @PostMapping("")
     public ResponseObject<FreelancerDTOResponse> createFreelancer(@RequestBody FreelancerDTORequest freelancerDTORequest) {
@@ -71,14 +75,25 @@ public class FreelancerController {
     }
 
     @GetMapping("/info")
-    public ResponseObject<List<FreelancerInfoResponse>> getAllFreelancerInfo() {
-        List<FreelancerInfoResponse> freelancers = freelancerInfoService.getAllFreelancerInfo();
+    public ResponseObject<List<FreelancerInfoDTOResponse>> getAllFreelancerInfo() {
+        List<FreelancerInfoDTOResponse> freelancers = freelancerInfoService.getAllFreelancerInfo();
 
-        return ResponseObject.<List<FreelancerInfoResponse>>builder()
+        return ResponseObject.<List<FreelancerInfoDTOResponse>>builder()
                 .message("Get all freelancer info successfully")
                 .status(HttpStatus.OK.value())
                 .data(freelancers)
                 .build();
+    }
+
+    @GetMapping("/detail")
+    public ResponseEntity<ResponseObject<FreelancerDetailDTOResponse>> getFreelancerDetailById(@RequestParam Long id) {
+        FreelancerDetailDTOResponse freelancerDetailDTOResponse = freelancerDetailService.getFreelancerDetail(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseObject.<FreelancerDetailDTOResponse>builder()
+                .message("Successfully get detail info of freelancer")
+                .status(200)
+                .data(freelancerDetailDTOResponse)
+                .build());
     }
 }
 

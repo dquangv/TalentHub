@@ -37,4 +37,25 @@ public class GroupApiDocs {
                 .pathsToMatch("/api/v1/jobs/**")
                 .build();
     }
+    @Bean
+    public GroupedOpenApi apiFreelancerSkill() {
+        return GroupedOpenApi.builder()
+                .group("FreelancerSkill APIs")
+                .pathsToMatch("/api/v1/freelancer-skills/**")
+                .build();
+    }
+    @Bean
+    public GroupedOpenApi apiSkills() {
+        return GroupedOpenApi.builder()
+                .group("Skills APIs")
+                .pathsToMatch("/api/v1/jobs/skills/**")
+                .build();
+    }
+    @Bean
+    public GroupedOpenApi apiCategory() {
+        return GroupedOpenApi.builder()
+                .group("Category APIs")
+                .pathsToMatch("/api/v1/categories/**")
+                .build();
+    }
 }

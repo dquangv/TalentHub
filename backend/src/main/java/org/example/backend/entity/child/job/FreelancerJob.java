@@ -1,6 +1,7 @@
 package org.example.backend.entity.child.job;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,10 @@ public class FreelancerJob extends AbstractEntity<Long> {
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private StatusFreelancerJob status;
+
+    @Size(max = 255)
+    @Column(name = "cv")
+    private String cv;
 
     @ManyToOne
     @JoinColumn(name = "freelancer_id")

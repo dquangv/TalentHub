@@ -24,9 +24,9 @@ import java.util.List;
 @AllArgsConstructor
 public class Freelancer extends AbstractEntity<Long> {
 
-    @Size(max = 255)
+    /*@Size(max = 255)
     @Column(name = "image")
-    private String image;
+    private String image;*/
 
     @Column(name = "hourly_rate", precision = 10, scale = 2)
     private BigDecimal hourlyRate;
@@ -57,5 +57,9 @@ public class Freelancer extends AbstractEntity<Long> {
     @JsonIgnore
     @OneToMany(mappedBy = "freelancer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Education> educations;
+
+    @OneToMany(mappedBy = "freelancer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Experience> experiences;
 
 }

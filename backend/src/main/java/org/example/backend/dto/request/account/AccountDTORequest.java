@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import org.example.backend.enums.RoleUser;
 
 
 @Getter
@@ -25,22 +25,22 @@ public class AccountDTORequest {
     @NotBlank(message = "Password is required")
     private String password;
 
-    @NotBlank(message = "Role is required")
-    private String role;
+    @NotNull(message = "Role cannot be null")
+    private RoleUser role;
 
-    @NotNull(message = "Status is required")
+//    @NotNull(message = "Status is required")
     private Boolean status;
 
-    @NotBlank(message = "First name is required")
+//    @NotBlank(message = "First name is required")
     private String firstName;
 
-    @NotBlank(message = "Last name is required")
+//    @NotBlank(message = "Last name is required")
     private String lastName;
 
-    @NotBlank(message = "Phone number is required")
+//    @NotBlank(message = "Phone number is required")
     private String phoneNumber;
 
-    @NotBlank(message = "Address is required")
+//    @NotBlank(message = "Address is required")
     private String address;
 
     private String title;

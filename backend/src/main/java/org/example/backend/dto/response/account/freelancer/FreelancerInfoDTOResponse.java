@@ -11,12 +11,12 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class FreelancerInfoResponse {
+public class FreelancerInfoDTOResponse {
     private Long id;
     private String name;
     private String title;
     private String avatar;
-    private Double rating;
+    private Float rating;
     private String location;
     private List<String> skills;
     private String hourlyRate;
