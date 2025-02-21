@@ -19,7 +19,7 @@ public class BankAccountDTORequest {
     private String bankName;
 
     @NotBlank(message = "Bank account number cannot be null")
-    private Integer bankAccountNumber;
+    private Long bankAccountNumber;
 
     @NotBlank(message = "Branch cannot be blank")
     private String branch;
