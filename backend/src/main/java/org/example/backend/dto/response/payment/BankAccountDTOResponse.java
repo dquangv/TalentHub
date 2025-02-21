@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class BankAccountDTOResponse {
     private Long id;
     private String bankName;
-    private int bankAccountNumber;
+    private Long bankAccountNumber;
     private String branch;
     private LocalDateTime startDate;
     private Boolean status;
