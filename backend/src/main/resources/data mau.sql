@@ -120,13 +120,12 @@ INSERT INTO company (industry, address, company_name, phone_contact, client_id) 
 ('Industry 5', 'Address 5', 'Company 5', '5678901234', 5);
 
 -- Insert data into freelancer table
-INSERT INTO freelancer (description, hourly_rate, image, category_id, user_id) VALUES
-('Description 1', 50.0, 'image1.jpg', 1, 1),
-('Description 2', 60.0, 'image2.jpg', 2, 2),
-('Description 3', 70.0, 'image3.jpg', 3, 3),
-('Description 4', 80.0, 'image4.jpg', 4, 4),
-('Description 5', 90.0, 'image5.jpg', 5, 5);
-
+INSERT INTO freelancer (description, hourly_rate, category_id, user_id) VALUES
+('Description 1', 50.0,  1, 1),
+('Description 2', 60.0,  2, 2),
+('Description 3', 70.0,3, 3),
+('Description 4', 80.0,  4, 4),
+('Description 5', 90.0,  5, 5);
 -- Insert data into cv table
 INSERT INTO cv (name_cv, path, freelancer_id) VALUES
 ('CV 1', 'path1', 1),

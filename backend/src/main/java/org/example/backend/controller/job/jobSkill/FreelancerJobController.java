@@ -30,7 +30,7 @@ public class FreelancerJobController {
                 .build());
     }
 
-    @PatchMapping("/apply")
+    @PostMapping("/apply")
     public ResponseEntity<ResponseObject<FreelancerJobDTOResponse>> applyJob(@RequestBody FreelancerJobDTORequest freeJobDTORequest) {
         FreelancerJobDTOResponse freelancerJobDTOResponse = freelancerJobService.applyJob(freeJobDTORequest);
 
@@ -41,7 +41,7 @@ public class FreelancerJobController {
                 .build());
     }
 
-    @PatchMapping("/save")
+    @PostMapping("/save")
     public ResponseEntity<ResponseObject<FreelancerJobDTOResponse>> saveJob(@RequestBody FreelancerJobDTORequest freeJobDTORequest) {
         FreelancerJobDTOResponse freelancerJobDTOResponse = freelancerJobService.saveJob(freeJobDTORequest);
 
@@ -52,7 +52,7 @@ public class FreelancerJobController {
                 .build());
     }
 
-    @PatchMapping("/unsave")
+    @PostMapping("/unsave")
     public ResponseEntity<ResponseObject<FreelancerJobDTOResponse>> unSaveJob(@RequestBody FreelancerJobDTORequest freeJobDTORequest) {
         FreelancerJobDTOResponse freelancerJobDTOResponse = freelancerJobService.unSaveJob(freeJobDTORequest);
 
