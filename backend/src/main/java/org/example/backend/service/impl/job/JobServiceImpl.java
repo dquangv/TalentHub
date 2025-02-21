@@ -58,9 +58,6 @@ public class JobServiceImpl implements JobService {
                     (String) obj[7]  // Đây là chuỗi kết quả của GROUP_CONCAT
             )).toList();
 
-            if (jobs.isEmpty()) {
-                throw new RuntimeException("Jobs is empty");
-            }
             return jobs;
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
