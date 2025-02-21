@@ -18,8 +18,9 @@ import org.example.backend.exception.TokenExpiredException;
 import org.example.backend.repository.AccountRepository;
 import org.example.backend.service.intf.account.AuthenticationService;
 import org.hibernate.boot.model.naming.IllegalIdentifierException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContextException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,14 +28,16 @@ import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
 
+    private static final Logger log = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
     private final AccountRepository accountRepository;
-    private final PasswordEncoder jwtDecoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Value("${jwt.secret-key}")
     protected String SECRET_KEY;
@@ -45,10 +48,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         System.out.println(request);
         var account = accountRepository.getByEmail(email).orElseThrow(
                 () -> new IllegalIdentifierException("Tài khoản không tồn tại."));
-
-        boolean authenticated = jwtDecoder.matches(request.getPassword()
-                , account.getPassword());
-        if (!authenticated) throw new IllegalIdentifierException("Mật khẩu không đúng.");
+        if (!Objects.equals(request.getPassword(), account.getPassword())) {
+            log.info("Wrong password."+account.getPassword());
+            throw new IllegalIdentifierException("Mật khẩu không đúng.");
+        }
 
         return AuthenticationDtoResponse.builder()
                 .accessToken(generateAccessToken(account))
