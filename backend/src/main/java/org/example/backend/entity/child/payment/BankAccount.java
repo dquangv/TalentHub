@@ -22,7 +22,7 @@ public class BankAccount extends AbstractEntity<Long> {
     private String bankName;
 
     @Column(name = "bank_account_number")
-    private int bankAccountNumber;
+    private Long bankAccountNumber;
 
     @Column(name = "branch")
     private String branch;
