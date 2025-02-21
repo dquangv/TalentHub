@@ -12,6 +12,7 @@ import org.example.backend.dto.response.account.RefreshTokenDTOResponse;
 import org.example.backend.dto.response.account.AuthenticationDtoResponse;
 import org.example.backend.dto.response.account.IntrospectDtoResponse;
 import org.example.backend.entity.child.account.Account;
+import org.example.backend.entity.child.account.freelancer.Freelancer;
 import org.example.backend.enums.RoleUser;
 import org.example.backend.exception.InvalidTokenException;
 import org.example.backend.exception.TokenExpiredException;
@@ -46,18 +47,30 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public AuthenticationDtoResponse authenticate(AuthenticationDTORequest request) throws JOSEException {
         String email = request.getEmail();
         System.out.println(request);
-        var account = accountRepository.getByEmail(email).orElseThrow(
+
+        Object[] result = accountRepository.getByEmail(email).orElseThrow(
                 () -> new IllegalIdentifierException("Tài khoản không tồn tại."));
+
+        Account account = (Account) result[0];
+        Long userId = (Long) result[1];
+
         if (!Objects.equals(request.getPassword(), account.getPassword())) {
-            log.info("Wrong password."+account.getPassword());
+            log.info("Wrong password." + account.getPassword());
             throw new IllegalIdentifierException("Mật khẩu không đúng.");
+        }
+
+        if (account.getRole() == RoleUser.FREELANCER) {
+            log.info("Freelancer login: " + userId);
+        } else {
+            log.info("Client login: " + userId);
         }
 
         return AuthenticationDtoResponse.builder()
                 .accessToken(generateAccessToken(account))
-//                .refreshToken(generateRefreshToken(account))
+                .userId(userId)
                 .build();
     }
+
 
     @Override
     public IntrospectDtoResponse introspect(IntrospectDTORequest request) throws JOSEException, ParseException {
@@ -70,15 +83,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public RefreshTokenDTOResponse refreshToken(String refreshToken) throws JOSEException, ParseException {
-        // Kiểm tra và xác thực refresh token
-        verifyRefreshToken(refreshToken);
-
-        // Tạo lại access token sau khi refresh
-            Account account = getAccountFromRefreshToken(refreshToken);
-        String accessToken = generateAccessToken(account);
-        return RefreshTokenDTOResponse.builder()
-//                .accessToken(accessToken)
-                .build();
+//        // Kiểm tra và xác thực refresh token
+//        verifyRefreshToken(refreshToken);
+//
+//        // Tạo lại access token sau khi refresh
+//            Account account = getAccountFromRefreshToken(refreshToken);
+//        String accessToken = generateAccessToken(account);
+//        return RefreshTokenDTOResponse.builder()
+////                .accessToken(accessToken)
+//                .build();
+        return null;
     }
 
 
@@ -104,33 +118,33 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
-    private Account getAccountFromRefreshToken(String refreshToken) throws JOSEException, ParseException {
-        // Giải mã refreshToken để lấy các claims
-        SignedJWT signedJWT = SignedJWT.parse(refreshToken);
-        JWSVerifier verifier = new MACVerifier(SECRET_KEY.getBytes());
-
-        // Xác minh refresh token hợp lệ (kiểm tra chữ ký và thời gian hết hạn)
-        if (!signedJWT.verify(verifier)) {
-            throw new JOSEException("Invalid refresh token signature.");
-        }
-
-        // Lấy các claim từ refresh token
-        JWTClaimsSet claims = signedJWT.getJWTClaimsSet();
-        String email = claims.getSubject();  // Subject là email người dùng, bạn có thể thay đổi tùy theo cách lưu trong token
-
-        // Lấy account từ cơ sở dữ liệu dựa trên email (hoặc thông tin khác từ token)
-        return accountRepository.getByEmail(email)
-                .orElseThrow(() -> new IllegalIdentifierException("Tài khoản không tồn tại."));
-    }
-
-//    private String extractEmailFromToken(String refreshToken) throws JOSEException {
-//        try {
-//            SignedJWT signedJWT = SignedJWT.parse(refreshToken);
-//            return signedJWT.getJWTClaimsSet().getSubject(); // Giả sử email được lưu trong subject
-//        } catch (ParseException e) {
-//            throw new ApplicationContextException("Không thể trích xuất email từ Refresh Token.", e);
+//    private Account getAccountFromRefreshToken(String refreshToken) throws JOSEException, ParseException {
+//        // Giải mã refreshToken để lấy các claims
+//        SignedJWT signedJWT = SignedJWT.parse(refreshToken);
+//        JWSVerifier verifier = new MACVerifier(SECRET_KEY.getBytes());
+//
+//        // Xác minh refresh token hợp lệ (kiểm tra chữ ký và thời gian hết hạn)
+//        if (!signedJWT.verify(verifier)) {
+//            throw new JOSEException("Invalid refresh token signature.");
 //        }
+//
+//        // Lấy các claim từ refresh token
+//        JWTClaimsSet claims = signedJWT.getJWTClaimsSet();
+//        String email = claims.getSubject();  // Subject là email người dùng, bạn có thể thay đổi tùy theo cách lưu trong token
+//
+//        // Lấy account từ cơ sở dữ liệu dựa trên email (hoặc thông tin khác từ token)
+//        return accountRepository.getByEmail(email)
+//                .orElseThrow(() -> new IllegalIdentifierException("Tài khoản không tồn tại."));
 //    }
+//
+////    private String extractEmailFromToken(String refreshToken) throws JOSEException {
+////        try {
+////            SignedJWT signedJWT = SignedJWT.parse(refreshToken);
+////            return signedJWT.getJWTClaimsSet().getSubject(); // Giả sử email được lưu trong subject
+////        } catch (ParseException e) {
+////            throw new ApplicationContextException("Không thể trích xuất email từ Refresh Token.", e);
+////        }
+////    }
 
     private String generateAccessToken(Account account) throws JOSEException {
         RoleUser roleName = account.getRole();

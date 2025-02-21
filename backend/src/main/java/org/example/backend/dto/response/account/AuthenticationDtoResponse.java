@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class AuthenticationDtoResponse {
-    private String accessToken;
+   private Long userId;
+   private String accessToken;
 //    private String refreshToken;
 }
