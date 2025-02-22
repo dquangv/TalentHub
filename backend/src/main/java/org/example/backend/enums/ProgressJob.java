@@ -2,15 +2,16 @@ package org.example.backend.enums;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum StatusJob {
-    OPEN("Mở"),
-    CLOSE("Đóng"),
-    BAN("Bị cấm");
+public enum ProgressJob {
+    InProgress("Đang thực hiện"),
+    Completed("Hoàn thành"),
+    Pending("Chờ xử lý"),
+    Cancle("Hủy bỏ");
 
     private final String displayName;
 
     // Constructor với displayName
-    StatusJob(String displayName) {
+    ProgressJob(String displayName) {
         this.displayName = displayName;
     }
 
@@ -29,4 +30,5 @@ public enum StatusJob {
         }
         throw new IllegalArgumentException("Unknown status: " + status);
     }
+
 }

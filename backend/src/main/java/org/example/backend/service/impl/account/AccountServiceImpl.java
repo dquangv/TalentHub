@@ -63,7 +63,7 @@ public class AccountServiceImpl implements AccountService {
 
         user.setAccount(savedAccount);
 
-        account.setUser(user);
+//        account.setUser(user);
 
         accountRepository.save(account);
         userRepository.save(user);

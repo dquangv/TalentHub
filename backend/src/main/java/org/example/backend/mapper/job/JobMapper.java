@@ -13,7 +13,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface JobMapper extends BaseMapper<Job, JobDTORequest, JobDTOResponse> {
 
-    @Mapping(target = "companyName", source = "job.client.company.companyName")
+//    @Mapping(target = "companyName", source = "job.client.company.companyName")
     @Mapping(target = "skillName", expression = "java(mapSkills(job.getJobSkills()))")
     JobDTOResponse toResponseDto(Job job);
 

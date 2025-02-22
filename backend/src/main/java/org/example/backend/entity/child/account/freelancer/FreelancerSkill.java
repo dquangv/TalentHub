@@ -27,5 +27,4 @@ public class FreelancerSkill extends AbstractEntity<Long> {
     @ManyToOne
     @JoinColumn(name = "skill_id")
     private Skill skill;
-
 }
