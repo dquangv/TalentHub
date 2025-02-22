@@ -1,12 +1,14 @@
 use job_e_commerce_platform;
 
+select * from account; 	
+
 -- Insert data for account (password: 123)
 INSERT INTO account (id, created_at, email, password, role, status, updated_at, user_id) VALUES
-(1, NOW(), 'tungvt@gmail.com', '123', 'FREELANCER', 1, NOW(), NULL),
-(2, NOW(), 'quangvd@gmail.com', '123', 'CLIENT', 1, NOW(), NULL),
-(3, NOW(), 'quangbm@gmail.com', '123', 'FREELANCER', 1, NOW(), NULL),
-(4, NOW(), 'tiendq@gmail.com', '123', 'CLIENT', 1, NOW(), NULL),
-(5, NOW(), 'huydq@gmail.com', '123', 'FREELANCER', 1, NOW(), NULL);
+(1, NOW(), 'tungvt@gmail.com', '$2a$10$3bHTo6C4GxWcm1kMi9E3eeGvPvo13XqX/JF6sZwXaQh9HkgMHuMZa', 'FREELANCER', 1, NOW(), NULL),
+(2, NOW(), 'quangvd@gmail.com', '$2a$10$3bHTo6C4GxWcm1kMi9E3eeGvPvo13XqX/JF6sZwXaQh9HkgMHuMZa', 'CLIENT', 1, NOW(), NULL),
+(3, NOW(), 'quangbm@gmail.com', '$2a$10$3bHTo6C4GxWcm1kMi9E3eeGvPvo13XqX/JF6sZwXaQh9HkgMHuMZa', 'FREELANCER', 1, NOW(), NULL),
+(4, NOW(), 'tiendq@gmail.com', '$2a$10$3bHTo6C4GxWcm1kMi9E3eeGvPvo13XqX/JF6sZwXaQh9HkgMHuMZa', 'CLIENT', 1, NOW(), NULL),
+(5, NOW(), 'huydq@gmail.com', '$2a$10$3bHTo6C4GxWcm1kMi9E3eeGvPvo13XqX/JF6sZwXaQh9HkgMHuMZa', 'FREELANCER', 1, NOW(), NULL);
 -- Insert data into bank_account table
 INSERT INTO bank_account (bank_account_number, bank_name, branch, start_date, status) VALUES
 (123456, 'Bank A', 'Branch A', '2023-01-01 00:00:00', 1),

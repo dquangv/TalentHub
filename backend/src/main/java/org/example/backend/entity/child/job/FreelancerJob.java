@@ -51,7 +51,7 @@ public class FreelancerJob extends AbstractEntity<Long> {
     /*@ManyToOne
     @JoinColumn(name = "CV_id")*/
 
-    @OneToOne
+    /*@OneToOne
     @JoinColumn(name = "cv_id")
-    private CV CV;
+    private CV CV;*/
 }

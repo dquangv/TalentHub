@@ -7,6 +7,7 @@ import org.example.backend.entity.child.account.Account;
 import org.example.backend.entity.child.account.User;
 import org.example.backend.entity.child.account.client.Client;
 import org.example.backend.entity.child.account.freelancer.Freelancer;
+import org.example.backend.enums.EmailType;
 import org.example.backend.enums.RoleUser;
 import org.example.backend.exception.NotFoundException;
 import org.example.backend.mapper.Account.AccountMapper;
@@ -14,6 +15,7 @@ import org.example.backend.repository.AccountRepository;
 import org.example.backend.repository.ClientRepository;
 import org.example.backend.repository.FreelancerRepository;
 import org.example.backend.repository.UserRepository;
+import org.example.backend.service.intf.EmailService;
 import org.example.backend.service.intf.account.AccountService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,6 +38,8 @@ public class AccountServiceImpl implements AccountService {
     private final ClientRepository clientRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final EmailService emailService;
 
     @Transactional
     @Override
@@ -61,9 +65,8 @@ public class AccountServiceImpl implements AccountService {
 //        user.setTitle(accountRequestDTO.getTitle());
 //        user.setIntroduction(accountRequestDTO.getIntroduction());
 
-        user.setAccount(savedAccount);
 
-        account.setUser(user);
+//        account.setUser(user);
 
         accountRepository.save(account);
         userRepository.save(user);
@@ -87,7 +90,7 @@ public class AccountServiceImpl implements AccountService {
             throw new RuntimeException("Invalid role: " + accountRequestDTO.getRole());
         }
 
-
+        emailService.sendEmail(accountRequestDTO.getEmail(), EmailType.REGISTER_SUCCESS, "Account is registered");
         return accountMapper.toResponseDto(savedAccount);
     }
 
