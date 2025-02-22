@@ -42,8 +42,8 @@ public class User extends AbstractEntity<Long> {
     private String image;
 
     @OneToOne
-    @JsonIgnore
-    @JoinColumn(name = "account_id")
+//    @JsonIgnore
+    @JoinColumn(name = "account_id", unique = true)
     private Account account;
 
 //    @OneToOne

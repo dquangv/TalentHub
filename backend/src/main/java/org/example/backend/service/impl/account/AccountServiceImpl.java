@@ -66,6 +66,7 @@ public class AccountServiceImpl implements AccountService {
 //        user.setIntroduction(accountRequestDTO.getIntroduction());
 
 
+//        account.setUser(user);
 
         accountRepository.save(account);
         userRepository.save(user);

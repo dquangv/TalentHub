@@ -34,13 +34,12 @@ public class Client extends AbstractEntity<Long> {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne
+    /*@OneToOne
     @JoinColumn(name = "company_id")
-    private Company company;
+    private Company company;*/
 
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Job> jobs;
-
 }

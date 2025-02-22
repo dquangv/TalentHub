@@ -2,7 +2,8 @@ package org.example.backend.enums;
 
 public enum RoleUser {
     FREELANCER("Freelancer"),
-    CLIENT("Client");
+    CLIENT("Client"),
+    ADMIN("Admin");
 
     private final String value;
 
