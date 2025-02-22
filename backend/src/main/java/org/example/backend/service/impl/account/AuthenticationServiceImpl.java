@@ -12,11 +12,16 @@ import org.example.backend.dto.response.account.RefreshTokenDTOResponse;
 import org.example.backend.dto.response.account.AuthenticationDtoResponse;
 import org.example.backend.dto.response.account.IntrospectDtoResponse;
 import org.example.backend.entity.child.account.Account;
+import org.example.backend.entity.child.account.User;
+import org.example.backend.entity.child.account.client.Client;
 import org.example.backend.entity.child.account.freelancer.Freelancer;
 import org.example.backend.enums.RoleUser;
 import org.example.backend.exception.InvalidTokenException;
 import org.example.backend.exception.TokenExpiredException;
 import org.example.backend.repository.AccountRepository;
+import org.example.backend.repository.ClientRepository;
+import org.example.backend.repository.FreelancerRepository;
+import org.example.backend.repository.UserRepository;
 import org.example.backend.service.intf.account.AuthenticationService;
 import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.slf4j.Logger;
@@ -30,6 +35,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -38,38 +44,58 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private static final Logger log = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
     private final AccountRepository accountRepository;
+    private final UserRepository userRepository;
+    private final FreelancerRepository freelancerRepository;
+    private final ClientRepository clientRepository;
+
     private final PasswordEncoder passwordEncoder;
 
     @Value("${jwt.secret-key}")
     protected String SECRET_KEY;
-
     @Override
     public AuthenticationDtoResponse authenticate(AuthenticationDTORequest request) throws JOSEException {
         String email = request.getEmail();
         System.out.println(request);
 
-        Object[] result = accountRepository.getByEmail(email).orElseThrow(
-                () -> new IllegalIdentifierException("Tài khoản không tồn tại."));
+        // Lấy Account từ email, nếu không có thì ném lỗi
+        Account account = accountRepository.getByEmail(email)
+                .orElseThrow(() -> new IllegalIdentifierException("Tài khoản không tồn tại."));
 
-        Account account = (Account) result[0];
-        Long userId = (Long) result[1];
-
-        if (!Objects.equals(request.getPassword(), account.getPassword())) {
-            log.info("Wrong password." + account.getPassword());
+        // Kiểm tra mật khẩu
+        if (!passwordEncoder.matches(request.getPassword(), account.getPassword())) {
+            log.info("Wrong password.");
             throw new IllegalIdentifierException("Mật khẩu không đúng.");
         }
+        User user = userRepository.findById(account.getId())
+                .orElseThrow(() -> new IllegalIdentifierException("Không tìm thấy người dùng với id: " + account.getId()));
 
-        if (account.getRole() == RoleUser.FREELANCER) {
-            log.info("Freelancer login: " + userId);
+
+        Long userId = user.getId();
+        Long freelancerId = null;
+        Long clientId = null;
+
+        if (account.getRole().equals(RoleUser.FREELANCER)) {
+            Freelancer freelancer = freelancerRepository.findByUserId(user.getId())
+                    .orElseThrow(() -> new IllegalIdentifierException("Không tìm thấy freelancer với id: " + user.getId()));
+
+            freelancerId = freelancer.getId();
         } else {
-            log.info("Client login: " + userId);
+            Client client = clientRepository.findByUserId(user.getId())
+                    .orElseThrow(() -> new IllegalIdentifierException("Không tìm thấy client với id: " + user.getId()));
+
+            clientId = client.getId();
         }
 
+        // Trả về kết quả
         return AuthenticationDtoResponse.builder()
                 .accessToken(generateAccessToken(account))
                 .userId(userId)
+                .freelancerId(freelancerId)
+                .clientId(clientId)
+                .role(account.getRole())
                 .build();
     }
+
 
 
     @Override

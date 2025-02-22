@@ -1,5 +1,7 @@
 use job_e_commerce_platform;
 
+select * from account; 	
+
 -- Insert data for account (password: 123)
 INSERT INTO account (id, created_at, email, password, role, status, updated_at, user_id) VALUES
 (1, NOW(), 'tungvt@gmail.com', '$2a$10$3bHTo6C4GxWcm1kMi9E3eeGvPvo13XqX/JF6sZwXaQh9HkgMHuMZa', 'FREELANCER', 1, NOW(), NULL),

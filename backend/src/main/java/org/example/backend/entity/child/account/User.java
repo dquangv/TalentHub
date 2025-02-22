@@ -46,14 +46,14 @@ public class User extends AbstractEntity<Long> {
     @JoinColumn(name = "account_id")
     private Account account;
 
-    @OneToOne
-    @JsonIgnore
-    @JoinColumn(name = "freelancer_id")
-    private Freelancer freelancer;
-
-    @OneToOne
-    @JsonIgnore
-    @JoinColumn(name = "client_id")
-    private Client client;
+//    @OneToOne
+//    @JsonIgnore
+//    @JoinColumn(name = "freelancer_id")
+//    private Freelancer freelancer;
+//
+//    @OneToOne
+//    @JsonIgnore
+//    @JoinColumn(name = "client_id")
+//    private Client client;
 
 }

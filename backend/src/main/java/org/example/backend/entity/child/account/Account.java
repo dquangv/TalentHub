@@ -48,9 +48,6 @@ public class Account extends AbstractEntity<Long> {
     @Column(name = "status")
     private boolean status;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
 
     @JsonIgnore
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)

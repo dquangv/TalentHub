@@ -10,13 +10,8 @@ import java.util.Optional;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Long> {
-    @Query("SELECT a, COALESCE(c.id, f.id) AS userId " +
-            "FROM Account a " +
-            "JOIN a.user u " +
-            "LEFT JOIN u.client c " +
-            "LEFT JOIN u.freelancer f " +
-            "WHERE a.email = :email")
-    Optional<Object[]> getByEmail(@Param("email") String email);
+
+    Optional<Account> getByEmail(String email);
 
     boolean existsByEmail(String email);
 
