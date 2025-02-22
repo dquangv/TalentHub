@@ -1,180 +1,259 @@
+-- drop database job_e_commerce_platform;
+-- create database job_e_commerce_platform;
+
 use job_e_commerce_platform;
 
-select * from account; 	
+INSERT INTO school (school_name) 
+VALUES 
+('Đại học Bách Khoa TP.HCM'),
+('Đại học Khoa học Tự nhiên TP.HCM'),
+('Đại học Khoa học Xã hội và Nhân văn TP.HCM'),
+('Đại học Công nghệ Thông tin TP.HCM'),
+('Đại học Quốc tế TP.HCM'),
+('Đại học Kinh tế - Luật TP.HCM'),
+('Đại học Sư phạm Kỹ thuật TP.HCM'),
+('Đại học Sư phạm TP.HCM'),
+('Đại học Y Dược TP.HCM'),
+('Đại học Ngoại thương - Cơ sở TP.HCM'),
+('Đại học Ngân hàng TP.HCM'),
+('Đại học Công nghiệp TP.HCM'),
+('Đại học Giao thông Vận tải - Cơ sở TP.HCM'),
+('Đại học Kiến trúc TP.HCM'),
+('Đại học Văn Lang'),
+('Đại học Hoa Sen'),
+('Đại học HUTECH'),
+('Đại học Nguyễn Tất Thành'),
+('Đại học Tôn Đức Thắng'),
+('Đại học FPT TP.HCM');
 
--- Insert data for account (password: 123)
-INSERT INTO account (id, created_at, email, password, role, status, updated_at, user_id) VALUES
-(1, NOW(), 'tungvt@gmail.com', '$2a$10$3bHTo6C4GxWcm1kMi9E3eeGvPvo13XqX/JF6sZwXaQh9HkgMHuMZa', 'FREELANCER', 1, NOW(), NULL),
-(2, NOW(), 'quangvd@gmail.com', '$2a$10$3bHTo6C4GxWcm1kMi9E3eeGvPvo13XqX/JF6sZwXaQh9HkgMHuMZa', 'CLIENT', 1, NOW(), NULL),
-(3, NOW(), 'quangbm@gmail.com', '$2a$10$3bHTo6C4GxWcm1kMi9E3eeGvPvo13XqX/JF6sZwXaQh9HkgMHuMZa', 'FREELANCER', 1, NOW(), NULL),
-(4, NOW(), 'tiendq@gmail.com', '$2a$10$3bHTo6C4GxWcm1kMi9E3eeGvPvo13XqX/JF6sZwXaQh9HkgMHuMZa', 'CLIENT', 1, NOW(), NULL),
-(5, NOW(), 'huydq@gmail.com', '$2a$10$3bHTo6C4GxWcm1kMi9E3eeGvPvo13XqX/JF6sZwXaQh9HkgMHuMZa', 'FREELANCER', 1, NOW(), NULL);
--- Insert data into bank_account table
-INSERT INTO bank_account (bank_account_number, bank_name, branch, start_date, status) VALUES
-(123456, 'Bank A', 'Branch A', '2023-01-01 00:00:00', 1),
-(234567, 'Bank B', 'Branch B', '2023-01-02 00:00:00', 1),
-(345678, 'Bank C', 'Branch C', '2023-01-03 00:00:00', 1),
-(456789, 'Bank D', 'Branch D', '2023-01-04 00:00:00', 1),
-(567890, 'Bank E', 'Branch E', '2023-01-05 00:00:00', 1);
+INSERT INTO major (major_name) 
+VALUES 
+('Lập trình viên (Software Developer)'),
+('Thiết kế đồ họa (Graphic Design)'),
+('Chỉnh sửa video (Video Editing)'),
+('Marketing kỹ thuật số (Digital Marketing)'),
+('SEO & Content Marketing'),
+('Viết nội dung (Content Writing)'),
+('Dịch thuật & Biên tập (Translation & Editing)'),
+('Thiết kế UI/UX'),
+('Nhiếp ảnh & Chỉnh sửa ảnh (Photography & Photo Editing)'),
+('Giảng dạy trực tuyến (Online Tutoring)'),
+('Phát triển Web (Web Development)'),
+('Phát triển ứng dụng di động (Mobile App Development)'),
+('Lập trình game (Game Development)'),
+('Kinh doanh & Tư vấn tài chính cá nhân'),
+('Hỗ trợ khách hàng từ xa (Remote Customer Support)'),
+('Quản lý dự án tự do (Freelance Project Management)'),
+('Âm nhạc & Sản xuất âm thanh (Music & Audio Production)'),
+('Kỹ thuật viên CAD (CAD Technician)'),
+('Chuyên gia an ninh mạng (Cybersecurity Specialist)'),
+('Quay phim & Dựng phim tự do');
 
--- Insert data into banner table
-INSERT INTO banner (created_at, image, status, title, updated_at, vendor) VALUES
-('2023-01-01 00:00:00', 'image1.jpg', 'Active', 'Banner 1', '2023-01-01 00:00:00', 'Vendor 1'),
-('2023-01-02 00:00:00', 'image2.jpg', 'Active', 'Banner 2', '2023-01-02 00:00:00', 'Vendor 2'),
-('2023-01-03 00:00:00', 'image3.jpg', 'Active', 'Banner 3', '2023-01-03 00:00:00', 'Vendor 3'),
-('2023-01-04 00:00:00', 'image4.jpg', 'Active', 'Banner 4', '2023-01-04 00:00:00', 'Vendor 4'),
-('2023-01-05 00:00:00', 'image5.jpg', 'Active', 'Banner 5', '2023-01-05 00:00:00', 'Vendor 5');
+INSERT INTO degree (degree_title)
+VALUES
+('Cử nhân'),
+('Kỹ sư'),
+('Thạc sĩ'),
+('Tiến sĩ'),
+('Cao đẳng'),
+('Chứng chỉ');
 
--- Insert data into category table
-INSERT INTO category (category_title) VALUES
-('Category 1'),
-('Category 2'),
-('Category 3'),
-('Category 4'),
-('Category 5');
+-- pass 123
+INSERT INTO account (email, password, role, created_at, updated_at, status) 
+VALUES 
+('tungvtps27852@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'ADMIN', NOW(), NOW(), TRUE),
+('quangvdps36680@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'FREELANCER', NOW(), NOW(), TRUE),
+('quangbmps28437@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'CLIENT', NOW(), NOW(), TRUE),
+('tiendqpc07858@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'FREELANCER', NOW(), NOW(), TRUE),
+('huydqpc07859@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'CLIENT', NOW(), NOW(), TRUE);
 
--- Insert data into client_review table
-INSERT INTO client_review (note,  rating) VALUES
-('Note 1', 5.0),
-('Note 2', 4.5),
-('Note 3', 4.0),
-('Note 4', 3.5),
-('Note 5', 3.0);
+INSERT INTO users (first_name, last_name, phone_number, address, title, introduction, image, account_id) 
+VALUES 
+('Tùng', 'Võ', '0976543210', 'Hà Nội', 'Frontend Developer', 'Chuyên gia ReactJS, VueJS với nhiều dự án UI/UX hiện đại', 'tungvo.png', 1),
+('Quang', 'Vũ', '0987654321', 'Hồ Chí Minh', 'Backend Developer', 'Lập trìnaccounth viên backend với 3 năm kinh nghiệm trong Java Spring Boot', 'quangvu.png', 2),
+('Quang', 'Bùi', '0965432109', 'Đà Nẵng', 'UI/UX Designer', 'Thiết kế trải nghiệm người dùng cho website và mobile app', 'hanguyen.png', 3),
+('Tiến', 'Đinh', '0954321098', 'Cần Thơ', 'Digital Marketer', 'Chuyên gia SEO, quảng cáo Google Ads và Facebook Ads', 'anhpham.png', 4),
+('Huy', 'Đinh', '0943210987', 'Cần Thơ', 'Fullstack Developer', 'Có kinh nghiệm với cả frontend (React, Angular) và backend (NodeJS, Java)', 'baole.png', 5);
 
--- Insert data into degree table
-INSERT INTO degree (degree_title) VALUES
-('Degree 1'),
-('Degree 2'),
-('Degree 3'),
-('Degree 4'),
-('Degree 5');
+INSERT INTO client (from_price, to_price, type_price, user_id)
+VALUES 
+(500000, 2000000, 'VNĐ', 3),
+(1000000, 3000000, 'VNĐ', 5);
 
--- Insert data into e_wallet_account table
-INSERT INTO e_wallet_account (e_wallet_name, email, phone_number, start_date) VALUES
-('Wallet 1', 'wallet1@example.com', '1234567890', '2023-01-01 00:00:00'),
-('Wallet 2', 'wallet2@example.com', '2345678901', '2023-01-02 00:00:00'),
-('Wallet 3', 'wallet3@example.com', '3456789012', '2023-01-03 00:00:00'),
-('Wallet 4', 'wallet4@example.com', '4567890123', '2023-01-04 00:00:00'),
-('Wallet 5', 'wallet5@example.com', '5678901234', '2023-01-05 00:00:00');
+INSERT INTO company (company_name, phone_contact, address, industry, client_id)
+VALUES
+('Công ty Google', '0123456789', 'Hồ Chí Minh', 'Phát triển phần mềm', 1),
+('Công ty Amazon', '0184675892', 'Hà Nội', 'Thương mại điện tử', 2);
 
--- Insert data into freelancer_review table
-INSERT INTO freelancer_review (note, rating) VALUES
-('Note 1', 5.0),
-('Note 2', 4.5),
-('Note 3', 4.0),
-('Note 4', 3.5),
-('Note 5', 3.0);
+INSERT INTO category (category_title) VALUES 
+('Lập trình & Phát triển phần mềm'),
+('Thiết kế đồ họa & Multimedia'),
+('Viết lách & Dịch thuật'),
+('Marketing & Quảng cáo'),
+('SEO & Phát triển nội dung'),
+('Dịch vụ khách hàng & Hỗ trợ kỹ thuật'),
+('Tư vấn kinh doanh & Tài chính'),
+('Quản lý dự án & Điều hành'),
+('Sản xuất video & Chỉnh sửa phim'),
+('Nhập liệu & Hành chính văn phòng');
 
--- Insert data into major table
-INSERT INTO major (major_name) VALUES
-('Major 1'),
-('Major 2'),
-('Major 3'),
-('Major 4'),
-('Major 5');
+INSERT INTO skill (skill_name) VALUES 
+-- Lập trình & Phát triển phần mềm
+('Java'), 
+('Spring Boot'), 
+('ReactJS'), 
+('Vue.js'), 
+('Angular'), 
+('Node.js'), 
+('Express.js'), 
+('Python'), 
+('Django'), 
+('Flask'), 
+('Ruby on Rails'), 
+('PHP'), 
+('Laravel'), 
+('C#'), 
+('.NET Core'), 
+('C++'), 
+('Swift'), 
+('Kotlin'), 
+('Flutter'), 
+('React Native'), 
 
--- Insert data into payment table
-INSERT INTO payment (is_default, account_id, bank_account_id, e_wallet_account_id) VALUES
-(1, 1, 1, 1),
-(1, 2, 2, 2),
-(1, 3, 3, 3),
-(1, 4, 4, 4),
-(1, 5, 5, 5);
+-- Dữ liệu & AI
+('SQL'), 
+('MySQL'), 
+('PostgreSQL'), 
+('MongoDB'), 
+('Firebase'), 
+('Data Analysis'), 
+('Data Science'), 
+('Machine Learning'), 
+('Deep Learning'), 
+('TensorFlow'), 
+('PyTorch'), 
 
--- Insert data into school table
-INSERT INTO school (school_name) VALUES
-('School 1'),
-('School 2'),
-('School 3'),
-('School 4'),
-('School 5');
+-- DevOps & Cloud
+('AWS'), 
+('Azure'), 
+('Google Cloud Platform'), 
+('Docker'), 
+('Kubernetes'), 
+('Jenkins'), 
+('CI/CD Pipelines'), 
 
--- Insert data into skill table
-INSERT INTO skill (skill_name) VALUES
-('Skill 1'),
-('Skill 2'),
-('Skill 3'),
-('Skill 4'),
-('Skill 5');
+-- Thiết kế & Đồ họa
+('UI/UX Design'), 
+('Adobe Photoshop'), 
+('Adobe Illustrator'), 
+('Figma'), 
+('Sketch'), 
+('Canva'), 
+('Blender 3D'), 
+('Maya'), 
+('Cinema 4D'), 
 
--- Insert data into users table
-INSERT INTO users (address, first_name, introduction, last_name, phone_number, title, account_id) VALUES
-('Address 1', 'First 1', 'Intro 1', 'Last 1', '1234567890', 'Title 1', 1),
-('Address 2', 'First 2', 'Intro 2', 'Last 2', '2345678901', 'Title 2', 2),
-('Address 3', 'First 3', 'Intro 3', 'Last 3', '3456789012', 'Title 3', 3),
-('Address 4', 'First 4', 'Intro 4', 'Last 4', '4567890123', 'Title 4', 4),
-('Address 5', 'First 5', 'Intro 5', 'Last 5', '5678901234', 'Title 5', 5);
+-- Marketing & Content
+('SEO Optimization'), 
+('Copywriting'), 
+('Content Writing'), 
+('Blog Writing'), 
+('Technical Writing'), 
+('Email Marketing'), 
+('Social Media Marketing'), 
+('Affiliate Marketing'), 
+('Google Ads'), 
+('Facebook Ads'), 
+('TikTok Ads'), 
 
--- Insert data into client table
-INSERT INTO client (from_price, to_price, type_price, user_id) VALUES
-(100.0, 200.0, 'Type 1', 1),
-(200.0, 300.0, 'Type 2', 2),
-(300.0, 400.0, 'Type 3', 3),
-(400.0, 500.0, 'Type 4', 4),
-(500.0, 600.0, 'Type 5', 5);
+-- Video & Âm thanh
+('Video Editing'), 
+('Adobe Premiere Pro'), 
+('Final Cut Pro'), 
+('After Effects'), 
+('Animation'), 
+('3D Modeling'), 
+('Music Production'), 
+('Podcast Editing'), 
 
--- Insert data into company table
-INSERT INTO company (industry, address, company_name, phone_contact, client_id) VALUES
-('Industry 1', 'Address 1', 'Company 1', '1234567890', 1),
-('Industry 2', 'Address 2', 'Company 2', '2345678901', 2),
-('Industry 3', 'Address 3', 'Company 3', '3456789012', 3),
-('Industry 4', 'Address 4', 'Company 4', '4567890123', 4),
-('Industry 5', 'Address 5', 'Company 5', '5678901234', 5);
+-- Công việc kinh doanh & hỗ trợ
+('Data Entry'), 
+('Virtual Assistant'), 
+('Project Management'), 
+('Business Consulting'), 
+('Customer Support'), 
+('Sales'), 
+('Lead Generation'), 
+('Accounting'), 
+('Bookkeeping'), 
 
--- Insert data into freelancer table
-INSERT INTO freelancer (description, hourly_rate, category_id, user_id) VALUES
-('Description 1', 50.0,  1, 1),
-('Description 2', 60.0,  2, 2),
-('Description 3', 70.0,3, 3),
-('Description 4', 80.0,  4, 4),
-('Description 5', 90.0,  5, 5);
--- Insert data into cv table
-INSERT INTO cv (name_cv, path, freelancer_id) VALUES
-('CV 1', 'path1', 1),
-('CV 2', 'path2', 2),
-('CV 3', 'path3', 3),
-('CV 4', 'path4', 4),
-('CV 5', 'path5', 5);
+-- Ngôn ngữ & Dịch thuật
+('English Translation'), 
+('Chinese Translation'), 
+('Japanese Translation'), 
+('Korean Translation'), 
+('Spanish Translation'), 
+('French Translation'), 
+('German Translation'), 
+('Proofreading'), 
+('Transcription');
 
--- Insert data into education table
-INSERT INTO education (description, end_date, start_date, degree_id, freelancer_id, major_id, school_id) VALUES
-('Description 1', '2023-01-01 00:00:00', '2022-01-01 00:00:00', 1, 1, 1, 1),
-('Description 2', '2023-01-02 00:00:00', '2022-01-02 00:00:00', 2, 2, 2, 2),
-('Description 3', '2023-01-03 00:00:00', '2022-01-03 00:00:00', 3, 3, 3, 3),
-('Description 4', '2023-01-04 00:00:00', '2022-01-04 00:00:00', 4, 4, 4, 4),
-('Description 5', '2023-01-05 00:00:00', '2022-01-05 00:00:00', 5, 5, 5, 5);
 
--- Insert data into freelancer_skill table
-INSERT INTO freelancer_skill (freelancer_id, skill_id) VALUES
-(1, 1),
-(2, 2),
-(3, 3),
-(4, 4),
-(5, 5);
--- Insert data into job table
-INSERT INTO job (created_at, from_price, hour_work, job_opportunity, scope, status, title, to_price, type_payment, description, type_price, updated_at, category_id, client_id) VALUES
-('2023-01-01 00:00:00', 100.0, 10.0, true, 'Scope 1', 'Pending', 'Job 1', 200.0, 'BANK', 'Description 1', 'Type 1', '2023-01-01 00:00:00', 1, 1),
-('2023-01-02 00:00:00', 200.0, 20.0, true, 'Scope 2', 'Pending', 'Job 2', 300.0, 'BANK', 'Description 2', 'Type 2', '2023-01-02 00:00:00', 2, 2),
-('2023-01-03 00:00:00', 300.0, 30.0, true, 'Scope 3', 'Pending', 'Job 3', 400.0, 'BANK', 'Description 3', 'Type 3', '2023-01-03 00:00:00', 3, 3),
-('2023-01-04 00:00:00', 400.0, 40.0, true, 'Scope 4', 'Pending', 'Job 4', 500.0, 'BANK', 'Description 4', 'Type 4', '2023-01-04 00:00:00', 4, 4),
-('2023-01-05 00:00:00', 500.0, 50.0, true, 'Scope 5', 'Pending', 'Job 5', 600.0, 'BANK', 'Description 5', 'Type 5', '2023-01-05 00:00:00', 5, 5);
+INSERT INTO freelancer (hourly_rate, description, category_id, user_id) VALUES 
+(20.00, 'Lập trình viên Java với 5 năm kinh nghiệm về Spring Boot.', 1, 2), 
+(15.50, 'Chuyên gia ReactJS và Node.js, có kinh nghiệm làm việc với nhiều startup.', 1, 4);
 
--- Insert data into freelancer_job table
-INSERT INTO freelancer_job (is_saved, status, cv_id, client_review_id, freelancer_id, freelancer_review_id, job_id) VALUES
-(1, 'Applied', 1, 1, 1, 1, 1),
-(1, 'Applied', 2, 2, 2, 2, 2),
-(1, 'Applied', 3, 3, 3, 3, 3),
-(1, 'Applied', 4, 4, 4, 4, 4),
-(1, 'Applied', 5, 5, 5, 5, 5);
+INSERT INTO education (start_date, end_date, description, school_id, degree_id, major_id, freelancer_id) VALUES
+('2015-09-01', '2019-06-30', 'Học chuyên ngành Khoa học Máy tính tại Đại học Bách Khoa TP.HCM.', 1, 1, 1, 1),
+('2016-09-01', '2020-06-30', 'Tốt nghiệp ngành Thiết kế Đồ họa tại Đại học Kiến Trúc TP.HCM.', 2, 2, 2, 2);
 
--- Insert data into job_skill table
-INSERT INTO job_skill (job_id, skill_id) VALUES
-(1, 1),
-(1, 3),
+INSERT INTO job (title, scope, hour_work, job_opportunity, from_price, to_price, type_price, description, type_payment, status, created_at, updated_at, client_id, category_id) VALUES
+('Thiết kế logo thương hiệu', 'Thiết kế logo độc quyền cho startup.', 20.5, true, 500000, 2000000, 'Fixed', 'Cần tìm designer chuyên nghiệp để thiết kế logo sáng tạo.', 'BANK', 'OPEN', NOW(), NOW(), 1, 1),
+('Lập trình website bán hàng', 'Xây dựng trang web thương mại điện tử.', 100, true, 5000000, 15000000, 'Hourly', 'Cần lập trình viên full-stack xây dựng website bán hàng.', 'CASH', 'OPEN', NOW(), NOW(), 2, 2),
+('Dịch thuật tài liệu tiếng Anh', 'Dịch thuật tài liệu chuyên ngành từ Anh sang Việt.', 15, false, 300000, 1000000, 'Fixed', 'Cần dịch giả chuyên ngành IT để dịch tài liệu.', 'BANK', 'OPEN', NOW(), NOW(), 1, 3),
+('Chạy quảng cáo Facebook', 'Tạo và tối ưu chiến dịch quảng cáo Facebook.', 30, true, 1000000, 5000000, 'Hourly', 'Cần marketer có kinh nghiệm chạy Facebook Ads.', 'BANK', 'OPEN', NOW(), NOW(), 2, 4),
+('Phát triển ứng dụng di động', 'Xây dựng app Android/iOS cho startup.', 200, true, 20000000, 50000000, 'Hourly', 'Cần developer có kinh nghiệm Flutter hoặc React Native.', 'CASH', 'CLOSE', NOW(), NOW(), 1, 5),
+('Viết bài chuẩn SEO', 'Viết bài blog chuẩn SEO về công nghệ.', 10, false, 200000, 800000, 'Fixed', 'Cần writer viết bài SEO theo từ khóa.', 'CASH', 'BAN', NOW(), NOW(), 2, 6);
+
+INSERT INTO freelancer_skill (freelancer_id, skill_id) VALUES 
 (1, 2),
+(1, 3),
+(1, 1),
+(1, 4),
+(1, 5),
+(2, 6),
+(2, 2),
+(2, 7);
+
+INSERT INTO job_skill (job_id, skill_id) VALUES 
+(1, 2),
+(1, 3),
 (2, 1),
-(2, 2),
-(2, 2),
-(3, 3),
-(4, 4),
-(5, 5);
+(2, 5),
+(1, 4),
+(1, 6),
+(1, 7),
+(2, 8),
+(3, 10),
+(3, 12),
+(3, 13),
+(4, 20),
+(4, 22),
+(4, 23),
+(4, 24);
+
+
+INSERT INTO freelancer_review (rating, note) VALUES
+(4.5, 'Freelancer hoàn thành dự án đúng hạn, chất lượng tốt.'),
+(3.8, 'Cần cải thiện kỹ năng giao tiếp, nhưng chất lượng ổn.');
+
+INSERT INTO client_review (rating, note) VALUES
+(4.0, 'Client có yêu cầu rõ ràng và thanh toán đúng hạn.'),
+(3.5, 'Dự án có chút thay đổi giữa chừng, nhưng xử lý ổn.');
+
+
+INSERT INTO freelancer_job (is_saved, status, cv, freelancer_id, job_id, freelancer_review_id, client_review_id) VALUES 
+(true, 'Applied', 'cv_freelancer_1.pdf', 1, 1, NULL, NULL),
+(false, 'InProgress', 'cv_freelancer_2.pdf', 2, 2, NULL, NULL),
+(true, 'Completed', 'cv_freelancer_3.pdf', 1, 3, 1, 1),
+(false, 'Completed', 'cv_freelancer_4.pdf', 2, 4, 2, 2);

@@ -2,6 +2,7 @@ package org.example.backend.service.impl.job;
 
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.job.FreelancerJobDTORequest;
+import org.example.backend.dto.response.account.freelancer.ApplicantResponseDTO;
 import org.example.backend.dto.response.job.FreelancerJobDTOResponse;
 import org.example.backend.dto.response.job.ViewJobDTOResponse;
 import org.example.backend.entity.child.account.freelancer.Freelancer;
@@ -9,6 +10,7 @@ import org.example.backend.entity.child.job.FreelancerJob;
 import org.example.backend.entity.child.job.Job;
 import org.example.backend.enums.StatusFreelancerJob;
 import org.example.backend.exception.BadRequestException;
+import org.example.backend.mapper.job.FreelancerJobMapper;
 import org.example.backend.repository.FreelancerJobRepository;
 import org.example.backend.repository.FreelancerRepository;
 import org.example.backend.repository.JobRepository;
@@ -25,6 +27,7 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
     private final FreelancerJobRepository freelancerJobRepository;
     private final FreelancerRepository freelancerRepository;
     private final JobRepository jobRepository;
+    private final FreelancerJobMapper freelancerJobMapper;
 
     @Override
     public FreelancerJobDTOResponse create(FreelancerJobDTORequest freelancerJobDTORequest) {
@@ -117,5 +120,12 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
                 updatedFreelancerJob.getJob().getId(),
                 updatedFreelancerJob.getFreelancer().getId()
         );
+    }
+
+    @Override
+    public List<ApplicantResponseDTO> getApplicantByJobId(Long jobId) {
+        return freelancerJobRepository.getApplicantByJobId(jobId)
+                .stream()
+                .map(freelancerJobMapper::toResponseDto).toList();
     }
 }
