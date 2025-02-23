@@ -17,6 +17,7 @@ import org.example.backend.repository.JobRepository;
 import org.example.backend.service.intf.job.FreelancerJobService;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -124,8 +125,18 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
 
     @Override
     public List<ApplicantResponseDTO> getApplicantByJobId(Long jobId) {
-        return freelancerJobRepository.getApplicantByJobId(jobId)
-                .stream()
-                .map(freelancerJobMapper::toResponseDto).toList();
+        List<Object[]> results = freelancerJobRepository.getApplicantByJobId(jobId);
+        return results.stream().map(obj -> new ApplicantResponseDTO(
+                ((Number) obj[0]).longValue(),
+                (String) obj[1],
+                (String) obj[2],
+                (String) obj[3],
+                (String) obj[4],
+                (String) obj[5],
+                (Date) obj[5],
+                (StatusFreelancerJob) obj[6],
+                obj[7] != null ? ((Number) obj[7]).doubleValue() : 0.0
+        )).toList();
+
     }
 }

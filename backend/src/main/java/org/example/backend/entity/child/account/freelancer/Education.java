@@ -43,5 +43,4 @@ public class Education extends AbstractEntity<Long> {
     @JoinColumn(name = "freelancer_id")
     @JsonIgnore
     private Freelancer freelancer;
-
 }

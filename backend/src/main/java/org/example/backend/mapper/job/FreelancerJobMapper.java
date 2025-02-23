@@ -6,19 +6,19 @@ package org.example.backend.mapper.job;
     import org.example.backend.mapper.BaseMapper;
     import org.mapstruct.Mapper;
     import org.mapstruct.Mapping;
-    import org.mapstruct.factory.Mappers;
 
-    @Mapper(componentModel = "spring")
+
+@Mapper(componentModel = "spring")
     public interface FreelancerJobMapper extends BaseMapper<FreelancerJob, FreelancerJobDTORequest, ApplicantResponseDTO> {
-        FreelancerJobMapper INSTANCE = Mappers.getMapper(FreelancerJobMapper.class);
 
         @Mapping(source = "freelancer.user.firstName", target = "firstName")
         @Mapping(source = "freelancer.user.lastName", target = "lastName")
         @Mapping(source = "freelancer.user.account.email", target = "email")
         @Mapping(source = "freelancer.user.image", target = "image")
-//        @Mapping(source = "freelancer.experiences.position", target = "position")
+        @Mapping(target = "position", expression = "java(freelancerJob.getFreelancer().getExperiences().isEmpty() ?" +
+                " null : freelancerJob.getFreelancer().getExperiences().get(0).getPosition())")
         @Mapping(source = "appliedDate", target = "appliedDate")
-//        @Mapping(source = "status", target = "status")
+        @Mapping(source = "status", target = "status")
         @Mapping(source = "freelancerReview.rating", target = "rating")
         ApplicantResponseDTO toResponseDto(FreelancerJob freelancerJob);
     }

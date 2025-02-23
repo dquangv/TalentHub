@@ -16,7 +16,6 @@ public class ApplicantResponseDTO {
     private String email;
     private String image;
     private String position;
-    private String department;
     private Date appliedDate;
     private StatusFreelancerJob status;
     private double rating;
