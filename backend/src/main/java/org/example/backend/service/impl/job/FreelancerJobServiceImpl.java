@@ -139,4 +139,85 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
         )).toList();
 
     }
+
+    @Override
+    public FreelancerJobDTOResponse approveApplication(Long jobId, Long freelancerId) {
+        Optional<FreelancerJob> existingFreelancerJob = freelancerJobRepository.findByFreelancer_IdAndJob_Id(
+                freelancerId, jobId);
+
+        if (!existingFreelancerJob.isPresent()) {
+            throw new BadRequestException("Freelancer Job Not Found");
+        }
+
+        FreelancerJob freelancerJob = existingFreelancerJob.get();
+
+        if (freelancerJob.getStatus() != StatusFreelancerJob.Applied) {
+            throw new BadRequestException("Can only approve applications with Applied status");
+        }
+
+        freelancerJob.setStatus(StatusFreelancerJob.InProgress);
+        FreelancerJob updatedFreelancerJob = freelancerJobRepository.save(freelancerJob);
+
+        return new FreelancerJobDTOResponse(
+                updatedFreelancerJob.getId(),
+                updatedFreelancerJob.getIsSaved(),
+                updatedFreelancerJob.getStatus(),
+                updatedFreelancerJob.getJob().getId(),
+                updatedFreelancerJob.getFreelancer().getId()
+        );
+    }
+
+    @Override
+    public FreelancerJobDTOResponse rejectApplication(Long jobId, Long freelancerId) {
+        Optional<FreelancerJob> existingFreelancerJob = freelancerJobRepository.findByFreelancer_IdAndJob_Id(
+                freelancerId, jobId);
+
+        if (!existingFreelancerJob.isPresent()) {
+            throw new BadRequestException("Freelancer Job Not Found");
+        }
+
+        FreelancerJob freelancerJob = existingFreelancerJob.get();
+
+        if (freelancerJob.getStatus() != StatusFreelancerJob.Applied) {
+            throw new BadRequestException("Can only reject applications with Applied status");
+        }
+
+        freelancerJob.setStatus(StatusFreelancerJob.Cancelled);
+        FreelancerJob updatedFreelancerJob = freelancerJobRepository.save(freelancerJob);
+
+        return new FreelancerJobDTOResponse(
+                updatedFreelancerJob.getId(),
+                updatedFreelancerJob.getIsSaved(),
+                updatedFreelancerJob.getStatus(),
+                updatedFreelancerJob.getJob().getId(),
+                updatedFreelancerJob.getFreelancer().getId()
+        );
+    }
+
+    @Override
+    public FreelancerJobDTOResponse unapplyJob(Long jobId, Long freelancerId) {
+        Optional<FreelancerJob> existingFreelancerJob = freelancerJobRepository.findByFreelancer_IdAndJob_Id(
+                freelancerId, jobId);
+
+        if (!existingFreelancerJob.isPresent()) {
+            throw new BadRequestException("Freelancer Job Not Found");
+        }
+
+        FreelancerJob freelancerJob = existingFreelancerJob.get();
+
+        if (freelancerJob.getStatus() != StatusFreelancerJob.Applied) {
+            throw new BadRequestException("Can only unapply from jobs with Applied status");
+        }
+
+        freelancerJob.setStatus(StatusFreelancerJob.Viewed);
+        FreelancerJob updatedFreelancerJob = freelancerJobRepository.save(freelancerJob);
+
+        return new FreelancerJobDTOResponse(
+                updatedFreelancerJob.getId(),
+                updatedFreelancerJob.getIsSaved(),
+                updatedFreelancerJob.getStatus(),
+                updatedFreelancerJob.getJob().getId(),
+                updatedFreelancerJob.getFreelancer().getId()
+        );
+    }
 }

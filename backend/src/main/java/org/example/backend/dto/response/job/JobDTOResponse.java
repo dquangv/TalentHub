@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.example.backend.enums.StatusFreelancerJob;
 
 import java.math.BigDecimal;
 import java.util.Arrays;

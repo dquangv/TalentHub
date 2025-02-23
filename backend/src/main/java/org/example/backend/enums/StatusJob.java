@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum StatusJob {
     OPEN("Mở"),
     CLOSE("Đóng"),
+    Pending("Chờ xử lý"),
     BAN("Bị cấm");
 
     private final String displayName;
