@@ -1,5 +1,4 @@
--- drop database job_e_commerce_platform;
--- create database job_e_commerce_platform;
+create database job_e_commerce_platform;
 
 use job_e_commerce_platform;
 
@@ -70,7 +69,7 @@ VALUES
 INSERT INTO users (first_name, last_name, phone_number, address, title, introduction, image, account_id) 
 VALUES 
 ('Tùng', 'Võ', '0976543210', 'Hà Nội', 'Frontend Developer', 'Chuyên gia ReactJS, VueJS với nhiều dự án UI/UX hiện đại', 'tungvo.png', 1),
-('Quang', 'Vũ', '0987654321', 'Hồ Chí Minh', 'Backend Developer', 'Lập trìnaccounth viên backend với 3 năm kinh nghiệm trong Java Spring Boot', 'quangvu.png', 2),
+('Quang', 'Vũ', '0987654321', 'Hồ Chí Minh', 'Backend Developer', 'Lập trình viên backend với 3 năm kinh nghiệm trong Java Spring Boot', 'quangvu.png', 2),
 ('Quang', 'Bùi', '0965432109', 'Đà Nẵng', 'UI/UX Designer', 'Thiết kế trải nghiệm người dùng cho website và mobile app', 'hanguyen.png', 3),
 ('Tiến', 'Đinh', '0954321098', 'Cần Thơ', 'Digital Marketer', 'Chuyên gia SEO, quảng cáo Google Ads và Facebook Ads', 'anhpham.png', 4),
 ('Huy', 'Đinh', '0943210987', 'Cần Thơ', 'Fullstack Developer', 'Có kinh nghiệm với cả frontend (React, Angular) và backend (NodeJS, Java)', 'baole.png', 5);

@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.backend.entity.AbstractEntity;
+import org.example.backend.entity.child.account.client.Client;
+import org.example.backend.entity.child.account.freelancer.Freelancer;
 
 @Table(name = "users")
 @Entity
@@ -40,7 +42,18 @@ public class User extends AbstractEntity<Long> {
     private String image;
 
     @OneToOne
-    @JsonIgnore
-    @JoinColumn(name = "account_id")
+//    @JsonIgnore
+    @JoinColumn(name = "account_id", unique = true)
     private Account account;
+
+//    @OneToOne
+//    @JsonIgnore
+//    @JoinColumn(name = "freelancer_id")
+//    private Freelancer freelancer;
+//
+//    @OneToOne
+//    @JsonIgnore
+//    @JoinColumn(name = "client_id")
+//    private Client client;
+
 }

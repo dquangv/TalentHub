@@ -2,6 +2,7 @@ package org.example.backend.service.impl.job;
 
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.job.FreelancerJobDTORequest;
+import org.example.backend.dto.response.account.freelancer.ApplicantResponseDTO;
 import org.example.backend.dto.response.job.FreelancerJobDTOResponse;
 import org.example.backend.dto.response.job.ViewJobDTOResponse;
 import org.example.backend.entity.child.account.freelancer.Freelancer;
@@ -9,12 +10,14 @@ import org.example.backend.entity.child.job.FreelancerJob;
 import org.example.backend.entity.child.job.Job;
 import org.example.backend.enums.StatusFreelancerJob;
 import org.example.backend.exception.BadRequestException;
+import org.example.backend.mapper.job.FreelancerJobMapper;
 import org.example.backend.repository.FreelancerJobRepository;
 import org.example.backend.repository.FreelancerRepository;
 import org.example.backend.repository.JobRepository;
 import org.example.backend.service.intf.job.FreelancerJobService;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +28,7 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
     private final FreelancerJobRepository freelancerJobRepository;
     private final FreelancerRepository freelancerRepository;
     private final JobRepository jobRepository;
+    private final FreelancerJobMapper freelancerJobMapper;
 
     @Override
     public FreelancerJobDTOResponse create(FreelancerJobDTORequest freelancerJobDTORequest) {
@@ -117,5 +121,22 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
                 updatedFreelancerJob.getJob().getId(),
                 updatedFreelancerJob.getFreelancer().getId()
         );
+    }
+
+    @Override
+    public List<ApplicantResponseDTO> getApplicantByJobId(Long jobId) {
+        List<Object[]> results = freelancerJobRepository.getApplicantByJobId(jobId);
+        return results.stream().map(obj -> new ApplicantResponseDTO(
+                ((Number) obj[0]).longValue(),
+                (String) obj[1],
+                (String) obj[2],
+                (String) obj[3],
+                (String) obj[4],
+                (String) obj[5],
+                (Date) obj[5],
+                (StatusFreelancerJob) obj[6],
+                obj[7] != null ? ((Number) obj[7]).doubleValue() : 0.0
+        )).toList();
+
     }
 }
