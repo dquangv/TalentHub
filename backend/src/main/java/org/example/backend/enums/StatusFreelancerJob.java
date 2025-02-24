@@ -6,8 +6,8 @@ public enum StatusFreelancerJob {
     Applied("Đã ứng tuyển"),  // Đã ứng tuyển
     Cancelled("Đã hủy"),      // Đã hủy
     InProgress("Đang thực hiện"),  // Đang thực hiện
-    Completed("Hoàn thành");   // Hoàn thành
-
+    Completed("Hoàn thành"),  // Hoàn thành
+    Viewed("Đã xem");
     private final String displayName;
 
     // Constructor với displayName

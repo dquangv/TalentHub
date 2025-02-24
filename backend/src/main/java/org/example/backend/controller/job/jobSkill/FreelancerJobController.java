@@ -74,4 +74,47 @@ public class FreelancerJobController {
                 .data(applicants)
                 .build());
     }
+    @PostMapping("/approve")
+    public ResponseEntity<ResponseObject<FreelancerJobDTOResponse>> approveApplication(
+            @RequestBody FreelancerJobDTORequest request) {
+        FreelancerJobDTOResponse response = freelancerJobService.approveApplication(
+                request.getJobId(),
+                request.getFreelancerId()
+        );
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseObject.<FreelancerJobDTOResponse>builder()
+                .message("Successfully approved application")
+                .status(200)
+                .data(response)
+                .build());
+    }
+
+    @PostMapping("/reject")
+    public ResponseEntity<ResponseObject<FreelancerJobDTOResponse>> rejectApplication(
+            @RequestBody FreelancerJobDTORequest request) {
+        FreelancerJobDTOResponse response = freelancerJobService.rejectApplication(
+                request.getJobId(),
+                request.getFreelancerId()
+        );
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseObject.<FreelancerJobDTOResponse>builder()
+                .message("Successfully rejected application")
+                .status(200)
+                .data(response)
+                .build());
+    }
+
+    @PostMapping("/unapply")
+    public ResponseEntity<ResponseObject<FreelancerJobDTOResponse>> unapplyJob(
+            @RequestBody FreelancerJobDTORequest request) {
+        FreelancerJobDTOResponse response = freelancerJobService.unapplyJob(
+                request.getJobId(),
+                request.getFreelancerId()
+        );
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseObject.<FreelancerJobDTOResponse>builder()
+                .message("Successfully unapplied from job")
+                .status(200)
+                .data(response)
+                .build());
+    }
 }

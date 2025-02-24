@@ -6,7 +6,6 @@ import org.example.backend.dto.response.job.ViewJobDTOResponse;
 import org.example.backend.entity.child.account.freelancer.Freelancer;
 import org.example.backend.entity.child.job.FreelancerJob;
 import org.example.backend.entity.child.job.Job;
-import org.example.backend.enums.StatusFreelancerJob;
 import org.example.backend.exception.BadRequestException;
 import org.example.backend.repository.FreelancerJobRepository;
 import org.example.backend.repository.FreelancerRepository;
