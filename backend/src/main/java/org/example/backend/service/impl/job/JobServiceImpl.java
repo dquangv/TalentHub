@@ -2,8 +2,13 @@ package org.example.backend.service.impl.job;
 
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.job.JobDTORequest;
+import org.example.backend.dto.response.job.DetailJobDTOResponse;
 import org.example.backend.dto.response.job.JobDTOResponse;
+import org.example.backend.entity.child.account.client.Company;
+import org.example.backend.entity.child.job.Job;
+import org.example.backend.mapper.job.DetailJobMapper;
 import org.example.backend.mapper.job.JobMapper;
+import org.example.backend.repository.CompanyRepository;
 import org.example.backend.repository.JobRepository;
 import org.example.backend.service.intf.job.JobService;
 import org.springframework.stereotype.Service;
@@ -22,6 +27,10 @@ public class JobServiceImpl implements JobService {
     private final JobRepository jobRepository;
 
     private final JobMapper jobMapper;
+
+    private final DetailJobMapper detailJobMapper;
+
+    private final CompanyRepository companyRepository;
 
     @Override
     public JobDTOResponse create(JobDTORequest jobDTORequest) {
@@ -59,6 +68,24 @@ public class JobServiceImpl implements JobService {
             )).toList();
 
             return jobs;
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @Override
+    public Optional<DetailJobDTOResponse> getDetailJobById(Long id) {
+        try {
+            Optional<Job> jobOpt = jobRepository.getDetailJobById(id);
+            if (jobOpt.isPresent()) {
+                Job job = jobOpt.get();
+                DetailJobDTOResponse dto = detailJobMapper.toResponseDto(job);
+                Company company = companyRepository.getCompanyByClientId(job.getClient().getId())
+                        .orElseThrow(() -> new RuntimeException("Company not found for client ID: " + job.getClient().getId()));
+                dto.setCompanyName(company.getCompanyName());
+                return Optional.of(dto);
+            }
+            return Optional.empty();
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
