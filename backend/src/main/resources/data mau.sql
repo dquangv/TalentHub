@@ -61,11 +61,11 @@ VALUES
 -- pass 123
 INSERT INTO account (email, password, role, created_at, updated_at, status) 
 VALUES 
-('tungvtps27852@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'ADMIN', NOW(), NOW(), TRUE),
-('quangvdps36680@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'FREELANCER', NOW(), NOW(), TRUE),
-('quangbmps28437@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'CLIENT', NOW(), NOW(), TRUE),
-('tiendqpc07858@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'FREELANCER', NOW(), NOW(), TRUE),
-('huydqpc07859@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'CLIENT', NOW(), NOW(), TRUE);
+('tungvtps27852@fpt.edu.vn', '$2a$10$UBkCqG53UHPUVN/dxDwK6eSWii9jidJ/PMLhZG9PbkqSziKlb.ev6', 'ADMIN', NOW(), NOW(), TRUE),
+('quangvdps36680@fpt.edu.vn', '$2a$10$UBkCqG53UHPUVN/dxDwK6eSWii9jidJ/PMLhZG9PbkqSziKlb.ev6', 'FREELANCER', NOW(), NOW(), TRUE),
+('quangbmps28437@fpt.edu.vn', '$2a$10$UBkCqG53UHPUVN/dxDwK6eSWii9jidJ/PMLhZG9PbkqSziKlb.ev6', 'CLIENT', NOW(), NOW(), TRUE),
+('tiendqpc07858@fpt.edu.vn', '$2a$10$UBkCqG53UHPUVN/dxDwK6eSWii9jidJ/PMLhZG9PbkqSziKlb.ev6', 'FREELANCER', NOW(), NOW(), TRUE),
+('huydqpc07859@fpt.edu.vn', '$2a$10$UBkCqG53UHPUVN/dxDwK6eSWii9jidJ/PMLhZG9PbkqSziKlb.ev6', 'CLIENT', NOW(), NOW(), TRUE);
 
 INSERT INTO users (first_name, last_name, phone_number, address, title, introduction, image, account_id) 
 VALUES 
@@ -207,13 +207,14 @@ INSERT INTO education (start_date, end_date, description, school_id, degree_id, 
 ('2015-09-01', '2019-06-30', 'Học chuyên ngành Khoa học Máy tính tại Đại học Bách Khoa TP.HCM.', 1, 1, 1, 1),
 ('2016-09-01', '2020-06-30', 'Tốt nghiệp ngành Thiết kế Đồ họa tại Đại học Kiến Trúc TP.HCM.', 2, 2, 2, 2);
 
-INSERT INTO job (title, scope, hour_work, job_opportunity, from_price, to_price, type_price, description, type_payment, status, created_at, updated_at, client_id, category_id) VALUES
-('Thiết kế logo thương hiệu', 'Thiết kế logo độc quyền cho startup.', 20.5, true, 500000, 2000000, 'Fixed', 'Cần tìm designer chuyên nghiệp để thiết kế logo sáng tạo.', 'BANK', 'OPEN', NOW(), NOW(), 1, 1),
-('Lập trình website bán hàng', 'Xây dựng trang web thương mại điện tử.', 100, true, 5000000, 15000000, 'Hourly', 'Cần lập trình viên full-stack xây dựng website bán hàng.', 'CASH', 'OPEN', NOW(), NOW(), 2, 2),
-('Dịch thuật tài liệu tiếng Anh', 'Dịch thuật tài liệu chuyên ngành từ Anh sang Việt.', 15, false, 300000, 1000000, 'Fixed', 'Cần dịch giả chuyên ngành IT để dịch tài liệu.', 'BANK', 'OPEN', NOW(), NOW(), 1, 3),
-('Chạy quảng cáo Facebook', 'Tạo và tối ưu chiến dịch quảng cáo Facebook.', 30, true, 1000000, 5000000, 'Hourly', 'Cần marketer có kinh nghiệm chạy Facebook Ads.', 'BANK', 'OPEN', NOW(), NOW(), 2, 4),
-('Phát triển ứng dụng di động', 'Xây dựng app Android/iOS cho startup.', 200, true, 20000000, 50000000, 'Hourly', 'Cần developer có kinh nghiệm Flutter hoặc React Native.', 'CASH', 'CLOSE', NOW(), NOW(), 1, 5),
-('Viết bài chuẩn SEO', 'Viết bài blog chuẩn SEO về công nghệ.', 10, false, 200000, 800000, 'Fixed', 'Cần writer viết bài SEO theo từ khóa.', 'CASH', 'BAN', NOW(), NOW(), 2, 6);
+INSERT INTO job (title, scope, hour_work, job_opportunity, from_price, to_price, type_price, description, type_payment, status, created_at, updated_at, client_id, category_id)
+VALUES
+    ('Thiết kế logo thương hiệu', 'Thiết kế logo độc quyền cho startup.', 20.5, true, 500000, 2000000, 'Fixed', 'Cần tìm designer chuyên nghiệp để thiết kế logo sáng tạo.', 'BANK', 'OPEN', NOW(), NOW(), 1, 1),
+    ('Lập trình website bán hàng', 'Xây dựng trang web thương mại điện tử.', 100, true, 5000000, 15000000, 'Hourly', 'Cần lập trình viên full-stack xây dựng website bán hàng.', 'CASH', 'OPEN', NOW(), NOW(), 2, 2),
+    ('Dịch thuật tài liệu tiếng Anh', 'Dịch thuật tài liệu chuyên ngành từ Anh sang Việt.', 15, false, 300000, 1000000, 'Fixed', 'Cần dịch giả chuyên ngành IT để dịch tài liệu.', 'BANK', 'OPEN', NOW(), NOW(), 1, 3),
+    ('Chạy quảng cáo Facebook', 'Tạo và tối ưu chiến dịch quảng cáo Facebook.', 30, true, 1000000, 5000000, 'Hourly', 'Cần marketer có kinh nghiệm chạy Facebook Ads.', 'BANK', 'OPEN', NOW(), NOW(), 2, 4),
+    ('Phát triển ứng dụng di động', 'Xây dựng app Android/iOS cho startup.', 200, true, 20000000, 50000000, 'Hourly', 'Cần developer có kinh nghiệm Flutter hoặc React Native.', 'CASH', 'CLOSED', NOW(), NOW(), 1, 5),
+    ('Viết bài chuẩn SEO', 'Viết bài blog chuẩn SEO về công nghệ.', 10, false, 200000, 800000, 'Fixed', 'Cần writer viết bài SEO theo từ khóa.', 'CASH', 'BANNED', NOW(), NOW(), 2, 6);
 
 INSERT INTO freelancer_skill (freelancer_id, skill_id) VALUES 
 (1, 2),
