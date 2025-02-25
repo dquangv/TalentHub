@@ -1,5 +1,6 @@
 package org.example.backend.dto.response.job;
 
+import com.google.type.DateTime;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,7 +18,7 @@ public class SaveJobDTOResponse {
     private BigDecimal hourWork;
     private BigDecimal fromPrice;
     private BigDecimal toPrice;
-    private Date appliedDate;
+    private DateTime appliedDate;
     private String description;
     private List<String> skillNames;
 }

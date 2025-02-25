@@ -233,4 +233,13 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
             throw new BadRequestException("Error while fetching saved jobs");
         }
     }
+
+    @Override
+    public FreelancerJob findById(Long jobId) {
+        if (jobId == null) {
+            throw new BadRequestException("Job ID is null");
+        }
+
+        return freelancerJobRepository.findById(jobId).orElseThrow(() -> new BadRequestException("Job Not Found"));
+    }
 }

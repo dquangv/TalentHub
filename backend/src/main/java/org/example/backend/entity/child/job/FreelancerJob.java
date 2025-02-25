@@ -53,9 +53,9 @@ public class FreelancerJob extends AbstractEntity<Long> {
     @JoinColumn(name = "client_review_id")
     private ClientReview clientReview;
 
-    @OneToOne
+    /*@OneToOne
     @JoinColumn(name = "appointment_id")
-    private Appointment appointment;
+    private Appointment appointment;*/
 
     /*@ManyToOne
     @JoinColumn(name = "CV_id")*/

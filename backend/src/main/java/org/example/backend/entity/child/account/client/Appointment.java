@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.backend.entity.AbstractEntity;
+import org.example.backend.entity.child.job.FreelancerJob;
 
 @Table(name = "appointments")
 @Entity
@@ -23,8 +24,8 @@ public class Appointment extends AbstractEntity<Long> {
     @Column(name = "start_time")
     private DateTime startTime;
 
-    @Column(name = "end_time")
-    private DateTime endTime;
+    @Column(name = "duration")
+    private Long duration;
 
     @Column(name = "description")
     private String description;
@@ -37,4 +38,7 @@ public class Appointment extends AbstractEntity<Long> {
     @JoinColumn(name = "client_id")
     private Client client;
 
+    @OneToOne
+    @JoinColumn(name = "freelancer_job_id")
+    private FreelancerJob freelancerJob;
 }
