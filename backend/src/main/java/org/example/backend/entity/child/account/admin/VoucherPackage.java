@@ -1,4 +1,4 @@
-package org.example.backend.entity.child.admin;
+package org.example.backend.entity.child.account.admin;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

@@ -1,5 +1,6 @@
 package org.example.backend.entity.child.payment;
 
+import com.google.type.DateTime;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,6 +8,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.backend.entity.AbstractEntity;
 import org.example.backend.entity.child.account.Account;
+import org.example.backend.enums.StatusPayment;
+
+import java.math.BigInteger;
 
 @Table(name = "payment")
 @Entity
@@ -16,18 +20,16 @@ import org.example.backend.entity.child.account.Account;
 @AllArgsConstructor
 public class Payment extends AbstractEntity<Long> {
 
-    @Column(name = "is_default")
-    private boolean isDefault;
+    @Column(name = "balance")
+    private BigInteger balance;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "bank_account_id") // Khóa ngoại trỏ đến BankAccount
-    private BankAccount bankAccount;
+    @Column(name = "activity")
+    private StatusPayment activity;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "e_wallet_account_id") // Khóa ngoại trỏ đến EWalletAccount
-    private EWalletAccount eWalletAccount;
+    @Column(name = "update_at")
+    private DateTime updateAt;
 
-    @ManyToOne
-    @JoinColumn(name = "account_id") // Khóa ngoại trỏ đến Account
+    @OneToOne
+    @JoinColumn(name = "account_id", unique = true)
     private Account account;
 }
