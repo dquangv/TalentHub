@@ -37,7 +37,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public AppointmentDetailDTOResponse create(AppointmentDetailDTORequest appointmentDetailDTORequest) {
-        /*if (appointmentDetailDTORequest == null) {
+        if (appointmentDetailDTORequest == null) {
             throw new BadRequestException("appointmentDetailDTORequest cannot be null");
         }
 
@@ -71,10 +71,10 @@ public class AppointmentServiceImpl implements AppointmentService {
         AppointmentDetailDTOResponse appointmentDetailDTOResponse = appointmentMapper.toResponseDto(appointment);
         appointmentDetailDTOResponse.setName(freelancer.getUser().getLastName() + " " + freelancer.getUser().getFirstName());
         appointmentDetailDTOResponse.setMail(user.getAccount().getEmail());
-        appointmentDetailDTOResponse.setPhone(user.getPhoneNumber());*/
+        appointmentDetailDTOResponse.setPhone(user.getPhoneNumber());
 
-//        return appointmentDetailDTOResponse;
-        return new AppointmentDetailDTOResponse();
+        return appointmentDetailDTOResponse;
+//        return new AppointmentDetailDTOResponse();
     }
 
     @Override
