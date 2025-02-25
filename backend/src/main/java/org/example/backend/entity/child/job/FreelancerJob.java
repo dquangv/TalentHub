@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.example.backend.entity.AbstractEntity;
+import org.example.backend.entity.child.account.client.Appointment;
 import org.example.backend.entity.child.account.client.ClientReview;
 import org.example.backend.entity.child.account.freelancer.FreelancerReview;
 import org.example.backend.entity.child.account.freelancer.Freelancer;
@@ -36,9 +37,6 @@ public class FreelancerJob extends AbstractEntity<Long> {
     @Column(name = "applied_date")
     private DateTime appliedDate;
 
-    @Column(name = "appointment_time")
-    private DateTime appointmentTime;
-
     @ManyToOne
     @JoinColumn(name = "freelancer_id")
     private Freelancer freelancer;
@@ -54,6 +52,10 @@ public class FreelancerJob extends AbstractEntity<Long> {
     @OneToOne
     @JoinColumn(name = "client_review_id")
     private ClientReview clientReview;
+
+    @OneToOne
+    @JoinColumn(name = "appointment_id")
+    private Appointment appointment;
 
     /*@ManyToOne
     @JoinColumn(name = "CV_id")*/

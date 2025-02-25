@@ -1,3 +1,4 @@
+/*
 package org.example.backend.mapper.payment;
 
 import org.example.backend.dto.request.payment.BankAccountDTORequest;
@@ -51,3 +52,4 @@ public class BankAccountMapper {
                 .collect(Collectors.toList());
     }
 }
+*/
