@@ -6,12 +6,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class AppointmentDetailDTORequest {
-    private DateTime startTime;
+    private LocalDateTime startTime;
     private Long duration;
     private String topic;
     private String description;

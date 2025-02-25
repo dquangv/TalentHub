@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,7 +17,7 @@ public class AppointmentDetailDTOResponse {
     private String name;
     private String mail;
     private String phone;
-    private DateTime startTime;
+    private LocalDateTime startTime;
     private Long duration;
     private String topic;
     private String description;

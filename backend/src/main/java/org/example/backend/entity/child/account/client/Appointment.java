@@ -10,6 +10,8 @@ import lombok.Setter;
 import org.example.backend.entity.AbstractEntity;
 import org.example.backend.entity.child.job.FreelancerJob;
 
+import java.time.LocalDateTime;
+
 @Table(name = "appointments")
 @Entity
 @Getter
@@ -22,7 +24,8 @@ public class Appointment extends AbstractEntity<Long> {
     private String topic;
 
     @Column(name = "start_time")
-    private DateTime startTime;
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime startTime;
 
     @Column(name = "duration")
     private Long duration;
