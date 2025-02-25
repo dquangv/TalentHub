@@ -53,6 +53,6 @@ public class Account extends AbstractEntity<Long> {
     private User user;*/
 
     @JsonIgnore
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Payment> payments;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Payment payments;
 }

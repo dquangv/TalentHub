@@ -1,5 +1,6 @@
 package org.example.backend.entity.child.job;
 
+import com.google.type.DateTime;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -33,7 +34,10 @@ public class FreelancerJob extends AbstractEntity<Long> {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "applied_date")
-    private Date appliedDate;
+    private DateTime appliedDate;
+
+    @Column(name = "appointment_time")
+    private DateTime appointmentTime;
 
     @ManyToOne
     @JoinColumn(name = "freelancer_id")
