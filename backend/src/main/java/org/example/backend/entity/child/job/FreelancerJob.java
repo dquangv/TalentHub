@@ -1,9 +1,11 @@
 package org.example.backend.entity.child.job;
 
+import com.google.type.DateTime;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.example.backend.entity.AbstractEntity;
+import org.example.backend.entity.child.account.client.Appointment;
 import org.example.backend.entity.child.account.client.ClientReview;
 import org.example.backend.entity.child.account.freelancer.FreelancerReview;
 import org.example.backend.entity.child.account.freelancer.Freelancer;
@@ -33,7 +35,7 @@ public class FreelancerJob extends AbstractEntity<Long> {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "applied_date")
-    private Date appliedDate;
+    private DateTime appliedDate;
 
     @ManyToOne
     @JoinColumn(name = "freelancer_id")
@@ -50,6 +52,10 @@ public class FreelancerJob extends AbstractEntity<Long> {
     @OneToOne
     @JoinColumn(name = "client_review_id")
     private ClientReview clientReview;
+
+    /*@OneToOne
+    @JoinColumn(name = "appointment_id")
+    private Appointment appointment;*/
 
     /*@ManyToOne
     @JoinColumn(name = "CV_id")*/

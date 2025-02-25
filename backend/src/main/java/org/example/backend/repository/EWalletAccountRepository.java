@@ -1,3 +1,4 @@
+/*
 package org.example.backend.repository;
 
 import org.example.backend.entity.child.payment.EWalletAccount;
@@ -9,3 +10,4 @@ public interface EWalletAccountRepository extends JpaRepository<EWalletAccount, 
     Optional<EWalletAccount> findByEmail(String email);
     Optional<EWalletAccount> findByPhoneNumber(String phoneNumber);
 }
+*/

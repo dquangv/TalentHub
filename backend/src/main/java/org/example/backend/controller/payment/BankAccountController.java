@@ -1,3 +1,4 @@
+/*
 package org.example.backend.controller.payment;
 
 import lombok.RequiredArgsConstructor;
@@ -68,3 +69,4 @@ public class BankAccountController {
                 .build();
     }
 }
+*/
