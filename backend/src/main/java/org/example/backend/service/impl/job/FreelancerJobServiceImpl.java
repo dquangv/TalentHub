@@ -125,19 +125,9 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
 
     @Override
     public List<ApplicantResponseDTO> getApplicantByJobId(Long jobId) {
-        List<Object[]> results = freelancerJobRepository.getApplicantByJobId(jobId);
-        return results.stream().map(obj -> new ApplicantResponseDTO(
-                ((Number) obj[0]).longValue(),
-                (String) obj[1],
-                (String) obj[2],
-                (String) obj[3],
-                (String) obj[4],
-                (String) obj[5],
-                (Date) obj[5],
-                (StatusFreelancerJob) obj[6],
-                obj[7] != null ? ((Number) obj[7]).doubleValue() : 0.0
-        )).toList();
+        List<FreelancerJob> results = freelancerJobRepository.getApplicantByJobId(jobId);
 
+        return results.stream().map(freelancerJobMapper::toResponseDto).toList();
     }
 
     @Override
