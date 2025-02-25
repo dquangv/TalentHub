@@ -4,7 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.ResponseObject;
 import org.example.backend.dto.response.account.AccountDTOResponse;
 import org.example.backend.dto.response.job.DetailJobDTOResponse;
+import org.example.backend.dto.response.job.FreelancerJobDTOResponse;
 import org.example.backend.dto.response.job.JobDTOResponse;
+import org.example.backend.dto.response.job.SaveJobDTOResponse;
+import org.example.backend.entity.child.job.FreelancerJob;
+import org.example.backend.service.intf.job.FreelancerJobService;
 import org.example.backend.service.intf.job.JobService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +25,7 @@ import java.util.Optional;
 public class JobController {
 
     private final JobService jobService;
+    private final FreelancerJobService freelancerJobService;
 
     @GetMapping
     public ResponseObject<List<JobDTOResponse>> findAllJobs() {
@@ -44,6 +49,17 @@ public class JobController {
                 .build();
     }
 
+    @GetMapping("/SavedJobs/{jobId}")
+    public ResponseObject<List<SaveJobDTOResponse>> getSaveJobs(@PathVariable Long jobId) {
+        List<SaveJobDTOResponse> response = freelancerJobService.getSavedJobs(jobId);
+        return ResponseObject
+                .<List<SaveJobDTOResponse>>builder()
+                .message("Get all saved job successful")
+                .status(HttpStatus.OK.value())
+                .data(response)
+                .build();
+
+    }
 
 
 }
