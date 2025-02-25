@@ -141,11 +141,19 @@ public class GroupApiDocs {
                 .group("Payments APIs")
                 .pathsToMatch("/api/v1/payments/**")
                 .build();
-    }    @Bean
+    }
+
+    @Bean
     public GroupedOpenApi apiUsers() {
         return GroupedOpenApi.builder()
                 .group("Users APIs")
                 .pathsToMatch("/api/users/**")
+                .build();
+    }    @Bean
+    public GroupedOpenApi apiChat() {
+        return GroupedOpenApi.builder()
+                .group("Chat APIs")
+                .pathsToMatch("/api/chat/**")
                 .build();
     }
 
