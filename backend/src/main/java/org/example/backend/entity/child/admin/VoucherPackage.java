@@ -1,0 +1,49 @@
+package org.example.backend.entity.child.admin;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.example.backend.entity.AbstractEntity;
+import org.example.backend.entity.child.account.Account;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "voucher_packages")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class VoucherPackage extends AbstractEntity<Long> {
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "price")
+    private Double price;
+
+    @Column(name = "duration")
+    private Long duration;
+
+    @Column(name = "status")
+    private boolean status;
+
+    @Column(name = "created_at", nullable = false, updatable = false)
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at", insertable = false)
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime updatedAt;
+
+    @ManyToOne
+    @JoinColumn(name = "account", nullable = false)
+    @JsonIgnore
+    private Account account;
+}

@@ -18,22 +18,24 @@ public interface FreelancerJobRepository extends JpaRepository<FreelancerJob, Lo
     // dem so luong freelancer job theo freelancer va status
     Long countByFreelancerIdAndStatus(Long freelancerId, StatusFreelancerJob status);
 
+    List<FreelancerJob> getApplicantByJobId(Long jobId);
 
-  @Query("select fj.id," +
-            "u.firstName," +
-            "u.lastName," +
-            "u.image," +
-            "e.position," +
-            "fj.appliedDate," +
-            "fj.status," +
-            "fr.rating " +
-            "from FreelancerJob fj " +
-            "left join fj.freelancerReview fr " +
-            "left join fj.freelancer f " +
-            "left join f.experiences e " +
-            "left join f.user u " +
-            "left join u.account a " +
-            "where fj.job.id = :jobId ")
-    List<Object[]> getApplicantByJobId(@Param("jobId") Long jobId);
+
+//  @Query("select fj.id," +
+//            "u.firstName," +
+//            "u.lastName," +
+//            "u.image," +
+//            "e.position," +
+//            "fj.appliedDate," +
+//            "fj.status," +
+//            "fr.rating " +
+//            "from FreelancerJob fj " +
+//            "left join fj.freelancerReview fr " +
+//            "left join fj.freelancer f " +
+//            "left join f.experiences e " +
+//            "left join f.user u " +
+//            "left join u.account a " +
+//            "where fj.job.id = :jobId ")
+//    List<Object[]> getApplicantByJobId(@Param("jobId") Long jobId);
 
 }

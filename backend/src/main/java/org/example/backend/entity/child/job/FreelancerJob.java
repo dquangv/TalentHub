@@ -5,7 +5,6 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.example.backend.entity.AbstractEntity;
 import org.example.backend.entity.child.account.client.ClientReview;
-import org.example.backend.entity.child.account.freelancer.CV;
 import org.example.backend.entity.child.account.freelancer.FreelancerReview;
 import org.example.backend.entity.child.account.freelancer.Freelancer;
 import org.example.backend.enums.StatusFreelancerJob;

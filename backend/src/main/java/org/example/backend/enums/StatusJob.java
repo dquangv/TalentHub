@@ -3,10 +3,11 @@ package org.example.backend.enums;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum StatusJob {
-    OPEN("Mở"),
-    CLOSE("Đóng"),
+    POSTED("Đã đăng"),
+    CLOSED("Đóng"),
     Pending("Chờ xử lý"),
-    BAN("Bị cấm");
+    BANNED("Bị cấm"),
+    DRAFT("Bản nháp");
 
     private final String displayName;
 
