@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -31,7 +32,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTOResponse> getAll() {
-        return List.of();
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(this::mapToUserDTOResponse)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -91,4 +95,6 @@ public class UserServiceImpl implements UserService {
                 .role(user.getAccount() != null ? user.getAccount().getRole() : null)
                 .build();
     }
+
+
 }
