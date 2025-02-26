@@ -3,6 +3,7 @@ package org.example.backend.controller.chat;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.chat.ChatDto;
 import org.example.backend.dto.chat.ReadMessageRequest;
+import org.example.backend.dto.chat.WebRTCDto;
 import org.example.backend.service.chat.ChatService;
 import org.example.backend.dto.ResponseObject;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -50,6 +51,18 @@ public class ChatController {
                 .build();
     }
 
+    // WebRTC Signaling via REST API (alternative to WebSocket)
+    @PostMapping("/call/signal")
+    public ResponseObject<WebRTCDto.SignalResponse> sendSignal(@RequestBody WebRTCDto.SignalRequest request) {
+        WebRTCDto.SignalResponse response = chatService.handleSignal(request);
+        return ResponseObject.<WebRTCDto.SignalResponse>builder()
+                .message("Signal processed successfully")
+                .status(200)
+                .data(response)
+                .build();
+    }
+
+    // WebSocket Events
     @MessageMapping("/chat.connect")
     public void connect(@Payload Long userId, SimpMessageHeaderAccessor headerAccessor) {
         // Store the user ID in the WebSocket session
@@ -70,5 +83,11 @@ public class ChatController {
     @MessageMapping("/chat.read")
     public void readMessage(@Payload ReadMessageRequest request) {
         chatService.markAsRead(request.getReceiverId(), request.getSenderId());
+    }
+
+    // WebRTC Signaling via WebSocket
+    @MessageMapping("/chat.signal")
+    public WebRTCDto.SignalResponse signal(@Payload WebRTCDto.SignalRequest request) {
+        return chatService.handleSignal(request);
     }
 }
