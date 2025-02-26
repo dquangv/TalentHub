@@ -1,8 +1,8 @@
 package org.example.backend.service.chat;
 
-
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.chat.ChatDto;
+import org.example.backend.dto.chat.WebRTCDto;
 import org.example.backend.entity.child.account.ChatMessage;
 import org.example.backend.entity.child.account.User;
 import org.example.backend.exception.NotFoundException;
@@ -28,6 +28,33 @@ public class ChatService {
 
     // Track online users
     private final List<Long> onlineUsers = new ArrayList<>();
+
+    // WebRTC signaling handling
+    public WebRTCDto.SignalResponse handleSignal(WebRTCDto.SignalRequest request) {
+        User sender = userRepository.findById(request.getSenderId())
+                .orElseThrow(() -> new NotFoundException("Sender not found with ID: " + request.getSenderId()));
+
+        User receiver = userRepository.findById(request.getReceiverId())
+                .orElseThrow(() -> new NotFoundException("Receiver not found with ID: " + request.getReceiverId()));
+
+        // Create response with sender details
+        WebRTCDto.SignalResponse response = new WebRTCDto.SignalResponse(
+                sender.getId(),
+                sender.getFirstName() + " " + sender.getLastName(),
+                sender.getImage(),
+                receiver.getId(),
+                request.getType(),
+                request.getSdp(),
+                request.getCandidate(),
+                LocalDateTime.now().toString()
+        );
+
+        // Send signal to recipient via WebSocket
+        messagingTemplate.convertAndSend("/queue/call/" + receiver.getId(), response);
+
+        // Return response for REST API calls
+        return response;
+    }
 
     public void userConnected(Long userId) {
         if (!onlineUsers.contains(userId)) {
