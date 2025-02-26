@@ -2,13 +2,19 @@ package org.example.backend.service.impl.job;
 
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.job.JobDTORequest;
+import org.example.backend.dto.response.job.ApplyJobsDTOResponse;
 import org.example.backend.dto.response.job.DetailJobDTOResponse;
 import org.example.backend.dto.response.job.JobDTOResponse;
+import org.example.backend.dto.response.job.SaveJobDTOResponse;
 import org.example.backend.entity.child.account.client.Company;
+import org.example.backend.entity.child.job.FreelancerJob;
 import org.example.backend.entity.child.job.Job;
+import org.example.backend.exception.BadRequestException;
+import org.example.backend.mapper.job.ApplyJobsMapper;
 import org.example.backend.mapper.job.DetailJobMapper;
 import org.example.backend.mapper.job.JobMapper;
 import org.example.backend.repository.CompanyRepository;
+import org.example.backend.repository.FreelancerJobRepository;
 import org.example.backend.repository.JobRepository;
 import org.example.backend.service.intf.job.JobService;
 import org.springframework.stereotype.Service;
@@ -16,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -26,11 +33,14 @@ public class JobServiceImpl implements JobService {
 
     private final JobRepository jobRepository;
 
-    private final JobMapper jobMapper;
 
     private final DetailJobMapper detailJobMapper;
 
     private final CompanyRepository companyRepository;
+
+    private final FreelancerJobRepository freelancerJobRepository;
+
+    private final ApplyJobsMapper applyJobsMapper;
 
     @Override
     public JobDTOResponse create(JobDTORequest jobDTORequest) {
@@ -88,6 +98,25 @@ public class JobServiceImpl implements JobService {
             return Optional.empty();
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @Override
+    public List<ApplyJobsDTOResponse> getApplyJobs(Long jobId) {
+        List<FreelancerJob> freelancerJobs = freelancerJobRepository.getSavedJobs(jobId);
+        try {
+            return freelancerJobs.stream()
+                    .map(freelancerJob -> {
+                        ApplyJobsDTOResponse dto = applyJobsMapper.toResponseDto(freelancerJob);
+                        Long id = freelancerJob.getJob().getClient().getId();
+                        Company company = companyRepository.getCompanyByClientId(id)
+                                .orElseThrow(() -> new RuntimeException("Company not found for client ID: " + id));
+                        dto.setCompanyName(company.getCompanyName());
+                        return dto;
+                    })
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new BadRequestException("Error while fetching apply jobs");
         }
     }
 }
