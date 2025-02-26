@@ -11,8 +11,6 @@ import org.example.backend.entity.AbstractEntity;
 import org.example.backend.entity.child.account.client.Client;
 import org.example.backend.entity.child.account.freelancer.Freelancer;
 
-import java.time.LocalDateTime;
-
 @Table(name = "users")
 @Entity
 @Getter
@@ -42,6 +40,7 @@ public class User extends AbstractEntity<Long> {
     @Size(max = 255)
     @Column(name = "image")
     private String image;
+
     @OneToOne
 //    @JsonIgnore
     @JoinColumn(name = "account_id", unique = true)

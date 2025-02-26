@@ -42,8 +42,4 @@ public class Client extends AbstractEntity<Long> {
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Job> jobs;
-
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private List<Appointment> appointments;
 }

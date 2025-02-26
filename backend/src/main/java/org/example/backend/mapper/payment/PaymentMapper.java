@@ -1,4 +1,3 @@
-/*
 package org.example.backend.mapper.payment;
 
 import lombok.RequiredArgsConstructor;
@@ -72,4 +71,3 @@ public class PaymentMapper {
     }
 
 }
-*/

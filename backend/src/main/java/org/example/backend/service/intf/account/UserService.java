@@ -5,5 +5,4 @@ import org.example.backend.dto.response.account.UserDTOResponse;
 import org.example.backend.service.BaseService;
 
 public interface UserService extends BaseService<UserDTORequest, UserDTOResponse, Long> {
-    UserDTOResponse update(UserDTORequest userDTORequest);
 }

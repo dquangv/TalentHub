@@ -23,5 +23,5 @@ public class AccountDTOResponse {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private UserDTO user;
-//    private List<PaymentDTOResponse> payments;
+    private List<PaymentDTOResponse> payments;
 }

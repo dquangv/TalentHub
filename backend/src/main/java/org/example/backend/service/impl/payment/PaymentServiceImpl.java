@@ -1,4 +1,3 @@
-/*
 package org.example.backend.service.impl.payment;
 
 import lombok.RequiredArgsConstructor;
@@ -85,4 +84,3 @@ public class PaymentServiceImpl implements PaymentService {
         return false;
     }
 }
-*/
