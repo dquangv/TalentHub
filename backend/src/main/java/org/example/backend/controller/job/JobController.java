@@ -67,5 +67,15 @@ public class JobController {
                 .data(response)
                 .build();
     }
+    @GetMapping("/PostedJobs/{jobId}")
+    public ResponseObject<List<PostJobsDTOResponse>> getPostedJobs(@PathVariable Long jobId) {
+        List<PostJobsDTOResponse> response = jobService.getPostedJobs(jobId);
+        return ResponseObject
+                .<List<PostJobsDTOResponse>>builder()
+                .message("Get all apply job successful")
+                .status(HttpStatus.OK.value())
+                .data(response)
+                .build();
+    }
 
 }

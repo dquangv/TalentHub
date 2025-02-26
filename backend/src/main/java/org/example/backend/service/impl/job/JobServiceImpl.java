@@ -2,17 +2,16 @@ package org.example.backend.service.impl.job;
 
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.job.JobDTORequest;
-import org.example.backend.dto.response.job.ApplyJobsDTOResponse;
-import org.example.backend.dto.response.job.DetailJobDTOResponse;
-import org.example.backend.dto.response.job.JobDTOResponse;
-import org.example.backend.dto.response.job.SaveJobDTOResponse;
+import org.example.backend.dto.response.job.*;
 import org.example.backend.entity.child.account.client.Company;
 import org.example.backend.entity.child.job.FreelancerJob;
 import org.example.backend.entity.child.job.Job;
+import org.example.backend.enums.StatusFreelancerJob;
 import org.example.backend.exception.BadRequestException;
 import org.example.backend.mapper.job.ApplyJobsMapper;
 import org.example.backend.mapper.job.DetailJobMapper;
 import org.example.backend.mapper.job.JobMapper;
+import org.example.backend.mapper.job.PostedJobsMapper;
 import org.example.backend.repository.CompanyRepository;
 import org.example.backend.repository.FreelancerJobRepository;
 import org.example.backend.repository.JobRepository;
@@ -41,6 +40,8 @@ public class JobServiceImpl implements JobService {
     private final FreelancerJobRepository freelancerJobRepository;
 
     private final ApplyJobsMapper applyJobsMapper;
+
+    private final PostedJobsMapper postedJobsMapper;
 
     @Override
     public JobDTOResponse create(JobDTORequest jobDTORequest) {
@@ -103,7 +104,7 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public List<ApplyJobsDTOResponse> getApplyJobs(Long jobId) {
-        List<FreelancerJob> freelancerJobs = freelancerJobRepository.getSavedJobs(jobId);
+        List<FreelancerJob> freelancerJobs = freelancerJobRepository.getApplyJobs(jobId, StatusFreelancerJob.Applied);
         try {
             return freelancerJobs.stream()
                     .map(freelancerJob -> {
@@ -118,5 +119,8 @@ public class JobServiceImpl implements JobService {
         } catch (Exception e) {
             throw new BadRequestException("Error while fetching apply jobs");
         }
+    }
+    public List<PostJobsDTOResponse> getPostedJobs(Long clientId) {
+        return jobRepository.getPostedJobs(clientId).stream().map(postedJobsMapper::toResponseDto).collect(toList());
     }
 }

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class SaveJobDTOResponse {
     private BigDecimal hourWork;
     private BigDecimal fromPrice;
     private BigDecimal toPrice;
-    private DateTime appliedDate;
+    private LocalDateTime appliedDate;
     private String description;
     private List<String> skillNames;
 }

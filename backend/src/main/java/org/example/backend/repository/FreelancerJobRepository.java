@@ -35,8 +35,9 @@ public interface FreelancerJobRepository extends JpaRepository<FreelancerJob, Lo
             "left join fetch j.category cg " +
             "left join fetch j.jobSkills js " +
             "left join fetch j.client c " +
-            "where fj.job.id = :jobID")
-    List<FreelancerJob> getApplyJobs(Long jobID);
+            "where fj.status = :status and fj.job.id = :jobID")
+    List<FreelancerJob> getApplyJobs(@Param("jobID") Long jobID, @Param("status") StatusFreelancerJob status);
+
 
 
 //  @Query("select fj.id," +

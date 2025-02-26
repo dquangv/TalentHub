@@ -12,6 +12,7 @@ import org.example.backend.entity.child.account.freelancer.Freelancer;
 import org.example.backend.enums.StatusFreelancerJob;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Table(name = "freelancer_job")
@@ -35,7 +36,7 @@ public class FreelancerJob extends AbstractEntity<Long> {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "applied_date")
-    private DateTime appliedDate;
+    private LocalDateTime appliedDate;
 
     @ManyToOne
     @JoinColumn(name = "freelancer_id")
