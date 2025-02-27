@@ -13,6 +13,6 @@ import java.util.Optional;
 public interface JobService extends BaseService<JobDTORequest, JobDTOResponse, Long> {
     List<JobDTOResponse> findAllJobs();
     Optional<DetailJobDTOResponse> getDetailJobById(Long id);
-    List<ApplyJobsDTOResponse> getApplyJobs(Long jobId);
+    List<ApplyJobsDTOResponse> getApplyJobs(Long freeLancerId);
    List<PostJobsDTOResponse> getPostedJobs(Long clientId);
 }
