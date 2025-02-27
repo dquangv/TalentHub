@@ -2,16 +2,17 @@ package org.example.backend.entity.child.job;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.example.backend.entity.AbstractEntity;
+import org.example.backend.entity.child.account.client.Appointment;
 import org.example.backend.entity.child.account.client.ClientReview;
-import org.example.backend.entity.child.account.freelancer.CV;
 import org.example.backend.entity.child.account.freelancer.FreelancerReview;
 import org.example.backend.entity.child.account.freelancer.Freelancer;
 import org.example.backend.enums.StatusFreelancerJob;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Table(name = "freelancer_job")
 @Entity
@@ -32,6 +33,10 @@ public class FreelancerJob extends AbstractEntity<Long> {
     @Column(name = "cv")
     private String cv;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "applied_date")
+    private LocalDateTime appliedDate;
+
     @ManyToOne
     @JoinColumn(name = "freelancer_id")
     private Freelancer freelancer;
@@ -47,6 +52,10 @@ public class FreelancerJob extends AbstractEntity<Long> {
     @OneToOne
     @JoinColumn(name = "client_review_id")
     private ClientReview clientReview;
+
+    /*@OneToOne
+    @JoinColumn(name = "appointment_id")
+    private Appointment appointment;*/
 
     /*@ManyToOne
     @JoinColumn(name = "CV_id")*/

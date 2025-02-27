@@ -5,6 +5,7 @@ import org.example.backend.dto.request.account.client.ClientDTORequest;
 import org.example.backend.dto.response.account.client.ClientDTOResponse;
 import org.example.backend.entity.child.account.client.Client;
 import org.example.backend.entity.child.account.User;
+import org.example.backend.exception.BadRequestException;
 import org.example.backend.repository.ClientRepository;
 import org.example.backend.repository.UserRepository;
 import org.example.backend.service.intf.account.client.ClientService;
@@ -73,5 +74,15 @@ public class ClientServiceImpl implements ClientService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Client findById(Long clientId) {
+        if (clientId == null) {
+            throw new BadRequestException("Client id is null");
+        }
+
+        return clientRepository.findById(clientId)
+                .orElseThrow(() -> new BadRequestException("Client not found"));
     }
 }
