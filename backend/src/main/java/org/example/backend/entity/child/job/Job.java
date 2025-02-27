@@ -39,6 +39,9 @@ public class Job extends AbstractEntity<Long> {
     @Column(name = "hour_work", precision = 10, scale = 2)
     private BigDecimal hourWork;
 
+    @Column(name = "duration")
+    private Long duration;
+
     @Column(name = "job_opportunity")
     private Boolean jobOpportunity;
 

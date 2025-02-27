@@ -4,13 +4,14 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.example.backend.entity.AbstractEntity;
+import org.example.backend.entity.child.account.client.Appointment;
 import org.example.backend.entity.child.account.client.ClientReview;
-import org.example.backend.entity.child.account.freelancer.CV;
 import org.example.backend.entity.child.account.freelancer.FreelancerReview;
 import org.example.backend.entity.child.account.freelancer.Freelancer;
 import org.example.backend.enums.StatusFreelancerJob;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Table(name = "freelancer_job")
@@ -34,7 +35,7 @@ public class FreelancerJob extends AbstractEntity<Long> {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "applied_date")
-    private Date appliedDate;
+    private LocalDateTime appliedDate;
 
     @ManyToOne
     @JoinColumn(name = "freelancer_id")
@@ -51,6 +52,10 @@ public class FreelancerJob extends AbstractEntity<Long> {
     @OneToOne
     @JoinColumn(name = "client_review_id")
     private ClientReview clientReview;
+
+    /*@OneToOne
+    @JoinColumn(name = "appointment_id")
+    private Appointment appointment;*/
 
     /*@ManyToOne
     @JoinColumn(name = "CV_id")*/

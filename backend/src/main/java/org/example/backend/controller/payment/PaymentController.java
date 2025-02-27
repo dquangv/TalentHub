@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-@RestController
+/*@RestController
 @RequestMapping("/api/v1/payments")
 @RequiredArgsConstructor
 public class PaymentController {
@@ -66,4 +66,4 @@ public class PaymentController {
                 .status(HttpStatus.NOT_FOUND.value())
                 .build();
     }
-}
+}*/

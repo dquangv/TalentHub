@@ -4,22 +4,24 @@ import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.job.FreelancerJobDTORequest;
 import org.example.backend.dto.response.account.freelancer.ApplicantResponseDTO;
 import org.example.backend.dto.response.job.FreelancerJobDTOResponse;
-import org.example.backend.dto.response.job.ViewJobDTOResponse;
-import org.example.backend.entity.child.account.freelancer.Freelancer;
+import org.example.backend.dto.response.job.SaveJobDTOResponse;
+import org.example.backend.entity.child.account.client.Company;
 import org.example.backend.entity.child.job.FreelancerJob;
-import org.example.backend.entity.child.job.Job;
 import org.example.backend.enums.StatusFreelancerJob;
 import org.example.backend.exception.BadRequestException;
 import org.example.backend.mapper.job.FreelancerJobMapper;
+import org.example.backend.mapper.job.SaveJobMapper;
+import org.example.backend.repository.CompanyRepository;
 import org.example.backend.repository.FreelancerJobRepository;
 import org.example.backend.repository.FreelancerRepository;
 import org.example.backend.repository.JobRepository;
 import org.example.backend.service.intf.job.FreelancerJobService;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -29,6 +31,8 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
     private final FreelancerRepository freelancerRepository;
     private final JobRepository jobRepository;
     private final FreelancerJobMapper freelancerJobMapper;
+    private final SaveJobMapper saveJobMapper;
+    private final CompanyRepository companyRepository;
 
     @Override
     public FreelancerJobDTOResponse create(FreelancerJobDTORequest freelancerJobDTORequest) {
@@ -125,18 +129,117 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
 
     @Override
     public List<ApplicantResponseDTO> getApplicantByJobId(Long jobId) {
-        List<Object[]> results = freelancerJobRepository.getApplicantByJobId(jobId);
-        return results.stream().map(obj -> new ApplicantResponseDTO(
-                ((Number) obj[0]).longValue(),
-                (String) obj[1],
-                (String) obj[2],
-                (String) obj[3],
-                (String) obj[4],
-                (String) obj[5],
-                (Date) obj[5],
-                (StatusFreelancerJob) obj[6],
-                obj[7] != null ? ((Number) obj[7]).doubleValue() : 0.0
-        )).toList();
+        List<FreelancerJob> results = freelancerJobRepository.getApplicantByJobId(jobId);
 
+        return results.stream().map(freelancerJobMapper::toResponseDto).toList();
+    }
+
+    @Override
+    public FreelancerJobDTOResponse approveApplication(Long jobId, Long freelancerId) {
+        Optional<FreelancerJob> existingFreelancerJob = freelancerJobRepository.findByFreelancer_IdAndJob_Id(
+                freelancerId, jobId);
+
+        if (!existingFreelancerJob.isPresent()) {
+            throw new BadRequestException("Freelancer Job Not Found");
+        }
+
+        FreelancerJob freelancerJob = existingFreelancerJob.get();
+
+        if (freelancerJob.getStatus() != StatusFreelancerJob.Applied) {
+            throw new BadRequestException("Can only approve applications with Applied status");
+        }
+
+        freelancerJob.setStatus(StatusFreelancerJob.InProgress);
+        FreelancerJob updatedFreelancerJob = freelancerJobRepository.save(freelancerJob);
+
+        return new FreelancerJobDTOResponse(
+                updatedFreelancerJob.getId(),
+                updatedFreelancerJob.getIsSaved(),
+                updatedFreelancerJob.getStatus(),
+                updatedFreelancerJob.getJob().getId(),
+                updatedFreelancerJob.getFreelancer().getId()
+        );
+    }
+
+    @Override
+    public FreelancerJobDTOResponse rejectApplication(Long jobId, Long freelancerId) {
+        Optional<FreelancerJob> existingFreelancerJob = freelancerJobRepository.findByFreelancer_IdAndJob_Id(
+                freelancerId, jobId);
+
+        if (!existingFreelancerJob.isPresent()) {
+            throw new BadRequestException("Freelancer Job Not Found");
+        }
+
+        FreelancerJob freelancerJob = existingFreelancerJob.get();
+
+        if (freelancerJob.getStatus() != StatusFreelancerJob.Applied) {
+            throw new BadRequestException("Can only reject applications with Applied status");
+        }
+
+        freelancerJob.setStatus(StatusFreelancerJob.Cancelled);
+        FreelancerJob updatedFreelancerJob = freelancerJobRepository.save(freelancerJob);
+
+        return new FreelancerJobDTOResponse(
+                updatedFreelancerJob.getId(),
+                updatedFreelancerJob.getIsSaved(),
+                updatedFreelancerJob.getStatus(),
+                updatedFreelancerJob.getJob().getId(),
+                updatedFreelancerJob.getFreelancer().getId()
+        );
+    }
+
+    @Override
+    public FreelancerJobDTOResponse unapplyJob(Long jobId, Long freelancerId) {
+        Optional<FreelancerJob> existingFreelancerJob = freelancerJobRepository.findByFreelancer_IdAndJob_Id(
+                freelancerId, jobId);
+
+        if (!existingFreelancerJob.isPresent()) {
+            throw new BadRequestException("Freelancer Job Not Found");
+        }
+
+        FreelancerJob freelancerJob = existingFreelancerJob.get();
+
+        if (freelancerJob.getStatus() != StatusFreelancerJob.Applied) {
+            throw new BadRequestException("Can only unapply from jobs with Applied status");
+        }
+
+        freelancerJob.setStatus(StatusFreelancerJob.Viewed);
+        FreelancerJob updatedFreelancerJob = freelancerJobRepository.save(freelancerJob);
+
+        return new FreelancerJobDTOResponse(
+                updatedFreelancerJob.getId(),
+                updatedFreelancerJob.getIsSaved(),
+                updatedFreelancerJob.getStatus(),
+                updatedFreelancerJob.getJob().getId(),
+                updatedFreelancerJob.getFreelancer().getId()
+        );
+    }
+
+    @Override
+    public List<SaveJobDTOResponse> getSavedJobs(Long freelancerId) {
+        List<FreelancerJob> freelancerJobs = freelancerJobRepository.getSavedJobs(freelancerId);
+        try {
+            return freelancerJobs.stream()
+                    .map(freelancerJob -> {
+                        SaveJobDTOResponse dto = saveJobMapper.toResponseDto(freelancerJob);
+                        Long id = freelancerJob.getJob().getClient().getId();
+                        Company company = companyRepository.getCompanyByClientId(id)
+                                .orElseThrow(() -> new RuntimeException("Company not found for client ID: " + id));
+                        dto.setCompanyName(company.getCompanyName());
+                        return dto;
+                    })
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new BadRequestException("Error while fetching saved jobs");
+        }
+    }
+
+    @Override
+    public FreelancerJob findById(Long jobId) {
+        if (jobId == null) {
+            throw new BadRequestException("Job ID is null");
+        }
+
+        return freelancerJobRepository.findById(jobId).orElseThrow(() -> new BadRequestException("Job Not Found"));
     }
 }

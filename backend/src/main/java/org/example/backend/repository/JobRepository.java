@@ -4,8 +4,10 @@
     import org.example.backend.entity.child.job.Job;
     import org.springframework.data.jpa.repository.JpaRepository;
     import org.springframework.data.jpa.repository.Query;
+    import org.springframework.data.repository.query.Param;
 
     import java.util.List;
+    import java.util.Optional;
 
     public interface JobRepository extends JpaRepository<Job, Long> {
         @Query(value = "SELECT \n" +
@@ -38,6 +40,19 @@
                 nativeQuery = true)
         List<Object[]> findAllJobsNative();
 
+        @Query("SELECT j FROM Job j " +
+                "LEFT JOIN FETCH j.client c " +
+                "LEFT JOIN FETCH c.user " +
+                "LEFT JOIN FETCH j.category " +
+                "LEFT JOIN FETCH j.jobSkills js " +
+                "LEFT JOIN FETCH js.skill " +
+                "WHERE j.id = :id")
+        Optional<Job> getDetailJobById(@Param("id") Long id);
 
+
+        @Query("SELECT j FROM Job j " +
+                "LEFT JOIN FETCH j.client c " +
+                "WHERE c.id = :clientId")
+        List<Job> getPostedJobs(@Param("clientId") Long clientId);
 
     }

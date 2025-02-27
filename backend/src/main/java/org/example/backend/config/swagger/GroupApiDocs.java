@@ -143,4 +143,28 @@ public class GroupApiDocs {
                 .build();
     }
 
+    @Bean
+    public GroupedOpenApi apiUsers() {
+        return GroupedOpenApi.builder()
+                .group("Users APIs")
+                .pathsToMatch("/api/users/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi apiChat() {
+        return GroupedOpenApi.builder()
+                .group("Chat APIs")
+                .pathsToMatch("/api/chat/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi apiAppointment() {
+        return GroupedOpenApi.builder()
+                .group("Appointments APIs")
+                .pathsToMatch("/api/v1/appointments/**")
+                .build();
+    }
+
 }
