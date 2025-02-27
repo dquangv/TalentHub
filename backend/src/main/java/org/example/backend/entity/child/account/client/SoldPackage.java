@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.backend.entity.AbstractEntity;
-import org.example.backend.entity.child.account.admin.VoucherPackage;
+import org.example.backend.entity.child.admin.VoucherPackage;
 
 import java.time.LocalDate;
 
