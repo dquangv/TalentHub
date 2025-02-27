@@ -59,7 +59,6 @@ public class ChatController {
                 .build();
     }
 
-    // WebRTC Signaling via REST API (alternative to WebSocket)
     @PostMapping("/call/signal")
     public ResponseObject<WebRTCDto.SignalResponse> sendSignal(@RequestBody WebRTCDto.SignalRequest request) {
         WebRTCDto.SignalResponse response = chatService.handleSignal(request);
@@ -70,10 +69,8 @@ public class ChatController {
                 .build();
     }
 
-    // WebSocket Events
     @MessageMapping("/chat.connect")
     public void connect(@Payload Long userId, SimpMessageHeaderAccessor headerAccessor) {
-        // Store the user ID in the WebSocket session
         headerAccessor.getSessionAttributes().put("userId", userId);
         chatService.userConnected(userId);
     }
