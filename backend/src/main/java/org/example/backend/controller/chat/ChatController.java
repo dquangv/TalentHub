@@ -98,11 +98,9 @@ public class ChatController {
 
     @MessageMapping("/chat.screenShare")
     public void handleScreenShare(@Payload WebRTCDto.ScreenShareRequest request) {
-        // Xác thực người dùng và lấy thông tin người gửi
         User sender = userRepository.findById(request.getSenderId())
                 .orElseThrow(() -> new NotFoundException("Sender not found with ID: " + request.getSenderId()));
 
-        // Tùy chọn: kiểm tra người nhận có tồn tại không
         userRepository.findById(request.getReceiverId())
                 .orElseThrow(() -> new NotFoundException("Receiver not found with ID: " + request.getReceiverId()));
 
@@ -113,7 +111,7 @@ public class ChatController {
                 request.getReceiverId(),
                 "screen-share",
                 null,
-                Map.of("isSharing", request.isSharing()), 
+                Map.of("isSharing", request.isSharing()),
                 LocalDateTime.now().toString()
         );
 
