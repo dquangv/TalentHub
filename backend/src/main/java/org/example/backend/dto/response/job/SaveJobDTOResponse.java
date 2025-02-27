@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 public class SaveJobDTOResponse {
-    private Long id;
+    private Long jobId;
     private String title;
     private String companyName;
     private String jobType;
