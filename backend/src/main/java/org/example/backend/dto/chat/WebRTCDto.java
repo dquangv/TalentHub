@@ -30,4 +30,13 @@ public class WebRTCDto {
         private Object candidate;
         private String timestamp;
     }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ScreenShareRequest {
+        private Long senderId;
+        private Long receiverId;
+        private boolean isSharing;
+    }
 }

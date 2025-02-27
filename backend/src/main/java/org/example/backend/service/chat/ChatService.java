@@ -161,4 +161,27 @@ public class ChatService {
                 message.isRead()
         );
     }
+
+    public WebRTCDto.SignalResponse handleIceCandidates(WebRTCDto.SignalRequest request) {
+        User sender = userRepository.findById(request.getSenderId())
+                .orElseThrow(() -> new NotFoundException("Sender not found with ID: " + request.getSenderId()));
+
+        User receiver = userRepository.findById(request.getReceiverId())
+                .orElseThrow(() -> new NotFoundException("Receiver not found with ID: " + request.getReceiverId()));
+
+        WebRTCDto.SignalResponse response = new WebRTCDto.SignalResponse(
+                sender.getId(),
+                sender.getFirstName() + " " + sender.getLastName(),
+                sender.getImage(),
+                receiver.getId(),
+                request.getType(),
+                request.getSdp(),
+                request.getCandidate(),  // Có thể là một array thay vì một candidate
+                LocalDateTime.now().toString()
+        );
+
+        // Gửi đến người nhận
+        messagingTemplate.convertAndSend("/queue/call/" + receiver.getId(), response);
+        return response;
+    }
 }

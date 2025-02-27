@@ -4,14 +4,20 @@ import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.chat.ChatDto;
 import org.example.backend.dto.chat.ReadMessageRequest;
 import org.example.backend.dto.chat.WebRTCDto;
+import org.example.backend.entity.child.account.User;
+import org.example.backend.exception.NotFoundException;
+import org.example.backend.repository.UserRepository;
 import org.example.backend.service.chat.ChatService;
 import org.example.backend.dto.ResponseObject;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,6 +25,8 @@ import java.util.List;
 public class ChatController {
 
     private final ChatService chatService;
+    private final UserRepository userRepository;
+    private final SimpMessagingTemplate messagingTemplate;
 
     @GetMapping("/conversations/{userId}")
     public ResponseObject<List<ChatDto.ConversationSummary>> getConversations(@PathVariable Long userId) {
@@ -89,5 +97,31 @@ public class ChatController {
     @MessageMapping("/chat.signal")
     public WebRTCDto.SignalResponse signal(@Payload WebRTCDto.SignalRequest request) {
         return chatService.handleSignal(request);
+    }
+
+
+    @MessageMapping("/chat.screenShare")
+    public void handleScreenShare(@Payload WebRTCDto.ScreenShareRequest request) {
+        // Xác thực người dùng và lấy thông tin người gửi
+        User sender = userRepository.findById(request.getSenderId())
+                .orElseThrow(() -> new NotFoundException("Sender not found with ID: " + request.getSenderId()));
+
+        // Tùy chọn: kiểm tra người nhận có tồn tại không
+        userRepository.findById(request.getReceiverId())
+                .orElseThrow(() -> new NotFoundException("Receiver not found with ID: " + request.getReceiverId()));
+
+        // Tạo và gửi response đến người nhận
+        WebRTCDto.SignalResponse response = new WebRTCDto.SignalResponse(
+                sender.getId(),
+                sender.getFirstName() + " " + sender.getLastName(),
+                sender.getImage(),
+                request.getReceiverId(),
+                "screen-share", // Loại tín hiệu mới
+                null,  // Không cần SDP
+                Map.of("isSharing", request.isSharing()),  // Gửi trạng thái chia sẻ màn hình
+                LocalDateTime.now().toString()
+        );
+
+        messagingTemplate.convertAndSend("/queue/call/" + request.getReceiverId(), response);
     }
 }
