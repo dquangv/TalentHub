@@ -216,8 +216,8 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
     }
 
     @Override
-    public List<SaveJobDTOResponse> getSavedJobs(Long jobId) {
-        List<FreelancerJob> freelancerJobs = freelancerJobRepository.getSavedJobs(jobId);
+    public List<SaveJobDTOResponse> getSavedJobs(Long freelancerId) {
+        List<FreelancerJob> freelancerJobs = freelancerJobRepository.getSavedJobs(freelancerId);
         try {
             return freelancerJobs.stream()
                     .map(freelancerJob -> {

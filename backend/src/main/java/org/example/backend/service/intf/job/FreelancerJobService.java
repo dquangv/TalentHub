@@ -17,6 +17,6 @@ public interface FreelancerJobService extends BaseService<FreelancerJobDTOReques
     FreelancerJobDTOResponse approveApplication(Long jobId, Long freelancerId);
     FreelancerJobDTOResponse rejectApplication(Long jobId, Long freelancerId);
     FreelancerJobDTOResponse unapplyJob(Long jobId, Long freelancerId);
-    List<SaveJobDTOResponse> getSavedJobs(Long jobId);
+    List<SaveJobDTOResponse> getSavedJobs(Long freelancerId);
     FreelancerJob findById(Long jobId);
 }

@@ -103,8 +103,8 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public List<ApplyJobsDTOResponse> getApplyJobs(Long jobId) {
-        List<FreelancerJob> freelancerJobs = freelancerJobRepository.getApplyJobs(jobId, StatusFreelancerJob.Applied);
+    public List<ApplyJobsDTOResponse> getApplyJobs(Long freeLancerId) {
+        List<FreelancerJob> freelancerJobs = freelancerJobRepository.getApplyJobs(freeLancerId, StatusFreelancerJob.Applied);
         try {
             return freelancerJobs.stream()
                     .map(freelancerJob -> {

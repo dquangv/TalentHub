@@ -57,9 +57,9 @@ public class JobController {
                 .build();
 
     }
-    @GetMapping("/ApplyJobs/{jobId}")
-    public ResponseObject<List<ApplyJobsDTOResponse>> getApplyJobs(@PathVariable Long jobId) {
-        List<ApplyJobsDTOResponse> response = jobService.getApplyJobs(jobId);
+    @GetMapping("/ApplyJobs/{freeLancerId}")
+    public ResponseObject<List<ApplyJobsDTOResponse>> getApplyJobs(@PathVariable Long freeLancerId) {
+        List<ApplyJobsDTOResponse> response = jobService.getApplyJobs(freeLancerId);
         return ResponseObject
                 .<List<ApplyJobsDTOResponse>>builder()
                 .message("Get all apply job successful")
