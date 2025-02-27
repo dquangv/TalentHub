@@ -10,7 +10,7 @@ import org.example.backend.entity.AbstractEntity;
 
 import java.time.LocalDateTime;
 
-@Table(name = "bank_account")
+/*@Table(name = "bank_account")
 @Entity
 @Getter
 @Setter
@@ -35,4 +35,4 @@ public class BankAccount extends AbstractEntity<Long> {
 
     @OneToOne(mappedBy = "bankAccount",  cascade = CascadeType.ALL)
     private Payment payment;
-}
+}*/
