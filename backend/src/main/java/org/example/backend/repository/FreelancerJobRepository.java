@@ -26,8 +26,8 @@ public interface FreelancerJobRepository extends JpaRepository<FreelancerJob, Lo
             "left join fetch j.category cg " +
             "left join fetch j.jobSkills js " +
             "left join fetch j.client c " +
-            "where fj.isSaved = true and fj.job.id = :jobID")
-    List<FreelancerJob> getSavedJobs(Long jobID);
+            "where fj.isSaved = true and fj.freelancer.id = :freelancerId")
+    List<FreelancerJob> getSavedJobs(Long freelancerId);
 
     @Query("select fj " +
             "from FreelancerJob fj " +
