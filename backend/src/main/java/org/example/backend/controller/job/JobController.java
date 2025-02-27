@@ -3,10 +3,7 @@ package org.example.backend.controller.job;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.ResponseObject;
 import org.example.backend.dto.response.account.AccountDTOResponse;
-import org.example.backend.dto.response.job.DetailJobDTOResponse;
-import org.example.backend.dto.response.job.FreelancerJobDTOResponse;
-import org.example.backend.dto.response.job.JobDTOResponse;
-import org.example.backend.dto.response.job.SaveJobDTOResponse;
+import org.example.backend.dto.response.job.*;
 import org.example.backend.entity.child.job.FreelancerJob;
 import org.example.backend.service.intf.job.FreelancerJobService;
 import org.example.backend.service.intf.job.JobService;
@@ -60,6 +57,25 @@ public class JobController {
                 .build();
 
     }
-
+    @GetMapping("/ApplyJobs/{jobId}")
+    public ResponseObject<List<ApplyJobsDTOResponse>> getApplyJobs(@PathVariable Long jobId) {
+        List<ApplyJobsDTOResponse> response = jobService.getApplyJobs(jobId);
+        return ResponseObject
+                .<List<ApplyJobsDTOResponse>>builder()
+                .message("Get all apply job successful")
+                .status(HttpStatus.OK.value())
+                .data(response)
+                .build();
+    }
+    @GetMapping("/PostedJobs/{jobId}")
+    public ResponseObject<List<PostJobsDTOResponse>> getPostedJobs(@PathVariable Long jobId) {
+        List<PostJobsDTOResponse> response = jobService.getPostedJobs(jobId);
+        return ResponseObject
+                .<List<PostJobsDTOResponse>>builder()
+                .message("Get all apply job successful")
+                .status(HttpStatus.OK.value())
+                .data(response)
+                .build();
+    }
 
 }

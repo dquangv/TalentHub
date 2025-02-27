@@ -3,11 +3,12 @@ package org.example.backend.enums;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum StatusFreelancerJob {
-    Applied("Đã ứng tuyển"),  // Đã ứng tuyển
-    Cancelled("Đã hủy"),      // Đã hủy
-    InProgress("Đang thực hiện"),  // Đang thực hiện
-    Completed("Hoàn thành"),  // Hoàn thành
-    Viewed("Đã xem");
+    Applied("Applied"),       // Applied
+    Cancelled("Cancelled"),    // Cancelled
+    InProgress("In Progress"), // In Progress
+    Completed("Completed"),    // Completed
+    Viewed("Viewed");          // Viewed
+
     private final String displayName;
 
     // Constructor với displayName

@@ -48,4 +48,11 @@
                 "LEFT JOIN FETCH js.skill " +
                 "WHERE j.id = :id")
         Optional<Job> getDetailJobById(@Param("id") Long id);
+
+
+        @Query("SELECT j FROM Job j " +
+                "LEFT JOIN FETCH j.client c " +
+                "WHERE c.id = :clientId")
+        List<Job> getPostedJobs(@Param("clientId") Long clientId);
+
     }
