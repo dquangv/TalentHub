@@ -90,7 +90,6 @@ public class ChatController {
         chatService.markAsRead(request.getReceiverId(), request.getSenderId());
     }
 
-    // WebRTC Signaling via WebSocket
     @MessageMapping("/chat.signal")
     public WebRTCDto.SignalResponse signal(@Payload WebRTCDto.SignalRequest request) {
         return chatService.handleSignal(request);
@@ -107,15 +106,14 @@ public class ChatController {
         userRepository.findById(request.getReceiverId())
                 .orElseThrow(() -> new NotFoundException("Receiver not found with ID: " + request.getReceiverId()));
 
-        // Tạo và gửi response đến người nhận
         WebRTCDto.SignalResponse response = new WebRTCDto.SignalResponse(
                 sender.getId(),
                 sender.getFirstName() + " " + sender.getLastName(),
                 sender.getImage(),
                 request.getReceiverId(),
-                "screen-share", // Loại tín hiệu mới
-                null,  // Không cần SDP
-                Map.of("isSharing", request.isSharing()),  // Gửi trạng thái chia sẻ màn hình
+                "screen-share",
+                null,
+                Map.of("isSharing", request.isSharing()), 
                 LocalDateTime.now().toString()
         );
 
