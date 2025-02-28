@@ -40,4 +40,24 @@ public class CloudinaryImageService {
         }
     }
 
+
+    public List<String> uploadMultipleImages(MultipartFile[] files) {
+        List<String> imageUrls = new ArrayList<>();
+        for (MultipartFile file : files) {
+            try {
+                String publicId = "talenthub_images/" + System.currentTimeMillis() + "-" + file.getOriginalFilename();
+                Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap(
+                        "resource_type", "image",
+                        "public_id", publicId,
+                        "folder", "talenthub_images"
+                ));
+                imageUrls.add((String) uploadResult.get("secure_url"));
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to upload multiple images: " + e.getMessage());
+            }
+        }
+        return imageUrls;
+    }
+
+
 }
