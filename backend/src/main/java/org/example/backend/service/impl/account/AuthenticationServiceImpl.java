@@ -61,6 +61,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Account account = accountRepository.getByEmail(email)
                 .orElseThrow(() -> new IllegalIdentifierException("Tài khoản không tồn tại."));
 
+
         // Kiểm tra mật khẩu
         if (!passwordEncoder.matches(request.getPassword(), account.getPassword())) {
             log.info("Wrong password.");
@@ -86,6 +87,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             clientId = client.getId();
         }
 
+        account.setLat(request.getLat());
+        account.setLng(request.getLng());
+        accountRepository.save(account);
+
         // Trả về kết quả
         return AuthenticationDtoResponse.builder()
                 .accessToken(generateAccessToken(account))
@@ -93,6 +98,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .freelancerId(freelancerId)
                 .clientId(clientId)
                 .role(account.getRole())
+                .lat(request.getLat())
+                .lng(request.getLng())
                 .build();
     }
 

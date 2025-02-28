@@ -51,7 +51,8 @@ public class FreelancerDetailServiceImpl implements FreelancerDetailService {
 
         dtoResponse.setEducations(freelancerExist.getEducations());
         dtoResponse.setExperiences(freelancerExist.getExperiences());
-
+        dtoResponse.setLat(freelancerExist.getUser().getAccount().getLat());
+        dtoResponse.setLng(freelancerExist.getUser().getAccount().getLng());
         return dtoResponse;
     }
 }
