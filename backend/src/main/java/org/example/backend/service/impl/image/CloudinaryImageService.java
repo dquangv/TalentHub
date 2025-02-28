@@ -93,4 +93,14 @@ public class CloudinaryImageService {
         }
     }
 
+    public String getImageUrl(String secureUrl) {
+        try {
+            String publicId = extractPublicIdFromUrl(secureUrl);
+            Map resource = cloudinary.api().resource(publicId, ObjectUtils.emptyMap());
+            return (String) resource.get("secure_url");
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to get image: " + e.getMessage());
+        }
+    }
+
 }
