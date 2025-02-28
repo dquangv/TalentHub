@@ -59,13 +59,14 @@ VALUES
 ('Chứng chỉ');
 
 -- pass 123
-INSERT INTO account (email, password, role, created_at, updated_at, status) 
-VALUES 
-('tungvtps27852@fpt.edu.vn', '$2a$10$UBkCqG53UHPUVN/dxDwK6eSWii9jidJ/PMLhZG9PbkqSziKlb.ev6', 'ADMIN', NOW(), NOW(), TRUE),
-('quangvdps36680@fpt.edu.vn', '$2a$10$UBkCqG53UHPUVN/dxDwK6eSWii9jidJ/PMLhZG9PbkqSziKlb.ev6', 'FREELANCER', NOW(), NOW(), TRUE),
-('quangbmps28437@fpt.edu.vn', '$2a$10$UBkCqG53UHPUVN/dxDwK6eSWii9jidJ/PMLhZG9PbkqSziKlb.ev6', 'CLIENT', NOW(), NOW(), TRUE),
-('tiendqpc07858@fpt.edu.vn', '$2a$10$UBkCqG53UHPUVN/dxDwK6eSWii9jidJ/PMLhZG9PbkqSziKlb.ev6', 'FREELANCER', NOW(), NOW(), TRUE),
-('huydqpc07859@fpt.edu.vn', '$2a$10$UBkCqG53UHPUVN/dxDwK6eSWii9jidJ/PMLhZG9PbkqSziKlb.ev6', 'CLIENT', NOW(), NOW(), TRUE);
+INSERT INTO account (email, password, role, created_at, updated_at, status, lat, lng)
+VALUES
+    ('tungvtps27852@fpt.edu.vn', '$2a$10$UBkCqG53UHPUVN/dxDwK6eSWii9jidJ/PMLhZG9PbkqSziKlb.ev6', 'ADMIN', NOW(), NOW(), TRUE, 10.8189, 106.6858),
+    ('quangvdps36680@fpt.edu.vn', '$2a$10$UBkCqG53UHPUVN/dxDwK6eSWii9jidJ/PMLhZG9PbkqSziKlb.ev6', 'FREELANCER', NOW(), NOW(), TRUE, 10.8195, 106.6865),
+    ('quangbmps28437@fpt.edu.vn', '$2a$10$UBkCqG53UHPUVN/dxDwK6eSWii9jidJ/PMLhZG9PbkqSziKlb.ev6', 'CLIENT', NOW(), NOW(), TRUE, 10.8202, 106.6870),
+    ('tiendqpc07858@fpt.edu.vn', '$2a$10$UBkCqG53UHPUVN/dxDwK6eSWii9jidJ/PMLhZG9PbkqSziKlb.ev6', 'FREELANCER', NOW(), NOW(), TRUE, 10.8177, 106.6843),
+    ('huydqpc07859@fpt.edu.vn', '$2a$10$UBkCqG53UHPUVN/dxDwK6eSWii9jidJ/PMLhZG9PbkqSziKlb.ev6', 'CLIENT', NOW(), NOW(), TRUE, 10.8190, 106.6880);
+
 
 INSERT INTO users (first_name, last_name, phone_number, address, title, introduction, image, account_id) 
 VALUES 
