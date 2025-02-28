@@ -98,6 +98,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .freelancerId(freelancerId)
                 .clientId(clientId)
                 .role(account.getRole())
+                .lat(request.getLat())
+                .lng(request.getLng())
                 .build();
     }
 
