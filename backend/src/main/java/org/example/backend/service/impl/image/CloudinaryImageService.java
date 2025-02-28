@@ -26,4 +26,18 @@ public class CloudinaryImageService {
                 "api_secret", apiSecret));
     }
 
+    public String uploadImage(MultipartFile file) {
+        try {
+            String publicId = "talenthub_images/" + System.currentTimeMillis() + "-" + file.getOriginalFilename();
+            Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap(
+                    "resource_type", "image",
+                    "public_id", publicId,
+                    "folder", "talenthub_images"
+            ));
+            return (String) uploadResult.get("secure_url");
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to upload image: " + e.getMessage());
+        }
+    }
+
 }
