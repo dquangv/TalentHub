@@ -20,6 +20,20 @@ public class ImageController {
         return ResponseEntity.ok(url);
     }
 
+    @PostMapping("/upload/multiple")
+    public ResponseEntity<List<String>> uploadMultipleImages(@RequestParam("files") MultipartFile[] files) {
+        List<String> urls = cloudinaryImageService.uploadMultipleImages(files);
+        return ResponseEntity.ok(urls);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<String> updateImage(@RequestParam("oldUrl") String oldUrl,
+                                              @RequestParam("newFile") MultipartFile newFile) {
+        String newUrl = cloudinaryImageService.updateImage(oldUrl, newFile);
+        return ResponseEntity.ok(newUrl);
+    }
+
+
 
 
 }
