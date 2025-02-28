@@ -84,5 +84,13 @@ public class CloudinaryImageService {
         }
     }
 
+    public void deleteImage(String secureUrl) {
+        try {
+            String publicId = extractPublicIdFromUrl(secureUrl);
+            cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to delete image: " + e.getMessage());
+        }
+    }
 
 }
