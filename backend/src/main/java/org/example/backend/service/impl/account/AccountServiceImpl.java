@@ -137,10 +137,6 @@ public class AccountServiceImpl implements AccountService {
                 .map(accountMapper::toResponseDto)
                 .collect(Collectors.toList());
 
-//        if (nearbyUsers.isEmpty()) {
-//            throw new NotFoundException("No users found within the given distance");
-//        }
-
         return nearbyUsers;
     }
 }
