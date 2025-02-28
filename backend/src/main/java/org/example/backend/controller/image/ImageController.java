@@ -33,6 +33,17 @@ public class ImageController {
         return ResponseEntity.ok(newUrl);
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteImage(@RequestParam("url") String url) {
+        cloudinaryImageService.deleteImage(url);
+        return ResponseEntity.ok("Image deleted successfully");
+    }
+
+    @GetMapping("/get")
+    public ResponseEntity<String> getImageUrl(@RequestParam("url") String url) {
+        String imageUrl = cloudinaryImageService.getImageUrl(url);
+        return ResponseEntity.ok(imageUrl);
+    }
 
 
 
