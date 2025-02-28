@@ -15,6 +15,7 @@ public class AuthenticationDTORequest {
     private String email;
     @NotBlank(message = "Password is required")
     private String password;
-
+    private double lat;
+    private double lng;
 }
 

@@ -53,6 +53,8 @@ public class AccountServiceImpl implements AccountService {
         account.setPassword(passwordEncoder.encode(accountRequestDTO.getPassword()));
         account.setRole(accountRequestDTO.getRole());
         account.setStatus(accountRequestDTO.getStatus());
+        account.setLat(accountRequestDTO.getLat());
+        account.setLng(accountRequestDTO.getLng());
 
         Account savedAccount = accountRepository.save(account);
 

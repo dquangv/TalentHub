@@ -14,5 +14,7 @@ public class AuthenticationDtoResponse {
 private Long freelancerId;
 private Long clientId;
    private String accessToken;
+   private double lat;
+   private double lng;
 //    private String refreshToken;
 }
