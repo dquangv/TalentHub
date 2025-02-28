@@ -58,6 +58,31 @@ public class CloudinaryImageService {
         }
         return imageUrls;
     }
+    private String extractPublicIdFromUrl(String secureUrl) {
+        String[] parts = secureUrl.split("/upload/");
+        if (parts.length < 2) {
+            throw new IllegalArgumentException("Invalid secure_url format");
+        }
+        String afterUpload = parts[1];
+        String publicId = afterUpload.replaceAll("^v[0-9]+/", "").split("\\.")[0];
+        return publicId;
+    }
+
+    public String updateImage(String oldSecureUrl, MultipartFile newFile) {
+        try {
+            String oldPublicId = extractPublicIdFromUrl(oldSecureUrl);
+            cloudinary.uploader().destroy(oldPublicId, ObjectUtils.emptyMap());
+            String newPublicId = "talenthub_images/" + System.currentTimeMillis() + "-" + newFile.getOriginalFilename();
+            Map uploadResult = cloudinary.uploader().upload(newFile.getBytes(), ObjectUtils.asMap(
+                    "resource_type", "image",
+                    "public_id", newPublicId,
+                    "folder", "talenthub_images"
+            ));
+            return (String) uploadResult.get("secure_url");
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to update image: " + e.getMessage());
+        }
+    }
 
 
 }
