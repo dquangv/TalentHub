@@ -27,4 +27,7 @@ public class FreelancerDetailDTOResponse {
     private List<String> skills;
     private List<Education> educations;
     private List<Experience> experiences;
+
+    private double lat;
+    private double lng;
 }
