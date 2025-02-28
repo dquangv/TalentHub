@@ -58,6 +58,7 @@ public class CloudinaryImageService {
         }
         return imageUrls;
     }
+
     private String extractPublicIdFromUrl(String secureUrl) {
         String[] parts = secureUrl.split("/upload/");
         if (parts.length < 2) {
