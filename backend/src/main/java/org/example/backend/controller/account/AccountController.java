@@ -26,6 +26,19 @@ import java.util.List;
 public class AccountController {
 
     private final AccountService accountService;
+    @GetMapping("/get-nearby")
+    public ResponseObject<List<AccountDTOResponse>> getNearbyUsers(
+            @RequestParam double lat,
+            @RequestParam double lon,
+            @RequestParam double distanceInMeters) {
+        List<AccountDTOResponse> response = accountService.getNearbyUsers(lat, lon, distanceInMeters);
+        return ResponseObject
+                .<List<AccountDTOResponse>>builder()
+                .message("Get nearby users successful")
+                .status(HttpStatus.OK.value())
+                .data(response)
+                .build();
+    }
 
 
     @GetMapping("/get-all")
