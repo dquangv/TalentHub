@@ -17,16 +17,19 @@ import org.example.backend.repository.FreelancerRepository;
 import org.example.backend.repository.UserRepository;
 import org.example.backend.service.intf.EmailService;
 import org.example.backend.service.intf.account.AccountService;
+import org.example.backend.utils.GeoUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
+
 
     private final AccountRepository accountRepository;
     private final AccountMapper accountMapper;
@@ -41,6 +44,11 @@ public class AccountServiceImpl implements AccountService {
 
     private final EmailService emailService;
 
+
+    @Override
+    public Boolean checkEmail(String email) {
+        return accountRepository.existsByEmail(email);
+    }
     @Transactional
     @Override
     public AccountDTOResponse create(AccountDTORequest accountRequestDTO) {
@@ -118,5 +126,21 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Boolean deleteById(Long id) {
         return null;
+    }
+
+    @Transactional
+    @Override
+    public List<AccountDTOResponse> getNearbyUsers(double lat, double lon, double distanceInMeters) {
+        List<Account> accounts = accountRepository.findAll();
+
+        List<AccountDTOResponse> nearbyUsers = accounts.stream()
+                .filter(account -> {
+                    double distance = GeoUtils.calculateDistance(lat, lon, account.getLat(), account.getLng());
+                    return distance <= distanceInMeters;
+                })
+                .map(accountMapper::toResponseDto)
+                .collect(Collectors.toList());
+
+        return nearbyUsers;
     }
 }
