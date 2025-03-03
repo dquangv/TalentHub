@@ -3,16 +3,13 @@ package org.example.backend.controller.account;
 import com.nimbusds.jose.JOSEException;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.ResponseObject;
-import org.example.backend.dto.request.account.AccountDTORequest;
-import org.example.backend.dto.request.account.AuthenticationDTORequest;
-import org.example.backend.dto.request.account.IntrospectDTORequest;
-import org.example.backend.dto.response.account.RefreshTokenDTOResponse;
-import org.example.backend.dto.response.account.AccountDTOResponse;
-import org.example.backend.dto.response.account.AuthenticationDtoResponse;
-import org.example.backend.dto.response.account.IntrospectDtoResponse;
+import org.example.backend.dto.request.account.*;
+import org.example.backend.dto.response.account.*;
 import org.example.backend.mapper.Account.AccountMapper;
+import org.example.backend.service.intf.EmailService;
 import org.example.backend.service.intf.account.AccountService;
 import org.example.backend.service.intf.account.AuthenticationService;
+import org.example.backend.service.intf.account.PasswordResetTokenService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +23,8 @@ import java.util.List;
 public class AccountController {
 
     private final AccountService accountService;
+    private final EmailService emailService;
+    private final PasswordResetTokenService passwordResetTokenService;
     @GetMapping("/get-nearby")
     public ResponseObject<List<AccountDTOResponse>> getNearbyUsers(
             @RequestParam double lat,
@@ -40,6 +39,45 @@ public class AccountController {
                 .build();
     }
 
+    @PostMapping("/reset-password")
+    public ResponseObject<PasswordResetTokenDTOResponse> resetPassword(@RequestBody PasswordResetTokenDTORequest passwordResetTokenDTORequest) {
+        return ResponseObject.<PasswordResetTokenDTOResponse>builder().status(HttpStatus.OK.value())
+                .message("Reset password successfully")
+                .data(passwordResetTokenService.resetPassword(passwordResetTokenDTORequest)).build()
+        ;
+    }
+
+    @PostMapping("/verify-code")
+    public ResponseObject<PasswordResetTokenDTOResponse> verifyCode(@RequestBody VerifyCodeDTORequest verifyCodeDTORequest) {
+        return ResponseObject.<PasswordResetTokenDTOResponse>builder().status(HttpStatus.OK.value())
+                .message("Reset password successfully")
+                .data(passwordResetTokenService.checkOtp(verifyCodeDTORequest)).build()
+                ;
+    }
+
+    @PostMapping("/send-otp")
+    public ResponseObject<String> sendOtp(@RequestParam String email) {
+        if (accountService.checkEmail(email)) {
+            boolean emailSent = emailService.sendOtpEmail(email);
+            if (emailSent) {
+                return ResponseObject.<String>builder()
+                        .message("OTP sent successfully")
+                        .status(HttpStatus.OK.value())
+                        .data("OTP sent successfully to " + email)
+                        .build();
+            } else {
+                return ResponseObject.<String>builder()
+                        .message("Failed to send OTP")
+                        .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                        .build();
+            }
+        } else {
+            return ResponseObject.<String>builder()
+                    .message("Email not found")
+                    .status(HttpStatus.NOT_FOUND.value())
+                    .build();
+        }
+    }
 
     @GetMapping("/get-all")
     public ResponseObject<List<AccountDTOResponse>> getAll() {
