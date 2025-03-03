@@ -17,6 +17,8 @@ public interface FreelancerJobMapper extends BaseMapper<FreelancerJob, Freelance
     @Mapping(expression = "java(mapPosition(freelancerJob))",target = "position")
     @Mapping(source = "appliedDate", target = "appliedDate")
     @Mapping(source = "status", target = "status")
+    @Mapping(source = "freelancer.id", target = "freelancerId")
+    @Mapping(source = "job.id", target = "jobId")
     @Mapping(source = "freelancerReview.rating", target = "rating", defaultValue = "0.0")
     ApplicantResponseDTO toResponseDto(FreelancerJob freelancerJob);
 
