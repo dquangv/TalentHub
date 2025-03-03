@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
 
+
     private final AccountRepository accountRepository;
     private final AccountMapper accountMapper;
 
@@ -44,7 +45,10 @@ public class AccountServiceImpl implements AccountService {
     private final EmailService emailService;
 
 
-
+    @Override
+    public Boolean checkEmail(String email) {
+        return accountRepository.existsByEmail(email);
+    }
     @Transactional
     @Override
     public AccountDTOResponse create(AccountDTORequest accountRequestDTO) {
