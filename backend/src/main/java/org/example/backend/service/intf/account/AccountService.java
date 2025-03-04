@@ -3,6 +3,7 @@ package org.example.backend.service.intf.account;
 import com.nimbusds.jose.JOSEException;
 import org.example.backend.dto.request.account.AccountDTORequest;
 import org.example.backend.dto.response.account.AccountDTOResponse;
+import org.example.backend.dto.response.account.AdminAccountDTOResponse;
 import org.example.backend.dto.response.account.AuthenticationDtoResponse;
 import org.example.backend.entity.child.account.Account;
 import org.example.backend.enums.RoleUser;
@@ -19,6 +20,10 @@ public interface AccountService extends BaseService<AccountDTORequest, AccountDT
     public AuthenticationDtoResponse handleOAuth2Login(OAuth2User oauthUser) throws JOSEException;
     public AuthenticationDtoResponse updateAccountRole(String email, RoleUser role, double lat, double lng) throws JOSEException;
     Boolean checkEmail (String email);
+    public List<AdminAccountDTOResponse> getAllByAdmin();
     public List<AccountDTOResponse> getNearbyUsers(double lat, double lon, double distanceInMeters);
+    Boolean banAccount(String email);
+    Boolean unBanAccount(String email);
+
 }
 

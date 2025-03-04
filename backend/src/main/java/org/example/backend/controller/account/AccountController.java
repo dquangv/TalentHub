@@ -39,6 +39,46 @@ public class AccountController {
     private final AccountService accountService;
     private final EmailService emailService;
     private final PasswordResetTokenService passwordResetTokenService;
+
+    @GetMapping("/admin")
+    public ResponseObject<List<AdminAccountDTOResponse>> getAllAccountByAdmin() {
+        List<AdminAccountDTOResponse> response = accountService.getAllByAdmin();
+        return ResponseObject
+                .<List<AdminAccountDTOResponse>>builder()
+                .message("Get all accounts successful")
+                .status(HttpStatus.OK.value())
+                .data(response)
+                .build();
+    }
+
+    @PostMapping("/admin/ban")
+    public ResponseObject<StatusAccountDTOResponse> banAccount(@RequestParam String email) {
+        Boolean response = accountService.banAccount(email);
+        return ResponseObject
+                .<StatusAccountDTOResponse>builder()
+                .message("Ban account")
+                .status(HttpStatus.OK.value())
+                .data(StatusAccountDTOResponse.builder()
+                        .status(response ? "Ban account successful" : "Ban account failed")
+                        .build())
+                .build();
+    }
+
+    @PostMapping("/admin/unban")
+    public ResponseObject<StatusAccountDTOResponse> unBanAccount(@RequestParam String email) {
+        Boolean response = accountService.unBanAccount(email);
+        return ResponseObject
+                .<StatusAccountDTOResponse>builder()
+                .message("UnBan account")
+                .status(HttpStatus.OK.value())
+                .data(StatusAccountDTOResponse.builder()
+                        .status(response ? "Unban account successful" : "Unban account failed")
+                        .build())
+                .build();
+    }
+
+
+
     @GetMapping("/get-nearby")
     public ResponseObject<List<AccountDTOResponse>> getNearbyUsers(
             @RequestParam double lat,

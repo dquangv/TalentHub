@@ -7,6 +7,7 @@ import org.example.backend.dto.response.BannerDTOResponse;
 import org.example.backend.service.intf.BannerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -17,13 +18,48 @@ public class BannerController {
 
     private final BannerService bannerService;
 
+
     @PostMapping
-    public ResponseObject<BannerDTOResponse> createBanner(@RequestBody BannerDTORequest bannerDTORequest) {
+    public ResponseObject<BannerDTOResponse> createBanner(
+            @RequestParam String title,
+            @RequestParam String status,
+            @RequestParam String vendor,
+            @RequestParam MultipartFile image) {
+
+        BannerDTORequest bannerDTORequest = new BannerDTORequest();
+        bannerDTORequest.setTitle(title);
+        bannerDTORequest.setStatus(status);
+        bannerDTORequest.setVendor(vendor);
+        bannerDTORequest.setImage(image);
         BannerDTOResponse createdBanner = bannerService.create(bannerDTORequest);
+
         return ResponseObject.<BannerDTOResponse>builder()
                 .message("Banner created successfully")
                 .status(HttpStatus.CREATED.value())
                 .data(createdBanner)
+                .build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseObject<BannerDTOResponse> updateBanner(
+            @PathVariable("id") Long id,
+            @RequestParam String title,
+            @RequestParam String status,
+            @RequestParam String vendor,
+            @RequestParam(required = false) MultipartFile image) {
+
+        BannerDTORequest bannerDTORequest = new BannerDTORequest();
+        bannerDTORequest.setTitle(title);
+        bannerDTORequest.setStatus(status);
+        bannerDTORequest.setVendor(vendor);
+        bannerDTORequest.setImage(image);
+
+        BannerDTOResponse updatedBanner = bannerService.update(id, bannerDTORequest);
+
+        return ResponseObject.<BannerDTOResponse>builder()
+                .message("Banner updated successfully")
+                .status(HttpStatus.OK.value())
+                .data(updatedBanner)
                 .build();
     }
 
