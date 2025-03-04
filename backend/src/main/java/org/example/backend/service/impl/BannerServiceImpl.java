@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.BannerDTORequest;
 import org.example.backend.dto.response.BannerDTOResponse;
 import org.example.backend.entity.child.Banner;
+import org.example.backend.exception.NotFoundException;
 import org.example.backend.repository.BannerRepository;
 import org.example.backend.service.intf.BannerService;
+import org.example.backend.service.intf.image.CloudinaryImageService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,12 +19,14 @@ import java.util.stream.Collectors;
 public class BannerServiceImpl implements BannerService {
 
     private final BannerRepository bannerRepository;
-
+    private final CloudinaryImageService cloudinaryImageService;
     @Override
     public BannerDTOResponse create(BannerDTORequest bannerDTORequest) {
+        String imageUrl = cloudinaryImageService.uploadImage(bannerDTORequest.getImage());
+
         Banner banner = new Banner();
         banner.setTitle(bannerDTORequest.getTitle());
-        banner.setImage(bannerDTORequest.getImage());
+        banner.setImage(imageUrl);
         banner.setStatus(bannerDTORequest.getStatus());
         banner.setVendor(bannerDTORequest.getVendor());
 
@@ -30,6 +34,26 @@ public class BannerServiceImpl implements BannerService {
 
         return toDTO(savedBanner);
     }
+
+    @Override
+    public BannerDTOResponse update(Long id, BannerDTORequest bannerDTORequest) {
+        Banner existingBanner = bannerRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Banner not found"));
+
+        if (bannerDTORequest.getImage() != null && !bannerDTORequest.getImage().isEmpty()) {
+            String newImageUrl = cloudinaryImageService.uploadImage(bannerDTORequest.getImage());
+            existingBanner.setImage(newImageUrl);
+        }
+
+        existingBanner.setTitle(bannerDTORequest.getTitle());
+        existingBanner.setStatus(bannerDTORequest.getStatus());
+        existingBanner.setVendor(bannerDTORequest.getVendor());
+
+        Banner updatedBanner = bannerRepository.save(existingBanner);
+
+        return toDTO(updatedBanner);
+    }
+
 
     @Override
     public Optional<BannerDTOResponse> getById(Long bannerId) {
@@ -64,4 +88,6 @@ public class BannerServiceImpl implements BannerService {
         response.setUpdatedAt(banner.getUpdatedAt() != null ? banner.getUpdatedAt().toString() : null);
         return response;
     }
+
+
 }
