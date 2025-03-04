@@ -225,6 +225,8 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
                 .lat(lat)
                 .lng(lng)
                 .build();
+    }
+
     @Override
     public List<AccountDTOResponse> getNearbyUsers(double lat, double lon, double distanceInMeters) {
         List<Account> accounts = accountRepository.findAll();
