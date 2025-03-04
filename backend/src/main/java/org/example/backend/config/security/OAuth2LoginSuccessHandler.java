@@ -16,6 +16,7 @@ import org.example.backend.service.impl.account.AccountServiceImpl;
 import org.example.backend.service.impl.account.AuthenticationServiceImpl;
 import org.example.backend.service.intf.account.AccountService;
 import org.example.backend.service.intf.account.AuthenticationService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -31,6 +32,9 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
     private final AccountRepository accountRepository;
     private final AuthenticationServiceImpl authenticationService;
     private final AccountServiceImpl accountServiceImpl;
+    @Value("${ui.url}")
+    private String urlUI;
+
 
     //http://localhost:8080/oauth2/authorization/google
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -46,14 +50,22 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
             try {
                 AuthenticationDtoResponse authenticationDtoResponse = accountServiceImpl.handleOAuth2Login(oauthUser);
 
-                new ObjectMapper().writeValue(response.getOutputStream(), authenticationDtoResponse);
+//                new ObjectMapper().writeValue(response.getOutputStream(), authenticationDtoResponse);
+                String redirectUrl = urlUI + authenticationDtoResponse.getAccessToken()
+                        + "&role=" + authenticationDtoResponse.getRole()
+                        + "&clientId=" + authenticationDtoResponse.getClientId()
+                        + "&freelancerId=" + authenticationDtoResponse.getFreelancerId()
+                        + "&userId=" + authenticationDtoResponse.getUserId();
+                response.sendRedirect(redirectUrl);
             } catch (JOSEException e) {
                 throw new RuntimeException(e);
             }
         } else {
             AccountDTOResponse accountDTOResponse = accountServiceImpl.handleOAuth2Register(oauthUser);
 
-            new ObjectMapper().writeValue(response.getOutputStream(), accountDTOResponse);
+//            new ObjectMapper().writeValue(response.getOutputStream(), accountDTOResponse);
+            String redirectUrl = urlUI + "/choose-role?email=" + email;
+            response.sendRedirect(redirectUrl);
         }
     }
 }
