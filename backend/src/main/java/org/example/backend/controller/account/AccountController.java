@@ -5,17 +5,31 @@ import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.ResponseObject;
 import org.example.backend.dto.request.account.*;
 import org.example.backend.dto.response.account.*;
+import org.example.backend.dto.request.account.AccountDTORequest;
+import org.example.backend.dto.request.account.AuthenticationDTORequest;
+import org.example.backend.dto.request.account.IntrospectDTORequest;
+import org.example.backend.dto.response.account.RefreshTokenDTOResponse;
+import org.example.backend.dto.response.account.AccountDTOResponse;
+import org.example.backend.dto.response.account.AuthenticationDtoResponse;
+import org.example.backend.dto.response.account.IntrospectDtoResponse;
+import org.example.backend.enums.RoleUser;
+import org.example.backend.exception.BadRequestException;
 import org.example.backend.mapper.Account.AccountMapper;
 import org.example.backend.service.intf.EmailService;
 import org.example.backend.service.intf.account.AccountService;
 import org.example.backend.service.intf.account.AuthenticationService;
 import org.example.backend.service.intf.account.PasswordResetTokenService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.text.ParseException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -154,5 +168,14 @@ public class AccountController {
                         .build());
     }
 
+    @PostMapping("/choose-role")
+    public ResponseEntity<ResponseObject<AuthenticationDtoResponse>> chooseRole(@RequestParam String email, @RequestParam RoleUser role, @RequestParam double lat, @RequestParam double lng) throws JOSEException {
+        AuthenticationDtoResponse authenticationDtoResponse = accountService.updateAccountRole(email, role, lat, lng);
 
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseObject.<AuthenticationDtoResponse>builder()
+                .message("Successfully choose role for user")
+                .status(200)
+                .data(authenticationDtoResponse)
+                .build());
+    }
 }

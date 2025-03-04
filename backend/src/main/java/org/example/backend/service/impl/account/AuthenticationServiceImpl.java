@@ -179,7 +179,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 ////        }
 ////    }
 
-    private String generateAccessToken(Account account) throws JOSEException {
+    public String generateAccessToken(Account account) throws JOSEException {
         RoleUser roleName = account.getRole();
         String userName = account.getEmail();
 
@@ -204,6 +204,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         jwsObject.sign(new MACSigner(SECRET_KEY.getBytes()));
         return jwsObject.serialize();
     }
+
     private String generateRefreshToken(Account account) throws JOSEException {
         String userName = account.getEmail();
 
