@@ -2,9 +2,9 @@ package org.example.backend.controller.job;
 
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.ResponseObject;
-import org.example.backend.dto.response.account.AccountDTOResponse;
+import org.example.backend.dto.request.job.JobAdminDTOResponse;
 import org.example.backend.dto.response.job.*;
-import org.example.backend.entity.child.job.FreelancerJob;
+import org.example.backend.entity.child.job.Job;
 import org.example.backend.service.intf.job.FreelancerJobService;
 import org.example.backend.service.intf.job.JobService;
 import org.springframework.http.HttpStatus;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,6 +34,16 @@ public class JobController {
                 .build();
     }
 
+    @GetMapping("/admin")
+    public ResponseObject<List<JobAdminDTOResponse>> findAllAdminJobs() {
+        List<JobAdminDTOResponse> jobs = jobService.getAllAdmin();
+        System.out.println(jobs.stream().count());
+        return ResponseObject.<List<JobAdminDTOResponse>>builder()
+                .message("Find all job by role admin")
+                .status(HttpStatus.OK.value())
+                .data(jobs)
+                .build();
+    }
     @GetMapping("/detail-job/{id}")
     public ResponseObject<DetailJobDTOResponse> getDetailJob(@PathVariable Long id) {
         DetailJobDTOResponse detailJobDTO = jobService.getDetailJobById(id).orElse(null);
