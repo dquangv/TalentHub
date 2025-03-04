@@ -20,4 +20,5 @@ public class ClientDTOResponse {
     private int jobsCount;
     private String email;
     private String address;
+    private String image;
 }
