@@ -1,6 +1,7 @@
 package org.example.backend.entity.child.job;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.backend.entity.AbstractEntity;
 import org.example.backend.entity.child.account.client.Client;
-import org.example.backend.enums.ProgressJob;
+import org.example.backend.enums.StatusFreelancerJob;
 import org.example.backend.enums.StatusJob;
 import org.example.backend.enums.TypePayment;
 import org.hibernate.annotations.CreationTimestamp;
@@ -91,4 +92,9 @@ public class Job extends AbstractEntity<Long> {
     @OneToMany(mappedBy = "job", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<JobSkill> jobSkills;
+
+    public int getQuantity() {
+        return freelancerJobs != null ? freelancerJobs.size() : 0;
+    }
+
 }

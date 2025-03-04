@@ -1,6 +1,7 @@
 package org.example.backend.service.impl.job;
 
 import lombok.RequiredArgsConstructor;
+import org.example.backend.dto.request.job.JobAdminDTOResponse;
 import org.example.backend.dto.request.job.JobDTORequest;
 import org.example.backend.dto.response.job.*;
 import org.example.backend.entity.child.account.client.Company;
@@ -8,10 +9,7 @@ import org.example.backend.entity.child.job.FreelancerJob;
 import org.example.backend.entity.child.job.Job;
 import org.example.backend.enums.StatusFreelancerJob;
 import org.example.backend.exception.BadRequestException;
-import org.example.backend.mapper.job.ApplyJobsMapper;
-import org.example.backend.mapper.job.DetailJobMapper;
-import org.example.backend.mapper.job.JobMapper;
-import org.example.backend.mapper.job.PostedJobsMapper;
+import org.example.backend.mapper.job.*;
 import org.example.backend.repository.CompanyRepository;
 import org.example.backend.repository.FreelancerJobRepository;
 import org.example.backend.repository.JobRepository;
@@ -42,7 +40,7 @@ public class JobServiceImpl implements JobService {
     private final ApplyJobsMapper applyJobsMapper;
 
     private final PostedJobsMapper postedJobsMapper;
-
+    private final JobAdminMapper jobAdminMapper;
     @Override
     public JobDTOResponse create(JobDTORequest jobDTORequest) {
         return null;
@@ -56,6 +54,20 @@ public class JobServiceImpl implements JobService {
     @Override
     public List<JobDTOResponse> getAll() {
         return List.of();
+    }
+    public JobAdminDTOResponse getJobAdminDTOResponse(Job job) {
+        Long appliedQuantity = freelancerJobRepository.countByJobAndStatus(job, StatusFreelancerJob.Applied);
+        Long cancelledQuantity = freelancerJobRepository.countByJobAndStatus(job, StatusFreelancerJob.Cancelled);
+        Long inProgressQuantity = freelancerJobRepository.countByJobAndStatus(job, StatusFreelancerJob.InProgress);
+        Long viewedQuantity = freelancerJobRepository.countByJobAndStatus(job, StatusFreelancerJob.Viewed);
+
+        return jobAdminMapper.toResponseDto(job, appliedQuantity, cancelledQuantity,
+                inProgressQuantity, viewedQuantity);
+    }
+
+    @Override
+    public List<JobAdminDTOResponse> getAllAdmin() {
+        return jobRepository.findAll().stream().map(this::getJobAdminDTOResponse).toList();
     }
 
     @Override
