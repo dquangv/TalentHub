@@ -16,4 +16,8 @@ public class ClientDTOResponse {
     private Double toPrice;
     private String typePrice;
     private Long userId;
+    private int appointmentsCount;
+    private int jobsCount;
+    private String email;
+    private String address;
 }
