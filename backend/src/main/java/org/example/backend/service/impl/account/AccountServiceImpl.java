@@ -231,6 +231,8 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
         return AuthenticationDtoResponse.builder()
                 .accessToken(authenticationServiceImpl.generateAccessToken(account.get()))
                 .userId(user.getId())
+                .freelancerId(authenticationDtoResponse.getFreelancerId())
+                .clientId(authenticationDtoResponse.getClientId())
                 .role(account.get().getRole())
                 .lat(lat)
                 .lng(lng)
