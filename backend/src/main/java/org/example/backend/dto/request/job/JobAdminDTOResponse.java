@@ -18,13 +18,6 @@ import java.util.List;
 @NoArgsConstructor
 public class JobAdminDTOResponse {
     private String title;
-    private String scope;
-    private BigDecimal hourWork;
-    private Long duration;
-    private Boolean jobOpportunity;
-    private BigDecimal fromPrice;
-    private BigDecimal toPrice;
-    private String typePrice;
     private StatusJob status;
     private String clientEmail;
     private String categoryName;
