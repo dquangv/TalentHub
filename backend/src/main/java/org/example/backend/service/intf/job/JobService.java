@@ -1,5 +1,6 @@
 package org.example.backend.service.intf.job;
 
+import org.example.backend.dto.request.job.JobAdminDTOResponse;
 import org.example.backend.dto.request.job.JobDTORequest;
 import org.example.backend.dto.response.job.ApplyJobsDTOResponse;
 import org.example.backend.dto.response.job.DetailJobDTOResponse;
@@ -15,4 +16,5 @@ public interface JobService extends BaseService<JobDTORequest, JobDTOResponse, L
     Optional<DetailJobDTOResponse> getDetailJobById(Long id);
     List<ApplyJobsDTOResponse> getApplyJobs(Long freeLancerId);
    List<PostJobsDTOResponse> getPostedJobs(Long clientId);
+     List<JobAdminDTOResponse> getAllAdmin();
 }

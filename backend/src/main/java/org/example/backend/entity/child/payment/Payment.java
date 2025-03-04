@@ -27,7 +27,7 @@ public class Payment extends AbstractEntity<Long> {
 //    @JoinColumn(name = "e_wallet_account_id") // Khóa ngoại trỏ đến EWalletAccount
 //    private EWalletAccount eWalletAccount;
 
-    @ManyToOne
-    @JoinColumn(name = "account_id") // Khóa ngoại trỏ đến Account
+    @OneToOne
+    @JoinColumn(name = "account_id", unique = true)
     private Account account;
 }
