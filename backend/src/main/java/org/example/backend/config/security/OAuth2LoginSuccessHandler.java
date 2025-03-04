@@ -51,11 +51,13 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
                 AuthenticationDtoResponse authenticationDtoResponse = accountServiceImpl.handleOAuth2Login(oauthUser);
 
 //                new ObjectMapper().writeValue(response.getOutputStream(), authenticationDtoResponse);
-                String redirectUrl = urlUI + authenticationDtoResponse.getAccessToken()
+                String redirectUrl = urlUI + "/oauth2-callback?accessToken=" + authenticationDtoResponse.getAccessToken()
                         + "&role=" + authenticationDtoResponse.getRole()
                         + "&clientId=" + authenticationDtoResponse.getClientId()
                         + "&freelancerId=" + authenticationDtoResponse.getFreelancerId()
-                        + "&userId=" + authenticationDtoResponse.getUserId();
+                        + "&userId=" + authenticationDtoResponse.getUserId()
+                        + "&lat=" + authenticationDtoResponse.getLat()
+                        +"&lng=" + authenticationDtoResponse.getLng();
                 response.sendRedirect(redirectUrl);
             } catch (JOSEException e) {
                 throw new RuntimeException(e);
