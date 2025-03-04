@@ -3,6 +3,7 @@ package org.example.backend.service.impl.account;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.account.AccountDTORequest;
 import org.example.backend.dto.response.account.AccountDTOResponse;
+import org.example.backend.dto.response.account.AdminAccountDTOResponse;
 import org.example.backend.entity.child.account.Account;
 import org.example.backend.entity.child.account.User;
 import org.example.backend.entity.child.account.client.Client;
@@ -11,6 +12,7 @@ import org.example.backend.enums.EmailType;
 import org.example.backend.enums.RoleUser;
 import org.example.backend.exception.NotFoundException;
 import org.example.backend.mapper.Account.AccountMapper;
+import org.example.backend.mapper.Account.AdminAccountMapper;
 import org.example.backend.repository.AccountRepository;
 import org.example.backend.repository.ClientRepository;
 import org.example.backend.repository.FreelancerRepository;
@@ -122,6 +124,14 @@ public class AccountServiceImpl implements AccountService {
         }
         return accountMapper.toResponseDtoList(accounts);
     }
+    private final AdminAccountMapper adminAccountMapper;
+    @Override
+    public List<AdminAccountDTOResponse> getAllByAdmin() {
+        List<Account> accounts = accountRepository.findAll();
+
+
+        return accounts.stream().map(adminAccountMapper::toResponseDTO).toList();
+    }
 
     @Override
     public Boolean deleteById(Long id) {
@@ -142,5 +152,29 @@ public class AccountServiceImpl implements AccountService {
                 .collect(Collectors.toList());
 
         return nearbyUsers;
+    }
+
+    @Override
+    public Boolean banAccount(String email) {
+        Optional<Account> account = accountRepository.findByEmail(email);
+        if (account.isPresent()) {
+            Account foundAccount = account.get();
+            foundAccount.setStatus(false);
+            accountRepository.save(foundAccount);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Boolean unBanAccount(String email) {
+        Optional<Account> account = accountRepository.findByEmail(email);
+        if (account.isPresent()) {
+            Account foundAccount = account.get();
+            foundAccount.setStatus(true);
+            accountRepository.save(foundAccount);
+            return true;
+        }
+        return false;
     }
 }
