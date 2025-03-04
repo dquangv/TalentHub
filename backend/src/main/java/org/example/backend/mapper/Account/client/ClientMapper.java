@@ -13,5 +13,6 @@ public interface ClientMapper {
     @Mapping(source = "user.id", target = "userId")
     @Mapping(source="user.account.email", target = "email")
     @Mapping(source="user.address", target = "address")
+    @Mapping(source="user.image", target = "image")
     ClientDTOResponse toResponseDto(Client client);
 }
