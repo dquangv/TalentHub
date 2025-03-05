@@ -17,6 +17,8 @@ import org.example.backend.service.impl.account.AuthenticationServiceImpl;
 import org.example.backend.service.intf.account.AccountService;
 import org.example.backend.service.intf.account.AuthenticationService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -40,7 +42,18 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
         OAuth2User oauthUser = (OAuth2User) authentication.getPrincipal();
-        String email = oauthUser.getAttribute("email");
+
+        String registrationId = ((OAuth2AuthenticationToken) SecurityContextHolder.getContext().getAuthentication())
+                .getAuthorizedClientRegistrationId();
+
+        String email = null;
+
+        if ("google".equals(registrationId)) {
+            email = oauthUser.getAttribute("email");
+        } else if ("facebook".equals(registrationId)) {
+            email = oauthUser.getAttribute("id") + "@facebook.com";
+        }
+
         Optional<Account> account = accountRepository.findByEmail(email);
 
         response.setContentType("application/json");
@@ -50,25 +63,24 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
             try {
                 AuthenticationDtoResponse authenticationDtoResponse = accountServiceImpl.handleOAuth2Login(oauthUser);
 
-//                new ObjectMapper().writeValue(response.getOutputStream(), authenticationDtoResponse);
                 String redirectUrl = urlUI + "/oauth2-callback?accessToken=" + authenticationDtoResponse.getAccessToken()
                         + "&role=" + authenticationDtoResponse.getRole()
                         + "&clientId=" + authenticationDtoResponse.getClientId()
                         + "&freelancerId=" + authenticationDtoResponse.getFreelancerId()
                         + "&userId=" + authenticationDtoResponse.getUserId()
                         + "&lat=" + authenticationDtoResponse.getLat()
-                        +"&lng=" + authenticationDtoResponse.getLng();
+                        + "&lng=" + authenticationDtoResponse.getLng();
                 response.sendRedirect(redirectUrl);
             } catch (JOSEException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("Error generating JWT token", e);
             }
         } else {
             AccountDTOResponse accountDTOResponse = accountServiceImpl.handleOAuth2Register(oauthUser);
 
-//            new ObjectMapper().writeValue(response.getOutputStream(), accountDTOResponse);
-            String redirectUrl = urlUI + "/choose-role?email=" + email;
+            String redirectUrl = urlUI + "/choose-role?email=" + accountDTOResponse.getEmail();
             response.sendRedirect(redirectUrl);
         }
     }
+
 }
 
