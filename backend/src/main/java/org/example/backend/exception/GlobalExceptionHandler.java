@@ -45,6 +45,7 @@ public class GlobalExceptionHandler {
     // Xử lý Exception tổng quát
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGlobalException(Exception ex, WebRequest request) {
+        ex.printStackTrace();
         Map<String, Object> errorDetails = new HashMap<>();
         errorDetails.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
         errorDetails.put("message", "Internal Server Error: " + ex.getMessage());

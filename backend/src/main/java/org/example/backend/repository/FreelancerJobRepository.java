@@ -1,6 +1,7 @@
 package org.example.backend.repository;
 
 import org.example.backend.entity.child.job.FreelancerJob;
+import org.example.backend.entity.child.job.Job;
 import org.example.backend.enums.StatusFreelancerJob;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -36,6 +37,8 @@ public interface FreelancerJobRepository extends JpaRepository<FreelancerJob, Lo
             "where fj.status = :status and fj.freelancer.id = :freelancerId")
     List<FreelancerJob> getApplyJobs(@Param("freelancerId") Long freelancerId, @Param("status") StatusFreelancerJob status);
 
+    @Query("SELECT COUNT(f) FROM FreelancerJob f WHERE f.job = :job AND f.status = :status")
+    Long countByJobAndStatus(Job job, StatusFreelancerJob status);
 
 
 //  @Query("select fj.id," +
