@@ -1,11 +1,14 @@
 package org.example.backend.controller.image;
 import org.example.backend.service.impl.image.CloudinaryImageServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/images")
@@ -15,10 +18,16 @@ public class ImageController {
     private CloudinaryImageServiceImpl cloudinaryImageService;
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Map<String, Object>> uploadImage(@RequestParam("file") MultipartFile file) {
         String url = cloudinaryImageService.uploadImage(file);
-        return ResponseEntity.ok(url);
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Upload successful");
+        response.put("url", url);
+        response.put("status", HttpStatus.OK.value());
+
+        return ResponseEntity.ok(response);
     }
+
 
     @PostMapping("/upload/multiple")
     public ResponseEntity<List<String>> uploadMultipleImages(@RequestParam("files") MultipartFile[] files) {
