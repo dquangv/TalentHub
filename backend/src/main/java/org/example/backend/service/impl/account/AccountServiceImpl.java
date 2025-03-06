@@ -24,7 +24,9 @@ import org.example.backend.service.intf.account.AccountService;
 import org.example.backend.service.intf.account.AuthenticationService;
 import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.example.backend.utils.GeoUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Service;
@@ -143,16 +145,27 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
         return null;
     }
 
-    @Transactional
     public AccountDTOResponse handleOAuth2Register(OAuth2User oauthUser) {
-        String email = oauthUser.getAttribute("email");
+        System.out.println("oauth2 " + oauthUser.toString());
+
+        String registrationId = ((OAuth2AuthenticationToken) SecurityContextHolder.getContext().getAuthentication()).getAuthorizedClientRegistrationId();
+        System.out.println("OAuth2 provider: " + registrationId);
+
+        String email = null;
         String firstName = oauthUser.getAttribute("given_name");
         String lastName = oauthUser.getAttribute("family_name");
         String pictureUrl = oauthUser.getAttribute("picture");
 
+        if ("google".equals(registrationId)) {
+            email = oauthUser.getAttribute("email");
+            System.out.println("Google login, using email: " + email);
+        } else if ("facebook".equals(registrationId)) {
+            email = oauthUser.getAttribute("id") + "@facebook.com";
+            System.out.println("Facebook login, using Facebook ID as email: " + email);
+        }
+
         Account newAccount = new Account();
         newAccount.setEmail(email);
-//        newAccount.setRole(RoleUser.FREELANCER);
         newAccount.setStatus(true);
         accountRepository.save(newAccount);
 
@@ -162,17 +175,28 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
         user.setFirstName(firstName);
         user.setLastName(lastName);
         userRepository.save(user);
+//        emailService.sendEmail(email, EmailType.REGISTER_SUCCESS, "Account is registered");
 
-        emailService.sendEmail(email, EmailType.REGISTER_SUCCESS, "Account is registered");
         return accountMapper.toResponseDto(newAccount);
     }
 
+
     @Transactional
     public AuthenticationDtoResponse handleOAuth2Login(OAuth2User oauthUser) throws JOSEException {
-        String email = oauthUser.getAttribute("email");
+        String registrationId = ((OAuth2AuthenticationToken) SecurityContextHolder.getContext().getAuthentication()).getAuthorizedClientRegistrationId();
+        System.out.println("OAuth2 provider: " + registrationId);
 
-        Account account = accountRepository.getByEmail(email).get();
-        User user = userRepository.findById(account.getId()).get();
+        String email = null;
+
+        if ("google".equals(registrationId)) {
+            email = oauthUser.getAttribute("email");
+        } else if ("facebook".equals(registrationId)) {
+            email = oauthUser.getAttribute("id") + "@facebook.com";
+        }
+
+        Account account = accountRepository.getByEmail(email).orElseThrow(() -> new IllegalArgumentException("Không tìm thấy account với email này"));
+        User user = userRepository.findById(account.getId()).orElseThrow(() -> new IllegalArgumentException("Không tìm thấy user với account này"));
+
         Long freelancerId = null;
         Long clientId = null;
 
@@ -198,6 +222,7 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
                 .lng(account.getLng())
                 .build();
     }
+
 
     @Override
     public AuthenticationDtoResponse updateAccountRole(String email, RoleUser role, double lat, double lng) throws JOSEException {
@@ -231,6 +256,8 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
         return AuthenticationDtoResponse.builder()
                 .accessToken(authenticationServiceImpl.generateAccessToken(account.get()))
                 .userId(user.getId())
+                .freelancerId(authenticationDtoResponse.getFreelancerId())
+                .clientId(authenticationDtoResponse.getClientId())
                 .role(account.get().getRole())
                 .lat(lat)
                 .lng(lng)
