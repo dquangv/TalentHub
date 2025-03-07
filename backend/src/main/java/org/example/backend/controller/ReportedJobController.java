@@ -54,4 +54,10 @@ public class ReportedJobController {
         List<ReportedJobDTOResponse> reportedJobs = reportedJobService.getByJobId(jobId);
         return ResponseEntity.ok(reportedJobs);
     }
+
+    @GetMapping("/by-freelancer/{freelancerId}")
+    public ResponseEntity<List<ReportedJobDTOResponse>> getReportedJobsByFreelancerId(@PathVariable Long freelancerId) {
+        List<ReportedJobDTOResponse> reportedJobs = reportedJobService.getByFreelancerId(freelancerId);
+        return ResponseEntity.ok(reportedJobs);
+    }
 }
