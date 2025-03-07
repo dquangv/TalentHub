@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface ReportedJobRepository extends JpaRepository<ReportedJob, Long> {
     List<ReportedJob> findByJobId(Long jobId);
+    List<ReportedJob> findByFreelancerId(Long freelancerId);
 }
