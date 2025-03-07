@@ -181,4 +181,13 @@ public class GroupApiDocs {
                 .build();
     }
 
+    @Bean
+    public GroupedOpenApi apiReportedJob() {
+        return GroupedOpenApi.builder()
+                .group("Reported Jobs APIs")
+                .pathsToMatch("/api/v1/reported-jobs/**")
+                .build();
+    }
+
+
 }
