@@ -165,6 +165,12 @@ public class GroupApiDocs {
                 .group("Appointments APIs")
                 .pathsToMatch("/api/v1/appointments/**")
                 .build();
+    }    @Bean
+    public GroupedOpenApi apiImages() {
+        return GroupedOpenApi.builder()
+                .group("Image APIs")
+                .pathsToMatch("/api/images/**")
+                .build();
     }
 
     @Bean
