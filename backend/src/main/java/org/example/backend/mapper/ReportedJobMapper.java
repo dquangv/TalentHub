@@ -15,7 +15,9 @@ public interface ReportedJobMapper {
             @Mapping(source = "job.id", target = "jobId"),
             @Mapping(source = "createdAt", target = "createdAt"),
             @Mapping(source = "updatedAt", target = "updatedAt"),
-            @Mapping(source = "status", target = "status")
+            @Mapping(source = "status", target = "status"),
+            @Mapping(source = "description", target = "description")
+
     })
     ReportedJobDTOResponse toDTO(ReportedJob reportedJob);
 
