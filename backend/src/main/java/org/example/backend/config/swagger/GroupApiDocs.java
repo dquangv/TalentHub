@@ -173,4 +173,12 @@ public class GroupApiDocs {
                 .build();
     }
 
+    @Bean
+    public GroupedOpenApi apiExperience() {
+        return GroupedOpenApi.builder()
+                .group("Experiences APIs")
+                .pathsToMatch("/api/v1/experiences/**")
+                .build();
+    }
+
 }
