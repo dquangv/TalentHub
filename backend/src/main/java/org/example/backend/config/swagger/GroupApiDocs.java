@@ -189,5 +189,12 @@ public class GroupApiDocs {
                 .build();
     }
 
+    @Bean
+    public GroupedOpenApi apiVoucherPackage() {
+        return GroupedOpenApi.builder()
+                .group("Voucher Packages APIs")
+                .pathsToMatch("/api/v1/voucher-packages/**")
+                .build();
+    }
 
 }
