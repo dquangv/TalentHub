@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.example.backend.entity.AbstractEntity;
 import org.example.backend.entity.child.account.freelancer.Freelancer;
 import org.example.backend.entity.child.job.Job;
+import org.example.backend.enums.ReportedJobStatus;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -24,8 +25,11 @@ public class ReportedJob extends AbstractEntity<Long> {
     private String reasonFreelancer;
     @Column(name = "image", nullable = false)
     private String reasonAdmin;
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private String status;
+    private ReportedJobStatus status;
+
 
 
     @Column(name = "created_at", nullable = false, updatable = false)
