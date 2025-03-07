@@ -21,10 +21,14 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReportedJob extends AbstractEntity<Long> {
+
+
     @Column(name = "title", nullable = false)
     private String reasonFreelancer;
     @Column(name = "image", nullable = false)
     private String reasonAdmin;
+    @Column(name = "description")
+    private String description;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
