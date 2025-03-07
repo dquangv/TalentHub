@@ -93,4 +93,18 @@ public class ExperienceServiceImpl implements ExperienceService {
 
         return false;
     }
+
+    @Override
+    public List<ExperienceDTOResponse> getAllByFreelancerId(Long freelancerId) {
+        List<Experience> list = experienceRepository.findExperienceByFreelancer_Id(freelancerId);
+
+        if (list.isEmpty()) {
+            throw new BadRequestException("Experience not found with id: " + freelancerId);
+        }
+
+        return list.stream()
+                .map(experienceMapper::toResponseDto)
+                .collect(Collectors.toList());
+    }
+
 }

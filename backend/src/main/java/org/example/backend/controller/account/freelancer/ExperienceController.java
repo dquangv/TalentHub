@@ -29,7 +29,7 @@ public class ExperienceController {
                 .build());
     }
 
-    @GetMapping("/{id}")
+    /*@GetMapping("/{id}")
     public ResponseEntity<ResponseObject<ExperienceDTOResponse>> getById(@PathVariable Long id) {
         Optional<ExperienceDTOResponse> experienceDTOResponse = experienceService.getById(id);
 
@@ -38,7 +38,7 @@ public class ExperienceController {
                 .status(HttpStatus.OK.value())
                 .data(experienceDTOResponse.get())
                 .build());
-    }
+    }*/
 
     @GetMapping("")
     public ResponseEntity<ResponseObject<List<ExperienceDTOResponse>>> getAll() {
@@ -59,6 +59,17 @@ public class ExperienceController {
                 .message("Successfully deleted experience with id: " + id)
                 .status(HttpStatus.OK.value())
                 .data(deleted)
+                .build());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseObject<List<ExperienceDTOResponse>>> getAllByFreelancerId(@PathVariable Long id) {
+        List<ExperienceDTOResponse> experiences = experienceService.getAllByFreelancerId(id);
+
+        return ResponseEntity.ok(ResponseObject.<List<ExperienceDTOResponse>>builder()
+                .message("Successfully get list experiences of freelancer: " + id)
+                .status(HttpStatus.OK.value())
+                .data(experiences)
                 .build());
     }
 }
