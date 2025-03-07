@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface ReportedJobService  extends BaseService<ReportedJobDTORequest, ReportedJobDTOResponse, Long> {
     ReportedJobDTOResponse update(Long id, ReportedJobDTORequest request);
-
+    List<ReportedJobDTOResponse> getByJobId(Long jobId);
 }
