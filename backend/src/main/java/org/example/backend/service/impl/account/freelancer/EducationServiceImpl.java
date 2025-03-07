@@ -67,4 +67,56 @@ public class EducationServiceImpl implements EducationService {
         }
         return false;
     }
+
+    @Override
+    public List<EducationDTOResponse> getByFreelancerId(Long freelancerId) {
+        List<Education> educationList = educationRepository.findByFreelancerId(freelancerId);
+        return educationList.stream()
+                .map(education -> new EducationDTOResponse(
+                        education.getId(),
+                        education.getStartDate(),
+                        education.getEndDate(),
+                        education.getDescription(),
+                        education.getSchool(),
+                        education.getDegree(),
+                        education.getMajor(),
+                        education.getFreelancer()
+                ))
+                .toList();
+    }
+
+    @Override
+    public EducationDTOResponse update(Long id, EducationDTORequest educationDTORequest) {
+        Optional<Education> educationOptional = educationRepository.findById(id);
+        if (educationOptional.isEmpty()) {
+            throw new RuntimeException("Education with id " + id + " not found");
+        }
+
+        Education education = educationOptional.get();
+        education.setStartDate(educationDTORequest.getStartDate());
+        education.setEndDate(educationDTORequest.getEndDate());
+        education.setDescription(educationDTORequest.getDescription());
+
+        education.setSchool(schoolRepository.findById(educationDTORequest.getSchoolId())
+                .orElseThrow(() -> new RuntimeException("School not found")));
+        education.setDegree(degreeRepository.findById(educationDTORequest.getDegreeId())
+                .orElseThrow(() -> new RuntimeException("Degree not found")));
+        education.setMajor(majorRepository.findById(educationDTORequest.getMajorId())
+                .orElseThrow(() -> new RuntimeException("Major not found")));
+        education.setFreelancer(freelancerRepository.findById(educationDTORequest.getFreelancerId())
+                .orElseThrow(() -> new RuntimeException("Freelancer not found")));
+
+        Education updatedEducation = educationRepository.save(education);
+
+        return new EducationDTOResponse(
+                updatedEducation.getId(),
+                updatedEducation.getStartDate(),
+                updatedEducation.getEndDate(),
+                updatedEducation.getDescription(),
+                updatedEducation.getSchool(),
+                updatedEducation.getDegree(),
+                updatedEducation.getMajor(),
+                updatedEducation.getFreelancer()
+        );
+    }
 }

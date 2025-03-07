@@ -1,7 +1,6 @@
 package org.example.backend.exception;
 
 import com.google.api.gax.rpc.NotFoundException;
-import org.apache.coyote.BadRequestException;
 import org.example.backend.dto.ResponseObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,13 +30,16 @@ public class GlobalExceptionHandler {
     }
 
     // Xử lý BadRequestException
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<Map<String, Object>> handleBadRequestException(BadRequestException ex, WebRequest request) {
-        Map<String, Object> errorDetails = new HashMap<>();
-        errorDetails.put("status", HttpStatus.BAD_REQUEST.value());
-        errorDetails.put("message", ex.getMessage());
-        errorDetails.put("timestamp", System.currentTimeMillis());
-        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ResponseObject<Object>> handleBadException(BadRequestException ex) {
+        ResponseObject<Object> responseObject = ResponseObject.builder()
+                .message("Bad Request")
+                .status(HttpStatus.BAD_REQUEST.value())
+                .data(ex.getMessage())
+                .build();
+
+        return ResponseEntity.badRequest().body(responseObject);
     }
 
 
