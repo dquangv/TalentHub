@@ -14,13 +14,15 @@ public interface ReportedJobMapper {
             @Mapping(source = "freelancer.id", target = "freelancerId"),
             @Mapping(source = "job.id", target = "jobId"),
             @Mapping(source = "createdAt", target = "createdAt"),
-            @Mapping(source = "updatedAt", target = "updatedAt")
+            @Mapping(source = "updatedAt", target = "updatedAt"),
+            @Mapping(source = "status", target = "status")
     })
     ReportedJobDTOResponse toDTO(ReportedJob reportedJob);
 
     @Mappings({
             @Mapping(source = "freelancerId", target = "freelancer.id"),
-            @Mapping(source = "jobId", target = "job.id")
+            @Mapping(source = "jobId", target = "job.id"),
+            @Mapping(source = "status", target = "status")
     })
     ReportedJob toEntity(ReportedJobDTORequest reportedJobDTORequest);
 }
