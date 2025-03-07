@@ -1,11 +1,11 @@
 package org.example.backend.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.backend.dto.ResponseObject;
 import org.example.backend.dto.request.ReportedJobDTORequest;
 import org.example.backend.dto.response.ReportedJobDTOResponse;
 import org.example.backend.service.intf.ReportedJobService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,46 +18,82 @@ public class ReportedJobController {
     private final ReportedJobService reportedJobService;
 
     @PostMapping
-    public ResponseEntity<ReportedJobDTOResponse> create(@RequestBody ReportedJobDTORequest request) {
+    public ResponseObject<ReportedJobDTOResponse> create(@RequestBody ReportedJobDTORequest request) {
         ReportedJobDTOResponse response = reportedJobService.create(request);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return ResponseObject.<ReportedJobDTOResponse>builder()
+                .message("Reported job created successfully")
+                .status(HttpStatus.CREATED.value())
+                .data(response)
+                .build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ReportedJobDTOResponse> update(@PathVariable Long id, @RequestBody ReportedJobDTORequest request) {
+    public ResponseObject<ReportedJobDTOResponse> update(@PathVariable Long id, @RequestBody ReportedJobDTORequest request) {
         ReportedJobDTOResponse response = reportedJobService.update(id, request);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return ResponseObject.<ReportedJobDTOResponse>builder()
+                .message("Reported job updated successfully")
+                .status(HttpStatus.OK.value())
+                .data(response)
+                .build();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ReportedJobDTOResponse> getById(@PathVariable Long id) {
+    public ResponseObject<ReportedJobDTOResponse> getById(@PathVariable Long id) {
         return reportedJobService.getById(id)
-                .map(response -> new ResponseEntity<>(response, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(response -> ResponseObject.<ReportedJobDTOResponse>builder()
+                        .message("Reported job found")
+                        .status(HttpStatus.OK.value())
+                        .data(response)
+                        .build())
+                .orElseGet(() -> ResponseObject.<ReportedJobDTOResponse>builder()
+                        .message("Reported job not found")
+                        .status(HttpStatus.NOT_FOUND.value())
+                        .data(null)
+                        .build());
     }
 
     @GetMapping
-    public ResponseEntity<List<ReportedJobDTOResponse>> getAll() {
+    public ResponseObject<List<ReportedJobDTOResponse>> getAll() {
         List<ReportedJobDTOResponse> response = reportedJobService.getAll();
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return ResponseObject.<List<ReportedJobDTOResponse>>builder()
+                .message("Reported jobs retrieved successfully")
+                .status(HttpStatus.OK.value())
+                .data(response)
+                .build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseObject<Void> delete(@PathVariable Long id) {
         return reportedJobService.deleteById(id) ?
-                new ResponseEntity<>(HttpStatus.NO_CONTENT) :
-                new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                ResponseObject.<Void>builder()
+                        .message("Reported job deleted successfully")
+                        .status(HttpStatus.NO_CONTENT.value())
+                        .data(null)
+                        .build() :
+                ResponseObject.<Void>builder()
+                        .message("Reported job not found")
+                        .status(HttpStatus.NOT_FOUND.value())
+                        .data(null)
+                        .build();
     }
 
     @GetMapping("/by-job/{jobId}")
-    public ResponseEntity<List<ReportedJobDTOResponse>> getReportedJobsByJobId(@PathVariable Long jobId) {
+    public ResponseObject<List<ReportedJobDTOResponse>> getReportedJobsByJobId(@PathVariable Long jobId) {
         List<ReportedJobDTOResponse> reportedJobs = reportedJobService.getByJobId(jobId);
-        return ResponseEntity.ok(reportedJobs);
+        return ResponseObject.<List<ReportedJobDTOResponse>>builder()
+                .message("Reported jobs for jobId " + jobId + " retrieved successfully")
+                .status(HttpStatus.OK.value())
+                .data(reportedJobs)
+                .build();
     }
 
     @GetMapping("/by-freelancer/{freelancerId}")
-    public ResponseEntity<List<ReportedJobDTOResponse>> getReportedJobsByFreelancerId(@PathVariable Long freelancerId) {
+    public ResponseObject<List<ReportedJobDTOResponse>> getReportedJobsByFreelancerId(@PathVariable Long freelancerId) {
         List<ReportedJobDTOResponse> reportedJobs = reportedJobService.getByFreelancerId(freelancerId);
-        return ResponseEntity.ok(reportedJobs);
+        return ResponseObject.<List<ReportedJobDTOResponse>>builder()
+                .message("Reported jobs for freelancerId " + freelancerId + " retrieved successfully")
+                .status(HttpStatus.OK.value())
+                .data(reportedJobs)
+                .build();
     }
 }
