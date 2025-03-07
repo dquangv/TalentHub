@@ -22,7 +22,9 @@ public interface ReportedJobMapper {
     @Mappings({
             @Mapping(source = "freelancerId", target = "freelancer.id"),
             @Mapping(source = "jobId", target = "job.id"),
-            @Mapping(source = "status", target = "status")
+            @Mapping(source = "status", target = "status"),
+            @Mapping(source = "description", target = "description")
+
     })
     ReportedJob toEntity(ReportedJobDTORequest reportedJobDTORequest);
 }
