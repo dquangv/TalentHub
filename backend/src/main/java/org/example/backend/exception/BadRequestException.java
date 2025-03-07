@@ -1,7 +1,9 @@
 package org.example.backend.exception;
 
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Getter;
 
+@Getter
 public class BadRequestException extends RuntimeException {
 
     private static final long serialVersionUID = -5774145765965871404L;
@@ -15,9 +17,5 @@ public class BadRequestException extends RuntimeException {
     public BadRequestException(String message, int statusCode) {
         super(message);
         this.statusCode = statusCode;
-    }
-
-    public int getStatusCode() {
-        return statusCode;
     }
 }
