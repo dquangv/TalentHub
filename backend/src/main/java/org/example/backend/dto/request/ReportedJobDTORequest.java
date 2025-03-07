@@ -9,6 +9,7 @@ import org.example.backend.enums.ReportedJobStatus;
 public class ReportedJobDTORequest {
     private String reasonFreelancer;
     private String reasonAdmin;
+    private String description;
     private ReportedJobStatus status;
     private Long freelancerId;
     private Long jobId;
