@@ -48,4 +48,10 @@ public class ReportedJobController {
                 new ResponseEntity<>(HttpStatus.NO_CONTENT) :
                 new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @GetMapping("/by-job/{jobId}")
+    public ResponseEntity<List<ReportedJobDTOResponse>> getReportedJobsByJobId(@PathVariable Long jobId) {
+        List<ReportedJobDTOResponse> reportedJobs = reportedJobService.getByJobId(jobId);
+        return ResponseEntity.ok(reportedJobs);
+    }
 }
