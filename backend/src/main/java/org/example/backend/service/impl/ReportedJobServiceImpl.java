@@ -22,6 +22,13 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ReportedJobServiceImpl implements ReportedJobService {
+    @Override
+    public List<ReportedJobDTOResponse> getByJobId(Long jobId) {
+        List<ReportedJob> reportedJobs = reportedJobRepository.findByJobId(jobId);
+        return reportedJobs.stream()
+                .map(reportedJobMapper::toDTO)
+                .collect(Collectors.toList());
+    }
 
     private final ReportedJobRepository reportedJobRepository;
     private final ReportedJobMapper reportedJobMapper;
