@@ -10,6 +10,7 @@ public class ReportedJobDTOResponse {
     private Long id;
     private String reasonFreelancer;
     private String reasonAdmin;
+    private String description;
     private ReportedJobStatus status;
     private String createdAt;
     private String updatedAt;
