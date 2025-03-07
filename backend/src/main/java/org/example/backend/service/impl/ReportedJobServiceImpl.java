@@ -12,7 +12,6 @@ import org.example.backend.repository.FreelancerRepository;
 import org.example.backend.repository.JobRepository;
 import org.example.backend.repository.ReportedJobRepository;
 import org.example.backend.service.intf.ReportedJobService;
-import org.example.backend.service.intf.account.freelancer.FreelancerService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +24,14 @@ public class ReportedJobServiceImpl implements ReportedJobService {
     @Override
     public List<ReportedJobDTOResponse> getByJobId(Long jobId) {
         List<ReportedJob> reportedJobs = reportedJobRepository.findByJobId(jobId);
+        return reportedJobs.stream()
+                .map(reportedJobMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ReportedJobDTOResponse> getByFreelancerId(Long freelancerId) {
+        List<ReportedJob> reportedJobs = reportedJobRepository.findByFreelancerId(freelancerId);
         return reportedJobs.stream()
                 .map(reportedJobMapper::toDTO)
                 .collect(Collectors.toList());
