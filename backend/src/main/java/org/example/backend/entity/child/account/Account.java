@@ -52,9 +52,9 @@ public class Account extends AbstractEntity<Long> {
     private boolean status;
 
     @Column(name = "lat")
-    private double lat;
+    private Double lat;
     @Column(name = "lng")
-    private double lng;
+    private Double lng;
     /*@OneToOne
     @JoinColumn(name = "user_id")
     private User user;*/

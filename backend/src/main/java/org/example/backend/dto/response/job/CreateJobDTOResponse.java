@@ -12,7 +12,6 @@ import java.math.BigDecimal;
 @Setter
 @Builder
 public class CreateJobDTOResponse {
-    private Long id;
     private String title;
     private String description;
     private String scope;
@@ -21,7 +20,7 @@ public class CreateJobDTOResponse {
     private Boolean jobOpportunity;
     private BigDecimal fromPrice;
     private BigDecimal toPrice;
-    private BigDecimal typePrice;
+    private String typePrice;
     private TypePayment typePayment;
     private StatusJob statusJob;
     private Long clientId;

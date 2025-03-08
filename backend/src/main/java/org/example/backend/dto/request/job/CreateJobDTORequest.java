@@ -18,8 +18,8 @@ public class CreateJobDTORequest {
     private Boolean jobOpportunity;
     private BigDecimal fromPrice;
     private BigDecimal toPrice;
-    private TypePayment typePrice;
-    private String typePayment;
+    private String typePrice;
+    private TypePayment typePayment;
     private StatusJob statusJob;
     private Long clientId;
     private Long categoryId;
