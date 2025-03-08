@@ -1,13 +1,15 @@
 package org.example.backend.dto.request.job;
 
 import lombok.*;
+import org.example.backend.enums.StatusJob;
+import org.example.backend.enums.TypePayment;
 
 import java.math.BigDecimal;
 
 @Getter
 @Setter
 @Builder
-public class JobDTORequest {
+public class CreateJobDTORequest {
     private String title;
     private String description;
     private String scope;
@@ -16,8 +18,9 @@ public class JobDTORequest {
     private Boolean jobOpportunity;
     private BigDecimal fromPrice;
     private BigDecimal toPrice;
-    private String typePrice;
+    private TypePayment typePrice;
     private String typePayment;
+    private StatusJob statusJob;
     private Long clientId;
     private Long categoryId;
 }
