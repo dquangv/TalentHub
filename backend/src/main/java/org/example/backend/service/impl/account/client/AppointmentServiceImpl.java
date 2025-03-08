@@ -9,6 +9,7 @@ import org.example.backend.entity.child.account.client.Client;
 import org.example.backend.entity.child.account.freelancer.Freelancer;
 import org.example.backend.entity.child.job.FreelancerJob;
 import org.example.backend.exception.BadRequestException;
+import org.example.backend.exception.NotFoundException;
 import org.example.backend.mapper.Account.client.AppointmentMapper;
 import org.example.backend.repository.AppointmentRepository;
 import org.example.backend.repository.ClientRepository;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,12 +30,6 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final FreelancerRepository freelancerRepository;
     private final FreelancerJobRepository freelancerJobRepository;
     private final ClientRepository clientRepository;
-
-    @Override
-    public AppointmentDetailDTOResponse getAppointmentDetail(Long clientId, Long jobId, Long freelancerId) {
-
-        return null;
-    }
 
     @Override
     public AppointmentDetailDTOResponse create(AppointmentDetailDTORequest appointmentDetailDTORequest) {
@@ -74,7 +70,6 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentDetailDTOResponse.setPhone(user.getPhoneNumber());
 
         return appointmentDetailDTOResponse;
-//        return new AppointmentDetailDTOResponse();
     }
 
     @Override
@@ -90,5 +85,58 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public Boolean deleteById(Long aLong) {
         return null;
+    }
+
+    @Override
+    public List<AppointmentDetailDTOResponse> getAllAppointmentsByClientId(Long clientId) {
+        if (clientId == null) {
+            throw new BadRequestException("ClientId cannot be null");
+        }
+
+        List<Appointment> appointments = appointmentRepository.findAppointmentsByClient_Id(clientId);
+
+        if (appointments.isEmpty()) {
+            throw new NotFoundException("No appointments found for this client");
+        }
+
+        return appointments.stream()
+                .map(appointment -> {
+                    AppointmentDetailDTOResponse response = appointmentMapper.toResponseDto(appointment);
+
+                    FreelancerJob freelancerJob = appointment.getFreelancerJob();
+                    Freelancer freelancer = freelancerJob.getFreelancer();
+                    User user = freelancer.getUser();
+
+                    response.setName(freelancer.getUser().getLastName() + " " + freelancer.getUser().getFirstName());
+                    response.setMail(user.getAccount().getEmail());
+                    response.setPhone(user.getPhoneNumber());
+
+                    return response;
+                })
+                .collect(Collectors.toList());
+    }
+
+    public List<AppointmentDetailDTOResponse> getAllAppointmentsByFreelancerId(Long freelancerId) {
+        if (freelancerId == null) {
+            throw new BadRequestException("freelancerId cannot be null");
+        }
+
+        List<Appointment> appointments = appointmentRepository.findAppointmentsByFreelancerJob_Freelancer_Id(freelancerId);
+
+        if (appointments.isEmpty()) {
+            throw new NotFoundException("No appointments found for this freelancer");
+        }
+
+        return appointments.stream().map(appointment -> {
+            AppointmentDetailDTOResponse response = appointmentMapper.toResponseDto(appointment);
+
+            Client client = appointment.getClient();
+            User user = client.getUser();
+            response.setName(user.getLastName() + " " + user.getFirstName());
+            response.setMail(user.getAccount().getEmail());
+            response.setPhone(user.getPhoneNumber());
+
+            return response;
+        }).collect(Collectors.toList());
     }
 }

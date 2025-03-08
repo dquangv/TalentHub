@@ -181,4 +181,20 @@ public class GroupApiDocs {
                 .build();
     }
 
+    @Bean
+    public GroupedOpenApi apiReportedJob() {
+        return GroupedOpenApi.builder()
+                .group("Reported Jobs APIs")
+                .pathsToMatch("/api/v1/reported-jobs/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi apiVoucherPackage() {
+        return GroupedOpenApi.builder()
+                .group("Voucher Packages APIs")
+                .pathsToMatch("/api/v1/voucher-packages/**")
+                .build();
+    }
+
 }

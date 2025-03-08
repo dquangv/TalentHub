@@ -1,18 +1,19 @@
 package org.example.backend.service.impl.job;
 
 import lombok.RequiredArgsConstructor;
+import org.example.backend.dto.request.job.CreateJobDTORequest;
 import org.example.backend.dto.request.job.JobAdminDTOResponse;
 import org.example.backend.dto.request.job.JobDTORequest;
 import org.example.backend.dto.response.job.*;
+import org.example.backend.entity.child.account.client.Client;
 import org.example.backend.entity.child.account.client.Company;
+import org.example.backend.entity.child.job.Category;
 import org.example.backend.entity.child.job.FreelancerJob;
 import org.example.backend.entity.child.job.Job;
 import org.example.backend.enums.StatusFreelancerJob;
 import org.example.backend.exception.BadRequestException;
 import org.example.backend.mapper.job.*;
-import org.example.backend.repository.CompanyRepository;
-import org.example.backend.repository.FreelancerJobRepository;
-import org.example.backend.repository.JobRepository;
+import org.example.backend.repository.*;
 import org.example.backend.service.intf.job.JobService;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,9 @@ public class JobServiceImpl implements JobService {
 
     private final JobRepository jobRepository;
 
+    private final ClientRepository clientRepository;
+
+    private final CategoryRepository categoryRepository;
 
     private final DetailJobMapper detailJobMapper;
 
@@ -41,6 +45,29 @@ public class JobServiceImpl implements JobService {
 
     private final PostedJobsMapper postedJobsMapper;
     private final JobAdminMapper jobAdminMapper;
+
+    private final CreateJobMapper createJobMapper;
+
+    @Override
+    public CreateJobDTOResponse createJob(CreateJobDTORequest createJobDTORequest) {
+
+        Client client = clientRepository.findById(createJobDTORequest.getClientId())
+                .orElseThrow(() -> new BadRequestException("Client not found"));
+
+        createJobDTORequest.setClientId(client.getId());
+
+        Category category = categoryRepository.findById(createJobDTORequest.getCategoryId())
+                .orElseThrow(() -> new BadRequestException("Category not found"));
+
+        createJobDTORequest.setCategoryId(category.getId());
+
+        Job job = createJobMapper.toEntity(createJobDTORequest);
+
+        jobRepository.save(job);
+
+        return createJobMapper.toResponseDto(job);
+    }
+
     @Override
     public JobDTOResponse create(JobDTORequest jobDTORequest) {
         return null;

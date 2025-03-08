@@ -2,7 +2,9 @@ package org.example.backend.controller.account.freelancer;
 
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.ResponseObject;
+import org.example.backend.dto.request.account.freelancer.CreateFreelancerDTORequest;
 import org.example.backend.dto.request.account.freelancer.FreelancerDTORequest;
+import org.example.backend.dto.response.account.freelancer.CreateFreelancerDTOResponse;
 import org.example.backend.dto.response.account.freelancer.FreelancerDTOResponse;
 import org.example.backend.dto.response.account.freelancer.FreelancerDetailDTOResponse;
 import org.example.backend.dto.response.account.freelancer.FreelancerInfoDTOResponse;
@@ -94,6 +96,19 @@ public class FreelancerController {
                 .status(200)
                 .data(freelancerDetailDTOResponse)
                 .build());
+    }
+
+    @PostMapping("/createFreelancer")
+    public ResponseEntity<ResponseObject<CreateFreelancerDTOResponse>> createFreelancer(@RequestBody CreateFreelancerDTORequest createFreelancerDTORequest) {
+        CreateFreelancerDTOResponse freelancerDTOResponse = freelancerService.createProfile(createFreelancerDTORequest);
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                ResponseObject.<CreateFreelancerDTOResponse>builder()
+                        .message("Create freelancer Successfully")
+                        .status(200)
+                        .data(freelancerDTOResponse)
+                        .build()
+        );
     }
 }
 
