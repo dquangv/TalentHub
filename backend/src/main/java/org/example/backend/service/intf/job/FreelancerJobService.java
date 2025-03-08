@@ -1,7 +1,9 @@
 package org.example.backend.service.intf.job;
 
+import org.example.backend.dto.request.account.freelancer.CreateFreelancerDTORequest;
 import org.example.backend.dto.request.job.FreelancerJobDTORequest;
 import org.example.backend.dto.response.account.freelancer.ApplicantResponseDTO;
+import org.example.backend.dto.response.account.freelancer.CreateFreelancerDTOResponse;
 import org.example.backend.dto.response.job.FreelancerJobDTOResponse;
 import org.example.backend.dto.response.job.SaveJobDTOResponse;
 import org.example.backend.entity.child.job.FreelancerJob;

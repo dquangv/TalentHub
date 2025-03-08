@@ -1,13 +1,17 @@
 package org.example.backend.service.impl.account.freelancer;
 
 import lombok.RequiredArgsConstructor;
+import org.example.backend.dto.request.account.freelancer.CreateFreelancerDTORequest;
 import org.example.backend.dto.request.account.freelancer.FreelancerDTORequest;
 import org.example.backend.dto.request.job.FreelancerJobDTORequest;
+import org.example.backend.dto.response.account.freelancer.CreateFreelancerDTOResponse;
 import org.example.backend.dto.response.account.freelancer.FreelancerDTOResponse;
 import org.example.backend.dto.response.job.FreelancerJobDTOResponse;
 import org.example.backend.entity.child.account.freelancer.Freelancer;
 import org.example.backend.entity.child.job.Category;
 import org.example.backend.entity.child.account.User;
+import org.example.backend.exception.BadRequestException;
+import org.example.backend.mapper.Freelancer.CreateFreelancerMapper;
 import org.example.backend.repository.ClientReviewRepository;
 import org.example.backend.repository.FreelancerRepository;
 import org.example.backend.repository.CategoryRepository;
@@ -26,7 +30,7 @@ public class FreelancerServiceImpl implements FreelancerService {
     private final FreelancerRepository freelancerRepository;
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
-
+    private final CreateFreelancerMapper createFreelancerMapper;
     @Override
     public FreelancerDTOResponse create(FreelancerDTORequest freelancerDTORequest) {
         Category category = categoryRepository.findById(freelancerDTORequest.getCategoryId())
@@ -115,5 +119,23 @@ public class FreelancerServiceImpl implements FreelancerService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public CreateFreelancerDTOResponse createProfile(CreateFreelancerDTORequest createFreelancerDTORequest) {
+
+        User user = userRepository.findById(createFreelancerDTORequest.getUserId())
+                .orElseThrow(() -> new BadRequestException("User not found"));
+
+        createFreelancerDTORequest.setUserId(user.getId());
+
+        Category category = categoryRepository.findById(createFreelancerDTORequest.getCategoryId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid Category ID"));
+
+        createFreelancerDTORequest.setCategoryId(category.getId());
+
+        Freelancer freelancer = freelancerRepository.save(createFreelancerMapper.toEntity(createFreelancerDTORequest));
+
+        return createFreelancerMapper.toResponseDto(freelancer);
     }
 }
