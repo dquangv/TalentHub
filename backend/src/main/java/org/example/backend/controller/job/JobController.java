@@ -2,16 +2,14 @@ package org.example.backend.controller.job;
 
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.ResponseObject;
+import org.example.backend.dto.request.job.CreateJobDTORequest;
 import org.example.backend.dto.request.job.JobAdminDTOResponse;
 import org.example.backend.dto.response.job.*;
 import org.example.backend.entity.child.job.Job;
 import org.example.backend.service.intf.job.FreelancerJobService;
 import org.example.backend.service.intf.job.JobService;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -86,5 +84,14 @@ public class JobController {
                 .data(response)
                 .build();
     }
-
+    @PostMapping("/createJob")
+    public ResponseObject<CreateJobDTOResponse> createJob(@RequestBody CreateJobDTORequest createJobDTORequest) {
+        CreateJobDTOResponse createJobDTOResponse = jobService.createJob(createJobDTORequest);
+        return ResponseObject
+                .<CreateJobDTOResponse>builder()
+                .message("Create job successful")
+                .data(createJobDTOResponse)
+                .status(HttpStatus.OK.value())
+                .build();
+    }
 }
