@@ -8,10 +8,9 @@ import org.example.backend.service.intf.account.client.AppointmentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,6 +26,17 @@ public class AppointmentController {
         return ResponseEntity.status(HttpStatus.OK).body(ResponseObject.<AppointmentDetailDTOResponse>builder()
                 .message("Successfully create appointment")
                 .status(201)
+                .data(response)
+                .build());
+    }
+
+    @GetMapping("/client/{id}")
+    public ResponseEntity<ResponseObject<List<AppointmentDetailDTOResponse>>> getAllAppointmentsByClientId(@PathVariable("id") Long id) {
+        List<AppointmentDetailDTOResponse> response = appointmentService.getAllAppointmentsByClientId(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseObject.<List<AppointmentDetailDTOResponse>>builder()
+                .message("Successfully get all appoinment by client id")
+                .status(200)
                 .data(response)
                 .build());
     }
