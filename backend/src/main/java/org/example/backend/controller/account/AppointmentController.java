@@ -35,7 +35,18 @@ public class AppointmentController {
         List<AppointmentDetailDTOResponse> response = appointmentService.getAllAppointmentsByClientId(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(ResponseObject.<List<AppointmentDetailDTOResponse>>builder()
-                .message("Successfully get all appoinment by client id")
+                .message("Successfully get all appointment by client id")
+                .status(200)
+                .data(response)
+                .build());
+    }
+
+    @GetMapping("/freelancer/{id}")
+    public ResponseEntity<ResponseObject<List<AppointmentDetailDTOResponse>>> getAllAppointmentsByFreelancerId(@PathVariable("id") Long id) {
+        List<AppointmentDetailDTOResponse> response = appointmentService.getAllAppointmentsByFreelancerId(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseObject.<List<AppointmentDetailDTOResponse>>builder()
+                .message("Successfully get all appointment by freelancer id")
                 .status(200)
                 .data(response)
                 .build());

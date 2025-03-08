@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface AppointmentService extends BaseService<AppointmentDetailDTORequest, AppointmentDetailDTOResponse, Long> {
     List<AppointmentDetailDTOResponse> getAllAppointmentsByClientId(Long clientId);
+    List<AppointmentDetailDTOResponse> getAllAppointmentsByFreelancerId(Long freelancerId);
 }

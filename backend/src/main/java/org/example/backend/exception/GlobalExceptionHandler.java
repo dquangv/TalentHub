@@ -20,13 +20,16 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     // Xử lý NotFoundException
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleNotFoundException(NotFoundException ex, WebRequest request) {
-        Map<String, Object> errorDetails = new HashMap<>();
-        errorDetails.put("status", HttpStatus.NOT_FOUND.value());
-        errorDetails.put("message", ex.getMessage());
-        errorDetails.put("timestamp", System.currentTimeMillis());
-        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    public ResponseEntity<ResponseObject<Object>> handleNotFoundException(NotFoundException ex, WebRequest request) {
+        ResponseObject<Object> responseObject = ResponseObject.builder()
+                .message("Not Found")
+                .status(HttpStatus.NOT_FOUND.value())
+                .data(ex.getMessage())
+                .build();
+
+        return ResponseEntity.badRequest().body(responseObject);
     }
 
     // Xử lý BadRequestException

@@ -115,4 +115,28 @@ public class AppointmentServiceImpl implements AppointmentService {
                 })
                 .collect(Collectors.toList());
     }
+
+    public List<AppointmentDetailDTOResponse> getAllAppointmentsByFreelancerId(Long freelancerId) {
+        if (freelancerId == null) {
+            throw new BadRequestException("freelancerId cannot be null");
+        }
+
+        List<Appointment> appointments = appointmentRepository.findAppointmentsByFreelancerJob_Freelancer_Id(freelancerId);
+
+        if (appointments.isEmpty()) {
+            throw new NotFoundException("No appointments found for this freelancer");
+        }
+
+        return appointments.stream().map(appointment -> {
+            AppointmentDetailDTOResponse response = appointmentMapper.toResponseDto(appointment);
+
+            Client client = appointment.getClient();
+            User user = client.getUser();
+            response.setName(user.getLastName() + " " + user.getFirstName());
+            response.setMail(user.getAccount().getEmail());
+            response.setPhone(user.getPhoneNumber());
+
+            return response;
+        }).collect(Collectors.toList());
+    }
 }

@@ -1,7 +1,9 @@
 package org.example.backend.exception;
 
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Getter;
 
+@Getter
 public class NotFoundException extends RuntimeException{
 
     private static final long serialVersionUID = -5599671479038007192L;
@@ -15,9 +17,5 @@ public class NotFoundException extends RuntimeException{
     public NotFoundException(String message, int statusCode) {
         super(message);
         this.statusCode = statusCode;
-    }
-
-    public int getStatusCode() {
-        return statusCode;
     }
 }
