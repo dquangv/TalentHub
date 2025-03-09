@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface ExperienceService extends BaseService<ExperienceDTORequest, ExperienceDTOResponse, Long> {
     List<ExperienceDTOResponse> getAllByFreelancerId(Long freelancerId);
+    ExperienceDTOResponse update(Long id, ExperienceDTORequest experienceDTORequest);
 }

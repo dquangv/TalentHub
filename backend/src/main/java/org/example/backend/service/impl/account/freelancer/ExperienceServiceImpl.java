@@ -106,5 +106,41 @@ public class ExperienceServiceImpl implements ExperienceService {
                 .map(experienceMapper::toResponseDto)
                 .collect(Collectors.toList());
     }
+    @Override
+    public ExperienceDTOResponse update(Long id, ExperienceDTORequest experienceDTORequest) {
+        if (id == null) {
+            throw new BadRequestException("Id cannot be null");
+        }
+        Optional<Experience> existingExperience = experienceRepository.findById(id);
+        if (existingExperience.isEmpty()) {
+            throw new BadRequestException("Experience not found with id: " + id);
+        }
+        Experience experience = existingExperience.get();
+        if (experienceDTORequest.getCompanyName() != null && !experienceDTORequest.getCompanyName().isEmpty()) {
+            experience.setCompanyName(experienceDTORequest.getCompanyName());
+        }
+        if (experienceDTORequest.getPosition() != null && !experienceDTORequest.getPosition().isEmpty()) {
+            experience.setPosition(experienceDTORequest.getPosition());
+        }
+        if (experienceDTORequest.getStartDate() != null) {
+            experience.setStartDate(experienceDTORequest.getStartDate());
+        }
+        if (experienceDTORequest.getEndDate() != null) {
+            experience.setEndDate(experienceDTORequest.getEndDate());
+        }
+        if (experienceDTORequest.getDescription() != null) {
+            experience.setDescription(experienceDTORequest.getDescription());
+        }
+        if (experienceDTORequest.getStatus() != null && !experienceDTORequest.getStatus().isEmpty()) {
+            experience.setStatus(experienceDTORequest.getStatus());
+        }
+        if (experienceDTORequest.getFreelancerId() != null) {
+            freelancerRepository.findById(experienceDTORequest.getFreelancerId())
+                    .ifPresent(experience::setFreelancer);
+        }
 
+        experience = experienceRepository.save(experience);
+
+        return experienceMapper.toResponseDto(experience);
+    }
 }
