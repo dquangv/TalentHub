@@ -31,6 +31,16 @@ public class FreelancerSkillServiceImpl implements FreelancerSkillService {
                 .map(freelancerSkillMapper::toDTO)
                 .collect(Collectors.toList());
     }
+    @Override
+    public List<FreelancerSkillDTOResponse> getSkillsByFreelancerId(Long freelancerId) {
+        if (!freelancerRepository.existsById(freelancerId)) {
+            throw new NotFoundException("Freelancer not found with id: " + freelancerId);
+        }
+        List<FreelancerSkill> freelancerSkills = freelancerSkillRepository.findByFreelancer_Id(freelancerId);
+        return freelancerSkills.stream()
+                .map(freelancerSkillMapper::toDTO)
+                .collect(Collectors.toList());
+    }
 
     @Override
     public FreelancerSkillDTOResponse addSkillToFreelancer(FreelancerSkillDTORequest request) {
