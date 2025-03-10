@@ -72,4 +72,15 @@ public class ExperienceController {
                 .data(experiences)
                 .build());
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ResponseObject<ExperienceDTOResponse>> update(@PathVariable Long id, @RequestBody ExperienceDTORequest experienceDTORequest) {
+        ExperienceDTOResponse updatedExperience = experienceService.update(id, experienceDTORequest);
+
+        return ResponseEntity.ok(ResponseObject.<ExperienceDTOResponse>builder()
+                .message("Successfully updated experience with id: " + id)
+                .status(HttpStatus.OK.value())
+                .data(updatedExperience)
+                .build());
+    }
 }
