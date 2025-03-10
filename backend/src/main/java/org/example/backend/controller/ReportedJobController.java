@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.ResponseObject;
 import org.example.backend.dto.request.ReportedJobDTORequest;
 import org.example.backend.dto.response.ReportedJobDTOResponse;
+import org.example.backend.enums.ReportedJobStatus;
 import org.example.backend.service.intf.ReportedJobService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -18,14 +20,33 @@ public class ReportedJobController {
     private final ReportedJobService reportedJobService;
 
     @PostMapping
-    public ResponseObject<ReportedJobDTOResponse> create(@RequestBody ReportedJobDTORequest request) {
-        ReportedJobDTOResponse response = reportedJobService.create(request);
+    public ResponseObject<ReportedJobDTOResponse> create(
+            @RequestParam String reasonFreelancer,
+            @RequestParam String reasonAdmin,
+            @RequestParam String description,
+            @RequestParam ReportedJobStatus status,
+            @RequestParam Long freelancerId,
+            @RequestParam Long jobId,
+            @RequestParam MultipartFile image) {
+
+        ReportedJobDTORequest reportedJobDTORequest = new ReportedJobDTORequest();
+        reportedJobDTORequest.setReasonFreelancer(reasonFreelancer);
+        reportedJobDTORequest.setReasonAdmin(reasonAdmin);
+        reportedJobDTORequest.setDescription(description);
+        reportedJobDTORequest.setStatus(status);
+        reportedJobDTORequest.setFreelancerId(freelancerId);
+        reportedJobDTORequest.setJobId(jobId);
+        reportedJobDTORequest.setImage(image);
+
+        ReportedJobDTOResponse response = reportedJobService.create(reportedJobDTORequest);
+
         return ResponseObject.<ReportedJobDTOResponse>builder()
                 .message("Reported job created successfully")
                 .status(HttpStatus.CREATED.value())
                 .data(response)
                 .build();
     }
+
 
     @PutMapping("/{id}")
     public ResponseObject<ReportedJobDTOResponse> update(@PathVariable Long id, @RequestBody ReportedJobDTORequest request) {

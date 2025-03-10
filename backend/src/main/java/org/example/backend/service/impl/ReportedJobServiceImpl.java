@@ -12,6 +12,7 @@ import org.example.backend.repository.FreelancerRepository;
 import org.example.backend.repository.JobRepository;
 import org.example.backend.repository.ReportedJobRepository;
 import org.example.backend.service.intf.ReportedJobService;
+import org.example.backend.service.intf.image.CloudinaryImageService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,8 +22,11 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ReportedJobServiceImpl implements ReportedJobService {
+
+    private final CloudinaryImageService cloudinaryImageService;
     @Override
     public List<ReportedJobDTOResponse> getByJobId(Long jobId) {
+
         List<ReportedJob> reportedJobs = reportedJobRepository.findByJobId(jobId);
         return reportedJobs.stream()
                 .map(reportedJobMapper::toDTO)
@@ -44,16 +48,22 @@ public class ReportedJobServiceImpl implements ReportedJobService {
 
     @Override
     public ReportedJobDTOResponse create(ReportedJobDTORequest request) {
+        String imageUrl = cloudinaryImageService.uploadImage(request.getImage());
+
         Freelancer freelancer = freelancerRepository.findById(request.getFreelancerId())
                 .orElseThrow(() -> new NotFoundException("Freelancer not found"));
 
         Job job = jobRepository.findById(request.getJobId())
                 .orElseThrow(() -> new NotFoundException("Job not found"));
 
-        ReportedJob reportedJob = reportedJobMapper.toEntity(request);
-
+        ReportedJob reportedJob = new ReportedJob();
+        reportedJob.setReasonAdmin(request.getReasonAdmin());
+        reportedJob.setReasonFreelancer(request.getReasonFreelancer());
+        reportedJob.setDescription(request.getDescription());
+        reportedJob.setStatus(request.getStatus());
         reportedJob.setFreelancer(freelancer);
         reportedJob.setJob(job);
+        reportedJob.setImage(imageUrl);
         ReportedJob savedReportedJob = reportedJobRepository.save(reportedJob);
         return reportedJobMapper.toDTO(savedReportedJob);
     }
