@@ -24,6 +24,7 @@ public interface AccountService extends BaseService<AccountDTORequest, AccountDT
     public List<AccountDTOResponse> getNearbyUsers(double lat, double lon, double distanceInMeters);
     Boolean banAccount(String email);
     Boolean unBanAccount(String email);
+    boolean changePassword(String email, String currentPassword, String newPassword);
 
 }
 
