@@ -52,6 +52,21 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
     private final EmailService emailService;
     private final AuthenticationServiceImpl authenticationServiceImpl;
 
+    @Override
+    public boolean changePassword(String email, String currentPassword, String newPassword) {
+        Optional<Account> accountOptional = accountRepository.findByEmail(email);
+        if (accountOptional.isPresent()) {
+            Account account = accountOptional.get();
+            System.out.println("password: " + account.getPassword());
+            System.out.println("currentPassword: " + currentPassword);
+            if (passwordEncoder.matches(currentPassword, account.getPassword())) {
+                account.setPassword(passwordEncoder.encode(newPassword));
+                accountRepository.save(account);
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Override
     public Boolean checkEmail(String email) {

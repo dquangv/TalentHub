@@ -16,5 +16,6 @@ public class AuthenticationDtoResponse {
     private String accessToken;
     private double lat;
     private double lng;
+    private String email;
 //    private String refreshToken;
 }
