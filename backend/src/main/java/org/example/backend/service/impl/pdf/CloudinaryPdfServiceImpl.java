@@ -68,5 +68,28 @@ public class CloudinaryPdfServiceImpl implements CloudinaryPdfService {
         }
     }
 
+    @Override
+    public List<String> uploadMultiplePdfs(MultipartFile[] files) {
+        List<String> publicIds = new ArrayList<>();
+        for (MultipartFile file : files) {
+            if (!file.getContentType().equals("application/pdf")) {
+                throw new IllegalArgumentException("Tất cả file phải là định dạng PDF");
+            }
+
+            try {
+                String publicId = "talenthub_pdfs/" + System.currentTimeMillis() + "-" + file.getOriginalFilename();
+                Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap(
+                        "resource_type", "raw",
+                        "public_id", publicId,
+                        "folder", "talenthub_pdfs"
+                ));
+                publicIds.add((String) uploadResult.get("public_id"));
+            } catch (IOException e) {
+                throw new RuntimeException("Không thể upload nhiều PDF: " + e.getMessage());
+            }
+        }
+        return publicIds;
+    }
+
 
 }
