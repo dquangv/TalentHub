@@ -107,5 +107,14 @@ public class CloudinaryPdfServiceImpl implements CloudinaryPdfService {
         }
     }
 
+    private String extractPublicIdFromUrl(String secureUrl) {
+        String[] parts = secureUrl.split("/upload/");
+        if (parts.length < 2) {
+            throw new IllegalArgumentException("Định dạng secure_url không hợp lệ");
+        }
+        String afterUpload = parts[1];
+        String publicId = afterUpload.replaceAll("^v[0-9]+/", "").split("\\.")[0];
+        return publicId;
+    }
 
 }
