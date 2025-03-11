@@ -3,18 +3,25 @@ package org.example.backend.service.impl;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import org.example.backend.entity.child.account.PasswordResetToken;
 import org.example.backend.enums.EmailType;
+import org.example.backend.repository.PasswordResetTokenRepository;
 import org.example.backend.service.intf.EmailService;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Random;
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender mailSender;
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
 
     @Override
     public Boolean sendEmail(String to, EmailType emailType, String body) {
@@ -35,16 +42,34 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
+    public String generateOtp() {
+        Random random = new Random();
+        int otp = 100000 + random.nextInt(900000);
+        return String.valueOf(otp);
+    }
+
+    public Boolean sendOtpEmail(String to) {
+        String otp = generateOtp();
+        PasswordResetToken passwordResetToken = new PasswordResetToken();
+        passwordResetToken.setOtp(otp);
+        passwordResetToken.setEmail(to);
+        passwordResetToken.setExpiryDate(LocalDateTime.now().plusHours(1));
+        passwordResetTokenRepository.save(passwordResetToken);
+        return sendEmail(to, EmailType.OTP, otp);
+    }
+
     private String getSubjectForEmailType(EmailType emailType) {
         switch (emailType) {
             case REGISTER_SUCCESS:
                 return "Welcome to Talent Hub! 🎉";
             case FREELANCER_APPROVED:
                 return "Congratulations! Your Freelancer Application is Approved ✅";
-            case PASSWORD_RESET:
-                return "Password Reset Request - Talent Hub 🔐";
+            case OTP:
+                return "Your OTP Code";
             case FREELANCER_REJECTED:
                 return "Update on Your Freelancer Application - Talent Hub";
+            case PASSWORD_RESET:
+                return "Password Reset Request - Talent Hub 🔐";
             default:
                 return "Talent Hub Notification";
         }
@@ -84,9 +109,6 @@ public class EmailServiceImpl implements EmailService {
                     font-weight: bold;
                     transition: background 0.3s ease;
                 }
-                .button:hover {
-                    background: #4338CA;
-                }
                 .footer {
                     text-align: center;
                     margin-top: 30px;
@@ -94,19 +116,6 @@ public class EmailServiceImpl implements EmailService {
                     border-top: 1px solid #eee;
                     color: #666;
                     font-size: 14px;
-                }
-                .logo {
-                    font-size: 24px;
-                    font-weight: bold;
-                    margin-bottom: 10px;
-                }
-                .social-links {
-                    margin-top: 20px;
-                }
-                .social-links a {
-                    color: #666;
-                    text-decoration: none;
-                    margin: 0 10px;
                 }
             </style>
             """;
@@ -132,78 +141,25 @@ public class EmailServiceImpl implements EmailService {
         String mainContent = "";
 
         switch (emailType) {
-            case REGISTER_SUCCESS:
+            case OTP:
                 mainContent = """
-                    <h2 style="color: #4F46E5; margin-bottom: 20px;">Welcome to Talent Hub! 🎉</h2>
+                    <h2 style="color: #4F46E5; margin-bottom: 20px;">Your OTP Code</h2>
                     <p>Hello %s,</p>
-                    <p>We're thrilled to have you join our community! Your registration was successful, and you're now part of a growing network of talented professionals.</p>
-                    <p>Here's what you can do next:</p>
-                    <ul style="padding-left: 20px;">
-                        <li>Complete your profile</li>
-                        <li>Browse available projects</li>
-                        <li>Connect with other professionals</li>
-                    </ul>
-                    <a href="#" class="button">Get Started</a>
-                    """.formatted(to);
+                    <p>Your One-Time Password (OTP) is:</p>
+                    <h3 style="color: #4F46E5; font-size: 32px; text-align: center;">%s</h3>
+                    <p>Please use this code to complete your action.</p>
+                    <p>This OTP is valid for 5 minutes.</p>
+                    """.formatted(to, body); // body here is the OTP
                 break;
-            case FREELANCER_APPROVED:
-                mainContent = """
-                    <h2 style="color: #4F46E5; margin-bottom: 20px;">Congratulations! 🌟</h2>
-                    <p>Hello %s,</p>
-                    <p>Great news! Your application to become a freelancer on Talent Hub has been approved. We're excited to see what you'll bring to our community.</p>
-                    <p>You now have access to:</p>
-                    <ul style="padding-left: 20px;">
-                        <li>Project bidding</li>
-                        <li>Advanced search features</li>
-                        <li>Freelancer dashboard</li>
-                    </ul>
-                    <a href="#" class="button">Start Bidding</a>
-                    """.formatted(to);
-                break;
-            case PASSWORD_RESET:
-                mainContent = """
-                    <h2 style="color: #4F46E5; margin-bottom: 20px;">Password Reset Request 🔐</h2>
-                    <p>Hello %s,</p>
-                    <p>We received a request to reset your password. If you didn't make this request, please ignore this email.</p>
-                    <p>To reset your password, click the button below:</p>
-                    <a href="%s" class="button">Reset Password</a>
-                    <p style="color: #666; font-size: 14px;">This link will expire in 24 hours.</p>
-                    """.formatted(to, body);
-                break;
-            case FREELANCER_REJECTED:
-                mainContent = """
-                    <h2 style="color: #4F46E5; margin-bottom: 20px;">Application Update</h2>
-                    <p>Hello %s,</p>
-                    <p>Thank you for your interest in becoming a freelancer on Talent Hub. After careful review of your application, we regret to inform you that we are unable to approve your request at this time.</p>
-                    <p>We encourage you to:</p>
-                    <ul style="padding-left: 20px;">
-                        <li>Review our freelancer guidelines</li>
-                        <li>Enhance your profile and portfolio</li>
-                        <li>Apply again in 30 days</li>
-                    </ul>
-                    <p>We appreciate your understanding and wish you the best in your professional journey.</p>
-                    """.formatted(to);
-                break;
+            // Handle other cases (like REGISTER_SUCCESS, PASSWORD_RESET, etc.) here
             default:
-                mainContent = """
-                    <h2 style="color: #4F46E5; margin-bottom: 20px;">Notification</h2>
-                    <p>Hello %s,</p>
-                    <p>You have a new notification from Talent Hub.</p>
-                    """.formatted(to);
+                mainContent = "<p>Notification email</p>";
         }
 
         String footer = """
                 </div>
                 <div class="footer">
                     <p>© 2024 Talent Hub. All rights reserved.</p>
-                    <div class="social-links">
-                        <a href="#">Twitter</a> |
-                        <a href="#">LinkedIn</a> |
-                        <a href="#">Facebook</a>
-                    </div>
-                    <p style="color: #999; font-size: 12px; margin-top: 20px;">
-                        This is an automated message. Please do not reply to this email.
-                    </p>
                 </div>
             </div>
             </body>

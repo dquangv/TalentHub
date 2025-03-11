@@ -8,6 +8,7 @@ import org.example.backend.dto.UserDTO;
 import org.example.backend.dto.response.payment.PaymentDTOResponse;
 import org.example.backend.entity.child.account.User;
 import org.example.backend.entity.child.payment.Payment;
+import org.example.backend.enums.RoleUser;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
 public class AccountDTOResponse {
     private Long id;
     private String email;
-    private String role;
+    private RoleUser role;
     private Boolean status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

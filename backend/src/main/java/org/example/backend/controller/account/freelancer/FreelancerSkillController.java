@@ -27,7 +27,16 @@ public class FreelancerSkillController {
                 .data(skills)
                 .build());
     }
-
+    @GetMapping("/freelancer/{freelancerId}")
+    public ResponseEntity<ResponseObject<List<FreelancerSkillDTOResponse>>> getSkillsByFreelancerId(
+            @PathVariable Long freelancerId) {
+        List<FreelancerSkillDTOResponse> skills = freelancerSkillService.getSkillsByFreelancerId(freelancerId);
+        return ResponseEntity.ok(ResponseObject.<List<FreelancerSkillDTOResponse>>builder()
+                .message("Successfully retrieved all skills for freelancer with ID: " + freelancerId)
+                .status(HttpStatus.OK.value())
+                .data(skills)
+                .build());
+    }
     @PostMapping
     public ResponseEntity<ResponseObject<FreelancerSkillDTOResponse>> addSkillToFreelancer(
             @RequestBody FreelancerSkillDTORequest request) {

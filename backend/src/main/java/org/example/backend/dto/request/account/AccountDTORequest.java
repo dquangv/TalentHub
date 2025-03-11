@@ -46,4 +46,8 @@ public class AccountDTORequest {
     private String title;
 
     private String introduction;
+    @NotNull(message = "lat is required")
+    private double lat = 0;
+    @NotNull(message = "lng is required")
+    private double lng = 0;
 }
