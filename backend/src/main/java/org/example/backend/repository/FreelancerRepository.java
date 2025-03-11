@@ -13,10 +13,4 @@ import java.util.Optional;
 public interface FreelancerRepository extends JpaRepository<Freelancer,Long> {
     public Optional<Freelancer> findByUserId(Long userId);
 
-    @Transactional
-    @Modifying
-    @Query("UPDATE Freelancer f " +
-            "SET f.hourlyRate = :hourlyRate " +
-            "WHERE f.id = :freelancerId")
-    Freelancer updateHourlyRate(@Param("freelancerId") Long freelancerId, @Param("hourlyRate") BigDecimal hourlyRate);
 }
