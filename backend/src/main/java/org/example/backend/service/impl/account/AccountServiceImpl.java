@@ -175,6 +175,9 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
             email = oauthUser.getAttribute("email");
             System.out.println("Google login, using email: " + email);
         } else if ("facebook".equals(registrationId)) {
+            String fullName = oauthUser.getAttribute("name");
+            firstName = fullName.split(" ")[0];
+            lastName = fullName.split(" ")[1];
             email = oauthUser.getAttribute("id") + "@facebook.com";
             System.out.println("Facebook login, using Facebook ID as email: " + email);
         }
