@@ -7,7 +7,7 @@ import org.example.backend.entity.child.account.freelancer.Freelancer;
 import org.example.backend.entity.child.account.freelancer.FreelancerSkill;
 import org.example.backend.entity.child.job.Skill;
 import org.example.backend.exception.NotFoundException;
-import org.example.backend.mapper.Freelancer.FreelancerSkillMapper;
+import org.example.backend.mapper.Account.freelancer.FreelancerSkillMapper;
 import org.example.backend.repository.FreelancerRepository;
 import org.example.backend.repository.FreelancerSkillRepository;
 import org.example.backend.repository.SkillRepository;

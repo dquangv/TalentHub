@@ -5,7 +5,7 @@ import org.example.backend.dto.request.account.freelancer.ExperienceDTORequest;
 import org.example.backend.dto.response.account.freelancer.ExperienceDTOResponse;
 import org.example.backend.entity.child.account.freelancer.Experience;
 import org.example.backend.exception.BadRequestException;
-import org.example.backend.mapper.Freelancer.ExperienceMapper;
+import org.example.backend.mapper.Account.freelancer.ExperienceMapper;
 import org.example.backend.repository.ExperienceRepository;
 import org.example.backend.repository.FreelancerRepository;
 import org.example.backend.service.intf.account.freelancer.ExperienceService;
