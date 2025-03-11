@@ -127,5 +127,16 @@ public class CloudinaryPdfServiceImpl implements CloudinaryPdfService {
         }
     }
 
+    @Override
+    public String getPdfUrl(String secureUrl) {
+        try {
+            String publicId = extractPublicIdFromUrl(secureUrl);
+            Map resource = cloudinary.api().resource(publicId, ObjectUtils.asMap("resource_type", "raw"));
+            return (String) resource.get("secure_url");
+        } catch (Exception e) {
+            throw new RuntimeException("Không thể lấy URL PDF: " + e.getMessage());
+        }
+    }
+
 
 }
