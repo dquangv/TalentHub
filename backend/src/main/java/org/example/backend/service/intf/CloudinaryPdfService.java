@@ -11,5 +11,7 @@ public interface CloudinaryPdfService {
     List<String> uploadMultiplePdfs(MultipartFile[] files);
     void deletePdf(String secureUrl);
     void deletePdfById(Long cvId);
-    
+    String getPdfUrl(String secureUrl);
+    byte[] downloadPdf(String publicId);
+    List<CV> getCVsByFreelancerId(Long freelancerId);
 }
