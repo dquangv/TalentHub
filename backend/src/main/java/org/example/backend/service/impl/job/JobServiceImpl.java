@@ -5,12 +5,14 @@ import org.example.backend.dto.request.job.CreateJobDTORequest;
 import org.example.backend.dto.request.job.JobAdminDTOResponse;
 import org.example.backend.dto.request.job.JobDTORequest;
 import org.example.backend.dto.response.job.*;
+import org.example.backend.entity.child.account.Account;
 import org.example.backend.entity.child.account.client.Client;
 import org.example.backend.entity.child.account.client.Company;
 import org.example.backend.entity.child.job.Category;
 import org.example.backend.entity.child.job.FreelancerJob;
 import org.example.backend.entity.child.job.Job;
 import org.example.backend.enums.StatusFreelancerJob;
+import org.example.backend.enums.StatusJob;
 import org.example.backend.exception.BadRequestException;
 import org.example.backend.mapper.job.*;
 import org.example.backend.repository.*;
@@ -47,6 +49,29 @@ public class JobServiceImpl implements JobService {
     private final JobAdminMapper jobAdminMapper;
 
     private final CreateJobMapper createJobMapper;
+    @Override
+    public Boolean banJob(Long id) {
+        Optional<Job> job = jobRepository.findById(id);
+        if (job.isPresent()) {
+            Job foundAccount = job.get();
+            foundAccount.setStatus(StatusJob.BANNED);
+            jobRepository.save(foundAccount);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Boolean unBanJob(Long id) {
+        Optional<Job> job = jobRepository.findById(id);
+        if (job.isPresent()) {
+            Job foundAccount = job.get();
+            foundAccount.setStatus(StatusJob.OPEN);
+            jobRepository.save(foundAccount);
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public CreateJobDTOResponse createJob(CreateJobDTORequest createJobDTORequest) {
