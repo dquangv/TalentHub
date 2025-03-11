@@ -167,4 +167,44 @@ public class GroupApiDocs {
                 .build();
     }
 
+    @Bean
+    public GroupedOpenApi apiImages() {
+        return GroupedOpenApi.builder()
+                .group("Image APIs")
+                .pathsToMatch("/api/images/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi apiExperience() {
+        return GroupedOpenApi.builder()
+                .group("Experiences APIs")
+                .pathsToMatch("/api/v1/experiences/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi apiReportedJob() {
+        return GroupedOpenApi.builder()
+                .group("Reported Jobs APIs")
+                .pathsToMatch("/api/v1/reported-jobs/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi apiVoucherPackage() {
+        return GroupedOpenApi.builder()
+                .group("Voucher Packages APIs")
+                .pathsToMatch("/api/v1/voucher-packages/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi apiProjects() {
+        return GroupedOpenApi.builder()
+                .group("Projects APIs")
+                .pathsToMatch("/api/v1/projects/**")
+                .build();
+    }
+
 }

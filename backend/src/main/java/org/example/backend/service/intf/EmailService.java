@@ -7,4 +7,5 @@ import org.example.backend.service.BaseService;
 
 public interface EmailService{
     Boolean sendEmail(String to, EmailType emailType, String body);
+    Boolean sendOtpEmail(String to);
 }

@@ -31,6 +31,7 @@ public class AuthController {
                 .data(response)
                 .build();
     }
+
     @PostMapping("/refresh-token")
     public ResponseObject<RefreshTokenDTOResponse> refreshToken(@RequestParam String refreshToken) throws JOSEException, ParseException {
         RefreshTokenDTOResponse response = authenticationService.refreshToken(refreshToken);

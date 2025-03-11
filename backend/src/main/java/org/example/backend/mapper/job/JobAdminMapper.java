@@ -1,0 +1,20 @@
+package org.example.backend.mapper.job;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.example.backend.dto.request.job.JobAdminDTOResponse;
+import org.example.backend.entity.child.job.Job;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+
+@Mapper(componentModel = "spring")
+public interface JobAdminMapper {
+
+    @Mapping(source = "job.client.user.account.email", target = "clientEmail")
+    @Mapping(target = "appliedQuantity", expression = "java(appliedQuantity)")
+    @Mapping(target = "cancelledQuantity", expression = "java(cancelledQuantity)")
+    @Mapping(target = "inProgressQuantity", expression = "java(inProgressQuantity)")
+    @Mapping(target = "viewedQuantity", expression = "java(viewedQuantity)")
+    @Mapping(source="job.category.categoryTitle", target="categoryName")
+    JobAdminDTOResponse toResponseDto(Job job, Long appliedQuantity, Long cancelledQuantity,
+                                      Long inProgressQuantity, Long viewedQuantity);
+}

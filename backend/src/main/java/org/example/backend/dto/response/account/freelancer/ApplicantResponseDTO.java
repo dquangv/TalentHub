@@ -21,6 +21,8 @@ public class ApplicantResponseDTO {
     private LocalDateTime appliedDate;
     private StatusFreelancerJob status;
     private double rating;
-
+    private Long freelancerId;
+    private Long jobId;
+    private Long appointmentId;
 
 }

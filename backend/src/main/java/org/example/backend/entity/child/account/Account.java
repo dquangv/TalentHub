@@ -1,5 +1,6 @@
 package org.example.backend.entity.child.account;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.type.DateTime;
 import jakarta.persistence.*;
@@ -38,21 +39,27 @@ public class Account extends AbstractEntity<Long> {
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime  createdAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at", insertable = false)
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;
 
     @Column(name = "status")
     private boolean status;
 
+    @Column(name = "lat")
+    private Double lat;
+    @Column(name = "lng")
+    private Double lng;
     /*@OneToOne
     @JoinColumn(name = "user_id")
     private User user;*/
 
     @JsonIgnore
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Payment> payments;
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Payment payment;
 }

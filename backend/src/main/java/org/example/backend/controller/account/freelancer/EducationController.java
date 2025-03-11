@@ -52,6 +52,33 @@ public class EducationController {
                 .build();
     }
 
+    @GetMapping("/freelancer/{freelancerId}")
+    public ResponseObject<List<EducationDTOResponse>> getEducationsByFreelancerId(@PathVariable Long freelancerId) {
+        List<EducationDTOResponse> educations = educationService.getByFreelancerId(freelancerId);
+        return ResponseObject.<List<EducationDTOResponse>>builder()
+                .message("Educations for freelancer retrieved successfully")
+                .status(HttpStatus.OK.value())
+                .data(educations)
+                .build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseObject<EducationDTOResponse> updateEducation(@PathVariable Long id, @Valid @RequestBody EducationDTORequest educationDTORequest) {
+        try {
+            EducationDTOResponse educationDTOResponse = educationService.update(id, educationDTORequest);
+            return ResponseObject.<EducationDTOResponse>builder()
+                    .message("Education updated successfully")
+                    .status(HttpStatus.OK.value())
+                    .data(educationDTOResponse)
+                    .build();
+        } catch (Exception e) {
+            return ResponseObject.<EducationDTOResponse>builder()
+                    .message("Education not found or could not be updated: " + e.getMessage())
+                    .status(HttpStatus.NOT_FOUND.value())
+                    .build();
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseObject<Void> deleteEducation(@PathVariable Long id) {
         boolean isDeleted = educationService.deleteById(id);

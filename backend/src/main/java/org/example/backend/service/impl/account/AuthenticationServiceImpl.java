@@ -55,13 +55,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public AuthenticationDtoResponse authenticate(AuthenticationDTORequest request) throws JOSEException {
         String email = request.getEmail();
-        System.out.println(request);
 
-        // Lấy Account từ email, nếu không có thì ném lỗi
         Account account = accountRepository.getByEmail(email)
                 .orElseThrow(() -> new IllegalIdentifierException("Tài khoản không tồn tại."));
-
-        // Kiểm tra mật khẩu
         if (!passwordEncoder.matches(request.getPassword(), account.getPassword())) {
             log.info("Wrong password.");
             throw new IllegalIdentifierException("Mật khẩu không đúng.");
@@ -86,6 +82,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             clientId = client.getId();
         }
 
+        account.setLat(request.getLat());
+        account.setLng(request.getLng());
+        accountRepository.save(account);
+
         // Trả về kết quả
         return AuthenticationDtoResponse.builder()
                 .accessToken(generateAccessToken(account))
@@ -93,6 +93,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .freelancerId(freelancerId)
                 .clientId(clientId)
                 .role(account.getRole())
+                .lat(request.getLat())
+                .lng(request.getLng())
+                .email(account.getEmail())
                 .build();
     }
 
@@ -172,7 +175,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 ////        }
 ////    }
 
-    private String generateAccessToken(Account account) throws JOSEException {
+    public String generateAccessToken(Account account) throws JOSEException {
         RoleUser roleName = account.getRole();
         String userName = account.getEmail();
 
@@ -197,6 +200,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         jwsObject.sign(new MACSigner(SECRET_KEY.getBytes()));
         return jwsObject.serialize();
     }
+
     private String generateRefreshToken(Account account) throws JOSEException {
         String userName = account.getEmail();
 

@@ -7,7 +7,7 @@ import org.example.backend.entity.child.account.freelancer.Freelancer;
 import org.example.backend.entity.child.account.freelancer.FreelancerSkill;
 import org.example.backend.entity.child.job.Skill;
 import org.example.backend.exception.NotFoundException;
-import org.example.backend.mapper.Freelancer.FreelancerSkillMapper;
+import org.example.backend.mapper.Account.freelancer.FreelancerSkillMapper;
 import org.example.backend.repository.FreelancerRepository;
 import org.example.backend.repository.FreelancerSkillRepository;
 import org.example.backend.repository.SkillRepository;
@@ -28,6 +28,16 @@ public class FreelancerSkillServiceImpl implements FreelancerSkillService {
     @Override
     public List<FreelancerSkillDTOResponse> getAllSkills() {
         return freelancerSkillRepository.findAll().stream()
+                .map(freelancerSkillMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+    @Override
+    public List<FreelancerSkillDTOResponse> getSkillsByFreelancerId(Long freelancerId) {
+        if (!freelancerRepository.existsById(freelancerId)) {
+            throw new NotFoundException("Freelancer not found with id: " + freelancerId);
+        }
+        List<FreelancerSkill> freelancerSkills = freelancerSkillRepository.findByFreelancer_Id(freelancerId);
+        return freelancerSkills.stream()
                 .map(freelancerSkillMapper::toDTO)
                 .collect(Collectors.toList());
     }

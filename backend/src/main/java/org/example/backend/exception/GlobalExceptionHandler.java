@@ -1,7 +1,6 @@
 package org.example.backend.exception;
 
 import com.google.api.gax.rpc.NotFoundException;
-import org.apache.coyote.BadRequestException;
 import org.example.backend.dto.ResponseObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,23 +20,29 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     // Xử lý NotFoundException
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleNotFoundException(NotFoundException ex, WebRequest request) {
-        Map<String, Object> errorDetails = new HashMap<>();
-        errorDetails.put("status", HttpStatus.NOT_FOUND.value());
-        errorDetails.put("message", ex.getMessage());
-        errorDetails.put("timestamp", System.currentTimeMillis());
-        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    public ResponseEntity<ResponseObject<Object>> handleNotFoundException(NotFoundException ex, WebRequest request) {
+        ResponseObject<Object> responseObject = ResponseObject.builder()
+                .message("Not Found")
+                .status(HttpStatus.NOT_FOUND.value())
+                .data(ex.getMessage())
+                .build();
+
+        return ResponseEntity.badRequest().body(responseObject);
     }
 
     // Xử lý BadRequestException
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<Map<String, Object>> handleBadRequestException(BadRequestException ex, WebRequest request) {
-        Map<String, Object> errorDetails = new HashMap<>();
-        errorDetails.put("status", HttpStatus.BAD_REQUEST.value());
-        errorDetails.put("message", ex.getMessage());
-        errorDetails.put("timestamp", System.currentTimeMillis());
-        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ResponseObject<Object>> handleBadException(BadRequestException ex) {
+        ResponseObject<Object> responseObject = ResponseObject.builder()
+                .message("Bad Request")
+                .status(HttpStatus.BAD_REQUEST.value())
+                .data(ex.getMessage())
+                .build();
+
+        return ResponseEntity.badRequest().body(responseObject);
     }
 
 
@@ -45,6 +50,7 @@ public class GlobalExceptionHandler {
     // Xử lý Exception tổng quát
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGlobalException(Exception ex, WebRequest request) {
+        ex.printStackTrace();
         Map<String, Object> errorDetails = new HashMap<>();
         errorDetails.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
         errorDetails.put("message", "Internal Server Error: " + ex.getMessage());

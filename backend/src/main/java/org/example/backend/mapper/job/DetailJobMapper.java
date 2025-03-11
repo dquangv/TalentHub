@@ -19,6 +19,7 @@ public interface DetailJobMapper extends BaseMapper<Job, DetailJobDTORequest, De
     @Mapping(source = "client.user.firstName", target = "firstName")
     @Mapping(source = "client.user.lastName", target = "lastName")
     @Mapping(source = "category.categoryTitle", target = "type")
+    @Mapping(source = "status", target = "status")
     @Mapping(expression = "java(mapSkillNames(job))", target = "skillNames")
     DetailJobDTOResponse toResponseDto(Job job);
 

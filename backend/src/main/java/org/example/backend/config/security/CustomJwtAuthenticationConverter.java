@@ -1,4 +1,4 @@
-package org.example.backend.config.secutity;
+package org.example.backend.config.security;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.stereotype.Component;

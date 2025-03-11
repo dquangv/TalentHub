@@ -6,4 +6,5 @@ import org.example.backend.entity.child.Banner;
 import org.example.backend.service.BaseService;
 
 public interface BannerService extends BaseService<BannerDTORequest, BannerDTOResponse, Long> {
+    BannerDTOResponse update(Long id, BannerDTORequest bannerDTORequest);
 }
