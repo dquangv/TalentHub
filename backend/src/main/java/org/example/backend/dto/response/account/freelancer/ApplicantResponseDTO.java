@@ -23,5 +23,6 @@ public class ApplicantResponseDTO {
     private double rating;
     private Long freelancerId;
     private Long jobId;
+    private Long appointmentId;
 
 }

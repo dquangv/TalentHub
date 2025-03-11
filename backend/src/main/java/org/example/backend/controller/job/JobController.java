@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.ResponseObject;
 import org.example.backend.dto.request.job.CreateJobDTORequest;
 import org.example.backend.dto.request.job.JobAdminDTOResponse;
+import org.example.backend.dto.response.account.StatusAccountDTOResponse;
 import org.example.backend.dto.response.job.*;
 import org.example.backend.entity.child.job.Job;
 import org.example.backend.service.intf.job.FreelancerJobService;
@@ -21,6 +22,31 @@ public class JobController {
     private final JobService jobService;
     private final FreelancerJobService freelancerJobService;
 
+    @PostMapping("/admin/ban")
+    public ResponseObject<StatusAccountDTOResponse> banJob(@RequestParam Long jobId) {
+        Boolean response = jobService.banJob(jobId);
+        return ResponseObject
+                .<StatusAccountDTOResponse>builder()
+                .message("Ban job")
+                .status(HttpStatus.OK.value())
+                .data(StatusAccountDTOResponse.builder()
+                        .status(response ? "Ban job successful" : "Ban job failed")
+                        .build())
+                .build();
+    }
+
+    @PostMapping("/admin/unban")
+    public ResponseObject<StatusAccountDTOResponse> unBanJob(@RequestParam Long jobId) {
+        Boolean response = jobService.unBanJob(jobId);
+        return ResponseObject
+                .<StatusAccountDTOResponse>builder()
+                .message("UnBan job")
+                .status(HttpStatus.OK.value())
+                .data(StatusAccountDTOResponse.builder()
+                        .status(response ? "Unban job successful" : "Unban job failed")
+                        .build())
+                .build();
+    }
     @GetMapping
     public ResponseObject<List<JobDTOResponse>> findAllJobs() {
         List<JobDTOResponse> response = jobService.findAllJobs();

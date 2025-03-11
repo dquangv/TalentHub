@@ -8,6 +8,7 @@ import org.example.backend.dto.response.account.freelancer.CreateFreelancerDTORe
 import org.example.backend.dto.response.job.FreelancerJobDTOResponse;
 import org.example.backend.dto.response.job.SaveJobDTOResponse;
 import org.example.backend.entity.child.account.User;
+import org.example.backend.entity.child.account.client.Appointment;
 import org.example.backend.entity.child.account.client.Company;
 import org.example.backend.entity.child.account.freelancer.Freelancer;
 import org.example.backend.entity.child.job.FreelancerJob;
@@ -37,6 +38,7 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
     private final SaveJobMapper saveJobMapper;
     private final CompanyRepository companyRepository;
     private final CreateFreelancerMapper createFreelancerMapper;
+    private final AppointmentRepository appointmentRepository;
 
 
     @Override
@@ -131,12 +133,22 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
                 updatedFreelancerJob.getFreelancer().getId()
         );
     }
-
+    @Override
+    public Appointment getAppointmentByFreelancerJobId(Long freelancerJobId) {
+        Optional<Appointment> appointment = appointmentRepository.findByFreelancerJobId(freelancerJobId);
+        return appointment.orElse(null);
+    }
     @Override
     public List<ApplicantResponseDTO> getApplicantByJobId(Long jobId) {
         List<FreelancerJob> results = freelancerJobRepository.getApplicantByJobId(jobId);
 
-        return results.stream().map(freelancerJobMapper::toResponseDto).toList();
+        return results.stream()
+                .map(freelancerJob -> {
+                    Appointment appointment = this.getAppointmentByFreelancerJobId(freelancerJob.getId());
+
+                    return freelancerJobMapper.toResponseDto(freelancerJob, appointment == null ? -1 : appointment.getId());
+                })
+                .collect(Collectors.toList());
     }
 
     @Override
