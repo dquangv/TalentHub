@@ -36,4 +36,10 @@ public class PDFController {
     }
 
 
+    @PostMapping("/upload-multiple")
+    public ResponseEntity<List<String>> uploadMultiplePdfs(@RequestParam("files") MultipartFile[] files) {
+        List<String> publicIds = pdfService.uploadMultiplePdfs(files);
+        return ResponseEntity.ok(publicIds);
+    }
+
 }
