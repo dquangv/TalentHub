@@ -68,8 +68,12 @@ public class PDFController {
     }
 
     @GetMapping("/freelancer/{freelancerId}")
-    public ResponseEntity<List<CV>> getCVsByFreelancerId(@PathVariable Long freelancerId) {
+    public ResponseEntity<Map<String, Object>> getCVsByFreelancerId(@PathVariable Long freelancerId) {
+        Map<String, Object> response = new HashMap<>();
         List<CV> cvs = pdfService.getCVsByFreelancerId(freelancerId);
-        return ResponseEntity.ok(cvs);
+        response.put("data", cvs);
+        response.put("status", HttpStatus.OK.value());
+
+        return ResponseEntity.ok(response);
     }
 }
