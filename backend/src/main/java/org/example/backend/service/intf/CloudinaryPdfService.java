@@ -9,5 +9,7 @@ import java.util.List;
 public interface CloudinaryPdfService {
     String uploadPdf(MultipartFile file, Long freelancerId);
     List<String> uploadMultiplePdfs(MultipartFile[] files);
-  
+    void deletePdf(String secureUrl);
+    void deletePdfById(Long cvId);
+    
 }
