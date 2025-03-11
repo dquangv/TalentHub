@@ -165,6 +165,11 @@ public class CloudinaryPdfServiceImpl implements CloudinaryPdfService {
 
 
     }
-
+    @Override
+    public List<CV> getCVsByFreelancerId(Long freelancerId) {
+        Freelancer freelancer = freelancerRepository.findById(freelancerId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy Freelancer với ID: " + freelancerId));
+        return cvRepository.findByFreelancer(freelancer);
+    }
 
 }
