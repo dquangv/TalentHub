@@ -16,4 +16,6 @@ public interface JobService extends BaseService<JobDTORequest, JobDTOResponse, L
    List<PostJobsDTOResponse> getPostedJobs(Long clientId);
      List<JobAdminDTOResponse> getAllAdmin();
      CreateJobDTOResponse createJob(CreateJobDTORequest createJobDTORequest);
+    Boolean banJob(Long id);
+    Boolean unBanJob(Long id);
 }
