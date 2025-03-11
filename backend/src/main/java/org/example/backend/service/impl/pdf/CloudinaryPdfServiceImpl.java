@@ -92,4 +92,20 @@ public class CloudinaryPdfServiceImpl implements CloudinaryPdfService {
     }
 
 
+    @Override
+    public void deletePdfById(Long cvId) {
+        try {
+            CV cv = cvRepository.findById(cvId)
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy CV với ID: " + cvId));
+
+            String publicId = extractPublicIdFromUrl(cv.getUrl());
+            cloudinary.uploader().destroy(publicId, ObjectUtils.asMap("resource_type", "raw"));
+
+            cvRepository.delete(cv);
+        } catch (Exception e) {
+            throw new RuntimeException("Không thể xóa CV: " + e.getMessage());
+        }
+    }
+
+
 }
