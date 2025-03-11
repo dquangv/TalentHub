@@ -57,4 +57,14 @@ public class PDFController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
         }
     }
+    @GetMapping("/download")
+    public ResponseEntity<byte[]> downloadPdf(@RequestParam("publicId") String publicId) {
+        byte[] pdfBytes = pdfService.downloadPdf(publicId);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("attachment", "downloaded.pdf");
+        headers.setContentLength(pdfBytes.length);
+        return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
+    }
+
 }
