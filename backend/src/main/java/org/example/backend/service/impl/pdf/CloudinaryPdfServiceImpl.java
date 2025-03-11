@@ -138,5 +138,33 @@ public class CloudinaryPdfServiceImpl implements CloudinaryPdfService {
         }
     }
 
+    @Override
+    public byte[] downloadPdf(String publicId) {
+        try {
+            System.out.println("Downloading PDF with publicId: " + publicId);
+
+            String signedUrl = cloudinary.url()
+                    .resourceType("raw")
+                    .signed(true)
+                    .publicId(publicId)
+                    .generate();
+            System.out.println("Generated signedUrl: " + signedUrl);
+
+            URL url = new URL(signedUrl);
+            Path tempFile = Paths.get("temp.pdf");
+            Files.copy(url.openStream(), tempFile, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+            byte[] pdfBytes = Files.readAllBytes(tempFile);
+            Files.delete(tempFile);
+            System.out.println("Downloaded PDF size: " + pdfBytes.length + " bytes");
+            return pdfBytes;
+        } catch (IOException e) {
+            System.err.println("IOException: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Không thể tải PDF: " + e.getMessage());
+        }
+
+
+    }
+
 
 }
