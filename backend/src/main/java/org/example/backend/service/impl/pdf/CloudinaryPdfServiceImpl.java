@@ -117,4 +117,15 @@ public class CloudinaryPdfServiceImpl implements CloudinaryPdfService {
         return publicId;
     }
 
+    @Override
+    public void deletePdf(String secureUrl) {
+        try {
+            String publicId = extractPublicIdFromUrl(secureUrl);
+            cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
+        } catch (IOException e) {
+            throw new RuntimeException("Không thể xóa PDF: " + e.getMessage());
+        }
+    }
+
+
 }
