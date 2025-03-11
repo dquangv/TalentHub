@@ -67,4 +67,9 @@ public class PDFController {
         return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
     }
 
+    @GetMapping("/freelancer/{freelancerId}")
+    public ResponseEntity<List<CV>> getCVsByFreelancerId(@PathVariable Long freelancerId) {
+        List<CV> cvs = pdfService.getCVsByFreelancerId(freelancerId);
+        return ResponseEntity.ok(cvs);
+    }
 }
