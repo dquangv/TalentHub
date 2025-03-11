@@ -42,4 +42,19 @@ public class PDFController {
         return ResponseEntity.ok(publicIds);
     }
 
+    @DeleteMapping("/{cvId}")
+    public ResponseEntity<Map<String, Object>> deletePdf(@PathVariable Long cvId) {
+        try {
+            pdfService.deletePdfById(cvId);
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "CV đã được xóa thành công");
+            response.put("status", HttpStatus.OK.value());
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("message", "Không thể xóa CV: " + e.getMessage());
+            error.put("status", HttpStatus.BAD_REQUEST.value());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        }
+    }
 }
