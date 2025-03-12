@@ -1,5 +1,6 @@
 package org.example.backend.dto.response.job;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,6 +8,7 @@ import org.example.backend.enums.StatusJob;
 import org.example.backend.enums.TypePayment;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,4 +27,5 @@ public class CreateJobDTOResponse {
     private StatusJob statusJob;
     private Long clientId;
     private Long categoryId;
+    private List<Long> skillId;
 }
