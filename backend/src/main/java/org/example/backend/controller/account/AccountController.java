@@ -26,6 +26,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.xml.stream.Location;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
@@ -77,6 +78,16 @@ public class AccountController {
                 .build();
     }
 
+    @GetMapping("/locations")
+    public ResponseObject<List<LocationDTOResponse>> getLocations() {
+        List<LocationDTOResponse> response = accountService.getLocations();
+        return ResponseObject
+                .<List<LocationDTOResponse>>builder()
+                .message("Get all locations successful")
+                .status(HttpStatus.OK.value())
+                .data(response)
+                .build();
+    }
 
 
     @GetMapping("/get-nearby")
