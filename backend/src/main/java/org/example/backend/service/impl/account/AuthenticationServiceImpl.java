@@ -55,14 +55,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public AuthenticationDtoResponse authenticate(AuthenticationDTORequest request) throws JOSEException {
         String email = request.getEmail();
-        System.out.println(request);
 
-        // Lấy Account từ email, nếu không có thì ném lỗi
         Account account = accountRepository.getByEmail(email)
                 .orElseThrow(() -> new IllegalIdentifierException("Tài khoản không tồn tại."));
-
-
-        // Kiểm tra mật khẩu
         if (!passwordEncoder.matches(request.getPassword(), account.getPassword())) {
             log.info("Wrong password.");
             throw new IllegalIdentifierException("Mật khẩu không đúng.");
@@ -100,6 +95,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .role(account.getRole())
                 .lat(request.getLat())
                 .lng(request.getLng())
+                .email(account.getEmail())
                 .build();
     }
 

@@ -52,6 +52,21 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
     private final EmailService emailService;
     private final AuthenticationServiceImpl authenticationServiceImpl;
 
+    @Override
+    public boolean changePassword(String email, String currentPassword, String newPassword) {
+        Optional<Account> accountOptional = accountRepository.findByEmail(email);
+        if (accountOptional.isPresent()) {
+            Account account = accountOptional.get();
+            System.out.println("password: " + account.getPassword());
+            System.out.println("currentPassword: " + currentPassword);
+            if (passwordEncoder.matches(currentPassword, account.getPassword())) {
+                account.setPassword(passwordEncoder.encode(newPassword));
+                accountRepository.save(account);
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Override
     public Boolean checkEmail(String email) {
@@ -160,6 +175,9 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
             email = oauthUser.getAttribute("email");
             System.out.println("Google login, using email: " + email);
         } else if ("facebook".equals(registrationId)) {
+            String fullName = oauthUser.getAttribute("name");
+            firstName = fullName.split(" ")[0];
+            lastName = fullName.split(" ")[1];
             email = oauthUser.getAttribute("id") + "@facebook.com";
             System.out.println("Facebook login, using Facebook ID as email: " + email);
         }

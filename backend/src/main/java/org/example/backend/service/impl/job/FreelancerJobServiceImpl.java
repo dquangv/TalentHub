@@ -1,26 +1,22 @@
 package org.example.backend.service.impl.job;
 
 import lombok.RequiredArgsConstructor;
-import org.example.backend.dto.request.account.freelancer.CreateFreelancerDTORequest;
 import org.example.backend.dto.request.job.FreelancerJobDTORequest;
 import org.example.backend.dto.response.account.freelancer.ApplicantResponseDTO;
-import org.example.backend.dto.response.account.freelancer.CreateFreelancerDTOResponse;
 import org.example.backend.dto.response.job.FreelancerJobDTOResponse;
 import org.example.backend.dto.response.job.SaveJobDTOResponse;
-import org.example.backend.entity.child.account.User;
+import org.example.backend.entity.child.account.client.Appointment;
 import org.example.backend.entity.child.account.client.Company;
-import org.example.backend.entity.child.account.freelancer.Freelancer;
 import org.example.backend.entity.child.job.FreelancerJob;
 import org.example.backend.enums.StatusFreelancerJob;
 import org.example.backend.exception.BadRequestException;
-import org.example.backend.mapper.Freelancer.CreateFreelancerMapper;
+import org.example.backend.mapper.Account.freelancer.CreateFreelancerMapper;
 import org.example.backend.mapper.job.FreelancerJobMapper;
 import org.example.backend.mapper.job.SaveJobMapper;
 import org.example.backend.repository.*;
 import org.example.backend.service.intf.job.FreelancerJobService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,6 +33,7 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
     private final SaveJobMapper saveJobMapper;
     private final CompanyRepository companyRepository;
     private final CreateFreelancerMapper createFreelancerMapper;
+    private final AppointmentRepository appointmentRepository;
 
 
     @Override
@@ -131,12 +128,22 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
                 updatedFreelancerJob.getFreelancer().getId()
         );
     }
-
+    @Override
+    public Appointment getAppointmentByFreelancerJobId(Long freelancerJobId) {
+        Optional<Appointment> appointment = appointmentRepository.findByFreelancerJobId(freelancerJobId);
+        return appointment.orElse(null);
+    }
     @Override
     public List<ApplicantResponseDTO> getApplicantByJobId(Long jobId) {
         List<FreelancerJob> results = freelancerJobRepository.getApplicantByJobId(jobId);
 
-        return results.stream().map(freelancerJobMapper::toResponseDto).toList();
+        return results.stream()
+                .map(freelancerJob -> {
+                    Appointment appointment = this.getAppointmentByFreelancerJobId(freelancerJob.getId());
+
+                    return freelancerJobMapper.toResponseDto(freelancerJob, appointment == null ? -1 : appointment.getId());
+                })
+                .collect(Collectors.toList());
     }
 
     @Override

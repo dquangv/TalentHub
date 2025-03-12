@@ -1,4 +1,4 @@
-package org.example.backend.mapper.Freelancer;
+package org.example.backend.mapper.Account.freelancer;
 import org.example.backend.dto.request.account.freelancer.FreelancerSkillDTORequest;
 import org.example.backend.dto.response.account.freelancer.FreelancerSkillDTOResponse;
 import org.example.backend.entity.child.account.freelancer.FreelancerSkill;

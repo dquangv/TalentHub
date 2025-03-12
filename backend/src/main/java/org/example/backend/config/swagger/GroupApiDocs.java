@@ -165,7 +165,9 @@ public class GroupApiDocs {
                 .group("Appointments APIs")
                 .pathsToMatch("/api/v1/appointments/**")
                 .build();
-    }    @Bean
+    }
+
+    @Bean
     public GroupedOpenApi apiImages() {
         return GroupedOpenApi.builder()
                 .group("Image APIs")
@@ -194,6 +196,14 @@ public class GroupApiDocs {
         return GroupedOpenApi.builder()
                 .group("Voucher Packages APIs")
                 .pathsToMatch("/api/v1/voucher-packages/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi apiProjects() {
+        return GroupedOpenApi.builder()
+                .group("Projects APIs")
+                .pathsToMatch("/api/v1/projects/**")
                 .build();
     }
 

@@ -95,9 +95,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         List<Appointment> appointments = appointmentRepository.findAppointmentsByClient_Id(clientId);
 
-        if (appointments.isEmpty()) {
-            throw new NotFoundException("No appointments found for this client");
-        }
+//        if (appointments.isEmpty()) {
+//            throw new NotFoundException("No appointments found for this client");
+//        }
 
         return appointments.stream()
                 .map(appointment -> {
@@ -123,9 +123,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         List<Appointment> appointments = appointmentRepository.findAppointmentsByFreelancerJob_Freelancer_Id(freelancerId);
 
-        if (appointments.isEmpty()) {
-            throw new NotFoundException("No appointments found for this freelancer");
-        }
+//        if (appointments.isEmpty()) {
+//            throw new NotFoundException("No appointments found for this freelancer");
+//        }
 
         return appointments.stream().map(appointment -> {
             AppointmentDetailDTOResponse response = appointmentMapper.toResponseDto(appointment);
