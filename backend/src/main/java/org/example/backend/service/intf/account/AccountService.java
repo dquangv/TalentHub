@@ -5,6 +5,7 @@ import org.example.backend.dto.request.account.AccountDTORequest;
 import org.example.backend.dto.response.account.AccountDTOResponse;
 import org.example.backend.dto.response.account.AdminAccountDTOResponse;
 import org.example.backend.dto.response.account.AuthenticationDtoResponse;
+import org.example.backend.dto.response.account.LocationDTOResponse;
 import org.example.backend.entity.child.account.Account;
 import org.example.backend.enums.RoleUser;
 import org.example.backend.service.BaseService;
@@ -24,6 +25,7 @@ public interface AccountService extends BaseService<AccountDTORequest, AccountDT
     public List<AccountDTOResponse> getNearbyUsers(double lat, double lon, double distanceInMeters);
     Boolean banAccount(String email);
     Boolean unBanAccount(String email);
+    List<LocationDTOResponse> getLocations();
 
 }
 
