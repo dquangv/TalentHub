@@ -3,7 +3,9 @@ package org.example.backend.controller.account.client;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.ResponseObject;
 import org.example.backend.dto.request.account.client.ClientDTORequest;
+import org.example.backend.dto.request.account.client.UpdatePriceAndTypeDTORequest;
 import org.example.backend.dto.response.account.client.ClientDTOResponse;
+import org.example.backend.dto.response.account.client.UpdatePriceAndTypeDTOResponse;
 import org.example.backend.service.intf.account.client.ClientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -64,6 +66,16 @@ public class ClientController {
         return ResponseObject.<Void>builder()
                 .message("Client not found")
                 .status(HttpStatus.NOT_FOUND.value())
+                .build();
+    }
+
+    @PutMapping("/updatePrice")
+    public ResponseObject<UpdatePriceAndTypeDTOResponse> updatePriceAndType(@Valid @RequestBody UpdatePriceAndTypeDTORequest updatePriceAndTypeDTORequest) {
+        UpdatePriceAndTypeDTOResponse response = clientService.updatePriceAndType(updatePriceAndTypeDTORequest);
+        return ResponseObject.<UpdatePriceAndTypeDTOResponse>builder()
+                .message("Client price and type updated successfully")
+                .status(HttpStatus.OK.value())
+                .data(response)
                 .build();
     }
 }

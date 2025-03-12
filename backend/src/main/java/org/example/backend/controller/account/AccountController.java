@@ -6,23 +6,16 @@ import org.example.backend.dto.ResponseObject;
 import org.example.backend.dto.request.account.*;
 import org.example.backend.dto.response.account.*;
 import org.example.backend.dto.request.account.AccountDTORequest;
-import org.example.backend.dto.request.account.AuthenticationDTORequest;
-import org.example.backend.dto.request.account.IntrospectDTORequest;
-import org.example.backend.dto.response.account.RefreshTokenDTOResponse;
 import org.example.backend.dto.response.account.AccountDTOResponse;
 import org.example.backend.dto.response.account.AuthenticationDtoResponse;
-import org.example.backend.dto.response.account.IntrospectDtoResponse;
 import org.example.backend.enums.RoleUser;
-import org.example.backend.exception.BadRequestException;
-import org.example.backend.mapper.Account.AccountMapper;
 import org.example.backend.service.intf.EmailService;
 import org.example.backend.service.intf.account.AccountService;
-import org.example.backend.service.intf.account.AuthenticationService;
 import org.example.backend.service.intf.account.PasswordResetTokenService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -30,7 +23,6 @@ import javax.xml.stream.Location;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -40,6 +32,25 @@ public class AccountController {
     private final AccountService accountService;
     private final EmailService emailService;
     private final PasswordResetTokenService passwordResetTokenService;
+
+    @PostMapping("/change-password")
+    public ResponseObject changePassword(@Valid @RequestBody ChangePasswordDTORequest request) {
+        boolean success = accountService.changePassword(request.getEmail(), request.getCurrentPassword(), request.getNewPassword());
+        if (success) {
+            return ResponseObject.builder()
+                    .message("Password changed successfully")
+                    .status(HttpStatus.OK.value())
+                    .data(true)
+                    .build();
+        } else {
+            return ResponseObject.builder()
+                    .message("Current password is incorrect")
+                    .status(HttpStatus.BAD_REQUEST.value())
+                    .data(false)
+                    .build();
+        }
+    }
+
 
     @GetMapping("/admin")
     public ResponseObject<List<AdminAccountDTOResponse>> getAllAccountByAdmin() {
