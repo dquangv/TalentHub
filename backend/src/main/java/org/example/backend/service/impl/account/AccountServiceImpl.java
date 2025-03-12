@@ -6,6 +6,7 @@ import org.example.backend.dto.request.account.AccountDTORequest;
 import org.example.backend.dto.response.account.AccountDTOResponse;
 import org.example.backend.dto.response.account.AdminAccountDTOResponse;
 import org.example.backend.dto.response.account.AuthenticationDtoResponse;
+import org.example.backend.dto.response.account.LocationDTOResponse;
 import org.example.backend.entity.child.account.Account;
 import org.example.backend.entity.child.account.User;
 import org.example.backend.entity.child.account.client.Client;
@@ -15,6 +16,7 @@ import org.example.backend.enums.RoleUser;
 import org.example.backend.exception.NotFoundException;
 import org.example.backend.mapper.Account.AccountMapper;
 import org.example.backend.mapper.Account.AdminAccountMapper;
+import org.example.backend.mapper.Account.LocationMapper;
 import org.example.backend.repository.AccountRepository;
 import org.example.backend.repository.ClientRepository;
 import org.example.backend.repository.FreelancerRepository;
@@ -304,5 +306,10 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
             return true;
         }
         return false;
+    }
+    private final LocationMapper locationMapper;
+    @Override
+    public List<LocationDTOResponse> getLocations() {
+        return accountRepository.findAll().stream().map(locationMapper::toResponseDTO).toList();
     }
 }
