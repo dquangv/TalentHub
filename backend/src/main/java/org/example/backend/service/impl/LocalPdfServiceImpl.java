@@ -1,0 +1,159 @@
+package org.example.backend.service.impl;
+
+import org.example.backend.entity.child.account.freelancer.CV;
+import org.example.backend.entity.child.account.freelancer.Freelancer;
+import org.example.backend.repository.CVRepository;
+import org.example.backend.repository.FreelancerRepository;
+import org.example.backend.service.intf.LocalPdfService;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.util.StringUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+@Service
+public class LocalPdfServiceImpl implements LocalPdfService {
+
+    @Value("${pdf.storage.location}")
+    private String storageLocation;
+
+    @Value("${pdf.base.url}")
+    private String baseUrl;
+
+    private final FreelancerRepository freelancerRepository;
+    private final CVRepository cvRepository;
+
+    public LocalPdfServiceImpl(FreelancerRepository freelancerRepository, CVRepository cvRepository) {
+        this.freelancerRepository = freelancerRepository;
+        this.cvRepository = cvRepository;
+    }
+
+    private void initStorageLocation() {
+        try {
+            Path storagePath = Paths.get(storageLocation);
+            if (!Files.exists(storagePath)) {
+                Files.createDirectories(storagePath);
+                System.out.println("Đã tạo thư mục lưu trữ: " + storagePath.toAbsolutePath());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Không thể khởi tạo thư mục lưu trữ", e);
+        }
+    }
+
+    @Override
+    public String uploadPdf(MultipartFile file, Long freelancerId) {
+        try {
+            if (!file.getContentType().equals("application/pdf")) {
+                throw new IllegalArgumentException("File phải là định dạng PDF");
+            }
+
+            initStorageLocation();
+
+            String originalFilename = StringUtils.cleanPath(file.getOriginalFilename());
+            String uniqueFilename = System.currentTimeMillis() + "-" + originalFilename;
+
+            Path targetPath = Paths.get(storageLocation).resolve(uniqueFilename);
+
+            Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
+
+            Freelancer freelancer = freelancerRepository.findById(freelancerId)
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy Freelancer với ID: " + freelancerId));
+
+            CV cv = new CV();
+            cv.setTitle(originalFilename);
+            cv.setUrl(uniqueFilename);
+            cv.setStatus(true);
+            cv.setFreelancer(freelancer);
+            cvRepository.save(cv);
+
+            return uniqueFilename;
+        } catch (IOException e) {
+            throw new RuntimeException("Không thể upload PDF: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public List<String> uploadMultiplePdfs(MultipartFile[] files) {
+        List<String> filenames = new ArrayList<>();
+        for (MultipartFile file : files) {
+            if (!file.getContentType().equals("application/pdf")) {
+                throw new IllegalArgumentException("Tất cả file phải là định dạng PDF");
+            }
+
+            try {
+                initStorageLocation();
+                String originalFilename = StringUtils.cleanPath(file.getOriginalFilename());
+                String uniqueFilename = System.currentTimeMillis() + "-" + originalFilename;
+                Path targetPath = Paths.get(storageLocation).resolve(uniqueFilename);
+                Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
+                filenames.add(uniqueFilename);
+            } catch (IOException e) {
+                throw new RuntimeException("Không thể upload nhiều PDF: " + e.getMessage(), e);
+            }
+        }
+        return filenames;
+    }
+
+    @Override
+    public void deletePdfById(Long cvId) {
+        try {
+            CV cv = cvRepository.findById(cvId)
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy CV với ID: " + cvId));
+            Path filePath = Paths.get(storageLocation).resolve(cv.getUrl());
+            if (Files.exists(filePath)) {
+                Files.delete(filePath);
+            }
+            cvRepository.delete(cv);
+        } catch (IOException e) {
+            throw new RuntimeException("Không thể xóa CV: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void deletePdf(String filePath) {
+        try {
+            Path path = Paths.get(storageLocation).resolve(filePath);
+            if (Files.exists(path)) {
+                Files.delete(path);
+            } else {
+                throw new RuntimeException("File không tồn tại: " + filePath);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Không thể xóa PDF: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public String getPdfUrl(String filePath) {
+        return baseUrl + "/api/pdf/view/" + filePath;
+    }
+
+    @Override
+    public byte[] downloadPdf(String filePath) {
+        try {
+            Path path = Paths.get(storageLocation).resolve(filePath);
+            if (!Files.exists(path)) {
+                throw new RuntimeException("File không tồn tại: " + filePath);
+            }
+            return Files.readAllBytes(path);
+        } catch (IOException e) {
+            throw new RuntimeException("Không thể tải PDF: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public List<CV> getCVsByFreelancerId(Long freelancerId) {
+        Freelancer freelancer = freelancerRepository.findById(freelancerId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy Freelancer với ID: " + freelancerId));
+        return cvRepository.findByFreelancer(freelancer);
+    }
+}
