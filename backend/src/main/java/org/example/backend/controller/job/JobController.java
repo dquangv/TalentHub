@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.ResponseObject;
 import org.example.backend.dto.request.job.CreateJobDTORequest;
 import org.example.backend.dto.request.job.JobAdminDTOResponse;
+import org.example.backend.dto.request.job.JobDetailDTORequest;
 import org.example.backend.dto.response.account.StatusAccountDTOResponse;
 import org.example.backend.dto.response.job.*;
 import org.example.backend.entity.child.account.freelancer.CV;
@@ -126,6 +127,53 @@ public class JobController {
                 .data(createJobDTOResponse)
                 .status(HttpStatus.OK.value())
                 .build();
+    }
+
+    @PostMapping("/getByID/{jobId}")
+    public ResponseObject<JobDetailDTOResponse> getById(@PathVariable Long jobId) {
+        JobDetailDTOResponse jobDetailDTOResponse = jobService.getJobById(jobId);
+        return ResponseObject
+                .<JobDetailDTOResponse>builder()
+                .message("Get job by id successful")
+                .data(jobDetailDTOResponse)
+                .status(HttpStatus.OK.value())
+                .build();
+    }
+
+    @PutMapping("/update/{jobId}")
+    public ResponseObject<JobDetailDTOResponse> updateJob(
+            @PathVariable Long jobId,
+            @RequestBody JobDetailDTORequest jobDetailDTORequest) {
+
+        JobDetailDTOResponse updatedJob = jobService.updateJob(jobId, jobDetailDTORequest);
+
+        return ResponseObject
+                .<JobDetailDTOResponse>builder()
+                .message("Update job successful")
+                .data(updatedJob)
+                .status(HttpStatus.OK.value())
+                .build();
+    }
+
+    @DeleteMapping("/{jobId}")
+    public ResponseObject<Void> delete(
+            @PathVariable Long jobId
+           ) {
+
+        Boolean status = jobService.deleteById(jobId);
+        if (status){
+            return ResponseObject
+                    .<Void>builder()
+                    .message("Delete job successful")
+                    .status(HttpStatus.OK.value())
+                    .build();
+        }
+        return ResponseObject
+                .<Void>builder()
+                .message("Delete job failed")
+                .status(HttpStatus.OK.value())
+                .build();
+
     }
 
     @GetMapping("/{freelancerId}/{jobId}/cv")
