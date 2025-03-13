@@ -2,9 +2,11 @@ package org.example.backend.controller.job.jobSkill;
 
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.ResponseObject;
+import org.example.backend.dto.request.job.ClientReviewDTORequest;
 import org.example.backend.dto.request.job.FreelancerJobDTORequest;
 import org.example.backend.dto.request.job.ViewJobDTORequest;
 import org.example.backend.dto.response.account.freelancer.ApplicantResponseDTO;
+import org.example.backend.dto.response.job.ClientReviewDTOResponse;
 import org.example.backend.dto.response.job.FreelancerJobDTOResponse;
 import org.example.backend.dto.response.job.ViewJobDTOResponse;
 import org.example.backend.service.intf.job.FreelancerJobService;
@@ -114,6 +116,17 @@ public class FreelancerJobController {
         return ResponseEntity.status(HttpStatus.OK).body(ResponseObject.<FreelancerJobDTOResponse>builder()
                 .message("Successfully unapplied from job")
                 .status(200)
+                .data(response)
+                .build());
+    }
+
+    @PostMapping("/{id}/freelance/review")
+    public ResponseEntity<ResponseObject<ClientReviewDTOResponse>> freelanceReview(@PathVariable Long id, @RequestBody ClientReviewDTORequest clientReviewDTORequest) {
+        ClientReviewDTOResponse response = freelancerJobService.freelancerReview(id, clientReviewDTORequest);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseObject.<ClientReviewDTOResponse>builder()
+                .message("Successfully reviewed client")
+                .status(201)
                 .data(response)
                 .build());
     }
