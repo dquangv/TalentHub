@@ -1,8 +1,8 @@
-package org.example.backend.dto.response.job;
+package org.example.backend.dto.request.job;
 
-import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.backend.enums.StatusJob;
 import org.example.backend.enums.TypePayment;
@@ -10,10 +10,12 @@ import org.example.backend.enums.TypePayment;
 import java.math.BigDecimal;
 import java.util.List;
 
+
 @Getter
 @Setter
-@Builder
-public class CreateJobDTOResponse {
+@AllArgsConstructor
+@NoArgsConstructor
+public class JobDetailDTORequest {
     private String title;
     private String description;
     private String scope;

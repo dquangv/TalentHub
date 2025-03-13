@@ -7,6 +7,7 @@ import org.example.backend.dto.response.account.freelancer.CreateFreelancerDTORe
 import org.example.backend.dto.response.job.FreelancerJobDTOResponse;
 import org.example.backend.dto.response.job.SaveJobDTOResponse;
 import org.example.backend.entity.child.account.client.Appointment;
+import org.example.backend.entity.child.account.freelancer.CV;
 import org.example.backend.entity.child.job.FreelancerJob;
 import org.example.backend.service.BaseService;
 
@@ -23,4 +24,5 @@ public interface FreelancerJobService extends BaseService<FreelancerJobDTOReques
     List<SaveJobDTOResponse> getSavedJobs(Long freelancerId);
     FreelancerJob findById(Long jobId);
     public Appointment getAppointmentByFreelancerJobId(Long freelancerJobId);
+    CV getCVByFreeLancer_IdAndJob_Id(Long freeLancerId, Long jobId);
 }

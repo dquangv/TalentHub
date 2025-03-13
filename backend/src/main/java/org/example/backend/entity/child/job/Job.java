@@ -89,7 +89,7 @@ public class Job extends AbstractEntity<Long> {
     @JsonIgnore
     private List<FreelancerJob> freelancerJobs;
 
-    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JsonIgnore
     private List<JobSkill> jobSkills;
 

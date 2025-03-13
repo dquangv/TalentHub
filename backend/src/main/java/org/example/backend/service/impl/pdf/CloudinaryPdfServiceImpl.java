@@ -162,9 +162,8 @@ public class CloudinaryPdfServiceImpl implements CloudinaryPdfService {
             e.printStackTrace();
             throw new RuntimeException("Không thể tải PDF: " + e.getMessage());
         }
-
-
     }
+
     @Override
     public List<CV> getCVsByFreelancerId(Long freelancerId) {
         Freelancer freelancer = freelancerRepository.findById(freelancerId)
