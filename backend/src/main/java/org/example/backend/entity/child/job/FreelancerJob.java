@@ -6,6 +6,7 @@ import lombok.*;
 import org.example.backend.entity.AbstractEntity;
 import org.example.backend.entity.child.account.client.Appointment;
 import org.example.backend.entity.child.account.client.ClientReview;
+import org.example.backend.entity.child.account.freelancer.CV;
 import org.example.backend.entity.child.account.freelancer.FreelancerReview;
 import org.example.backend.entity.child.account.freelancer.Freelancer;
 import org.example.backend.enums.StatusFreelancerJob;
@@ -29,9 +30,9 @@ public class FreelancerJob extends AbstractEntity<Long> {
     @Column(name = "status")
     private StatusFreelancerJob status;
 
-    @Size(max = 255)
+    /*@Size(max = 255)
     @Column(name = "cv")
-    private String cv;
+    private String cv;*/
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "applied_date")
@@ -62,5 +63,9 @@ public class FreelancerJob extends AbstractEntity<Long> {
 
     /*@OneToOne
     @JoinColumn(name = "cv_id")
-    private CV CV;*/
+    private CV cv;*/
+
+    @ManyToOne
+    @JoinColumn(name = "cv_id")
+    private CV cv;
 }

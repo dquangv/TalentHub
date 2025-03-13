@@ -30,7 +30,7 @@ public class AppointmentController {
                 .build());
     }
 
-    @GetMapping("/client/{id}")
+    @GetMapping("/clients/{id}")
     public ResponseEntity<ResponseObject<List<AppointmentDetailDTOResponse>>> getAllAppointmentsByClientId(@PathVariable("id") Long id) {
         List<AppointmentDetailDTOResponse> response = appointmentService.getAllAppointmentsByClientId(id);
 
@@ -41,7 +41,7 @@ public class AppointmentController {
                 .build());
     }
 
-    @GetMapping("/freelancer/{id}")
+    @GetMapping("/freelancers/{id}")
     public ResponseEntity<ResponseObject<List<AppointmentDetailDTOResponse>>> getAllAppointmentsByFreelancerId(@PathVariable("id") Long id) {
         List<AppointmentDetailDTOResponse> response = appointmentService.getAllAppointmentsByFreelancerId(id);
 
