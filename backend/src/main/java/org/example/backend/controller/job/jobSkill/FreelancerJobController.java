@@ -4,10 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.ResponseObject;
 import org.example.backend.dto.request.job.ClientReviewDTORequest;
 import org.example.backend.dto.request.job.FreelancerJobDTORequest;
+import org.example.backend.dto.request.job.FreelancerReviewDTORequest;
 import org.example.backend.dto.request.job.ViewJobDTORequest;
 import org.example.backend.dto.response.account.freelancer.ApplicantResponseDTO;
 import org.example.backend.dto.response.job.ClientReviewDTOResponse;
 import org.example.backend.dto.response.job.FreelancerJobDTOResponse;
+import org.example.backend.dto.response.job.FreelancerReviewDTOResponse;
 import org.example.backend.dto.response.job.ViewJobDTOResponse;
 import org.example.backend.service.intf.job.FreelancerJobService;
 import org.example.backend.service.intf.job.ViewJobService;
@@ -125,6 +127,17 @@ public class FreelancerJobController {
         ClientReviewDTOResponse response = freelancerJobService.freelancerReview(id, clientReviewDTORequest);
 
         return ResponseEntity.status(HttpStatus.OK).body(ResponseObject.<ClientReviewDTOResponse>builder()
+                .message("Successfully reviewed client")
+                .status(201)
+                .data(response)
+                .build());
+    }
+
+    @PostMapping("/{id}/client/review")
+    public ResponseEntity<ResponseObject<FreelancerReviewDTOResponse>> clientReview(@PathVariable Long id, @RequestBody FreelancerReviewDTORequest freelancerReviewDTORequest) {
+        FreelancerReviewDTOResponse response = freelancerJobService.clientReview(id, freelancerReviewDTORequest);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseObject.<FreelancerReviewDTOResponse>builder()
                 .message("Successfully reviewed client")
                 .status(201)
                 .data(response)

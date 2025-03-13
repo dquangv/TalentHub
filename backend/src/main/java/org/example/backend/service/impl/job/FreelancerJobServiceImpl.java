@@ -3,21 +3,24 @@ package org.example.backend.service.impl.job;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.job.ClientReviewDTORequest;
 import org.example.backend.dto.request.job.FreelancerJobDTORequest;
+import org.example.backend.dto.request.job.FreelancerReviewDTORequest;
 import org.example.backend.dto.response.account.freelancer.ApplicantResponseDTO;
 import org.example.backend.dto.response.job.ClientReviewDTOResponse;
 import org.example.backend.dto.response.job.FreelancerJobDTOResponse;
+import org.example.backend.dto.response.job.FreelancerReviewDTOResponse;
 import org.example.backend.dto.response.job.SaveJobDTOResponse;
 import org.example.backend.entity.child.account.client.Appointment;
-import org.example.backend.entity.child.account.client.Client;
 import org.example.backend.entity.child.account.client.ClientReview;
 import org.example.backend.entity.child.account.client.Company;
 import org.example.backend.entity.child.account.freelancer.CV;
+import org.example.backend.entity.child.account.freelancer.FreelancerReview;
 import org.example.backend.entity.child.job.FreelancerJob;
 import org.example.backend.enums.StatusFreelancerJob;
 import org.example.backend.exception.BadRequestException;
 import org.example.backend.mapper.Account.freelancer.CreateFreelancerMapper;
 import org.example.backend.mapper.job.ClientReviewMapper;
 import org.example.backend.mapper.job.FreelancerJobMapper;
+import org.example.backend.mapper.job.FreelancerReviewMapper;
 import org.example.backend.mapper.job.SaveJobMapper;
 import org.example.backend.repository.*;
 import org.example.backend.service.intf.job.FreelancerJobService;
@@ -42,6 +45,8 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
     private final AppointmentRepository appointmentRepository;
     private final ClientReviewRepository clientReviewRepository;
     private final ClientReviewMapper clientReviewMapper;
+    private final FreelancerReviewMapper freelancerReviewMapper;
+    private final FreelancerReviewRepository freelancerReviewRepository;
 
 
     @Override
@@ -180,6 +185,35 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
 
         return clientReviewMapper.toResponseDto(review);
     }
+
+    @Override
+    public FreelancerReviewDTOResponse clientReview(Long freelancerJobId, FreelancerReviewDTORequest request) {
+        if (freelancerJobId == null) {
+            throw new BadRequestException("Freelancer Job Id Not Found");
+        }
+
+        if (request == null) {
+            throw new BadRequestException("CLientReview Not Found");
+        }
+
+        if (request.getRating() == null) {
+            throw new BadRequestException("Ratings Not Found");
+        }
+
+        if (request.getNote() == null) {
+            throw new BadRequestException("Notes Not Found");
+        }
+
+        FreelancerReview freelancerReview = freelancerReviewMapper.toEntity(request);
+        freelancerReview = freelancerReviewRepository.save(freelancerReview);
+
+        FreelancerJob freelancerJob = freelancerJobRepository.findById(freelancerJobId).get();
+        freelancerJob.setFreelancerReview(freelancerReview);
+        freelancerJobRepository.save(freelancerJob);
+
+        return freelancerReviewMapper.toResponseDto(freelancerReview);
+    }
+
 
     @Override
     public List<ApplicantResponseDTO> getApplicantByJobId(Long jobId) {
