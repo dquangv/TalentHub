@@ -7,6 +7,7 @@ import org.example.backend.dto.response.job.FreelancerJobDTOResponse;
 import org.example.backend.dto.response.job.SaveJobDTOResponse;
 import org.example.backend.entity.child.account.client.Appointment;
 import org.example.backend.entity.child.account.client.Company;
+import org.example.backend.entity.child.account.freelancer.CV;
 import org.example.backend.entity.child.job.FreelancerJob;
 import org.example.backend.enums.StatusFreelancerJob;
 import org.example.backend.exception.BadRequestException;
@@ -133,6 +134,18 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
         Optional<Appointment> appointment = appointmentRepository.findByFreelancerJobId(freelancerJobId);
         return appointment.orElse(null);
     }
+
+    @Override
+    public CV getCVByFreeLancer_IdAndJob_Id(Long freeLancerId, Long jobId) {
+        if (freeLancerId == null || jobId == null) {
+            throw new BadRequestException("Freelancer Job Id or Job Id Not Found");
+        }
+
+        CV cv = freelancerJobRepository.getCVByFreelancer_IdAndJob_Id(freeLancerId, jobId);
+
+        return cv;
+    }
+
     @Override
     public List<ApplicantResponseDTO> getApplicantByJobId(Long jobId) {
         List<FreelancerJob> results = freelancerJobRepository.getApplicantByJobId(jobId);
