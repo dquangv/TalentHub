@@ -9,6 +9,7 @@ import org.example.backend.entity.AbstractEntity;
 import org.example.backend.entity.child.admin.VoucherPackage;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Table(name = "sold_packages")
 @Entity
@@ -18,10 +19,10 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class SoldPackage extends AbstractEntity<Long> {
     @Column(name = "start_date", nullable = false)
-    private LocalDate startDate;
+    private LocalDateTime startDate;
 
     @Column(name = "end_date")
-    private LocalDate endDate;
+    private LocalDateTime endDate;
 
     @Column(name = "price")
     private Double price;
