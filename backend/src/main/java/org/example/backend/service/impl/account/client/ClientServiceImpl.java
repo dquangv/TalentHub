@@ -78,18 +78,20 @@ public class ClientServiceImpl implements ClientService {
         return clientRepository.findById(clientId)
                 .orElseThrow(() -> new BadRequestException("Client not found"));
     }
-
-  @Override
+    @Override
     public UpdatePriceAndTypeDTOResponse updatePriceAndType(UpdatePriceAndTypeDTORequest updatePriceAndTypeDTORequest) {
-        Client client = clientRepository.findById(updatePriceAndTypeDTORequest.getClientId())
-                .orElseThrow(() -> new BadRequestException("Client not found"));
 
-        client.setToPrice(updatePriceAndTypeDTORequest.getFromPrice());
-        client.setToPrice(updatePriceAndTypeDTORequest.getToPrice());
-        client.setTypePrice(updatePriceAndTypeDTORequest.getTypePrice());
+        clientRepository.updatePrice(
+                updatePriceAndTypeDTORequest.getClientId(),
+                updatePriceAndTypeDTORequest.getFromPrice(),
+                updatePriceAndTypeDTORequest.getToPrice(),
+                updatePriceAndTypeDTORequest.getTypePrice()
+        );
 
-        Client savedClient = clientRepository.save(client);
+        Client updatedClient = clientRepository.findById(updatePriceAndTypeDTORequest.getClientId())
+                .orElseThrow(() -> new BadRequestException("Client not found after update"));
 
-        return updatePriceAndTypeMapper.toResponseDto(savedClient);
+        return updatePriceAndTypeMapper.toResponseDto(updatedClient);
     }
+
 }
