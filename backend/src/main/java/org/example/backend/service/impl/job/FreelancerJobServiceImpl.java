@@ -47,6 +47,7 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
     private final ClientReviewMapper clientReviewMapper;
     private final FreelancerReviewMapper freelancerReviewMapper;
     private final FreelancerReviewRepository freelancerReviewRepository;
+    private final CVRepository cvRepository;
 
 
     @Override
@@ -87,14 +88,20 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
 
         FreelancerJob freelancerJob = existingFreelancerJob.get();
         freelancerJob.setStatus(StatusFreelancerJob.Applied);
+        CV cv = cvRepository.findById(request.getCvId()).orElse(null);
+
+        freelancerJob.setCv(cv);
         FreelancerJob updatedFreelancerJob = freelancerJobRepository.save(freelancerJob);
+
+
 
         return new FreelancerJobDTOResponse(
                 updatedFreelancerJob.getId(),
                 updatedFreelancerJob.getIsSaved(),
                 updatedFreelancerJob.getStatus(),
                 updatedFreelancerJob.getJob().getId(),
-                updatedFreelancerJob.getFreelancer().getId()
+                updatedFreelancerJob.getFreelancer().getId(),
+                updatedFreelancerJob.getCv().getUrl()
         );
     }
 
@@ -116,7 +123,8 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
                 updatedFreelancerJob.getIsSaved(),
                 updatedFreelancerJob.getStatus(),
                 updatedFreelancerJob.getJob().getId(),
-                updatedFreelancerJob.getFreelancer().getId()
+                updatedFreelancerJob.getFreelancer().getId(),
+                updatedFreelancerJob.getCv().getUrl()
         );
     }
 
@@ -138,7 +146,8 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
                 updatedFreelancerJob.getIsSaved(),
                 updatedFreelancerJob.getStatus(),
                 updatedFreelancerJob.getJob().getId(),
-                updatedFreelancerJob.getFreelancer().getId()
+                updatedFreelancerJob.getFreelancer().getId(),
+                updatedFreelancerJob.getCv().getUrl()
         );
     }
     @Override
@@ -251,7 +260,8 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
                 updatedFreelancerJob.getIsSaved(),
                 updatedFreelancerJob.getStatus(),
                 updatedFreelancerJob.getJob().getId(),
-                updatedFreelancerJob.getFreelancer().getId()
+                updatedFreelancerJob.getFreelancer().getId(),
+                updatedFreelancerJob.getCv().getUrl()
         );
     }
 
@@ -278,7 +288,8 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
                 updatedFreelancerJob.getIsSaved(),
                 updatedFreelancerJob.getStatus(),
                 updatedFreelancerJob.getJob().getId(),
-                updatedFreelancerJob.getFreelancer().getId()
+                updatedFreelancerJob.getFreelancer().getId(),
+                updatedFreelancerJob.getCv().getUrl()
         );
     }
 
@@ -305,7 +316,8 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
                 updatedFreelancerJob.getIsSaved(),
                 updatedFreelancerJob.getStatus(),
                 updatedFreelancerJob.getJob().getId(),
-                updatedFreelancerJob.getFreelancer().getId()
+                updatedFreelancerJob.getFreelancer().getId(),
+                updatedFreelancerJob.getCv().getUrl()
         );
     }
 

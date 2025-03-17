@@ -35,6 +35,34 @@ public class FreelancerServiceImpl implements FreelancerService {
     private final UpdateHourlyRateMapper updateHourlyRateMapper;
 
     @Override
+    public FreelancerDTOResponse updateCategory(Long freelancerId, Long categoryId) {
+        Freelancer freelancer = freelancerRepository.findById(freelancerId)
+                .orElseThrow(() -> new BadRequestException("Freelancer not found with ID: " + freelancerId));
+
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new BadRequestException("Category not found with ID: " + categoryId));
+
+        freelancer.setCategory(category);
+        Freelancer updatedFreelancer = freelancerRepository.save(freelancer);
+
+        return new FreelancerDTOResponse(
+                updatedFreelancer.getId(),
+                updatedFreelancer.getUser().getFirstName() + updatedFreelancer.getUser().getLastName(),
+                updatedFreelancer.getHourlyRate(),
+                updatedFreelancer.getDescription(),
+                updatedFreelancer.getCategory() != null && updatedFreelancer.getCategory().getCategoryTitle() != null
+                        ? updatedFreelancer.getCategory().getCategoryTitle()
+                        : "No category",
+                updatedFreelancer.getUser().getId(),
+                updatedFreelancer.getUser().getImage(),
+                clientReviewRepository.findAverageRating(updatedFreelancer.getId()),
+                updatedFreelancer.getFreelancerSkills() != null ? updatedFreelancer.getFreelancerSkills()
+                        .stream()
+                        .map(fs -> fs.getSkill().getSkillName())
+                        .collect(Collectors.toList()) : List.of()
+        );
+    }
+    @Override
     public FreelancerDTOResponse create(FreelancerDTORequest freelancerDTORequest) {
         Category category = categoryRepository.findById(freelancerDTORequest.getCategoryId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid Category ID"));
