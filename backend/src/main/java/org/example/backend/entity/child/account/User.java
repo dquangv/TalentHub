@@ -30,8 +30,11 @@ public class User extends AbstractEntity<Long> {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column(name = "address")
-    private String address;
+    @Column(name = "province")
+    private String province;
+
+    @Column(name = "country")
+    private String country;
 
     @Column(name = "title")
     private String title;

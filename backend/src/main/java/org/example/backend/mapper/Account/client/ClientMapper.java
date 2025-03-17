@@ -12,7 +12,8 @@ public interface ClientMapper {
     @Mapping(target = "appointmentsCount", expression = "java(client.getAppointments().size())")
     @Mapping(source = "user.id", target = "userId")
     @Mapping(source="user.account.email", target = "email")
-    @Mapping(source="user.address", target = "address")
+    @Mapping(source="user.province", target = "province")
+    @Mapping(source="user.country", target = "country")
     @Mapping(source="user.image", target = "image")
     ClientDTOResponse toResponseDto(Client client);
 }
