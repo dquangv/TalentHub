@@ -23,6 +23,7 @@ import org.example.backend.mapper.job.FreelancerJobMapper;
 import org.example.backend.mapper.job.FreelancerReviewMapper;
 import org.example.backend.mapper.job.SaveJobMapper;
 import org.example.backend.repository.*;
+import org.example.backend.service.impl.notify.NotifyService;
 import org.example.backend.service.intf.job.FreelancerJobService;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +49,7 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
     private final FreelancerReviewMapper freelancerReviewMapper;
     private final FreelancerReviewRepository freelancerReviewRepository;
     private final CVRepository cvRepository;
-
+    private final NotifyService notifyService;
 
     @Override
     public FreelancerJobDTOResponse create(FreelancerJobDTORequest freelancerJobDTORequest) {
@@ -93,7 +94,7 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
         freelancerJob.setCv(cv);
         FreelancerJob updatedFreelancerJob = freelancerJobRepository.save(freelancerJob);
 
-
+        notifyService.sendNotification(request.getFreelancerId(), "Có một ứng viên đã ứng tuyển vào " + updatedFreelancerJob.getJob().getTitle(), "applicants/"+request.getJobId());
 
         return new FreelancerJobDTOResponse(
                 updatedFreelancerJob.getId(),
