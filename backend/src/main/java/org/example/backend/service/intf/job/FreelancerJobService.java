@@ -1,12 +1,18 @@
 package org.example.backend.service.intf.job;
 
 import org.example.backend.dto.request.account.freelancer.CreateFreelancerDTORequest;
+import org.example.backend.dto.request.job.ClientReviewDTORequest;
 import org.example.backend.dto.request.job.FreelancerJobDTORequest;
+import org.example.backend.dto.request.job.FreelancerReviewDTORequest;
 import org.example.backend.dto.response.account.freelancer.ApplicantResponseDTO;
 import org.example.backend.dto.response.account.freelancer.CreateFreelancerDTOResponse;
+import org.example.backend.dto.response.job.ClientReviewDTOResponse;
 import org.example.backend.dto.response.job.FreelancerJobDTOResponse;
+import org.example.backend.dto.response.job.FreelancerReviewDTOResponse;
 import org.example.backend.dto.response.job.SaveJobDTOResponse;
 import org.example.backend.entity.child.account.client.Appointment;
+import org.example.backend.entity.child.account.client.ClientReview;
+import org.example.backend.entity.child.account.freelancer.CV;
 import org.example.backend.entity.child.job.FreelancerJob;
 import org.example.backend.service.BaseService;
 
@@ -23,4 +29,7 @@ public interface FreelancerJobService extends BaseService<FreelancerJobDTOReques
     List<SaveJobDTOResponse> getSavedJobs(Long freelancerId);
     FreelancerJob findById(Long jobId);
     public Appointment getAppointmentByFreelancerJobId(Long freelancerJobId);
+    CV getCVByFreeLancer_IdAndJob_Id(Long freeLancerId, Long jobId);
+    ClientReviewDTOResponse freelancerReview(Long freelancerJobId, ClientReviewDTORequest request);
+    FreelancerReviewDTOResponse clientReview(Long freelancerJobId, FreelancerReviewDTORequest request);
 }

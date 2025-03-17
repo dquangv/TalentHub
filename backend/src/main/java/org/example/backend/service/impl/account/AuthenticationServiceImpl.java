@@ -75,7 +75,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     .orElseThrow(() -> new IllegalIdentifierException("Không tìm thấy freelancer với id: " + user.getId()));
 
             freelancerId = freelancer.getId();
-        } else {
+        } else if (account.getRole().equals(RoleUser.CLIENT)) {
             Client client = clientRepository.findByUserId(user.getId())
                     .orElseThrow(() -> new IllegalIdentifierException("Không tìm thấy client với id: " + user.getId()));
 

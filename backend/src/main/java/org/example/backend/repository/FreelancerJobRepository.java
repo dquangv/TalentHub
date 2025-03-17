@@ -1,5 +1,6 @@
 package org.example.backend.repository;
 
+import org.example.backend.entity.child.account.freelancer.CV;
 import org.example.backend.entity.child.job.FreelancerJob;
 import org.example.backend.entity.child.job.Job;
 import org.example.backend.enums.StatusFreelancerJob;
@@ -58,6 +59,7 @@ public interface FreelancerJobRepository extends JpaRepository<FreelancerJob, Lo
 //            "where fj.job.id = :jobId ")
 //    List<Object[]> getApplicantByJobId(@Param("jobId") Long jobId);
 
-
+    @Query("SELECT f.cv FROM FreelancerJob f WHERE f.freelancer.id = :freelancerId AND f.job.id = :jobId")
+    CV getCVByFreelancer_IdAndJob_Id(@Param("freelancerId") Long freelancerId, @Param("jobId") Long jobId);
 
 }

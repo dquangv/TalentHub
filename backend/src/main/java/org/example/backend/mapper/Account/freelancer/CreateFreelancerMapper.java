@@ -1,4 +1,4 @@
-package org.example.backend.mapper.Freelancer;
+package org.example.backend.mapper.Account.freelancer;
 
 import org.example.backend.dto.request.account.freelancer.CreateFreelancerDTORequest;
 import org.example.backend.dto.request.job.CreateJobDTORequest;

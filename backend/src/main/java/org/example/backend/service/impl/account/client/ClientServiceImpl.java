@@ -2,16 +2,20 @@ package org.example.backend.service.impl.account.client;
 
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.account.client.ClientDTORequest;
+import org.example.backend.dto.request.account.client.UpdatePriceAndTypeDTORequest;
 import org.example.backend.dto.response.account.client.ClientDTOResponse;
+import org.example.backend.dto.response.account.client.UpdatePriceAndTypeDTOResponse;
 import org.example.backend.entity.child.account.client.Client;
 import org.example.backend.entity.child.account.User;
 import org.example.backend.exception.BadRequestException;
 import org.example.backend.mapper.Account.client.ClientMapper;
+import org.example.backend.mapper.Account.client.UpdatePriceAndTypeMapper;
 import org.example.backend.repository.ClientRepository;
 import org.example.backend.repository.UserRepository;
 import org.example.backend.service.intf.account.client.ClientService;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +27,7 @@ public class ClientServiceImpl implements ClientService {
     private final ClientRepository clientRepository;
     private final UserRepository userRepository;
     private final ClientMapper clientMapper;
+    private final UpdatePriceAndTypeMapper updatePriceAndTypeMapper;
 
     @Override
     public ClientDTOResponse create(ClientDTORequest clientDTORequest) {
@@ -72,5 +77,19 @@ public class ClientServiceImpl implements ClientService {
 
         return clientRepository.findById(clientId)
                 .orElseThrow(() -> new BadRequestException("Client not found"));
+    }
+
+  @Override
+    public UpdatePriceAndTypeDTOResponse updatePriceAndType(UpdatePriceAndTypeDTORequest updatePriceAndTypeDTORequest) {
+        Client client = clientRepository.findById(updatePriceAndTypeDTORequest.getClientId())
+                .orElseThrow(() -> new BadRequestException("Client not found"));
+
+        client.setToPrice(updatePriceAndTypeDTORequest.getFromPrice());
+        client.setToPrice(updatePriceAndTypeDTORequest.getToPrice());
+        client.setTypePrice(updatePriceAndTypeDTORequest.getTypePrice());
+
+        Client savedClient = clientRepository.save(client);
+
+        return updatePriceAndTypeMapper.toResponseDto(savedClient);
     }
 }

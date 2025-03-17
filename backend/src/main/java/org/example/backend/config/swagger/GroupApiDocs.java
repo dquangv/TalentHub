@@ -207,4 +207,11 @@ public class GroupApiDocs {
                 .build();
     }
 
+    @Bean
+    public GroupedOpenApi apiRevenues() {
+        return GroupedOpenApi.builder()
+                .group("Revenues APIs")
+                .pathsToMatch("/api/v1/revenues/**")
+                .build();
+    }
 }

@@ -4,13 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.job.CreateJobDTORequest;
 import org.example.backend.dto.request.job.JobAdminDTOResponse;
 import org.example.backend.dto.request.job.JobDTORequest;
+import org.example.backend.dto.request.job.JobDetailDTORequest;
 import org.example.backend.dto.response.job.*;
 import org.example.backend.entity.child.account.Account;
 import org.example.backend.entity.child.account.client.Client;
 import org.example.backend.entity.child.account.client.Company;
-import org.example.backend.entity.child.job.Category;
-import org.example.backend.entity.child.job.FreelancerJob;
-import org.example.backend.entity.child.job.Job;
+import org.example.backend.entity.child.job.*;
 import org.example.backend.enums.StatusFreelancerJob;
 import org.example.backend.enums.StatusJob;
 import org.example.backend.exception.BadRequestException;
@@ -18,6 +17,7 @@ import org.example.backend.mapper.job.*;
 import org.example.backend.repository.*;
 import org.example.backend.service.intf.job.JobService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -48,7 +48,61 @@ public class JobServiceImpl implements JobService {
     private final PostedJobsMapper postedJobsMapper;
     private final JobAdminMapper jobAdminMapper;
 
+    private final JobSkillRepository jobSkillRepository;
+
     private final CreateJobMapper createJobMapper;
+    private final SkillRepository skillRepository;
+    private final JobDetailMapper jobDetailMapper;
+
+    @Override
+    @Transactional
+    public JobDetailDTOResponse updateJob(Long id, JobDetailDTORequest jobDetailDTORequest) {
+        Job job = jobRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Job not found"));
+
+
+        Category category = categoryRepository.findById(jobDetailDTORequest.getCategoryId())
+                .orElseThrow(() -> new BadRequestException("Category not found"));
+        job.setCategory(category);
+
+        job.setTitle(jobDetailDTORequest.getTitle());
+        job.setScope(jobDetailDTORequest.getScope());
+        job.setHourWork(jobDetailDTORequest.getHourWork());
+        job.setDuration(jobDetailDTORequest.getDuration());
+        job.setJobOpportunity(jobDetailDTORequest.getJobOpportunity());
+        job.setFromPrice(jobDetailDTORequest.getFromPrice());
+        job.setToPrice(jobDetailDTORequest.getToPrice());
+        job.setTypePrice(jobDetailDTORequest.getTypePrice());
+        job.setDescription(jobDetailDTORequest.getDescription());
+        job.setTypePayment(jobDetailDTORequest.getTypePayment());
+        job.setStatus(jobDetailDTORequest.getStatusJob());
+
+        job.getJobSkills().clear();
+
+
+        Job savedJob = jobRepository.save(job);
+        List<Long> skillIds = jobDetailDTORequest.getSkillId();
+        skillIds.forEach(skillId -> {
+            Skill skill = skillRepository.findById(skillId)
+                    .orElseThrow(() -> new BadRequestException("Skill id not found"));
+
+            JobSkill jobSkill = new JobSkill();
+            jobSkill.setSkill(skill);
+            jobSkill.setJob(savedJob);
+
+            jobSkillRepository.save(jobSkill);
+        });
+        return jobDetailMapper.toResponseDto(job);
+    }
+
+
+
+    @Override
+    public JobDetailDTOResponse getJobById(Long id) {
+        Job job = jobRepository.findById(id).orElse(null);
+        return jobDetailMapper.toResponseDto(job);
+    }
+
     @Override
     public Boolean banJob(Long id) {
         Optional<Job> job = jobRepository.findById(id);
@@ -88,8 +142,20 @@ public class JobServiceImpl implements JobService {
 
         Job job = createJobMapper.toEntity(createJobDTORequest);
 
-        jobRepository.save(job);
+        Job savedJob = jobRepository.save(job);
 
+        List<Long> skillIds = createJobDTORequest.getSkillId();
+
+        skillIds.forEach(skillId -> {
+            Skill skill = skillRepository.findById(skillId)
+                    .orElseThrow(() -> new BadRequestException("Skilll id not found"));
+
+            JobSkill jobSkill = new JobSkill();
+            jobSkill.setSkill(skill);
+            jobSkill.setJob(savedJob);
+
+            jobSkillRepository.save(jobSkill);
+        });
         return createJobMapper.toResponseDto(job);
     }
 
@@ -123,9 +189,14 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public Boolean deleteById(Long aLong) {
-        return null;
+    public Boolean deleteById(Long id) {
+        if (jobRepository.existsById(id)) {
+            jobRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
+
 
     @Override
     public List<JobDTOResponse> findAllJobs() {

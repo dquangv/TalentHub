@@ -3,15 +3,16 @@ package org.example.backend.service.impl.account.freelancer;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.account.freelancer.CreateFreelancerDTORequest;
 import org.example.backend.dto.request.account.freelancer.FreelancerDTORequest;
-import org.example.backend.dto.request.job.FreelancerJobDTORequest;
+import org.example.backend.dto.request.account.freelancer.UpdateHourlyRateDTORequest;
 import org.example.backend.dto.response.account.freelancer.CreateFreelancerDTOResponse;
 import org.example.backend.dto.response.account.freelancer.FreelancerDTOResponse;
-import org.example.backend.dto.response.job.FreelancerJobDTOResponse;
+import org.example.backend.dto.response.account.freelancer.UpdateHourlyRateDTOResponse;
 import org.example.backend.entity.child.account.freelancer.Freelancer;
 import org.example.backend.entity.child.job.Category;
 import org.example.backend.entity.child.account.User;
 import org.example.backend.exception.BadRequestException;
-import org.example.backend.mapper.Freelancer.CreateFreelancerMapper;
+import org.example.backend.mapper.Account.freelancer.CreateFreelancerMapper;
+import org.example.backend.mapper.Account.freelancer.UpdateHourlyRateMapper;
 import org.example.backend.repository.ClientReviewRepository;
 import org.example.backend.repository.FreelancerRepository;
 import org.example.backend.repository.CategoryRepository;
@@ -31,6 +32,36 @@ public class FreelancerServiceImpl implements FreelancerService {
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final CreateFreelancerMapper createFreelancerMapper;
+    private final UpdateHourlyRateMapper updateHourlyRateMapper;
+
+    @Override
+    public FreelancerDTOResponse updateCategory(Long freelancerId, Long categoryId) {
+        Freelancer freelancer = freelancerRepository.findById(freelancerId)
+                .orElseThrow(() -> new BadRequestException("Freelancer not found with ID: " + freelancerId));
+
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new BadRequestException("Category not found with ID: " + categoryId));
+
+        freelancer.setCategory(category);
+        Freelancer updatedFreelancer = freelancerRepository.save(freelancer);
+
+        return new FreelancerDTOResponse(
+                updatedFreelancer.getId(),
+                updatedFreelancer.getUser().getFirstName() + updatedFreelancer.getUser().getLastName(),
+                updatedFreelancer.getHourlyRate(),
+                updatedFreelancer.getDescription(),
+                updatedFreelancer.getCategory() != null && updatedFreelancer.getCategory().getCategoryTitle() != null
+                        ? updatedFreelancer.getCategory().getCategoryTitle()
+                        : "No category",
+                updatedFreelancer.getUser().getId(),
+                updatedFreelancer.getUser().getImage(),
+                clientReviewRepository.findAverageRating(updatedFreelancer.getId()),
+                updatedFreelancer.getFreelancerSkills() != null ? updatedFreelancer.getFreelancerSkills()
+                        .stream()
+                        .map(fs -> fs.getSkill().getSkillName())
+                        .collect(Collectors.toList()) : List.of()
+        );
+    }
     @Override
     public FreelancerDTOResponse create(FreelancerDTORequest freelancerDTORequest) {
         Category category = categoryRepository.findById(freelancerDTORequest.getCategoryId())
@@ -137,5 +168,16 @@ public class FreelancerServiceImpl implements FreelancerService {
         Freelancer freelancer = freelancerRepository.save(createFreelancerMapper.toEntity(createFreelancerDTORequest));
 
         return createFreelancerMapper.toResponseDto(freelancer);
+    }
+
+    @Override
+    public UpdateHourlyRateDTOResponse updateHourlyRate(UpdateHourlyRateDTORequest request) {
+        Freelancer freelancer = freelancerRepository.findById(request.getFreelancerId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid Freelancer ID"));
+
+        freelancer.setHourlyRate(request.getHourlyRate());
+        Freelancer updatedFreelancer = freelancerRepository.save(freelancer);
+
+        return updateHourlyRateMapper.toResponseDto(updatedFreelancer);
     }
 }

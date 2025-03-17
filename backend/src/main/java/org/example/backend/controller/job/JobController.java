@@ -2,14 +2,17 @@ package org.example.backend.controller.job;
 
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.ResponseObject;
+import org.example.backend.dto.request.job.ClientReviewDTORequest;
 import org.example.backend.dto.request.job.CreateJobDTORequest;
 import org.example.backend.dto.request.job.JobAdminDTOResponse;
+import org.example.backend.dto.request.job.JobDetailDTORequest;
 import org.example.backend.dto.response.account.StatusAccountDTOResponse;
 import org.example.backend.dto.response.job.*;
-import org.example.backend.entity.child.job.Job;
+import org.example.backend.entity.child.account.freelancer.CV;
 import org.example.backend.service.intf.job.FreelancerJobService;
 import org.example.backend.service.intf.job.JobService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -47,6 +50,7 @@ public class JobController {
                         .build())
                 .build();
     }
+
     @GetMapping
     public ResponseObject<List<JobDTOResponse>> findAllJobs() {
         List<JobDTOResponse> response = jobService.findAllJobs();
@@ -68,6 +72,7 @@ public class JobController {
                 .data(jobs)
                 .build();
     }
+
     @GetMapping("/detail-job/{id}")
     public ResponseObject<DetailJobDTOResponse> getDetailJob(@PathVariable Long id) {
         DetailJobDTOResponse detailJobDTO = jobService.getDetailJobById(id).orElse(null);
@@ -90,6 +95,7 @@ public class JobController {
                 .build();
 
     }
+
     @GetMapping("/ApplyJobs/{freeLancerId}")
     public ResponseObject<List<ApplyJobsDTOResponse>> getApplyJobs(@PathVariable Long freeLancerId) {
         List<ApplyJobsDTOResponse> response = jobService.getApplyJobs(freeLancerId);
@@ -100,6 +106,7 @@ public class JobController {
                 .data(response)
                 .build();
     }
+
     @GetMapping("/PostedJobs/{jobId}")
     public ResponseObject<List<PostJobsDTOResponse>> getPostedJobs(@PathVariable Long jobId) {
         List<PostJobsDTOResponse> response = jobService.getPostedJobs(jobId);
@@ -110,6 +117,7 @@ public class JobController {
                 .data(response)
                 .build();
     }
+
     @PostMapping("/createJob")
     public ResponseObject<CreateJobDTOResponse> createJob(@RequestBody CreateJobDTORequest createJobDTORequest) {
         CreateJobDTOResponse createJobDTOResponse = jobService.createJob(createJobDTORequest);
@@ -120,4 +128,66 @@ public class JobController {
                 .status(HttpStatus.OK.value())
                 .build();
     }
+
+    @PostMapping("/getByID/{jobId}")
+    public ResponseObject<JobDetailDTOResponse> getById(@PathVariable Long jobId) {
+        JobDetailDTOResponse jobDetailDTOResponse = jobService.getJobById(jobId);
+        return ResponseObject
+                .<JobDetailDTOResponse>builder()
+                .message("Get job by id successful")
+                .data(jobDetailDTOResponse)
+                .status(HttpStatus.OK.value())
+                .build();
+    }
+
+    @PutMapping("/update/{jobId}")
+    public ResponseObject<JobDetailDTOResponse> updateJob(
+            @PathVariable Long jobId,
+            @RequestBody JobDetailDTORequest jobDetailDTORequest) {
+
+        JobDetailDTOResponse updatedJob = jobService.updateJob(jobId, jobDetailDTORequest);
+
+        return ResponseObject
+                .<JobDetailDTOResponse>builder()
+                .message("Update job successful")
+                .data(updatedJob)
+                .status(HttpStatus.OK.value())
+                .build();
+    }
+
+    @DeleteMapping("/{jobId}")
+    public ResponseObject<Void> delete(
+            @PathVariable Long jobId
+           ) {
+
+        Boolean status = jobService.deleteById(jobId);
+        if (status){
+            return ResponseObject
+                    .<Void>builder()
+                    .message("Delete job successful")
+                    .status(HttpStatus.OK.value())
+                    .build();
+        }
+        return ResponseObject
+                .<Void>builder()
+                .message("Delete job failed")
+                .status(HttpStatus.OK.value())
+                .build();
+
+    }
+
+    @GetMapping("/{freelancerId}/{jobId}/cv")
+    public ResponseEntity<ResponseObject<CV>> getCVByFreelancerAndJob(
+            @PathVariable("freelancerId") Long freelancerId,
+            @PathVariable("jobId") Long jobId
+    ) {
+        CV cv = freelancerJobService.getCVByFreeLancer_IdAndJob_Id(freelancerId, jobId);
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseObject.<CV>builder()
+                .message("Successfully get CV")
+                .status(200)
+                .data(cv)
+                .build());
+    }
+
+
 }

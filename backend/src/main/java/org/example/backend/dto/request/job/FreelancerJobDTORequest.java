@@ -12,4 +12,5 @@ import lombok.Setter;
 public class FreelancerJobDTORequest {
     private long jobId;
     private long freelancerId;
+    private long cvId;
 }

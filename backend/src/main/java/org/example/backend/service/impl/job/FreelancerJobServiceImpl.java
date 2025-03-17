@@ -1,28 +1,32 @@
 package org.example.backend.service.impl.job;
 
 import lombok.RequiredArgsConstructor;
-import org.example.backend.dto.request.account.freelancer.CreateFreelancerDTORequest;
+import org.example.backend.dto.request.job.ClientReviewDTORequest;
 import org.example.backend.dto.request.job.FreelancerJobDTORequest;
+import org.example.backend.dto.request.job.FreelancerReviewDTORequest;
 import org.example.backend.dto.response.account.freelancer.ApplicantResponseDTO;
-import org.example.backend.dto.response.account.freelancer.CreateFreelancerDTOResponse;
+import org.example.backend.dto.response.job.ClientReviewDTOResponse;
 import org.example.backend.dto.response.job.FreelancerJobDTOResponse;
+import org.example.backend.dto.response.job.FreelancerReviewDTOResponse;
 import org.example.backend.dto.response.job.SaveJobDTOResponse;
-import org.example.backend.entity.child.account.User;
 import org.example.backend.entity.child.account.client.Appointment;
+import org.example.backend.entity.child.account.client.ClientReview;
 import org.example.backend.entity.child.account.client.Company;
-import org.example.backend.entity.child.account.freelancer.Freelancer;
+import org.example.backend.entity.child.account.freelancer.CV;
+import org.example.backend.entity.child.account.freelancer.FreelancerReview;
 import org.example.backend.entity.child.job.FreelancerJob;
 import org.example.backend.enums.StatusFreelancerJob;
 import org.example.backend.exception.BadRequestException;
-import org.example.backend.mapper.Freelancer.CreateFreelancerMapper;
+import org.example.backend.mapper.Account.freelancer.CreateFreelancerMapper;
+import org.example.backend.mapper.job.ClientReviewMapper;
 import org.example.backend.mapper.job.FreelancerJobMapper;
+import org.example.backend.mapper.job.FreelancerReviewMapper;
 import org.example.backend.mapper.job.SaveJobMapper;
 import org.example.backend.repository.*;
 import org.example.backend.service.impl.notify.NotifyService;
 import org.example.backend.service.intf.job.FreelancerJobService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -41,6 +45,12 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
     private final CreateFreelancerMapper createFreelancerMapper;
     private final AppointmentRepository appointmentRepository;
     private final NotifyService notifyService;
+    private final ClientReviewRepository clientReviewRepository;
+    private final ClientReviewMapper clientReviewMapper;
+    private final FreelancerReviewMapper freelancerReviewMapper;
+    private final FreelancerReviewRepository freelancerReviewRepository;
+    private final CVRepository cvRepository;
+
 
     @Override
     public FreelancerJobDTOResponse create(FreelancerJobDTORequest freelancerJobDTORequest) {
@@ -80,6 +90,9 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
 
         FreelancerJob freelancerJob = existingFreelancerJob.get();
         freelancerJob.setStatus(StatusFreelancerJob.Applied);
+        CV cv = cvRepository.findById(request.getCvId()).orElse(null);
+
+        freelancerJob.setCv(cv);
         FreelancerJob updatedFreelancerJob = freelancerJobRepository.save(freelancerJob);
         notifyService.sendNotification(request.getFreelancerId(), "Có một ứng viên đã ứng tuyển vào " + updatedFreelancerJob.getJob().getTitle(), "applicants/"+request.getJobId());
         return new FreelancerJobDTOResponse(
@@ -87,7 +100,8 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
                 updatedFreelancerJob.getIsSaved(),
                 updatedFreelancerJob.getStatus(),
                 updatedFreelancerJob.getJob().getId(),
-                updatedFreelancerJob.getFreelancer().getId()
+                updatedFreelancerJob.getFreelancer().getId(),
+                updatedFreelancerJob.getCv().getUrl()
         );
     }
 
@@ -109,7 +123,8 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
                 updatedFreelancerJob.getIsSaved(),
                 updatedFreelancerJob.getStatus(),
                 updatedFreelancerJob.getJob().getId(),
-                updatedFreelancerJob.getFreelancer().getId()
+                updatedFreelancerJob.getFreelancer().getId(),
+                updatedFreelancerJob.getCv().getUrl()
         );
     }
 
@@ -131,7 +146,8 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
                 updatedFreelancerJob.getIsSaved(),
                 updatedFreelancerJob.getStatus(),
                 updatedFreelancerJob.getJob().getId(),
-                updatedFreelancerJob.getFreelancer().getId()
+                updatedFreelancerJob.getFreelancer().getId(),
+                updatedFreelancerJob.getCv().getUrl()
         );
     }
     @Override
@@ -139,6 +155,75 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
         Optional<Appointment> appointment = appointmentRepository.findByFreelancerJobId(freelancerJobId);
         return appointment.orElse(null);
     }
+
+    @Override
+    public CV getCVByFreeLancer_IdAndJob_Id(Long freeLancerId, Long jobId) {
+        if (freeLancerId == null || jobId == null) {
+            throw new BadRequestException("Freelancer Job Id or Job Id Not Found");
+        }
+
+        CV cv = freelancerJobRepository.getCVByFreelancer_IdAndJob_Id(freeLancerId, jobId);
+
+        return cv;
+    }
+
+    @Override
+    public ClientReviewDTOResponse freelancerReview(Long freelancerJobId, ClientReviewDTORequest request) {
+        if (freelancerJobId == null) {
+            throw new BadRequestException("Freelancer Job Id Not Found");
+        }
+
+        if (request == null) {
+            throw new BadRequestException("CLientReview Not Found");
+        }
+
+        if (request.getRating() == null) {
+            throw new BadRequestException("Ratings Not Found");
+        }
+
+        if (request.getNote() == null) {
+            throw new BadRequestException("Notes Not Found");
+        }
+
+        ClientReview review = clientReviewMapper.toEntity(request);
+        review = clientReviewRepository.save(review);
+
+        FreelancerJob freelancerJob = freelancerJobRepository.findById(freelancerJobId).get();
+        freelancerJob.setClientReview(review);
+        freelancerJobRepository.save(freelancerJob);
+
+        return clientReviewMapper.toResponseDto(review);
+    }
+
+    @Override
+    public FreelancerReviewDTOResponse clientReview(Long freelancerJobId, FreelancerReviewDTORequest request) {
+        if (freelancerJobId == null) {
+            throw new BadRequestException("Freelancer Job Id Not Found");
+        }
+
+        if (request == null) {
+            throw new BadRequestException("CLientReview Not Found");
+        }
+
+        if (request.getRating() == null) {
+            throw new BadRequestException("Ratings Not Found");
+        }
+
+        if (request.getNote() == null) {
+            throw new BadRequestException("Notes Not Found");
+        }
+
+        FreelancerReview freelancerReview = freelancerReviewMapper.toEntity(request);
+        freelancerReview = freelancerReviewRepository.save(freelancerReview);
+
+        FreelancerJob freelancerJob = freelancerJobRepository.findById(freelancerJobId).get();
+        freelancerJob.setFreelancerReview(freelancerReview);
+        freelancerJobRepository.save(freelancerJob);
+
+        return freelancerReviewMapper.toResponseDto(freelancerReview);
+    }
+
+
     @Override
     public List<ApplicantResponseDTO> getApplicantByJobId(Long jobId) {
         List<FreelancerJob> results = freelancerJobRepository.getApplicantByJobId(jobId);
@@ -175,7 +260,8 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
                 updatedFreelancerJob.getIsSaved(),
                 updatedFreelancerJob.getStatus(),
                 updatedFreelancerJob.getJob().getId(),
-                updatedFreelancerJob.getFreelancer().getId()
+                updatedFreelancerJob.getFreelancer().getId(),
+                updatedFreelancerJob.getCv().getUrl()
         );
     }
 
@@ -202,7 +288,8 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
                 updatedFreelancerJob.getIsSaved(),
                 updatedFreelancerJob.getStatus(),
                 updatedFreelancerJob.getJob().getId(),
-                updatedFreelancerJob.getFreelancer().getId()
+                updatedFreelancerJob.getFreelancer().getId(),
+                updatedFreelancerJob.getCv().getUrl()
         );
     }
 
@@ -229,7 +316,8 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
                 updatedFreelancerJob.getIsSaved(),
                 updatedFreelancerJob.getStatus(),
                 updatedFreelancerJob.getJob().getId(),
-                updatedFreelancerJob.getFreelancer().getId()
+                updatedFreelancerJob.getFreelancer().getId(),
+                updatedFreelancerJob.getCv().getUrl()
         );
     }
 

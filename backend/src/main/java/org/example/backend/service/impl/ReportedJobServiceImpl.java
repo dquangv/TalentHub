@@ -74,7 +74,6 @@ public class ReportedJobServiceImpl implements ReportedJobService {
         ReportedJob existingReportedJob = reportedJobRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Reported Job not found"));
 
-        existingReportedJob.setReasonFreelancer(request.getReasonFreelancer());
         existingReportedJob.setReasonAdmin(request.getReasonAdmin());
         existingReportedJob.setStatus(request.getStatus());
 

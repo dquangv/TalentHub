@@ -6,6 +6,7 @@ import org.example.backend.enums.StatusJob;
 import org.example.backend.enums.TypePayment;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Getter
 @Setter
@@ -56,4 +57,7 @@ public class CreateJobDTORequest {
     @NotNull(message = "Category ID cannot be null")
     @Positive(message = "Category ID must be greater than 0")
     private Long categoryId;
+
+    @NotNull(message = "Skill ID cannot be null")
+    private List<Long>  skillId;
 }

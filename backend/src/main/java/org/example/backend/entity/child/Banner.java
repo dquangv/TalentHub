@@ -9,6 +9,7 @@ import org.example.backend.entity.AbstractEntity;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Table(name = "banner")
@@ -37,4 +38,13 @@ public class Banner extends AbstractEntity<Long> {
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
+
+    @Column(name = "price", nullable = false)
+    private double price;
+
+    @Column(name = "start_time", nullable = false)
+    private LocalDate startTime;
+
+    @Column(name = "end_time", nullable = false)
+    private LocalDate endTime;
 }

@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/pdf")
+@RequestMapping("/api/pdf/cloudinary")
 public class PDFController {
 
     private final CloudinaryPdfService pdfService;
@@ -75,5 +75,21 @@ public class PDFController {
         response.put("status", HttpStatus.OK.value());
 
         return ResponseEntity.ok(response);
+    }
+    @GetMapping("/preview-url")
+    public ResponseEntity<Map<String, Object>> getPreviewUrl(@RequestParam("publicId") String publicId) {
+        try {
+            String previewUrl = pdfService.getPdfUrl(publicId);
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Lấy URL xem trước thành công");
+            response.put("url", previewUrl);
+            response.put("status", HttpStatus.OK.value());
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("message", "Không thể lấy URL xem trước: " + e.getMessage());
+            error.put("status", HttpStatus.BAD_REQUEST.value());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        }
     }
 }
