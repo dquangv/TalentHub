@@ -11,5 +11,6 @@ import org.example.backend.service.BaseService;
 public interface FreelancerService extends BaseService<FreelancerDTORequest, FreelancerDTOResponse, Long> {
     CreateFreelancerDTOResponse createProfile(CreateFreelancerDTORequest request);
     UpdateHourlyRateDTOResponse updateHourlyRate(UpdateHourlyRateDTORequest request);
+    FreelancerDTOResponse updateCategory(Long freelancerId, Long categoryId);
 }
 
