@@ -25,6 +25,20 @@ public class FreelancerController {
     private final FreelancerInfoService freelancerInfoService;
     private final FreelancerDetailService freelancerDetailService;
 
+
+    @PutMapping("/{freelancerId}/category/{categoryId}")
+    public ResponseEntity<ResponseObject<FreelancerDTOResponse>> updateCategory(
+            @PathVariable Long freelancerId,
+            @PathVariable Long categoryId) {
+        FreelancerDTOResponse response = freelancerService.updateCategory(freelancerId, categoryId);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                ResponseObject.<FreelancerDTOResponse>builder()
+                        .message("Freelancer category updated successfully")
+                        .status(HttpStatus.OK.value())
+                        .data(response)
+                        .build()
+        );
+    }
     @PostMapping("")
     public ResponseObject<FreelancerDTOResponse> createFreelancer(@RequestBody FreelancerDTORequest freelancerDTORequest) {
         FreelancerDTOResponse freelancerDTOResponse = freelancerService.create(freelancerDTORequest);

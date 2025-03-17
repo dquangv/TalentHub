@@ -2,13 +2,13 @@ package org.example.backend.controller.job;
 
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.ResponseObject;
+import org.example.backend.dto.request.job.ClientReviewDTORequest;
 import org.example.backend.dto.request.job.CreateJobDTORequest;
 import org.example.backend.dto.request.job.JobAdminDTOResponse;
 import org.example.backend.dto.request.job.JobDetailDTORequest;
 import org.example.backend.dto.response.account.StatusAccountDTOResponse;
 import org.example.backend.dto.response.job.*;
 import org.example.backend.entity.child.account.freelancer.CV;
-import org.example.backend.entity.child.job.Job;
 import org.example.backend.service.intf.job.FreelancerJobService;
 import org.example.backend.service.intf.job.JobService;
 import org.springframework.http.HttpStatus;
@@ -188,4 +188,6 @@ public class JobController {
                 .data(cv)
                 .build());
     }
+
+
 }

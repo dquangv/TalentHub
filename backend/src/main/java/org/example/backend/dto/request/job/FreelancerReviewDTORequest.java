@@ -9,8 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class FreelancerJobDTORequest {
-    private long jobId;
-    private long freelancerId;
-    private long cvId;
+public class FreelancerReviewDTORequest {
+    private Float rating;
+    private String note;
 }

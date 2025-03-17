@@ -10,4 +10,5 @@ public interface ClientReviewRepository extends JpaRepository<ClientReview, Long
             "JOIN fj.clientReview c " +
             "WHERE fj.freelancer.id = :freelancerId")
     Float findAverageRating(@Param("freelancerId") Long freelancerId);
+
 }

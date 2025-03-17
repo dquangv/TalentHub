@@ -1,4 +1,4 @@
-package org.example.backend.dto.request.job;
+package org.example.backend.dto.response.job;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class FreelancerJobDTORequest {
-    private long jobId;
-    private long freelancerId;
-    private long cvId;
+public class ClientReviewDTOResponse {
+    private long id;
+    private Float rating;
+    private String note;
 }
