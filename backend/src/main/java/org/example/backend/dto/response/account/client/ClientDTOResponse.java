@@ -19,6 +19,7 @@ public class ClientDTOResponse {
     private int appointmentsCount;
     private int jobsCount;
     private String email;
-    private String address;
+    private String province;
+    private String country;
     private String image;
 }

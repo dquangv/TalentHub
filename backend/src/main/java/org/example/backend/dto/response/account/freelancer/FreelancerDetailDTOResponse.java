@@ -19,7 +19,8 @@ public class FreelancerDetailDTOResponse {
     private String name;
     private String title;
     private String avatar;
-    private String location;
+    private String province;
+    private String country;
     private float rating;
     private long completeProject;
     private BigDecimal hourlyRate;

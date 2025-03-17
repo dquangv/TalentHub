@@ -66,13 +66,13 @@ VALUES
 ('tiendqpc07858@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'FREELANCER', NOW(), NOW(), TRUE),
 ('huydqpc07859@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'CLIENT', NOW(), NOW(), TRUE);
 
-INSERT INTO users (first_name, last_name, phone_number, address, title, introduction, image, account_id) 
+INSERT INTO users (first_name, last_name, phone_number, province, country, title, introduction, image, account_id) 
 VALUES 
-('Tùng', 'Võ', '0976543210', 'Hà Nội', 'Frontend Developer', 'Chuyên gia ReactJS, VueJS với nhiều dự án UI/UX hiện đại', 'tungvo.png', 1),
-('Quang', 'Vũ', '0987654321', 'Hồ Chí Minh', 'Backend Developer', 'Lập trình viên backend với 3 năm kinh nghiệm trong Java Spring Boot', 'quangvu.png', 2),
-('Quang', 'Bùi', '0965432109', 'Đà Nẵng', 'UI/UX Designer', 'Thiết kế trải nghiệm người dùng cho website và mobile app', 'hanguyen.png', 3),
-('Tiến', 'Đinh', '0954321098', 'Cần Thơ', 'Digital Marketer', 'Chuyên gia SEO, quảng cáo Google Ads và Facebook Ads', 'anhpham.png', 4),
-('Huy', 'Đinh', '0943210987', 'Cần Thơ', 'Fullstack Developer', 'Có kinh nghiệm với cả frontend (React, Angular) và backend (NodeJS, Java)', 'baole.png', 5);
+('Tùng', 'Võ', '0976543210', 'Đống Đa', 'Hà Nội', 'Frontend Developer', 'Chuyên gia ReactJS, VueJS với nhiều dự án UI/UX hiện đại', 'tungvo.png', 1),
+('Quang', 'Vũ', '0987654321', 'Tân Phú', 'Hồ Chí Minh', 'Backend Developer', 'Lập trình viên backend với 3 năm kinh nghiệm trong Java Spring Boot', 'quangvu.png', 2),
+('Quang', 'Bùi', '0965432109', 'Bình Thạnh', 'Đà Nẵng', 'UI/UX Designer', 'Thiết kế trải nghiệm người dùng cho website và mobile app', 'hanguyen.png', 3),
+('Tiến', 'Đinh', '0954321098', 'Gò Vấp', 'Cần Thơ', 'Digital Marketer', 'Chuyên gia SEO, quảng cáo Google Ads và Facebook Ads', 'anhpham.png', 4),
+('Huy', 'Đinh', '0943210987', 'Gò Vấp', 'Cần Thơ', 'Fullstack Developer', 'Có kinh nghiệm với cả frontend (React, Angular) và backend (NodeJS, Java)', 'baole.png', 5);
 
 INSERT INTO client (from_price, to_price, type_price, user_id)
 VALUES 

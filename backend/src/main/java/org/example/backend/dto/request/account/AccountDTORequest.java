@@ -40,8 +40,8 @@ public class AccountDTORequest {
 //    @NotBlank(message = "Phone number is required")
     private String phoneNumber;
 
-//    @NotBlank(message = "Address is required")
-    private String address;
+    private String province;
+    private String country;
 
     private String title;
 
