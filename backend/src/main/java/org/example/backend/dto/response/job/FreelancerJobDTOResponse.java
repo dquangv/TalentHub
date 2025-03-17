@@ -16,4 +16,5 @@ public class FreelancerJobDTOResponse {
     private StatusFreelancerJob status;
     private long jobId;
     private long freelancerId;
+    private String urlCV;
 }
