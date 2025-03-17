@@ -15,6 +15,7 @@ public class Notification extends AbstractEntity<Long> {
     @Column(name="user_id")
     private Long userId;
     private boolean isRead;
+    private String url;
     private LocalDateTime createdAt;
 
     @PrePersist

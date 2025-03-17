@@ -16,9 +16,9 @@ public class NotifyController {
     private final NotifyService notificationService;
 
     @PostMapping("/send")
-    public ResponseEntity<Void> sendNotification(String message
+    public ResponseEntity<Void> sendNotification(String message, String url
             ) {
-        notificationService.sendNotification(3L, message);
+        notificationService.sendNotification(3L, message, url);
         return ResponseEntity.ok().build();
     }
 

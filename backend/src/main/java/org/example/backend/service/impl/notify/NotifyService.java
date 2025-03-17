@@ -16,12 +16,12 @@ public class NotifyService {
     private final SimpMessagingTemplate messagingTemplate;
 
     @Transactional
-    public void sendNotification(Long userId, String message) {
+    public void sendNotification(Long userId, String message, String url) {
         Notification notification = new Notification();
         notification.setUserId(userId);
         notification.setMessage(message);
         notification.setRead(false);
-
+        notification.setUrl(url);
         notificationRepository.save(notification);
 
         messagingTemplate.convertAndSend("/user/" + userId + "/queue/notifications", notification);
