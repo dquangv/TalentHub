@@ -17,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class JobAdminDTOResponse {
+    private Long id;
     private String title;
     private StatusJob status;
     private String clientEmail;
