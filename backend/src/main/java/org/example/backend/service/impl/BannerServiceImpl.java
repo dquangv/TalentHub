@@ -29,7 +29,8 @@ public class BannerServiceImpl implements BannerService {
         banner.setImage(imageUrl);
         banner.setStatus(bannerDTORequest.getStatus());
         banner.setVendor(bannerDTORequest.getVendor());
-
+        banner.setStartTime(bannerDTORequest.getStartTime());
+        banner.setEndTime(bannerDTORequest.getEndTime());
         Banner savedBanner = bannerRepository.save(banner);
 
         return toDTO(savedBanner);
@@ -84,8 +85,8 @@ public class BannerServiceImpl implements BannerService {
         response.setImage(banner.getImage());
         response.setStatus(banner.getStatus());
         response.setVendor(banner.getVendor());
-        response.setCreatedAt(banner.getCreatedAt().toString());
-        response.setUpdatedAt(banner.getUpdatedAt() != null ? banner.getUpdatedAt().toString() : null);
+        response.setStartTime(banner.getStartTime().toString());
+        response.setEndTime(banner.getEndTime() != null ? banner.getEndTime().toString() : null);
         return response;
     }
 
