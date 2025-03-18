@@ -9,7 +9,9 @@ import lombok.RequiredArgsConstructor;
 
 import org.example.backend.dto.request.account.freelancer.DegreeDTORequest;
 import org.example.backend.dto.response.account.freelancer.DegreeDTOResponse;
+import org.example.backend.dto.response.account.freelancer.SchoolDTOResponse;
 import org.example.backend.entity.child.account.freelancer.Degree;
+import org.example.backend.entity.child.account.freelancer.School;
 import org.example.backend.repository.DegreeRepository;
 import org.example.backend.service.intf.account.freelancer.DegreeService;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,20 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class DegreeServiceImpl implements DegreeService {
+    @Override
+    public DegreeDTOResponse update(Long id, DegreeDTORequest degreeDTORequest) {
+        Optional<Degree> optionalDegree = degreeRepository.findById(id);
+        if (!optionalDegree.isPresent()) {
+            return null;
+        }
+
+        Degree degree = optionalDegree.get();
+        degree.setDegreeTitle(degreeDTORequest.getDegreeTitle());
+
+        degree = degreeRepository.save(degree);
+
+        return new DegreeDTOResponse(degree.getId(), degree.getDegreeTitle());
+    }
 
     private final DegreeRepository degreeRepository;
 
