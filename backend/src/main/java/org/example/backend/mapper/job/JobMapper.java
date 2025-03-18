@@ -14,7 +14,7 @@ import java.util.List;
 public interface JobMapper extends BaseMapper<Job, JobDTORequest, JobDTOResponse> {
 
 //    @Mapping(target = "companyName", source = "job.client.company.companyName")
-    @Mapping(target = "statusJob", source = "status")
+//    @Mapping(target = "statusJob", source = "status")
     @Mapping(target = "skillName", expression = "java(mapSkills(job.getJobSkills()))")
     JobDTOResponse toResponseDto(Job job);
 

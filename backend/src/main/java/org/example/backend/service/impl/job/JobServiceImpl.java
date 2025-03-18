@@ -199,9 +199,10 @@ public class JobServiceImpl implements JobService {
         return false;
     }
 
-    @Override
+  @Override
     public List<JobDTOResponse> findAllJobs() {
         List<JobDTOResponse> jobs = jobRepository.findAll().stream()
+                .filter(job -> job.getStatus() == StatusJob.OPEN)
                 .map(job -> {
                     JobDTOResponse dto = jobMapper.toResponseDto(job);
                     Long clientId = job.getClient().getId();

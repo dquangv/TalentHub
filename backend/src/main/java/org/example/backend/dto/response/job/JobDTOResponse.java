@@ -22,7 +22,6 @@ public class JobDTOResponse {
     private BigDecimal fromPrice;
     private BigDecimal toPrice;
     private String description;
-    private String statusJob;
     private List<String> skillName;
 
 }
