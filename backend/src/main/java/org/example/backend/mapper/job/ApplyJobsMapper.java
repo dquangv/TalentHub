@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface ApplyJobsMapper  extends BaseMapper<FreelancerJob, ApplyJobsDTORequest, ApplyJobsDTOResponse> {
+    @Mapping(source = "job.id", target = "id")
     @Mapping(source = "job.title", target = "jobTitle")
     @Mapping(source = "job.category.categoryTitle", target = "jobType")
     @Mapping(source = "job.hourWork", target = "hourWork")
