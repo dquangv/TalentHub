@@ -21,6 +21,8 @@ public interface FreelancerJobMapper extends BaseMapper<FreelancerJob, Freelance
     @Mapping(source = "freelancerJob.status", target = "status")
     @Mapping(source = "freelancerJob.freelancer.id", target = "freelancerId")
     @Mapping(source = "freelancerJob.job.id", target = "jobId")
+    @Mapping(source = "freelancerJob.cv.id", target = "cvId")
+    @Mapping(source = "freelancerJob.cv.url", target = "cvURL")
     @Mapping(source = "freelancerJob.freelancerReview.rating", target = "rating", defaultValue = "0.0")
     @Mapping(target = "appointmentId", source = "appointmentId")
     ApplicantResponseDTO toResponseDto(FreelancerJob freelancerJob, Long appointmentId);

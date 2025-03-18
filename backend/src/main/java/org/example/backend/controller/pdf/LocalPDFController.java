@@ -52,7 +52,6 @@ public class LocalPDFController {
     public ResponseEntity<Map<String, Object>> uploadMultiplePdfs(@RequestParam("files") MultipartFile[] files) {
         try {
             List<String> filenames = pdfService.uploadMultiplePdfs(files);
-
             Map<String, Object> response = new HashMap<>();
             response.put("message", "Upload nhiều CV thành công");
             response.put("urls", filenames);
@@ -70,7 +69,6 @@ public class LocalPDFController {
     public ResponseEntity<Map<String, Object>> deletePdf(@PathVariable Long cvId) {
         try {
             pdfService.deletePdfById(cvId);
-
             Map<String, Object> response = new HashMap<>();
             response.put("message", "CV đã được xóa thành công");
             response.put("status", HttpStatus.OK.value());
