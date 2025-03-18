@@ -50,4 +50,19 @@ public class SchoolServiceImpl implements SchoolService {
         }
         return false;
     }
+
+    public SchoolDTOResponse update(Long id, SchoolDTORequest schoolDTORequest) {
+        Optional<School> optionalSchool = schoolRepository.findById(id);
+        if (!optionalSchool.isPresent()) {
+            return null;
+        }
+
+        School school = optionalSchool.get();
+        school.setSchoolName(schoolDTORequest.getSchoolName());
+
+        school = schoolRepository.save(school);
+
+        return new SchoolDTOResponse(school.getId(), school.getSchoolName());
+    }
+
 }
