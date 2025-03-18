@@ -15,6 +15,7 @@ import org.example.backend.entity.child.account.client.Company;
 import org.example.backend.entity.child.account.freelancer.CV;
 import org.example.backend.entity.child.account.freelancer.FreelancerReview;
 import org.example.backend.entity.child.job.FreelancerJob;
+import org.example.backend.entity.child.job.Job;
 import org.example.backend.enums.StatusFreelancerJob;
 import org.example.backend.exception.BadRequestException;
 import org.example.backend.mapper.Account.freelancer.CreateFreelancerMapper;
@@ -94,7 +95,8 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
         freelancerJob.setCv(cv);
         FreelancerJob updatedFreelancerJob = freelancerJobRepository.save(freelancerJob);
 
-        notifyService.sendNotification(request.getFreelancerId(), "Có một ứng viên đã ứng tuyển vào " + updatedFreelancerJob.getJob().getTitle(), "applicants/"+request.getJobId());
+        Job job = jobRepository.findById(request.getJobId()).orElse(null);
+        notifyService.sendNotification(job.getClient().getId(), "Có một ứng viên đã ứng tuyển vào " + updatedFreelancerJob.getJob().getTitle(), "applicants/"+request.getJobId());
 
         return new FreelancerJobDTOResponse(
                 updatedFreelancerJob.getId(),
