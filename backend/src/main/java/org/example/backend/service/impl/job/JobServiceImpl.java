@@ -50,6 +50,8 @@ public class JobServiceImpl implements JobService {
 
     private final JobSkillRepository jobSkillRepository;
 
+    private final JobMapper jobMapper;
+
     private final CreateJobMapper createJobMapper;
     private final SkillRepository skillRepository;
     private final JobDetailMapper jobDetailMapper;
@@ -197,27 +199,21 @@ public class JobServiceImpl implements JobService {
         return false;
     }
 
-
     @Override
     public List<JobDTOResponse> findAllJobs() {
-        try {
-            List<Object[]> results = jobRepository.findAllJobsNative();
-            List<JobDTOResponse> jobs = results.stream().map(obj -> new JobDTOResponse(
-                    ((Number) obj[0]).longValue(),
-                    (String) obj[1],
-                    (String) obj[2],
-                    (BigDecimal) obj[3],
-                    (BigDecimal) obj[4],
-                    (BigDecimal) obj[5],
-                    (String) obj[6],
-                    (String) obj[7]  // Đây là chuỗi kết quả của GROUP_CONCAT
-            )).toList();
+        List<JobDTOResponse> jobs = jobRepository.findAll().stream()
+                .map(job -> {
+                    JobDTOResponse dto = jobMapper.toResponseDto(job);
+                    Long clientId = job.getClient().getId();
+                    companyRepository.getCompanyByClientId(clientId)
+                            .ifPresent(company -> dto.setCompanyName(company.getCompanyName()));
+                    return dto;
+                })
+                .collect(Collectors.toList());
 
-            return jobs;
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
+        return jobs;
     }
+
 
     @Override
     public Optional<DetailJobDTOResponse> getDetailJobById(Long id) {

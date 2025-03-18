@@ -27,7 +27,8 @@ public class FreelancerInfoImpl implements FreelancerInfoService {
             dto.setName(freelancer.getUser().getFirstName() + " " + freelancer.getUser().getLastName());
             dto.setTitle(freelancer.getUser().getTitle());
             dto.setAvatar(freelancer.getUser().getImage());
-            dto.setLocation(freelancer.getUser().getAddress());
+            dto.setProvince(freelancer.getUser().getProvince());
+            dto.setCountry(freelancer.getUser().getCountry());
 
             Float rating = clientReviewRepository.findAverageRating(freelancer.getId());
             dto.setRating(rating != null ? rating : 0.0f);

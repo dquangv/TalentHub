@@ -62,8 +62,12 @@ public class UserServiceImpl implements UserService {
             user.setPhoneNumber(userDTORequest.getPhoneNumber());
         }
 
-        if (userDTORequest.getAddress() != null) {
-            user.setAddress(userDTORequest.getAddress());
+        if (userDTORequest.getProvince() != null) {
+            user.setProvince(userDTORequest.getProvince());
+        }
+
+        if (userDTORequest.getCountry() != null) {
+            user.setCountry(userDTORequest.getCountry());
         }
 
         if (userDTORequest.getTitle() != null) {
@@ -88,7 +92,8 @@ public class UserServiceImpl implements UserService {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .phoneNumber(user.getPhoneNumber())
-                .address(user.getAddress())
+                .province(user.getProvince())
+                .country(user.getCountry())
                 .title(user.getTitle())
                 .introduction(user.getIntroduction())
                 .image(user.getImage())

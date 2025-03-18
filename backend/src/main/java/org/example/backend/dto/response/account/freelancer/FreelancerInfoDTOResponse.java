@@ -17,7 +17,8 @@ public class FreelancerInfoDTOResponse {
     private String title;
     private String avatar;
     private Float rating;
-    private String location;
+    private String province;
+    private String country;
     private List<String> skills;
     private String hourlyRate;
 }
