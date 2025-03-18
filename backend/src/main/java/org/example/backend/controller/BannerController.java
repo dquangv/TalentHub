@@ -8,7 +8,11 @@ import org.example.backend.service.intf.BannerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @RestController
@@ -24,13 +28,30 @@ public class BannerController {
             @RequestParam String title,
             @RequestParam String status,
             @RequestParam String vendor,
+            @RequestParam String startTime,
+            @RequestParam String endTime,
             @RequestParam MultipartFile image) {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        LocalDate startLocalDate;
+        LocalDate endLocalDate;
+
+        try {
+            startLocalDate = LocalDate.parse(startTime, formatter);
+            endLocalDate = LocalDate.parse(endTime, formatter);
+        } catch (DateTimeParseException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid date format. Use yyyy-MM-dd.");
+        }
 
         BannerDTORequest bannerDTORequest = new BannerDTORequest();
         bannerDTORequest.setTitle(title);
         bannerDTORequest.setStatus(status);
         bannerDTORequest.setVendor(vendor);
         bannerDTORequest.setImage(image);
+        bannerDTORequest.setStartTime(startLocalDate);
+        bannerDTORequest.setEndTime(endLocalDate);
+
         BannerDTOResponse createdBanner = bannerService.create(bannerDTORequest);
 
         return ResponseObject.<BannerDTOResponse>builder()

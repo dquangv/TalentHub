@@ -10,5 +10,6 @@ import org.mapstruct.Mapping;
 public interface LocationMapper {
     @Mapping(source = "lat", target = "lat")
     @Mapping(source = "lng", target = "lng")
+    @Mapping(source = "role", target = "role")
     LocationDTOResponse toResponseDTO(Account account);
 }

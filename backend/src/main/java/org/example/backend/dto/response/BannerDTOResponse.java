@@ -3,6 +3,8 @@ package org.example.backend.dto.response;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 public class BannerDTOResponse {
@@ -11,6 +13,8 @@ public class BannerDTOResponse {
     private String image;
     private String status;
     private String vendor;
-    private String createdAt;
-    private String updatedAt;
+//    private String createdAt;
+//    private String updatedAt;
+    private String startTime;
+    private String endTime;
 }

@@ -1,6 +1,7 @@
 package org.example.backend.dto.response.account;
 
 import lombok.*;
+import org.example.backend.enums.RoleUser;
 
 @Getter
 @Setter
@@ -10,4 +11,5 @@ import lombok.*;
 public class LocationDTOResponse {
     private Double lat;
     private Double lng;
+    private RoleUser role;
 }
