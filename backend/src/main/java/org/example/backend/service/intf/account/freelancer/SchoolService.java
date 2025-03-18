@@ -5,4 +5,5 @@ import org.example.backend.dto.response.account.freelancer.SchoolDTOResponse;
 import org.example.backend.service.BaseService;
 
 public interface SchoolService extends BaseService<SchoolDTORequest, SchoolDTOResponse, Long> {
+    public SchoolDTOResponse update(Long id, SchoolDTORequest schoolDTORequest);
 }
