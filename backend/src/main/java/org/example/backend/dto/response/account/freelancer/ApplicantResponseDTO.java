@@ -24,5 +24,6 @@ public class ApplicantResponseDTO {
     private Long freelancerId;
     private Long jobId;
     private Long appointmentId;
-
+    private long cvId;
+    private String cvURL;
 }
