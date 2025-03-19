@@ -12,4 +12,6 @@ import lombok.Setter;
 public class SkillDTOResponse {
     private Long id;
     private String skillName;
+    private Long quantityFreelancerSkill;
+    private Long quantityJobSkill;
 }

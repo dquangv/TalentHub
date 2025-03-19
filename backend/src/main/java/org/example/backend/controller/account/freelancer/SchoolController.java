@@ -27,6 +27,30 @@ public class SchoolController {
                 .data(schoolDTOResponse)
                 .build();
     }
+    @PutMapping("/{id}")
+    public ResponseObject<SchoolDTOResponse> updateSchool(
+            @PathVariable Long id,
+            @Valid @RequestBody SchoolDTORequest schoolDTORequest
+    ) {
+        SchoolDTOResponse schoolDTOResponse = schoolService.update(id, schoolDTORequest);
+
+        if (schoolDTOResponse == null) {
+            return ResponseObject.<SchoolDTOResponse>builder()
+                    .message("School not found")
+                    .status(HttpStatus.NOT_FOUND.value())
+                    .data(null)
+                    .build();
+        }
+
+        return ResponseObject.<SchoolDTOResponse>builder()
+                .message("School updated successfully")
+                .status(HttpStatus.OK.value())
+                .data(schoolDTOResponse)
+                .build();
+    }
+
+
+
 
     @GetMapping("/{id}")
     public ResponseObject<SchoolDTOResponse> getSchoolById(@PathVariable Long id) {

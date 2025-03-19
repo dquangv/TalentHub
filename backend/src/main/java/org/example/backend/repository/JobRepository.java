@@ -10,7 +10,7 @@
     import java.util.Optional;
 
     public interface JobRepository extends JpaRepository<Job, Long> {
-
+        public Long countByCategoryId(Long categoryId);
         @Query("SELECT j FROM Job j " +
                 "LEFT JOIN FETCH j.client c " +
                 "LEFT JOIN FETCH c.user " +

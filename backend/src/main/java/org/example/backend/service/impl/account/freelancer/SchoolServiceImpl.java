@@ -5,6 +5,7 @@ import org.example.backend.dto.request.account.freelancer.SchoolDTORequest;
 import org.example.backend.dto.response.account.freelancer.SchoolDTOResponse;
 import org.example.backend.entity.child.account.freelancer.School;
 import org.example.backend.repository.SchoolRepository;
+import org.example.backend.repository.EducationRepository;
 import org.example.backend.service.intf.account.freelancer.SchoolService;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 public class SchoolServiceImpl implements SchoolService {
 
     private final SchoolRepository schoolRepository;
+    private final EducationRepository educationRepository;
 
     @Override
     public SchoolDTOResponse create(SchoolDTORequest schoolRequestDTO) {
@@ -25,20 +27,29 @@ public class SchoolServiceImpl implements SchoolService {
 
         school = schoolRepository.save(school);
 
-        return new SchoolDTOResponse(school.getId(), school.getSchoolName());
+        Long quantityEducation = educationRepository.countBySchoolId(school.getId());
+
+        return new SchoolDTOResponse(school.getId(), school.getSchoolName(), quantityEducation);
     }
 
     @Override
     public Optional<SchoolDTOResponse> getById(Long id) {
         Optional<School> school = schoolRepository.findById(id);
-        return school.map(s -> new SchoolDTOResponse(s.getId(), s.getSchoolName()));
+        if (school.isPresent()) {
+            Long quantityEducation = educationRepository.countBySchoolId(school.get().getId());
+            return Optional.of(new SchoolDTOResponse(school.get().getId(), school.get().getSchoolName(), quantityEducation));
+        }
+        return Optional.empty();
     }
 
     @Override
     public List<SchoolDTOResponse> getAll() {
         List<School> schools = schoolRepository.findAll();
         return schools.stream()
-                .map(s -> new SchoolDTOResponse(s.getId(), s.getSchoolName()))
+                .map(s -> {
+                    Long quantityEducation = educationRepository.countBySchoolId(s.getId());
+                    return new SchoolDTOResponse(s.getId(), s.getSchoolName(), quantityEducation);
+                })
                 .collect(Collectors.toList());
     }
 
@@ -49,5 +60,22 @@ public class SchoolServiceImpl implements SchoolService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public SchoolDTOResponse update(Long id, SchoolDTORequest schoolDTORequest) {
+        Optional<School> optionalSchool = schoolRepository.findById(id);
+        if (!optionalSchool.isPresent()) {
+            return null;
+        }
+
+        School school = optionalSchool.get();
+        school.setSchoolName(schoolDTORequest.getSchoolName());
+
+        school = schoolRepository.save(school);
+
+        Long quantityEducation = educationRepository.countBySchoolId(school.getId());
+
+        return new SchoolDTOResponse(school.getId(), school.getSchoolName(), quantityEducation);
     }
 }

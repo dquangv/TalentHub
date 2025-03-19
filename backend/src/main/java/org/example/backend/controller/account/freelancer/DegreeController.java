@@ -28,6 +28,16 @@ public class DegreeController {
                 .data(degreeDTOResponse)
                 .build();
     }
+    @PutMapping("/{id}")
+    public ResponseObject<DegreeDTOResponse> updateDegree(@PathVariable Long id, @Valid @RequestBody DegreeDTORequest degreeDTORequest) {
+        DegreeDTOResponse degreeDTOResponse = degreeService.update(id, degreeDTORequest);
+        return ResponseObject.<DegreeDTOResponse>builder()
+                .message("Degree updated successfully")
+                .status(HttpStatus.OK.value())
+                .data(degreeDTOResponse)
+                .build();
+    }
+
 
     @GetMapping("/{id}")
     public ResponseObject<DegreeDTOResponse> getDegreeById(@PathVariable Long id) {
