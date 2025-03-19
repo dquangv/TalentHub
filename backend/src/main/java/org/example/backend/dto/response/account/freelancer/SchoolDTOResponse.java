@@ -9,4 +9,5 @@ public class SchoolDTOResponse {
 
     private Long id;
     private String schoolName;
+    private Long quantityEducation;
 }

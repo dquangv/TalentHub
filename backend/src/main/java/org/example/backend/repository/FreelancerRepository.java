@@ -12,5 +12,6 @@ import java.util.Optional;
 
 public interface FreelancerRepository extends JpaRepository<Freelancer,Long> {
     public Optional<Freelancer> findByUserId(Long userId);
+    public Long countByCategoryId(Long categoryId);
 
 }
