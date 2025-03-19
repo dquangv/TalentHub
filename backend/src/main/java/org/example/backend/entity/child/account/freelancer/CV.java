@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.backend.entity.AbstractEntity;
+import org.example.backend.entity.child.job.FreelancerJob;
+
+import java.util.List;
 
 
 @Entity
@@ -31,8 +34,8 @@ public class CV extends AbstractEntity<Long> {
     @JsonIgnore
     private Freelancer freelancer;
 
-    /*@OneToMany(mappedBy = "freelancer_job", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "cv", cascade = CascadeType.ALL, orphanRemoval = false)
     @JsonIgnore
-    private List<FreelancerJob> freelancerJobs;*/
+    private List<FreelancerJob> freelancerJobs;
 
 }
