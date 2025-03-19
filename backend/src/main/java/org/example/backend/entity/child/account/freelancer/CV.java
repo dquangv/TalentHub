@@ -7,9 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.backend.entity.AbstractEntity;
-import org.example.backend.entity.child.job.FreelancerJob;
 
-import java.util.List;
 
 @Entity
 @Table(name = "cv")
