@@ -81,6 +81,10 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
 
     @Override
     public FreelancerJobDTOResponse applyJob(FreelancerJobDTORequest request) {
+        Job job = jobRepository.findById(request.getJobId()).orElse(null);
+        System.out.println(job.getClient().getUser().getId());
+        notifyService.sendNotification(job.getClient().getUser().getId(), "Có một ứng viên đã ứng tuyển vào " + job.getTitle(), "client/applicants/"+request.getJobId());
+
         Optional<FreelancerJob> existingFreelancerJob = freelancerJobRepository.findByFreelancer_IdAndJob_Id(
                 request.getFreelancerId(), request.getJobId());
 
@@ -95,8 +99,6 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
         freelancerJob.setCv(cv);
         FreelancerJob updatedFreelancerJob = freelancerJobRepository.save(freelancerJob);
 
-        Job job = jobRepository.findById(request.getJobId()).orElse(null);
-        notifyService.sendNotification(job.getClient().getId(), "Có một ứng viên đã ứng tuyển vào " + updatedFreelancerJob.getJob().getTitle(), "applicants/"+request.getJobId());
 
         return new FreelancerJobDTOResponse(
                 updatedFreelancerJob.getId(),
