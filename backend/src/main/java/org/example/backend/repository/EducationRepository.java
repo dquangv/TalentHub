@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface EducationRepository extends JpaRepository<Education, Long> {
     List<Education> findByFreelancerId(Long freelancerId);
+    Long countByDegreeId(Long degreeId);
+    Long countBySchoolId(Long schoolId);
 }

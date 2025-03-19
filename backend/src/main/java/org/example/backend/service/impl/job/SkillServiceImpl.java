@@ -7,6 +7,8 @@ import org.example.backend.entity.child.job.Skill;
 import org.example.backend.exception.BadRequestException;
 import org.example.backend.exception.NotFoundException;
 import org.example.backend.mapper.job.SkillMapper;
+import org.example.backend.repository.FreelancerSkillRepository;
+import org.example.backend.repository.JobSkillRepository;
 import org.example.backend.repository.SkillRepository;
 import org.example.backend.service.intf.job.SkillService;
 import org.springframework.stereotype.Service;
@@ -20,7 +22,8 @@ import java.util.stream.Collectors;
 public class SkillServiceImpl implements SkillService {
     private final SkillMapper skillMapper;
     private final SkillRepository skillRepository;
-
+    private final FreelancerSkillRepository freelancerSkillRepository;
+    private final JobSkillRepository jobSkillRepository;
     @Override
     public SkillDTOResponse create(SkillDTORequest skillDTORequest) {
         if (skillDTORequest == null) {
@@ -38,13 +41,33 @@ public class SkillServiceImpl implements SkillService {
     @Override
     public Optional<SkillDTOResponse> getById(Long id) {
         return skillRepository.findById(id)
-                .map(skillMapper::toResponseDto);
+                .map(skill -> {
+                    Long quantityFreelancerSkill = freelancerSkillRepository.countBySkillId(skill.getId());
+                    Long quantityJobSkill = jobSkillRepository.countBySkillId(skill.getId());
+
+                    return new SkillDTOResponse(
+                            skill.getId(),
+                            skill.getSkillName(),
+                            quantityFreelancerSkill,
+                            quantityJobSkill
+                    );
+                });
     }
 
     @Override
     public List<SkillDTOResponse> getAll() {
         return skillRepository.findAll().stream()
-                .map(skillMapper::toResponseDto)
+                .map(skill -> {
+                    Long quantityFreelancerSkill = freelancerSkillRepository.countBySkillId(skill.getId());
+                    Long quantityJobSkill = jobSkillRepository.countBySkillId(skill.getId());
+
+                    return new SkillDTOResponse(
+                            skill.getId(),
+                            skill.getSkillName(),
+                            quantityFreelancerSkill,
+                            quantityJobSkill
+                    );
+                })
                 .collect(Collectors.toList());
     }
 

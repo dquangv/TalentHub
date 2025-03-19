@@ -10,4 +10,5 @@ import lombok.Setter;
 public class DegreeDTOResponse {
     private Long id;
     private String degreeTitle;
+    private Long quantityEducation;
 }
