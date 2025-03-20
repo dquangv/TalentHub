@@ -29,6 +29,9 @@ public class VoucherPackage extends AbstractEntity<Long> {
     @Column(name = "duration")
     private Long duration;
 
+    @Column(name = "NumberPost")
+    private Long NumberPost;
+
     @Column(name = "status")
     private boolean status;
 
