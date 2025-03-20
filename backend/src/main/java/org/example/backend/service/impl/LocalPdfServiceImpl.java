@@ -9,7 +9,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.util.StringUtils;
+import org.example.backend.dto.response.cv.CVWithJobsDTO;
+import org.example.backend.dto.response.cv.CVJobDTO;
+import org.example.backend.entity.child.job.Job;
+import org.example.backend.entity.child.account.client.Company;
+import org.example.backend.repository.CompanyRepository;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -23,6 +30,7 @@ import java.util.UUID;
 @Service
 public class LocalPdfServiceImpl implements LocalPdfService {
 
+    private final CompanyRepository companyRepository;
     @Value("${pdf.storage.location}")
     private String storageLocation;
 
@@ -32,9 +40,10 @@ public class LocalPdfServiceImpl implements LocalPdfService {
     private final FreelancerRepository freelancerRepository;
     private final CVRepository cvRepository;
 
-    public LocalPdfServiceImpl(FreelancerRepository freelancerRepository, CVRepository cvRepository) {
+    public LocalPdfServiceImpl(FreelancerRepository freelancerRepository, CVRepository cvRepository, CompanyRepository companyRepository) {
         this.freelancerRepository = freelancerRepository;
         this.cvRepository = cvRepository;
+        this.companyRepository = companyRepository;
     }
 
     private void initStorageLocation() {
@@ -155,5 +164,45 @@ public class LocalPdfServiceImpl implements LocalPdfService {
         Freelancer freelancer = freelancerRepository.findById(freelancerId)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy Freelancer với ID: " + freelancerId));
         return cvRepository.findByFreelancer(freelancer);
+    }
+
+    @Override
+    public List<CVWithJobsDTO> getCVsWithJobsByFreelancerId(Long freelancerId) {
+        Freelancer freelancer = freelancerRepository.findById(freelancerId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy Freelancer với ID: " + freelancerId));
+
+        List<CV> cvs = cvRepository.findByFreelancer(freelancer);
+
+        return cvs.stream().map(cv -> {
+            CVWithJobsDTO dto = new CVWithJobsDTO();
+            dto.setId(cv.getId());
+            dto.setTitle(cv.getTitle());
+            dto.setUrl(cv.getUrl());
+            dto.setStatus(cv.getStatus());
+
+            List<CVJobDTO> jobDTOs = cv.getFreelancerJobs().stream()
+                    .map(freelancerJob -> {
+                        Job job = freelancerJob.getJob();
+                        String companyName = "";
+                        try {
+                            Company company = companyRepository.getCompanyByClientId(job.getClient().getId())
+                                    .orElse(null);
+                            if (company != null) {
+                                companyName = company.getCompanyName();
+                            }
+                        } catch (Exception e) {
+                        }
+
+                        return new CVJobDTO(
+                                job.getId(),
+                                job.getTitle(),
+                                companyName,
+                                freelancerJob.getStatus()
+                        );
+                    })
+                    .collect(Collectors.toList());
+            dto.setJobs(jobDTOs);
+            return dto;
+        }).collect(Collectors.toList());
     }
 }

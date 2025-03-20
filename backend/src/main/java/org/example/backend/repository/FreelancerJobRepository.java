@@ -7,7 +7,7 @@ import org.example.backend.enums.StatusFreelancerJob;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
+import org.example.backend.enums.StatusFreelancerJob;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,4 +62,5 @@ public interface FreelancerJobRepository extends JpaRepository<FreelancerJob, Lo
     @Query("SELECT f.cv FROM FreelancerJob f WHERE f.freelancer.id = :freelancerId AND f.job.id = :jobId")
     CV getCVByFreelancer_IdAndJob_Id(@Param("freelancerId") Long freelancerId, @Param("jobId") Long jobId);
 
+    long countByStatus(StatusFreelancerJob status);
 }

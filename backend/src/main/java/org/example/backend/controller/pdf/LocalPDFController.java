@@ -1,5 +1,6 @@
 package org.example.backend.controller.pdf;
 
+import org.example.backend.dto.response.cv.CVWithJobsDTO;
 import org.example.backend.entity.child.account.freelancer.CV;
 import org.example.backend.service.intf.LocalPdfService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -119,9 +120,9 @@ public class LocalPDFController {
     }
 
     @GetMapping("/freelancer/{freelancerId}")
-    public ResponseEntity<Map<String, Object>> getCVsByFreelancerId(@PathVariable Long freelancerId) {
+    public ResponseEntity<Map<String, Object>> getCVsWithJobsByFreelancerId(@PathVariable Long freelancerId) {
         try {
-            List<CV> cvs = pdfService.getCVsByFreelancerId(freelancerId);
+            List<CVWithJobsDTO> cvs = pdfService.getCVsWithJobsByFreelancerId(freelancerId);
 
             Map<String, Object> response = new HashMap<>();
             response.put("data", cvs);
@@ -129,7 +130,7 @@ public class LocalPDFController {
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             Map<String, Object> error = new HashMap<>();
-            error.put("message", "Không thể lấy danh sách CV: " + e.getMessage());
+            error.put("message", "Không thể lấy danh sách CV và công việc: " + e.getMessage());
             error.put("status", HttpStatus.BAD_REQUEST.value());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
         }

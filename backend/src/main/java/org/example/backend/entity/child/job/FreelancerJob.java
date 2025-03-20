@@ -1,10 +1,8 @@
 package org.example.backend.entity.child.job;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.example.backend.entity.AbstractEntity;
-import org.example.backend.entity.child.account.client.Appointment;
 import org.example.backend.entity.child.account.client.ClientReview;
 import org.example.backend.entity.child.account.freelancer.CV;
 import org.example.backend.entity.child.account.freelancer.FreelancerReview;
@@ -13,7 +11,6 @@ import org.example.backend.enums.StatusFreelancerJob;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Table(name = "freelancer_job")
 @Entity
@@ -29,10 +26,6 @@ public class FreelancerJob extends AbstractEntity<Long> {
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private StatusFreelancerJob status;
-
-    /*@Size(max = 255)
-    @Column(name = "cv")
-    private String cv;*/
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "applied_date")
@@ -61,9 +54,6 @@ public class FreelancerJob extends AbstractEntity<Long> {
     /*@ManyToOne
     @JoinColumn(name = "CV_id")*/
 
-    /*@OneToOne
-    @JoinColumn(name = "cv_id")
-    private CV cv;*/
 
     @ManyToOne
     @JoinColumn(name = "cv_id")
