@@ -16,7 +16,9 @@ public interface JobMapper extends BaseMapper<Job, JobDTORequest, JobDTOResponse
 //    @Mapping(target = "companyName", source = "job.client.company.companyName")
 //    @Mapping(target = "statusJob", source = "status")
     @Mapping(target = "skillName", expression = "java(mapSkills(job.getJobSkills()))")
+    @Mapping(target = "categoryName", source = "category.categoryTitle")
     JobDTOResponse toResponseDto(Job job);
+
 
     default List<String> mapSkills(List<JobSkill> jobSkills) {
         if (jobSkills == null || jobSkills.isEmpty()) {
