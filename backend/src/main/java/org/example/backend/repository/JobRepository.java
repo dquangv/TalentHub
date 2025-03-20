@@ -5,6 +5,7 @@
     import org.springframework.data.jpa.repository.JpaRepository;
     import org.springframework.data.jpa.repository.Query;
     import org.springframework.data.repository.query.Param;
+    import org.example.backend.enums.StatusJob;
 
     import java.util.List;
     import java.util.Optional;
@@ -25,5 +26,5 @@
                 "LEFT JOIN FETCH j.client c " +
                 "WHERE c.id = :clientId")
         List<Job> getPostedJobs(@Param("clientId") Long clientId);
-
+        long countByStatus(StatusJob status);
     }
