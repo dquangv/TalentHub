@@ -4,6 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.example.backend.repository.ClientRepository;
 import org.example.backend.repository.FreelancerRepository;
 import org.example.backend.repository.JobRepository;
+import org.example.backend.repository.FreelancerJobRepository; // Add this
+import org.example.backend.enums.StatusJob;
+import org.example.backend.enums.StatusFreelancerJob;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,18 +19,23 @@ public class StatisticsServiceImpl {
     private final ClientRepository clientRepository;
     private final FreelancerRepository freelancerRepository;
     private final JobRepository jobRepository;
+    private final FreelancerJobRepository freelancerJobRepository;
 
     public Map<String, Object> getOverallStatistics() {
         Map<String, Object> statistics = new HashMap<>();
 
         try {
-            long freelancerCount = freelancerRepository.count();
-            long jobCount = jobRepository.count();
             long clientCount = clientRepository.count();
+            long freelancerCount = freelancerRepository.count();
+            long totalAccounts = clientCount + freelancerCount;
 
-            statistics.put("freelancers", freelancerCount);
-            statistics.put("jobs", jobCount);
-            statistics.put("clients", clientCount);
+            long postedJobsCount = jobRepository.countByStatus(StatusJob.OPEN);
+
+            long approvedFreelancerJobsCount = freelancerJobRepository.countByStatus(StatusFreelancerJob.Completed);
+
+            statistics.put("totalAccounts", totalAccounts);
+            statistics.put("postedJobs", postedJobsCount);
+            statistics.put("approvedFreelancerJobs", approvedFreelancerJobsCount);
             statistics.put("timestamp", LocalDateTime.now());
             statistics.put("success", true);
 
