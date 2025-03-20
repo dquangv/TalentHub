@@ -132,11 +132,11 @@ public class JobServiceImpl implements JobService {
             throw new BadRequestException("Sold package not found");
         }
 
-        Long numberPoste = soldPackage.getNumberPost();
+        Long numberPost = soldPackage.getNumberPost();
         Long numberPosted = soldPackage.getNumberPosted();
 
-        if (numberPoste >= numberPosted) {
-            throw new BadRequestException("Posted number is greater than posted number");
+        if (numberPosted >= numberPost) {
+            throw new BadRequestException("You have used up all your posts");
         }
 
         createJobDTORequest.setClientId(client.getId());
@@ -162,6 +162,10 @@ public class JobServiceImpl implements JobService {
 
             jobSkillRepository.save(jobSkill);
         });
+
+        soldPackage.setNumberPosted(soldPackage.getNumberPosted() + 1);
+        soldPackageRepository.save(soldPackage);
+
         return createJobMapper.toResponseDto(job);
     }
 
