@@ -213,5 +213,11 @@ public class GroupApiDocs {
                 .group("Revenues APIs")
                 .pathsToMatch("/api/v1/revenues/**")
                 .build();
+    }    @Bean
+    public GroupedOpenApi chatBot() {
+        return GroupedOpenApi.builder()
+                .group("ChatBot APIs")
+                .pathsToMatch("/api/chatbot/**")
+                .build();
     }
 }
