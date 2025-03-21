@@ -27,6 +27,9 @@ public class Education extends AbstractEntity<Long> {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "image")
+    private String image;
+
     @ManyToOne
     @JoinColumn(name = "school_id")
     private School school;
