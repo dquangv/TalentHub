@@ -34,9 +34,9 @@ public class Payment extends AbstractEntity<Long> {
     private LocalDateTime createdAt;
 
 
-    @Column(name = "updated_at", insertable = false)
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
+//    @Column(name = "updated_at", insertable = false)
+//    @UpdateTimestamp
+//    private LocalDateTime updatedAt;
 
 //    @Column(name = "is_default")
 //    private boolean isDefault;
@@ -49,7 +49,7 @@ public class Payment extends AbstractEntity<Long> {
 //    @JoinColumn(name = "e_wallet_account_id") // Khóa ngoại trỏ đến EWalletAccount
 //    private EWalletAccount eWalletAccount;
 
-    @OneToOne
-    @JoinColumn(name = "account_id", unique = true)
+    @ManyToOne
+    @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 }

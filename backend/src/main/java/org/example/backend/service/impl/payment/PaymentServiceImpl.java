@@ -95,7 +95,7 @@ public class PaymentServiceImpl implements PaymentService {
         return query.toString();
     }
     public ResultPaymentResponseDTO handleVnPayCallback(String vnp_ResponseCode, BigDecimal vnpAmount, Long userId) {
-        if (vnp_ResponseCode.equals("00")) {
+        if ("00".equals(vnp_ResponseCode)) { // Kiểm tra mã phản hồi
             // Lấy thông tin user
             User user = userRepository.findById(userId)
                     .orElseThrow(() -> new IllegalArgumentException("User not found"));
@@ -104,34 +104,21 @@ public class PaymentServiceImpl implements PaymentService {
             Account account = accountRepository.findById(user.getAccount().getId())
                     .orElseThrow(() -> new IllegalArgumentException("Account not found"));
 
-            Payment payment = account.getPayment();
+            // Luôn thêm mới Payment mà không kiểm tra
+            Payment newPayment = new Payment();
+            newPayment.setAccount(account);
+            newPayment.setBalance(vnpAmount);
+            newPayment.setActivity(ActivityType.DEPOSIT); // Mặc định là Nạp tiền
+            paymentRepository.save(newPayment);
 
-            ActivityType AcctivityType = ActivityType.DEPOSIT;
+            System.out.println("✅ Thêm mới giao dịch thành công!");
 
-            if (payment != null) {
-                // Nếu Payment đã tồn tại, cập nhật số dư
-                payment.setBalance(payment.getBalance().add(vnpAmount));
-                paymentRepository.save(payment);
-                System.out.println("Cập nhật số dư tài khoản thành công.");
-            } else {
-                // Nếu chưa có Payment, tạo mới
-                Payment newPayment = new Payment();
-                newPayment.setAccount(account);
-                newPayment.setBalance(vnpAmount);
-                newPayment.setUpdatedAt(LocalDateTime.now());
-                newPayment.setActivity(AcctivityType);
-                paymentRepository.save(newPayment);
-                // Cập nhật lại Account với Payment mới
-                account.setPayment(newPayment);
-                accountRepository.save(account);
-                System.out.println("Tạo mới tài khoản thanh toán thành công.");
-            }
             return ResultPaymentResponseDTO.builder()
                     .codeVnp(vnp_ResponseCode)
                     .fristName(user.getFirstName())
                     .lastName(user.getLastName())
                     .amount(vnpAmount)
-                    .activity(AcctivityType)
+                    .activity(ActivityType.DEPOSIT)
                     .build();
         }
 
@@ -142,7 +129,6 @@ public class PaymentServiceImpl implements PaymentService {
                 .amount(null)
                 .activity(null)
                 .build();
-
     }
 
 
