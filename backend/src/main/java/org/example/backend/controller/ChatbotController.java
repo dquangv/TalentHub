@@ -1,5 +1,6 @@
 package org.example.backend.controller;
 
+import org.example.backend.dto.ResponseObject;
 import org.example.backend.dto.request.chatbot.ChatBotMessageDTO;
 import org.example.backend.dto.request.chatbot.IntentDTO;
 import org.example.backend.dto.request.chatbot.ProcessQueryDTO;
@@ -13,7 +14,7 @@ import org.example.backend.repository.ChatIntentRepository;
 import org.example.backend.repository.ChatResponseRepository;
 import org.example.backend.service.ChatbotService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -38,7 +39,7 @@ public class ChatbotController {
      * Process a user message and get a response
      */
     @PostMapping("/message")
-    public ResponseEntity<ChatResponseDTO> processMessage(@RequestBody ChatBotMessageDTO messageDTO) {
+    public ResponseObject<ChatResponseDTO> processMessage(@RequestBody ChatBotMessageDTO messageDTO) {
         ChatBotMessage botResponse = chatbotService.processUserMessage(
                 messageDTO.getSessionId(),
                 messageDTO.getMessage(),
@@ -51,14 +52,18 @@ public class ChatbotController {
         responseDTO.setConfidence(botResponse.getConfidenceScore());
         responseDTO.setTimestamp(botResponse.getSentAt());
 
-        return ResponseEntity.ok(responseDTO);
+        return ResponseObject.<ChatResponseDTO>builder()
+                .data(responseDTO)
+                .message("Message processed successfully")
+                .status(HttpStatus.OK.value())
+                .build();
     }
 
     /**
      * Get unprocessed queries for training
      */
     @GetMapping("/training/unprocessed")
-    public ResponseEntity<List<Map<String, Object>>> getUnprocessedQueries(
+    public ResponseObject<List<Map<String, Object>>> getUnprocessedQueries(
             @RequestParam(defaultValue = "10") int limit
     ) {
         List<ChatTrainingPhrase> unprocessedQueries = chatbotService.getUnprocessedQueries(limit);
@@ -70,14 +75,12 @@ public class ChatbotController {
                     map.put("text", query.getPhraseText());
                     map.put("frequency", query.getFrequency());
                     map.put("createdAt", query.getCreatedAt());
-                    // Thêm thông tin người dùng nếu có
                     ChatBotMessage message = chatbotService.findOriginalMessage(query.getPhraseText());
                     if (message != null && message.getConversation() != null) {
                         map.put("userId", message.getConversation().getUser() != null ?
                                 message.getConversation().getUser().getId() : null);
                         map.put("sessionId", message.getConversation().getSessionId());
                         map.put("timestamp", message.getSentAt());
-                        // Thêm email người dùng nếu có
                         if (message.getConversation().getUser() != null &&
                                 message.getConversation().getUser().getAccount() != null) {
                             map.put("userEmail", message.getConversation().getUser().getAccount().getEmail());
@@ -87,14 +90,18 @@ public class ChatbotController {
                 })
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(result);
+        return ResponseObject.<List<Map<String, Object>>>builder()
+                .data(result)
+                .message("Unprocessed queries retrieved successfully")
+                .status(HttpStatus.OK.value())
+                .build();
     }
 
     /**
      * Process an unrecognized query
      */
     @PostMapping("/training/process-query")
-    public ResponseEntity<String> processQuery(@RequestBody ProcessQueryDTO processQueryDTO) {
+    public ResponseObject<Void> processQuery(@RequestBody ProcessQueryDTO processQueryDTO) {
         chatbotService.processUnrecognizedQuery(
                 processQueryDTO.getQueryId(),
                 processQueryDTO.getIntentName(),
@@ -103,14 +110,18 @@ public class ChatbotController {
                 processQueryDTO.getQueryTemplate()
         );
 
-        return ResponseEntity.ok("Query processed successfully");
+        return ResponseObject.<Void>builder()
+                .data(null)
+                .message("Query processed successfully")
+                .status(HttpStatus.OK.value())
+                .build();
     }
 
     /**
      * Add a new intent with training phrases and responses
      */
     @PostMapping("/intent")
-    public ResponseEntity<ChatIntent> addIntent(@RequestBody IntentDTO intentDTO) {
+    public ResponseObject<ChatIntent> addIntent(@RequestBody IntentDTO intentDTO) {
         ChatIntent intent = chatbotService.addIntent(
                 intentDTO.getIntentName(),
                 intentDTO.getDescription(),
@@ -120,22 +131,32 @@ public class ChatbotController {
                 intentDTO.getDbQuery()
         );
 
-        return ResponseEntity.ok(intent);
+        return ResponseObject.<ChatIntent>builder()
+                .data(intent)
+                .message("Intent added successfully")
+                .status(HttpStatus.CREATED.value())
+                .build();
     }
 
     /**
      * Get intent details by ID
      */
     @GetMapping("/intent/{id}")
-    public ResponseEntity<Map<String, Object>> getIntentDetails(@PathVariable Long id) {
-        return ResponseEntity.ok(chatbotService.getIntentDetails(id));
+    public ResponseObject<Map<String, Object>> getIntentDetails(@PathVariable Long id) {
+        Map<String, Object> intentDetails = chatbotService.getIntentDetails(id);
+
+        return ResponseObject.<Map<String, Object>>builder()
+                .data(intentDetails)
+                .message("Intent details retrieved successfully")
+                .status(HttpStatus.OK.value())
+                .build();
     }
 
     /**
      * Update an existing intent
      */
     @PutMapping("/intent/{id}")
-    public ResponseEntity<ChatIntent> updateIntent(
+    public ResponseObject<ChatIntent> updateIntent(
             @PathVariable Long id,
             @RequestBody IntentDTO intentDTO
     ) {
@@ -146,32 +167,46 @@ public class ChatbotController {
                 intentDTO.getTrainingPhrases()
         );
 
-        return ResponseEntity.ok(updatedIntent);
+        return ResponseObject.<ChatIntent>builder()
+                .data(updatedIntent)
+                .message("Intent updated successfully")
+                .status(HttpStatus.OK.value())
+                .build();
     }
 
     /**
      * Delete an intent
      */
     @DeleteMapping("/intent/{id}")
-    public ResponseEntity<String> deleteIntent(@PathVariable Long id) {
+    public ResponseObject<Void> deleteIntent(@PathVariable Long id) {
         chatbotService.deleteIntent(id);
-        return ResponseEntity.ok("Intent deleted successfully");
+
+        return ResponseObject.<Void>builder()
+                .data(null)
+                .message("Intent deleted successfully")
+                .status(HttpStatus.OK.value())
+                .build();
     }
 
     /**
      * Get all responses for an intent
      */
     @GetMapping("/intent/{id}/responses")
-    public ResponseEntity<List<ChatResponse>> getResponses(@PathVariable Long id) {
+    public ResponseObject<List<ChatResponse>> getResponses(@PathVariable Long id) {
         List<ChatResponse> responses = chatResponseRepository.findByIntentIdOrderByDisplayOrderAsc(id);
-        return ResponseEntity.ok(responses);
+
+        return ResponseObject.<List<ChatResponse>>builder()
+                .data(responses)
+                .message("Responses retrieved successfully")
+                .status(HttpStatus.OK.value())
+                .build();
     }
 
     /**
      * Add a response to an intent
      */
     @PostMapping("/intent/{id}/response")
-    public ResponseEntity<ChatResponse> addResponse(
+    public ResponseObject<ChatResponse> addResponse(
             @PathVariable Long id,
             @RequestBody ResponseDTO responseDTO
     ) {
@@ -182,14 +217,18 @@ public class ChatbotController {
                 responseDTO.getQueryTemplate()
         );
 
-        return ResponseEntity.ok(response);
+        return ResponseObject.<ChatResponse>builder()
+                .data(response)
+                .message("Response added successfully")
+                .status(HttpStatus.CREATED.value())
+                .build();
     }
 
     /**
      * Update a response
      */
     @PutMapping("/response/{id}")
-    public ResponseEntity<ChatResponse> updateResponse(
+    public ResponseObject<ChatResponse> updateResponse(
             @PathVariable Long id,
             @RequestBody ResponseDTO responseDTO
     ) {
@@ -200,59 +239,94 @@ public class ChatbotController {
                 responseDTO.getQueryTemplate()
         );
 
-        return ResponseEntity.ok(response);
+        return ResponseObject.<ChatResponse>builder()
+                .data(response)
+                .message("Response updated successfully")
+                .status(HttpStatus.OK.value())
+                .build();
     }
 
     /**
      * Delete a response
      */
     @DeleteMapping("/response/{id}")
-    public ResponseEntity<String> deleteResponse(@PathVariable Long id) {
+    public ResponseObject<Void> deleteResponse(@PathVariable Long id) {
         chatbotService.deleteResponse(id);
-        return ResponseEntity.ok("Response deleted successfully");
+
+        return ResponseObject.<Void>builder()
+                .data(null)
+                .message("Response deleted successfully")
+                .status(HttpStatus.OK.value())
+                .build();
     }
 
     /**
      * Test database query for a response
      */
     @PostMapping("/test-query")
-    public ResponseEntity<List<Map<String, Object>>> testQuery(@RequestBody String query) {
+    public ResponseObject<List<Map<String, Object>>> testQuery(@RequestBody String query) {
         List<Map<String, Object>> results = chatbotService.executeTestQuery(query);
-        return ResponseEntity.ok(results);
+
+        return ResponseObject.<List<Map<String, Object>>>builder()
+                .data(results)
+                .message("Query executed successfully")
+                .status(HttpStatus.OK.value())
+                .build();
     }
 
     /**
      * Get chatbot statistics
      */
     @GetMapping("/statistics")
-    public ResponseEntity<Map<String, Object>> getStatistics() {
-        return ResponseEntity.ok(chatbotService.getChatbotStatistics());
+    public ResponseObject<Map<String, Object>> getStatistics() {
+        Map<String, Object> statistics = chatbotService.getChatbotStatistics();
+
+        return ResponseObject.<Map<String, Object>>builder()
+                .data(statistics)
+                .message("Statistics retrieved successfully")
+                .status(HttpStatus.OK.value())
+                .build();
     }
 
     /**
      * Get all available intents
      */
     @GetMapping("/intents")
-    public ResponseEntity<List<ChatIntent>> getAllIntents() {
+    public ResponseObject<List<ChatIntent>> getAllIntents() {
         List<ChatIntent> intents = chatIntentRepository.findAll();
-        return ResponseEntity.ok(intents);
+
+        return ResponseObject.<List<ChatIntent>>builder()
+                .data(intents)
+                .message("All intents retrieved successfully")
+                .status(HttpStatus.OK.value())
+                .build();
     }
 
     /**
      * Update chatbot configuration settings
      */
     @PostMapping("/settings")
-    public ResponseEntity<String> updateSettings(@RequestBody Map<String, Object> settings) {
+    public ResponseObject<Void> updateSettings(@RequestBody Map<String, Object> settings) {
         chatbotService.updateSettings(settings);
-        return ResponseEntity.ok("Settings updated successfully");
+
+        return ResponseObject.<Void>builder()
+                .data(null)
+                .message("Settings updated successfully")
+                .status(HttpStatus.OK.value())
+                .build();
     }
 
     /**
      * Get current chatbot configuration settings
      */
     @GetMapping("/settings")
-    public ResponseEntity<Map<String, Object>> getSettings() {
+    public ResponseObject<Map<String, Object>> getSettings() {
         Map<String, Object> settings = chatbotService.getSettings();
-        return ResponseEntity.ok(settings);
+
+        return ResponseObject.<Map<String, Object>>builder()
+                .data(settings)
+                .message("Settings retrieved successfully")
+                .status(HttpStatus.OK.value())
+                .build();
     }
 }
