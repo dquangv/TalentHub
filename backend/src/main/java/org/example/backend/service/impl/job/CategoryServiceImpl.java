@@ -3,7 +3,9 @@ package org.example.backend.service.impl.job;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.job.CategoryDTORequest;
 import org.example.backend.dto.response.job.CategoryDTOResponse;
+import org.example.backend.entity.child.account.freelancer.Freelancer;
 import org.example.backend.entity.child.job.Category;
+import org.example.backend.entity.child.job.Job;
 import org.example.backend.repository.CategoryRepository;
 import org.example.backend.repository.FreelancerRepository;
 import org.example.backend.repository.JobRepository;
@@ -21,6 +23,29 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final FreelancerRepository freelancerRepository;
     private final JobRepository jobRepository;
+    @Override
+    public CategoryDTOResponse update(Long id, CategoryDTORequest categoryDTORequest) {
+        Optional<Category> optionalCategory = categoryRepository.findById(id);
+
+        if (optionalCategory.isPresent()) {
+            Category category = optionalCategory.get();
+            category.setCategoryTitle(categoryDTORequest.getCategoryTitle());
+
+            category = categoryRepository.save(category);
+
+            Long quantityFreelancer = freelancerRepository.countByCategoryId(category.getId());
+            Long quantityJob = jobRepository.countByCategoryId(category.getId());
+
+            return CategoryDTOResponse.builder()
+                    .id(category.getId())
+                    .categoryTitle(category.getCategoryTitle())
+                    .quantityFreelancer(quantityFreelancer)
+                    .quantityJob(quantityJob)
+                    .build();
+        }
+
+        return null;
+    }
 
     @Override
     public CategoryDTOResponse create(CategoryDTORequest categoryDTORequest) {
@@ -77,13 +102,31 @@ public class CategoryServiceImpl implements CategoryService {
                 })
                 .collect(Collectors.toList());
     }
-
+    private final FreelancerRepository freeelancerRepository;
     @Override
     public Boolean deleteById(Long id) {
-        if (categoryRepository.existsById(id)) {
+        Optional<Category> categoryOptional = categoryRepository.findById(id);
+
+        if (categoryOptional.isPresent()) {
+            Category category = categoryOptional.get();
+
+            List<Job> jobs = jobRepository.findByCategory(category);
+            for (Job job : jobs) {
+                job.setCategory(null);
+                jobRepository.save(job);
+            }
+
+            List<Freelancer> freelancers = freelancerRepository.findByCategory(category);
+            for (Freelancer freelancer : freelancers) {
+                freelancer.setCategory(null);
+                freelancerRepository.save(freelancer);
+            }
+
             categoryRepository.deleteById(id);
             return true;
         }
+
         return false;
     }
+
 }

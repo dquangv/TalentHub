@@ -18,6 +18,7 @@ public class JobDTOResponse {
     private Long id;
     private String title;
     private String companyName;
+    private String categoryName;
     private BigDecimal hourWork;
     private BigDecimal fromPrice;
     private BigDecimal toPrice;

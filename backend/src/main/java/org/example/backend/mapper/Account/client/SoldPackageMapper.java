@@ -14,6 +14,6 @@ public interface SoldPackageMapper extends BaseMapper<SoldPackage, SoldPackageDT
     SoldPackageDTOResponse toResponseDto(SoldPackage soldPackage);
 
     @Mapping(source = "clientId", target = "client.id")
-    @Mapping(source = "voucherId", target = "voucherPackage.id")
+//    @Mapping(source = "voucherId", target = "voucherPackage.id")
     SoldPackage toEntity(SoldPackageDTORequest soldPackageDTORequest);
 }

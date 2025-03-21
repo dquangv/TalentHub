@@ -27,6 +27,12 @@ public class SoldPackage extends AbstractEntity<Long> {
     @Column(name = "price")
     private Double price;
 
+    @Column(name = "number_post")
+    private Long NumberPost;
+
+    @Column(name = "number_posted")
+    private Long NumberPosted;
+
     @Column(name = "status")
     // true = valid; false = expired
     private boolean status;

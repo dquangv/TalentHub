@@ -9,6 +9,7 @@ import org.example.backend.dto.response.job.*;
 import org.example.backend.entity.child.account.Account;
 import org.example.backend.entity.child.account.client.Client;
 import org.example.backend.entity.child.account.client.Company;
+import org.example.backend.entity.child.account.client.SoldPackage;
 import org.example.backend.entity.child.job.*;
 import org.example.backend.enums.StatusFreelancerJob;
 import org.example.backend.enums.StatusJob;
@@ -32,29 +33,20 @@ import static java.util.stream.Collectors.toList;
 public class JobServiceImpl implements JobService {
 
     private final JobRepository jobRepository;
-
     private final ClientRepository clientRepository;
-
     private final CategoryRepository categoryRepository;
-
     private final DetailJobMapper detailJobMapper;
-
     private final CompanyRepository companyRepository;
-
     private final FreelancerJobRepository freelancerJobRepository;
-
     private final ApplyJobsMapper applyJobsMapper;
-
     private final PostedJobsMapper postedJobsMapper;
     private final JobAdminMapper jobAdminMapper;
-
     private final JobSkillRepository jobSkillRepository;
-
     private final JobMapper jobMapper;
-
     private final CreateJobMapper createJobMapper;
     private final SkillRepository skillRepository;
     private final JobDetailMapper jobDetailMapper;
+    private final SoldPackageRepository soldPackageRepository;
 
     @Override
     @Transactional
@@ -131,9 +123,21 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public CreateJobDTOResponse createJob(CreateJobDTORequest createJobDTORequest) {
-
         Client client = clientRepository.findById(createJobDTORequest.getClientId())
                 .orElseThrow(() -> new BadRequestException("Client not found"));
+
+        SoldPackage soldPackage = soldPackageRepository.findTopByClientIdAndStatusOrderByStartDateDesc(client.getId(), true);
+
+        if (soldPackage == null) {
+            throw new BadRequestException("Sold package not found");
+        }
+
+        Long numberPost = soldPackage.getNumberPost();
+        Long numberPosted = soldPackage.getNumberPosted();
+
+        if (numberPosted >= numberPost) {
+            throw new BadRequestException("You have used up all your posts");
+        }
 
         createJobDTORequest.setClientId(client.getId());
 
@@ -158,6 +162,10 @@ public class JobServiceImpl implements JobService {
 
             jobSkillRepository.save(jobSkill);
         });
+
+        soldPackage.setNumberPosted(soldPackage.getNumberPosted() + 1);
+        soldPackageRepository.save(soldPackage);
+
         return createJobMapper.toResponseDto(job);
     }
 

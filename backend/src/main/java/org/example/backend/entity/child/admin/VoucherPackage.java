@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.backend.entity.AbstractEntity;
 import org.example.backend.entity.child.account.Account;
+import org.example.backend.enums.TypePackage;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -28,6 +29,12 @@ public class VoucherPackage extends AbstractEntity<Long> {
 
     @Column(name = "duration")
     private Long duration;
+
+    @Column(name = "number_post")
+    private Long NumberPost;
+
+    @Column(name = "type_package")
+    private TypePackage typePackage;
 
     @Column(name = "status")
     private boolean status;
