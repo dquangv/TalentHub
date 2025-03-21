@@ -1,6 +1,7 @@
     package org.example.backend.repository;
 
     import org.example.backend.dto.response.job.JobDTOResponse;
+    import org.example.backend.entity.child.job.Category;
     import org.example.backend.entity.child.job.Job;
     import org.springframework.data.jpa.repository.JpaRepository;
     import org.springframework.data.jpa.repository.Query;
@@ -11,6 +12,7 @@
     import java.util.Optional;
 
     public interface JobRepository extends JpaRepository<Job, Long> {
+        List<Job> findByCategory(Category category);
         public Long countByCategoryId(Long categoryId);
         @Query("SELECT j FROM Job j " +
                 "LEFT JOIN FETCH j.client c " +

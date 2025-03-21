@@ -6,4 +6,5 @@ import org.example.backend.entity.child.job.Category;
 import org.example.backend.service.BaseService;
 
 public interface CategoryService extends BaseService<CategoryDTORequest, CategoryDTOResponse, Long> {
+    CategoryDTOResponse update(Long id, CategoryDTORequest categoryDTORequest);
 }
