@@ -1,8 +1,8 @@
 package org.example.backend.enums;
 
 public enum TypePayment {
-    CASH("Tiền mặt"),
-    BANK("Ngân hàng");
+    HOURLY("Theo giờ"),
+    FULL("Theo dự án");
 
     private final String displayName;
 
