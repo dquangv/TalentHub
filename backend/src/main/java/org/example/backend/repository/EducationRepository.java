@@ -9,4 +9,5 @@ public interface EducationRepository extends JpaRepository<Education, Long> {
     List<Education> findByFreelancerId(Long freelancerId);
     Long countByDegreeId(Long degreeId);
     Long countBySchoolId(Long schoolId);
+    List<Education> findBySchoolId(Long schoolId);
 }

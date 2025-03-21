@@ -19,6 +19,8 @@ public class SoldPackageDTOResponse {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private Double price;
+    private Long numberPost;
+    private Long numberPosted;
     private boolean status;
     private Long voucherPackageId;
     private Long clientId;

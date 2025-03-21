@@ -3,6 +3,7 @@ package org.example.backend.service.impl.account.freelancer;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.account.freelancer.SchoolDTORequest;
 import org.example.backend.dto.response.account.freelancer.SchoolDTOResponse;
+import org.example.backend.entity.child.account.freelancer.Education;
 import org.example.backend.entity.child.account.freelancer.School;
 import org.example.backend.repository.SchoolRepository;
 import org.example.backend.repository.EducationRepository;
@@ -56,6 +57,11 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     public Boolean deleteById(Long id) {
         if (schoolRepository.existsById(id)) {
+            List<Education> educations = educationRepository.findBySchoolId(id);
+            for (Education education : educations) {
+
+                educationRepository.delete(education);
+            }
             schoolRepository.deleteById(id);
             return true;
         }

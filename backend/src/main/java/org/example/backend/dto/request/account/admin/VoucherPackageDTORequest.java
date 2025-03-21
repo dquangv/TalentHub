@@ -1,6 +1,7 @@
 package org.example.backend.dto.request.account.admin;
 
 import lombok.Data;
+import org.example.backend.enums.TypePackage;
 
 @Data
 public class VoucherPackageDTORequest {
@@ -9,4 +10,6 @@ public class VoucherPackageDTORequest {
     private Long duration;
     private boolean status;
     private Long accountId;
+    private TypePackage typePackage;
+    private Long numberPost;
 }
