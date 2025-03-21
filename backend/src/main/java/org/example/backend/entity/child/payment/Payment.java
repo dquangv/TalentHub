@@ -7,6 +7,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.backend.entity.AbstractEntity;
 import org.example.backend.entity.child.account.Account;
+import org.example.backend.enums.ActivityType;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Table(name = "payment")
 @Entity
@@ -16,8 +22,24 @@ import org.example.backend.entity.child.account.Account;
 @AllArgsConstructor
 public class Payment extends AbstractEntity<Long> {
 
-    @Column(name = "is_default")
-    private boolean isDefault;
+    @Column(name = "balance")
+    private BigDecimal balance;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "activity")
+    private ActivityType activity;
+
+    @Column(name = "created_at", updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+
+    @Column(name = "updated_at", insertable = false)
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+
+//    @Column(name = "is_default")
+//    private boolean isDefault;
 
 //    @OneToOne(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "bank_account_id") // Khóa ngoại trỏ đến BankAccount
