@@ -13,6 +13,7 @@ import org.example.backend.repository.VoucherPackageRepository;
 import org.example.backend.service.intf.account.admin.VoucherPackageService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,22 +40,26 @@ public class VoucherPackageServiceImpl implements VoucherPackageService {
 
     @Override
     public VoucherPackageDTOResponse update(Long id, VoucherPackageDTORequest request) {
+        Account account = accountRepository.findById(request.getAccountId())
+                .orElseThrow(() -> new NotFoundException("Account not found"));
+
         VoucherPackage existingVoucherPackage = voucherPackageRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Voucher Package not found"));
 
-        existingVoucherPackage.setName(request.getName());
-        existingVoucherPackage.setPrice(request.getPrice());
-        existingVoucherPackage.setDuration(request.getDuration());
-        existingVoucherPackage.setStatus(request.isStatus());
 
         if (request.getAccountId() != null) {
-            Account account = accountRepository.findById(request.getAccountId())
-                    .orElseThrow(() -> new NotFoundException("Account not found"));
-            existingVoucherPackage.setAccount(account);
+            existingVoucherPackage.setStatus(false);
         }
 
-        VoucherPackage updatedVoucherPackage = voucherPackageRepository.save(existingVoucherPackage);
-        return voucherPackageMapper.toDTO(updatedVoucherPackage);
+        VoucherPackage voucherPackage = voucherPackageMapper.toEntity(request);
+        voucherPackage.setAccount(account);
+        voucherPackage.setStatus(request.isStatus());
+        voucherPackage.setUpdatedAt(LocalDateTime.now());
+
+        voucherPackageRepository.save(voucherPackage);
+        voucherPackageRepository.save(existingVoucherPackage);
+
+        return voucherPackageMapper.toDTO(voucherPackage);
     }
 
     @Override

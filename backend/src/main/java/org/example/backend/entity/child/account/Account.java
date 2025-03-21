@@ -11,6 +11,7 @@ import lombok.Setter;
 import org.example.backend.entity.AbstractEntity;
 import org.example.backend.entity.child.payment.Payment;
 import org.example.backend.enums.RoleUser;
+import org.example.backend.enums.StatusAccount;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -49,7 +50,7 @@ public class Account extends AbstractEntity<Long> {
     private LocalDateTime updatedAt;
 
     @Column(name = "status")
-    private boolean status;
+    private StatusAccount status;
 
     @Column(name = "lat")
     private Double lat;

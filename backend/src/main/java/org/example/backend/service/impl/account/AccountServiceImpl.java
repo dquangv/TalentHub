@@ -13,6 +13,7 @@ import org.example.backend.entity.child.account.client.Client;
 import org.example.backend.entity.child.account.freelancer.Freelancer;
 import org.example.backend.enums.EmailType;
 import org.example.backend.enums.RoleUser;
+import org.example.backend.enums.StatusAccount;
 import org.example.backend.exception.NotFoundException;
 import org.example.backend.mapper.Account.AccountMapper;
 import org.example.backend.mapper.Account.AdminAccountMapper;
@@ -61,6 +62,7 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
             Account account = accountOptional.get();
             System.out.println("password: " + account.getPassword());
             System.out.println("currentPassword: " + currentPassword);
+
             if (passwordEncoder.matches(currentPassword, account.getPassword())) {
                 account.setPassword(passwordEncoder.encode(newPassword));
                 accountRepository.save(account);
@@ -186,7 +188,7 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
 
         Account newAccount = new Account();
         newAccount.setEmail(email);
-        newAccount.setStatus(true);
+//        newAccount.setStatus(true);
         accountRepository.save(newAccount);
 
         User user = new User();
@@ -261,12 +263,18 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
                     freelancer.setUser(user);
                     freelancerRepository.save(freelancer);
                     authenticationDtoResponse.setFreelancerId(freelancer.getId());
+
+                    account.get().setStatus(StatusAccount.VERIFIED);
+                    accountRepository.save(account.get());
                 }
                 case CLIENT -> {
                     Client client = new Client();
                     client.setUser(user);
                     clientRepository.save(client);
                     authenticationDtoResponse.setClientId(client.getId());
+
+                    account.get().setStatus(StatusAccount.UNVERIFIED);
+                    accountRepository.save(account.get());
                 }
             }
         } catch (IllegalArgumentException e) {
@@ -304,7 +312,7 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
         Optional<Account> account = accountRepository.findByEmail(email);
         if (account.isPresent()) {
             Account foundAccount = account.get();
-            foundAccount.setStatus(false);
+            foundAccount.setStatus(StatusAccount.BANNED);
             accountRepository.save(foundAccount);
             return true;
         }
@@ -316,13 +324,16 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
         Optional<Account> account = accountRepository.findByEmail(email);
         if (account.isPresent()) {
             Account foundAccount = account.get();
-            foundAccount.setStatus(true);
+            foundAccount.setStatus(StatusAccount.VERIFIED);
             accountRepository.save(foundAccount);
             return true;
         }
+
         return false;
     }
+
     private final LocationMapper locationMapper;
+
     @Override
     public List<LocationDTOResponse> getLocations() {
         return accountRepository.findAll().stream().map(locationMapper::toResponseDTO).toList();
