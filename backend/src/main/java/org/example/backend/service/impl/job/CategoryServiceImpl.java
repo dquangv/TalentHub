@@ -21,6 +21,29 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final FreelancerRepository freelancerRepository;
     private final JobRepository jobRepository;
+    @Override
+    public CategoryDTOResponse update(Long id, CategoryDTORequest categoryDTORequest) {
+        Optional<Category> optionalCategory = categoryRepository.findById(id);
+
+        if (optionalCategory.isPresent()) {
+            Category category = optionalCategory.get();
+            category.setCategoryTitle(categoryDTORequest.getCategoryTitle());
+
+            category = categoryRepository.save(category);
+
+            Long quantityFreelancer = freelancerRepository.countByCategoryId(category.getId());
+            Long quantityJob = jobRepository.countByCategoryId(category.getId());
+
+            return CategoryDTOResponse.builder()
+                    .id(category.getId())
+                    .categoryTitle(category.getCategoryTitle())
+                    .quantityFreelancer(quantityFreelancer)
+                    .quantityJob(quantityJob)
+                    .build();
+        }
+
+        return null;
+    }
 
     @Override
     public CategoryDTOResponse create(CategoryDTORequest categoryDTORequest) {
