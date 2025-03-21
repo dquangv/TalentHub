@@ -64,25 +64,54 @@ VALUES
 ('quangvdps36680@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'FREELANCER', NOW(), null, 0, null, null),
 ('quangbmps28437@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'CLIENT', NOW(), null, 1, null, null),
 ('tiendqpc07858@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'FREELANCER', NOW(), null, 0, null, null),
-('huydqpc07859@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'CLIENT', NOW(), null, 0, null, null);
+('huydqpc07859@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'CLIENT', NOW(), null, 0, null, null),
+('hoanganhps34567@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'FREELANCER', NOW(), null, 0, null, null),
+('minhthanhps12345@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'CLIENT', NOW(), null, 0, null, null),
+('ngoclanps56789@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'FREELANCER', NOW(), null, 2, null, null),
+('vietanhps98765@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'ADMIN', NOW(), null, 0, null, null),
+('thanhsonps43210@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'CLIENT', NOW(), null, 1, null, null),
+('lananhps88888@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'FREELANCER', NOW(), null, 0, null, null),
+('hoanglongps77777@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'CLIENT', NOW(), null, 0, null, null),
+('kimnganps66666@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'FREELANCER', NOW(), null, 0, null, null),
+('minhtrietps55555@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'CLIENT', NOW(), null, 1, null, null),
+('hieunguyenps44444@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'FREELANCER', NOW(), null, 2, null, null);
 
 INSERT INTO users (first_name, last_name, phone_number, province, country, title, introduction, image, account_id) 
 VALUES 
-('Tùng', 'Võ', '0976543210', 'Đống Đa', 'Hà Nội', 'Frontend Developer', 'Chuyên gia ReactJS, VueJS với nhiều dự án UI/UX hiện đại', 'tungvo.png', 1),
-('Quang', 'Vũ', '0987654321', 'Tân Phú', 'Hồ Chí Minh', 'Backend Developer', 'Lập trình viên backend với 3 năm kinh nghiệm trong Java Spring Boot', 'quangvu.png', 2),
-('Quang', 'Bùi', '0965432109', 'Bình Thạnh', 'Đà Nẵng', 'UI/UX Designer', 'Thiết kế trải nghiệm người dùng cho website và mobile app', 'hanguyen.png', 3),
-('Tiến', 'Đinh', '0954321098', 'Gò Vấp', 'Cần Thơ', 'Digital Marketer', 'Chuyên gia SEO, quảng cáo Google Ads và Facebook Ads', 'anhpham.png', 4),
-('Huy', 'Đinh', '0943210987', 'Gò Vấp', 'Cần Thơ', 'Fullstack Developer', 'Có kinh nghiệm với cả frontend (React, Angular) và backend (NodeJS, Java)', 'baole.png', 5);
+('Tùng', 'Võ', '0976543210', 'Đống Đa', 'Hà Nội', 'Frontend Developer', 'Chuyên gia ReactJS, VueJS với nhiều dự án UI/UX hiện đại.', 'tungvo.png', 1),
+('Quang', 'Vũ', '0987654321', 'Tân Phú', 'Hồ Chí Minh', 'Backend Developer', 'Lập trình viên backend với 3 năm kinh nghiệm trong Java Spring Boot.', 'quangvu.png', 2),
+('Quang', 'Bùi', '0965432109', 'Bình Thạnh', 'Đà Nẵng', 'CEO', 'Chủ doanh nghiệp công ty công nghệ.', 'hanguyen.png', 3),
+('Tiến', 'Đinh', '0954321098', 'Gò Vấp', 'Cần Thơ', 'Digital Marketer', 'Chuyên gia SEO, quảng cáo Google Ads và Facebook Ads.', 'anhpham.png', 4),
+('Huy', 'Đinh', '0943210987', 'Gò Vấp', 'Cần Thơ', 'Tech Lead', '10 năm kinh nghiệm với vai trò Back-end Development.', 'baole.png', 5),
+('Hoàng Anh', 'Phạm', '0912345678', 'Cầu Giấy', 'Hà Nội', 'Mobile Developer', 'Phát triển ứng dụng Android/iOS với Flutter và React Native.', 'hoanganhpham.png', 6),
+('Minh Thành', 'Nguyễn', '0923456789', 'Thủ Đức', 'Hồ Chí Minh', 'Project Manager', 'Quản lý và điều phối các dự án phần mềm quy mô lớn.', 'minhthanhnguyen.png', 7),
+('Ngọc Lan', 'Trần', '0934567890', 'Ninh Kiều', 'Cần Thơ', 'Data Analyst', 'Phân tích dữ liệu và trực quan hóa với Power BI và Tableau.', 'ngoclantran.png', 8),
+('Việt Anh', 'Lê', '0945678901', 'Thanh Xuân', 'Hà Nội', 'System Administrator', 'Quản trị hệ thống mạng, server, bảo mật hạ tầng CNTT.', 'vietanhle.png', 9),
+('Thành Sơn', 'Đỗ', '0956789012', 'Liên Chiểu', 'Đà Nẵng', 'Business Analyst', 'Phân tích nghiệp vụ, đưa ra giải pháp cho các hệ thống phần mềm.', 'thanhsondo.png', 10),
+('Lan Anh', 'Nguyễn', '0901234567', 'Ba Đình', 'Hà Nội', 'Video Editor', 'Chuyên gia chỉnh sửa video quảng cáo, hậu kỳ chuyên nghiệp cho các sự kiện và phim ngắn.', 'lananhnguyen.png', 11),
+('Hoàng Long', 'Trần', '0912345678', 'Quận 1', 'Hồ Chí Minh', 'Agency Manager', 'Đại diện công ty thiết kế đồ họa, chuyên tìm kiếm đối tác freelancer tài năng.', 'hoanglongtran.png', 12),
+('Kim Ngân', 'Phạm', '0923456789', 'Nha Trang', 'Khánh Hòa', 'Translator & Editor', 'Phiên dịch và biên tập viên chuyên nghiệp cho các tài liệu kỹ thuật, pháp lý và sáng tạo.', 'kimnganpham.png', 13),
+('Minh Triết', 'Lê', '0934567890', 'Thanh Xuân', 'Hà Nội', 'Studio Owner', 'Chủ studio chụp ảnh cưới, thời trang và sản phẩm, cần hợp tác với freelancer chỉnh sửa ảnh.', 'minhtrietle.png', 14),
+('Hiếu', 'Nguyễn', '0945678901', 'Thủ Dầu Một', 'Bình Dương', 'Online Tutor', 'Giảng viên trực tuyến, chuyên đào tạo kỹ năng Digital Marketing và Content Writing.', 'hieunguyen.png', 15);
 
 INSERT INTO client (from_price, to_price, type_price, user_id)
 VALUES 
-(500000, 2000000, 'VNĐ', 3),
-(1000000, 3000000, 'VNĐ', 5);
+(500000, 2000000, 'VNĐ', 3), 
+(1000000, 3000000, 'VNĐ', 5),
+(1500000, 3500000, 'VNĐ', 7),
+(2000000, 5000000, 'VNĐ', 10),
+(2500000, 6000000, 'VNĐ', 12),
+(1800000, 4500000, 'VNĐ', 14);
+
 
 INSERT INTO company (company_name, phone_contact, address, industry, client_id)
 VALUES
-('Công ty Google', '0123456789', 'Hồ Chí Minh', 'Phát triển phần mềm', 1),
-('Công ty Amazon', '0184675892', 'Hà Nội', 'Thương mại điện tử', 2);
+('Công ty Công nghệ IBM', '0911001100', 'Đà Nẵng', 'Công nghệ phần mềm', 1),
+('Công ty Phát triển NVIDIA', '0911002200', 'Cần Thơ', 'Giải pháp phần mềm & Backend', 2),
+('Tập đoàn Dự án MT', '0911003300', 'Hồ Chí Minh', 'Quản lý dự án CNTT', 3),
+('Công ty Tư vấn Giải pháp SD', '0911004400', 'Đà Nẵng', 'Tư vấn phân tích nghiệp vụ', 4),
+('Agency Thiết kế Đồ họa LT', '0911005500', 'Hồ Chí Minh', 'Thiết kế đồ họa & Agency', 5),
+('Studio Ảnh Minh Triết', '0911006600', 'Hà Nội', 'Studio ảnh cưới và thời trang', 6);
 
 INSERT INTO category (category_title) VALUES 
 ('Lập trình & Phát triển phần mềm'),
@@ -97,7 +126,6 @@ INSERT INTO category (category_title) VALUES
 ('Nhập liệu & Hành chính văn phòng');
 
 INSERT INTO skill (skill_name) VALUES 
--- Lập trình & Phát triển phần mềm
 ('Java'), 
 ('Spring Boot'), 
 ('ReactJS'), 
@@ -118,8 +146,6 @@ INSERT INTO skill (skill_name) VALUES
 ('Kotlin'), 
 ('Flutter'), 
 ('React Native'), 
-
--- Dữ liệu & AI
 ('SQL'), 
 ('MySQL'), 
 ('PostgreSQL'), 
@@ -130,18 +156,14 @@ INSERT INTO skill (skill_name) VALUES
 ('Machine Learning'), 
 ('Deep Learning'), 
 ('TensorFlow'), 
-('PyTorch'), 
-
--- DevOps & Cloud
+('PyTorch'),
 ('AWS'), 
 ('Azure'), 
 ('Google Cloud Platform'), 
 ('Docker'), 
 ('Kubernetes'), 
 ('Jenkins'), 
-('CI/CD Pipelines'), 
-
--- Thiết kế & Đồ họa
+('CI/CD Pipelines'),
 ('UI/UX Design'), 
 ('Adobe Photoshop'), 
 ('Adobe Illustrator'), 
@@ -150,9 +172,7 @@ INSERT INTO skill (skill_name) VALUES
 ('Canva'), 
 ('Blender 3D'), 
 ('Maya'), 
-('Cinema 4D'), 
-
--- Marketing & Content
+('Cinema 4D'),
 ('SEO Optimization'), 
 ('Copywriting'), 
 ('Content Writing'), 
@@ -163,9 +183,7 @@ INSERT INTO skill (skill_name) VALUES
 ('Affiliate Marketing'), 
 ('Google Ads'), 
 ('Facebook Ads'), 
-('TikTok Ads'), 
-
--- Video & Âm thanh
+('TikTok Ads'),
 ('Video Editing'), 
 ('Adobe Premiere Pro'), 
 ('Final Cut Pro'), 
@@ -173,9 +191,7 @@ INSERT INTO skill (skill_name) VALUES
 ('Animation'), 
 ('3D Modeling'), 
 ('Music Production'), 
-('Podcast Editing'), 
-
--- Công việc kinh doanh & hỗ trợ
+('Podcast Editing'),
 ('Data Entry'), 
 ('Virtual Assistant'), 
 ('Project Management'), 
@@ -184,9 +200,7 @@ INSERT INTO skill (skill_name) VALUES
 ('Sales'), 
 ('Lead Generation'), 
 ('Accounting'), 
-('Bookkeeping'), 
-
--- Ngôn ngữ & Dịch thuật
+('Bookkeeping'),
 ('English Translation'), 
 ('Chinese Translation'), 
 ('Japanese Translation'), 
@@ -197,50 +211,101 @@ INSERT INTO skill (skill_name) VALUES
 ('Proofreading'), 
 ('Transcription');
 
+INSERT INTO freelancer (hourly_rate, description, category_id, user_id) VALUES
+(20.00, 'Backend Developer chuyên về Java Spring Boot, xây dựng API và quản lý cơ sở dữ liệu.', 1, 2),
+(15.00, 'Digital Marketer với chuyên môn SEO, Google Ads và Facebook Ads, giúp tăng trưởng doanh thu.', 4, 4),
+(18.00, 'Mobile Developer chuyên phát triển ứng dụng đa nền tảng với Flutter và React Native.', 1, 6),
+(22.00, 'Data Analyst với kinh nghiệm phân tích và trực quan hóa dữ liệu bằng Power BI và Tableau.', 7, 8),
+(17.00, 'Video Editor chuyên hậu kỳ cho các video sự kiện, quảng cáo và phim ngắn.', 9, 11),
+(14.00, 'Phiên dịch viên và biên tập viên chuyên xử lý tài liệu kỹ thuật và sáng tạo.', 3, 13),
+(16.00, 'Online Tutor chuyên đào tạo kỹ năng viết nội dung chuẩn SEO và Digital Marketing.', 5, 15);
 
-INSERT INTO freelancer (hourly_rate, description, category_id, user_id) VALUES 
-(20.00, 'Lập trình viên Java với 5 năm kinh nghiệm về Spring Boot.', 1, 2), 
-(15.50, 'Chuyên gia ReactJS và Node.js, có kinh nghiệm làm việc với nhiều startup.', 1, 4);
+INSERT INTO education (start_date, end_date, description, school_id, degree_id, major_id, freelancer_id, image) VALUES
+('2015-09-01', '2019-06-30', 'Tốt nghiệp loại giỏi chuyên ngành Kỹ thuật phần mềm.', 1, 2, 1, 1, null),
+('2016-09-01', '2020-06-30', 'Hoàn thành chương trình đào tạo chuyên ngành Marketing kỹ thuật số.', 5, 1, 4, 2, null),
+('2017-09-01', '2021-06-30', 'Nghiên cứu và phát triển các ứng dụng di động trong các dự án sinh viên.', 4, 2, 12, 3, null),
+('2014-09-01', '2018-06-30', 'Tốt nghiệp xuất sắc chuyên ngành Phân tích dữ liệu và Khoa học máy tính.', 2, 1, 7, 4, null),
+('2015-09-01', '2019-06-30', 'Tham gia nhiều dự án phim ngắn và video quảng cáo cho các câu lạc bộ.', 14, 1, 3, 5, null),
+('2013-09-01', '2017-06-30', 'Đào tạo chuyên sâu về Biên - Phiên dịch và Ngôn ngữ học.', 3, 1, 7, 6, null),
+('2012-09-01', '2016-06-30', 'Đạt chứng chỉ Content Marketing và đào tạo SEO thực chiến.', 16, 6, 5, 7, null);
 
-INSERT INTO education (start_date, end_date, description, school_id, degree_id, major_id, freelancer_id) VALUES
-('2015-09-01', '2019-06-30', 'Học chuyên ngành Khoa học Máy tính tại Đại học Bách Khoa TP.HCM.', 1, 1, 1, 1),
-('2016-09-01', '2020-06-30', 'Tốt nghiệp ngành Thiết kế Đồ họa tại Đại học Kiến Trúc TP.HCM.', 2, 2, 2, 2);
+INSERT INTO job (title, scope, hour_work, duration, job_opportunity, from_price, to_price, type_price, description, type_payment, status, created_at, updated_at, client_id, category_id) VALUES
+('Phát triển Website thương mại điện tử', 2, 40, 60, true, 5000000, 15000000, 'VNĐ', 'Cần phát triển một website thương mại điện tử hoàn chỉnh, tích hợp thanh toán online và giao diện thân thiện với người dùng.', 1, 0, NOW(), NULL, 1, 1),
+('Lập trình viên ReactJS hỗ trợ UI/UX', 1, 20, 30, false, 3000000, 8000000, 'VNĐ', 'Tìm kiếm một lập trình viên ReactJS giúp tối ưu hóa UI/UX cho hệ thống CRM.', 0, 0, NOW(), NULL, 1, 1),
+('Backend Developer Java Spring Boot', 2, 30, 90, true, 7000000, 20000000, 'VNĐ', 'Cần backend developer có kinh nghiệm với Java Spring Boot, tối ưu hóa hiệu suất và bảo mật.', 1, 0, NOW(), NULL, 2, 1),
+('Kiểm thử và kiểm tra bảo mật hệ thống backend', 1, 25, 45, false, 5000000, 12000000, 'VNĐ', 'Cần tester chuyên kiểm tra bảo mật hệ thống và viết báo cáo lỗi chi tiết.', 0, 1, NOW(), NULL, 2, 1),
+('Quản lý dự án phần mềm', 2, 40, 120, true, 10000000, 25000000, 'VNĐ', 'Tìm kiếm freelancer có kinh nghiệm quản lý dự án Agile/Scrum cho ứng dụng di động.', 1, 0, NOW(), NULL, 3, 8),
+('Hỗ trợ lập kế hoạch và giám sát tiến độ dự án', 1, 15, 30, false, 0, 7000000, 'VNĐ', 'Phụ trách lập kế hoạch chi tiết và báo cáo tiến độ cho dự án.', 0, 1, NOW(), NULL, 3, 8),
+('Phân tích nghiệp vụ hệ thống ERP', 1, 35, 60, true, 8000000, 18000000, 'VNĐ', 'Cần BA có kinh nghiệm ERP để tư vấn và phân tích yêu cầu nghiệp vụ.', 1, 0, NOW(), NULL, 4, 7),
+('Viết tài liệu SRS và Use Case', 0, 20, 30, false, 5000000, 10000000, 'VNĐ', 'Cần người có kinh nghiệm viết tài liệu phân tích nghiệp vụ, SRS và Use Case.', 0, 1, NOW(), NULL, 4, 7),
+('Thiết kế logo thương hiệu', 0, 10, 14, false, 2000000, 5000000, 'VNĐ', 'Cần freelancer thiết kế logo sáng tạo và chuyên nghiệp cho công ty khởi nghiệp.', 0, 0, NOW(), NULL, 5, 2),
+('Thiết kế giao diện website UX/UI', 1, 30, 45, true, 5000000, 12000000, 'VNĐ', 'Cần designer có kinh nghiệm thiết kế UX/UI cho ngành thời trang, ưu tiên có portfolio.', 1, 0, NOW(), NULL, 5, 2),
+('Chỉnh sửa ảnh cưới chuyên nghiệp', 0, 15, 30, true, 3000000, 7000000, 'VNĐ', 'Cần freelancer chỉnh sửa ảnh cưới, blend màu sáng tạo theo yêu cầu studio.', 0, 0, NOW(), NULL, 6, 9),
+('Biên tập video highlight đám cưới', 0, 20, 21, false, 4000000, 8000000, 'VNĐ', 'Biên tập video cưới, thêm hiệu ứng và âm thanh phù hợp.', 0, 1, NOW(), NULL, 6, 9);
 
-INSERT INTO job (title, scope, hour_work, job_opportunity, from_price, to_price, type_price, description, type_payment, status, created_at, updated_at, client_id, category_id) VALUES
-('Thiết kế logo thương hiệu', 'Thiết kế logo độc quyền cho startup.', 20.5, true, 500000, 2000000, 'Fixed', 'Cần tìm designer chuyên nghiệp để thiết kế logo sáng tạo.', 'BANK', 'OPEN', NOW(), NOW(), 1, 1),
-('Lập trình website bán hàng', 'Xây dựng trang web thương mại điện tử.', 100, true, 5000000, 15000000, 'Hourly', 'Cần lập trình viên full-stack xây dựng website bán hàng.', 'CASH', 'OPEN', NOW(), NOW(), 2, 2),
-('Dịch thuật tài liệu tiếng Anh', 'Dịch thuật tài liệu chuyên ngành từ Anh sang Việt.', 15, false, 300000, 1000000, 'Fixed', 'Cần dịch giả chuyên ngành IT để dịch tài liệu.', 'BANK', 'OPEN', NOW(), NOW(), 1, 3),
-('Chạy quảng cáo Facebook', 'Tạo và tối ưu chiến dịch quảng cáo Facebook.', 30, true, 1000000, 5000000, 'Hourly', 'Cần marketer có kinh nghiệm chạy Facebook Ads.', 'BANK', 'OPEN', NOW(), NOW(), 2, 4),
-('Phát triển ứng dụng di động', 'Xây dựng app Android/iOS cho startup.', 200, true, 20000000, 50000000, 'Hourly', 'Cần developer có kinh nghiệm Flutter hoặc React Native.', 'CASH', 'CLOSE', NOW(), NOW(), 1, 5),
-('Viết bài chuẩn SEO', 'Viết bài blog chuẩn SEO về công nghệ.', 10, false, 200000, 800000, 'Fixed', 'Cần writer viết bài SEO theo từ khóa.', 'CASH', 'BAN', NOW(), NOW(), 2, 6);
-
-INSERT INTO freelancer_skill (freelancer_id, skill_id) VALUES 
-(1, 2),
-(1, 3),
+INSERT INTO freelancer_skill (freelancer_id, skill_id) VALUES
 (1, 1),
-(1, 4),
-(1, 5),
-(2, 6),
-(2, 2),
-(2, 7);
-
-INSERT INTO job_skill (job_id, skill_id) VALUES 
 (1, 2),
-(1, 3),
-(2, 1),
-(2, 5),
-(1, 4),
-(1, 6),
-(1, 7),
-(2, 8),
-(3, 10),
-(3, 12),
-(3, 13),
-(4, 20),
+(1, 21),
+(1, 22),
+(2, 48),
+(2, 56),
+(2, 57),
+(2, 50),
+(3, 19),
+(3, 20),
+(4, 26),
+(4, 21),
 (4, 22),
-(4, 23),
-(4, 24);
+(5, 59),
+(5, 60),
+(5, 62),
+(6, 76),
+(6, 83),
+(6, 84),
+(7, 50),
+(7, 49),
+(7, 48);
 
+-- Job 1
+INSERT INTO job_skill (job_id, skill_id) VALUES
+(1, 12),
+(1, 13),
+(1, 21),
+(1, 41),
+(2, 3),
+(2, 41),
+(2, 44),
+(3, 1),
+(3, 2),
+(3, 21),
+(3, 22),
+(3, 33),
+(4, 8),
+(4, 26),
+(5, 71),
+(5, 73),
+(6, 71),
+(6, 69),
+(6, 70),
+(7, 73),
+(7, 26),
+(7, 71),
+(8, 54),
+(8, 73),
+(8, 71),
+(9, 42),
+(9, 43),
+(9, 41),
+(9, 45),
+(10, 41),
+(10, 44),
+(10, 42),
+(10, 3),
+(11, 42),
+(12, 60),
+(12, 61),
+(12, 63);
 
 INSERT INTO freelancer_review (rating, note) VALUES
 (4.5, 'Freelancer hoàn thành dự án đúng hạn, chất lượng tốt.'),
