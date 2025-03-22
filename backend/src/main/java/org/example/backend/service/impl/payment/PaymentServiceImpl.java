@@ -7,7 +7,9 @@ import org.example.backend.config.vnpay.ConfigVnPay;
 import org.example.backend.dto.PaymentResDTO;
 import org.example.backend.dto.request.payment.PaymentDTORequest;
 import org.example.backend.dto.response.ResultPaymentResponseDTO;
+import org.example.backend.dto.response.payment.BalanceResponseDTO;
 import org.example.backend.dto.response.payment.PaymentDTOResponse;
+import org.example.backend.dto.response.payment.PaymentSummaryDTO;
 import org.example.backend.dto.response.payment.WithdrawResponseDTO;
 import org.example.backend.entity.child.account.Account;
 import org.example.backend.entity.child.account.User;
@@ -24,6 +26,7 @@ import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -173,6 +176,48 @@ public class PaymentServiceImpl implements PaymentService {
                 .status("SUCCESS")
                 .build();
     }
+
+    public BalanceResponseDTO getLatestBalanceInfo(Long userId) {
+        // Lấy thông tin user
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("❌ User không tồn tại!"));
+
+        // Lấy thông tin account từ user
+        Account account = accountRepository.findById(user.getAccount().getId())
+                .orElseThrow(() -> new RuntimeException("❌ Account không tồn tại!"));
+
+        BigDecimal balance = paymentRepository.getTotalAmountByAccountId(account.getId());
+
+        // Lấy dữ liệu giao dịch mới nhất
+        List<PaymentSummaryDTO> payments = paymentRepository.getLatestPaymentInfo(account.getId());
+
+        // Biến để lưu giá trị cần thiết
+        BigDecimal latestDeposit = BigDecimal.ZERO;
+        LocalDateTime latestDepositDate = null;
+        BigDecimal todaySpending = BigDecimal.ZERO;
+        LocalDateTime latestSpendingDate = null;
+
+        // Duyệt danh sách và ánh xạ vào biến phù hợp
+        for (PaymentSummaryDTO payment : payments) {
+            if (payment.getActivity() == ActivityType.DEPOSIT) {
+                latestDeposit = payment.getTotalAmount();
+                latestDepositDate = payment.getLatestTransactionDate();
+            } else if (payment.getActivity() == ActivityType.WITHDRAW) {
+                todaySpending = payment.getTotalAmount();
+                latestSpendingDate = payment.getLatestTransactionDate();
+            }
+        }
+
+        // Trả về DTO chứa thông tin tài khoản
+        return BalanceResponseDTO.builder()
+                .balance(balance)
+                .latestDeposit(latestDeposit)
+                .latestDepositDate(latestDepositDate)
+                .todaySpending(todaySpending)
+                .latestSpendingDate(latestSpendingDate)
+                .build();
+    }
+
 
 
 
