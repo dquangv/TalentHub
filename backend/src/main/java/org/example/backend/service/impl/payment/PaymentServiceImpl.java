@@ -3,12 +3,12 @@ package org.example.backend.service.impl.payment;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.apache.poi.ss.formula.functions.Now;
 import org.example.backend.config.vnpay.ConfigVnPay;
 import org.example.backend.dto.PaymentResDTO;
 import org.example.backend.dto.request.payment.PaymentDTORequest;
 import org.example.backend.dto.response.ResultPaymentResponseDTO;
 import org.example.backend.dto.response.payment.PaymentDTOResponse;
+import org.example.backend.dto.response.payment.WithdrawResponseDTO;
 import org.example.backend.entity.child.account.Account;
 import org.example.backend.entity.child.account.User;
 import org.example.backend.entity.child.payment.Payment;
@@ -24,7 +24,6 @@ import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -95,7 +94,7 @@ public class PaymentServiceImpl implements PaymentService {
         return query.toString();
     }
     public ResultPaymentResponseDTO handleVnPayCallback(String vnp_ResponseCode, BigDecimal vnpAmount, Long userId) {
-        if ("00".equals(vnp_ResponseCode)) { // Kiểm tra mã phản hồi
+        if ("00".equals(vnp_ResponseCode)) {
             // Lấy thông tin user
             User user = userRepository.findById(userId)
                     .orElseThrow(() -> new IllegalArgumentException("User not found"));
@@ -128,6 +127,50 @@ public class PaymentServiceImpl implements PaymentService {
                 .lastName(null)
                 .amount(null)
                 .activity(null)
+                .build();
+    }
+
+    @Override
+    public WithdrawResponseDTO handleVnPayWithCallback(BigDecimal vnpAmount, Long userId) {
+
+        // Lấy thông tin user
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        // Lấy thông tin account từ user
+        Account account = accountRepository.findById(user.getAccount().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+
+        // Lấy tổng số dư của tài khoản
+        BigDecimal balance = paymentRepository.getTotalAmountByAccountId(account.getId());
+
+        // Kiểm tra số dư trước khi rút tiền
+        if (balance == null || balance.compareTo(vnpAmount) < 0 || balance.compareTo(BigDecimal.ZERO) == 0) {
+            return WithdrawResponseDTO.builder()
+                    .amount(vnpAmount)
+                    .remainingBalance(balance)
+                    .activityType(ActivityType.WITHDRAW)
+                    .message("❌ Số dư không đủ để thực hiện giao dịch rút tiền!")
+                    .status("FAILED")
+                    .build();
+        }
+
+        // Tạo bản ghi mới cho giao dịch rút tiền
+        Payment newPayment = new Payment();
+        newPayment.setAccount(account);
+        newPayment.setBalance(vnpAmount.negate()); // Số tiền rút là số âm
+        newPayment.setActivity(ActivityType.WITHDRAW);
+        paymentRepository.save(newPayment);
+
+        System.out.println("✅ Giao dịch rút tiền thành công!");
+
+        // Trả về DTO chứa thông tin giao dịch
+        return WithdrawResponseDTO.builder()
+                .amount(vnpAmount)
+                .remainingBalance(balance)
+                .activityType(ActivityType.WITHDRAW)
+                .message("Giao dịch rút tiền thành công.")
+                .status("SUCCESS")
                 .build();
     }
 

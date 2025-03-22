@@ -34,6 +34,7 @@ public class Job extends AbstractEntity<Long> {
     @Column(name = "title", nullable = false)
     private String title;
 
+    @Enumerated(EnumType.STRING)
     @Lob
     @Column(name = "scope")
     private ScopeJob scope;

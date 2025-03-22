@@ -11,6 +11,7 @@ import org.example.backend.entity.child.account.client.Client;
 import org.example.backend.entity.child.account.client.Company;
 import org.example.backend.entity.child.account.client.SoldPackage;
 import org.example.backend.entity.child.job.*;
+import org.example.backend.enums.ScopeJob;
 import org.example.backend.enums.StatusFreelancerJob;
 import org.example.backend.enums.StatusJob;
 import org.example.backend.exception.BadRequestException;
@@ -60,7 +61,7 @@ public class JobServiceImpl implements JobService {
         job.setCategory(category);
 
         job.setTitle(jobDetailDTORequest.getTitle());
-        job.setScope(jobDetailDTORequest.getScope());
+        job.setScope(ScopeJob.valueOf(jobDetailDTORequest.getScope()));
         job.setHourWork(jobDetailDTORequest.getHourWork());
         job.setDuration(jobDetailDTORequest.getDuration());
         job.setJobOpportunity(jobDetailDTORequest.getJobOpportunity());
