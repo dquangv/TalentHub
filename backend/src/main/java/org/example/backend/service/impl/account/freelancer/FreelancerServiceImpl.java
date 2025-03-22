@@ -124,7 +124,7 @@ public class FreelancerServiceImpl implements FreelancerService {
         return freelancers.stream()
                 .map(f -> new FreelancerDTOResponse(
                         f.getId(),
-                        f.getUser().getFirstName() + f.getUser().getLastName(),
+                        f.getUser().getFirstName() + " " + f.getUser().getLastName(),
                         f.getHourlyRate(),
                         f.getDescription(),
                         f.getCategory() != null && f.getCategory().getCategoryTitle() != null
