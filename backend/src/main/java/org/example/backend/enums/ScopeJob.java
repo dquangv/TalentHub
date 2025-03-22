@@ -3,17 +3,15 @@ package org.example.backend.enums;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum StatusJob {
-    POSTED("Đã đăng"),
-    CLOSED("Đóng"),
-    BANNED("Bị cấm"),
-    OPEN("Mở"),
-    DRAFT("Bản nháp");
+public enum ScopeJob {
+    SMALL("Nhỏ"),
+    MEDIUM("Vừa"),
+    LARGE("Lớn");
 
     private final String displayName;
 
     // Constructor
-    StatusJob(String displayName) {
+    ScopeJob(String displayName) {
         this.displayName = displayName;
     }
 

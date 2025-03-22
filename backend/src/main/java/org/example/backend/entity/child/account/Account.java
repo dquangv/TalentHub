@@ -11,10 +11,12 @@ import lombok.Setter;
 import org.example.backend.entity.AbstractEntity;
 import org.example.backend.entity.child.payment.Payment;
 import org.example.backend.enums.RoleUser;
+import org.example.backend.enums.StatusAccount;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -49,7 +51,7 @@ public class Account extends AbstractEntity<Long> {
     private LocalDateTime updatedAt;
 
     @Column(name = "status")
-    private boolean status;
+    private StatusAccount status;
 
     @Column(name = "lat")
     private Double lat;
@@ -59,7 +61,7 @@ public class Account extends AbstractEntity<Long> {
     @JoinColumn(name = "user_id")
     private User user;*/
 
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
-    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Payment payment;
+    private List<Payment> payments = new ArrayList<>();
 }

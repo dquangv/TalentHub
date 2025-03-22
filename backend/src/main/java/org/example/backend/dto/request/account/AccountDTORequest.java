@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.backend.enums.RoleUser;
+import org.example.backend.enums.StatusAccount;
 
 
 @Getter
@@ -29,7 +30,7 @@ public class AccountDTORequest {
     private RoleUser role;
 
 //    @NotNull(message = "Status is required")
-    private Boolean status;
+    private StatusAccount status;
 
 //    @NotBlank(message = "First name is required")
     private String firstName;
