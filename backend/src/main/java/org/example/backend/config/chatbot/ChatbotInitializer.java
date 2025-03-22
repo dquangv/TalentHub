@@ -1,6 +1,5 @@
 package org.example.backend.config.chatbot;
 
-
 import jakarta.annotation.PostConstruct;
 import org.example.backend.entity.child.chatbot.ChatIntent;
 import org.example.backend.entity.child.chatbot.ChatResponse;
@@ -14,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Configuration
 public class ChatbotInitializer {
@@ -38,12 +36,11 @@ public class ChatbotInitializer {
 
         // Initialize basic intents
         createGreetingIntent();
-        createFindJobIntent();
-        createProfileIntent();
-        createPaymentIntent();
-        createFreelancerIntent();
-        createSkillsIntent();
-        createPasswordResetIntent();
+        createJobBySkillsIntent();
+        createTrendingSkillsIntent();
+        createPopularCategoriesIntent();
+        createJobCountBySkillIntent();
+        createJobCountByCategoryIntent();
         createHelpIntent();
     }
 
@@ -61,7 +58,8 @@ public class ChatbotInitializer {
                 "Hi",
                 "Chào buổi sáng",
                 "Chào",
-                "Bạn khỏe không"
+                "Bạn khỏe không",
+                "Trợ giúp"
         );
 
         for (String phrase : trainingPhrases) {
@@ -74,9 +72,8 @@ public class ChatbotInitializer {
 
         // Responses
         List<String> responses = Arrays.asList(
-                "Xin chào! Tôi là trợ lý ảo của Freelancer Hub. Tôi có thể giúp gì cho bạn?",
-                "Chào bạn! Tôi có thể giúp bạn tìm kiếm việc làm, quản lý hồ sơ hoặc trả lời các câu hỏi về nền tảng Freelancer Hub.",
-                "Xin chào! Rất vui được gặp bạn. Bạn cần hỗ trợ gì hôm nay?"
+                "Xin chào! Tôi là trợ lý ảo của TalentHub. Tôi có thể giúp bạn tìm kiếm công việc phù hợp với kỹ năng, cung cấp thông tin về các kỹ năng đang hot, hoặc số lượng công việc theo danh mục. Bạn cần hỗ trợ gì?",
+                "Chào bạn! Tôi có thể giúp bạn tìm công việc theo kỹ năng, cho bạn biết những kỹ năng đang được săn đón hoặc cung cấp thông tin về số lượng công việc hiện có. Bạn muốn biết thêm về điều gì?"
         );
 
         int order = 0;
@@ -89,24 +86,28 @@ public class ChatbotInitializer {
         }
     }
 
-    private void createFindJobIntent() {
+    private void createJobBySkillsIntent() {
         ChatIntent intent = new ChatIntent();
-        intent.setIntentName("find_job");
-        intent.setDescription("Hỗ trợ tìm kiếm công việc");
+        intent.setIntentName("job_by_skills");
+        intent.setDescription("Tìm công việc phù hợp với kỹ năng");
         intent = chatIntentRepository.save(intent);
 
-        // Training phrases
+        // Training phrases (giữ nguyên)
         List<String> trainingPhrases = Arrays.asList(
-                "Làm sao để tìm việc",
-                "Tôi muốn tìm việc làm",
-                "Tìm công việc freelance",
-                "Có việc làm nào phù hợp với tôi không",
-                "Tôi cần tìm việc",
-                "Cách tìm kiếm công việc",
-                "Tôi muốn ứng tuyển công việc",
-                "Làm thế nào để ứng tuyển vào một công việc"
+                "Tôi có những kỹ năng {skills} thì có công việc nào phù hợp không?",
+                "Với kỹ năng {skills} thì tôi có thể làm công việc gì?",
+                "Có công việc nào cho người biết {skills} không?",
+                "Tôi biết {skills}, tìm việc làm gì được?",
+                "Kỹ năng {skills} phù hợp với công việc nào?",
+                "Những công việc nào cần kỹ năng {skills}?",
+                "Tôi giỏi {skills}, tìm được việc gì?",
+                "Có công việc nào cho skill {skills} hay không?",
+                "Công việc cho người có kỹ năng {skills}",
+                "Ai cần người biết {skills}?",
+                "Đang có công việc nào yêu cầu {skills}?"
         );
 
+        // Thêm các phrases vào DB (giữ nguyên)
         for (String phrase : trainingPhrases) {
             ChatTrainingPhrase trainingPhrase = new ChatTrainingPhrase();
             trainingPhrase.setPhraseText(phrase);
@@ -115,48 +116,57 @@ public class ChatbotInitializer {
             chatTrainingPhraseRepository.save(trainingPhrase);
         }
 
-        // Responses
-        List<String> responses = Arrays.asList(
-                "Để tìm việc trên Freelancer Hub, bạn có thể vào mục 'Tìm việc' trên thanh điều hướng. Tại đây, bạn có thể sử dụng các bộ lọc như kỹ năng, mức lương, hoặc loại công việc để tìm công việc phù hợp.",
-                "Bạn có thể tìm kiếm việc làm bằng cách sử dụng tính năng tìm kiếm ở trang chủ hoặc vào mục 'Tìm việc'. Nền tảng của chúng tôi có nhiều công việc freelance trong nhiều lĩnh vực khác nhau như lập trình, thiết kế, viết lách, và nhiều lĩnh vực khác.",
-                "Để ứng tuyển vào một công việc, trước tiên bạn cần đăng nhập vào tài khoản, tìm kiếm công việc phù hợp, xem chi tiết công việc và nhấn nút 'Ứng tuyển'. Bạn sẽ cần điền thông tin và có thể đính kèm CV hoặc portfolio của mình."
+        // Response với database query - Cập nhật để xử lý nhiều kỹ năng
+        ChatResponse response = new ChatResponse();
+        response.setResponseText("Với kỹ năng {{skills}}, hiện có {{job_count}} công việc phù hợp. Các công việc phổ biến nhất là: {{title SEPARATOR '}}. Bạn có thể vào mục 'Tìm việc' và tìm kiếm theo kỹ năng này để xem chi tiết.\n" +
+                "\n");
+        response.setDisplayOrder(0);
+        response.setIntent(intent);
+        response.setRequiresDbQuery(true);
+        response.setQueryTemplate(
+                "SELECT '{{skills}}' as skills, " +
+                        "COUNT(DISTINCT j.id) as job_count, " +
+                        "(SELECT GROUP_CONCAT(DISTINCT j.title SEPARATOR ', ') " +
+                        " FROM job j " +
+                        " JOIN job_skill js ON j.id = js.job_id " +
+                        " JOIN skill s ON js.skill_id = s.id " +
+                        " WHERE " +
+                        " LOWER(s.skill_name) LIKE LOWER('%{{skills}}%') " +
+                        " LIMIT 3) as popular_jobs " +
+                        "FROM job j " +
+                        "JOIN job_skill js ON j.id = js.job_id " +
+                        "JOIN skill s ON js.skill_id = s.id " +
+                        "WHERE " +
+                        "LOWER(s.skill_name) LIKE LOWER('%{{skills}}%')"
         );
+        chatResponseRepository.save(response);
 
-        int order = 0;
-        for (String response : responses) {
-            ChatResponse chatResponse = new ChatResponse();
-            chatResponse.setResponseText(response);
-            chatResponse.setDisplayOrder(order++);
-            chatResponse.setIntent(intent);
-            chatResponseRepository.save(chatResponse);
-        }
-
-        // Add a response with database query
-        ChatResponse dbResponse = new ChatResponse();
-        dbResponse.setResponseText("Hiện tại có {{count}} công việc trong danh mục {{category}}. Bạn có thể vào mục 'Tìm việc' để xem chi tiết.");
-        dbResponse.setDisplayOrder(order++);
-        dbResponse.setIntent(intent);
-        dbResponse.setRequiresDbQuery(true);
-        dbResponse.setQueryTemplate("SELECT COUNT(*) as count, c.name as category FROM jobs j JOIN categories c ON j.category_id = c.id GROUP BY j.category_id");
-        chatResponseRepository.save(dbResponse);
+        // Fallback response (giữ nguyên)
+        ChatResponse fallbackResponse = new ChatResponse();
+        fallbackResponse.setResponseText("Với kỹ năng {{skills}}, hiện tại tôi không tìm thấy công việc cụ thể trong cơ sở dữ liệu. Tuy nhiên, đây là những kỹ năng được nhiều nhà tuyển dụng tìm kiếm. Bạn có thể thử tìm kiếm với từ khóa tương tự hoặc kiểm tra danh sách việc làm mới nhất trên trang chủ của chúng tôi.");
+        fallbackResponse.setDisplayOrder(1);
+        fallbackResponse.setIntent(intent);
+        fallbackResponse.setRequiresDbQuery(false);
+        chatResponseRepository.save(fallbackResponse);
     }
-
-    private void createProfileIntent() {
+    private void createJobCountBySkillIntent() {
         ChatIntent intent = new ChatIntent();
-        intent.setIntentName("profile_management");
-        intent.setDescription("Quản lý hồ sơ cá nhân");
+        intent.setIntentName("job_count_by_skill");
+        intent.setDescription("Đếm số lượng công việc theo kỹ năng");
         intent = chatIntentRepository.save(intent);
 
         // Training phrases
         List<String> trainingPhrases = Arrays.asList(
-                "Làm sao để cập nhật hồ sơ",
-                "Tôi muốn thay đổi thông tin cá nhân",
-                "Cách tạo hồ sơ freelancer",
-                "Làm thế nào để tạo portfolio",
-                "Cập nhật CV",
-                "Thêm kỹ năng vào hồ sơ",
-                "Tôi muốn thêm dự án vào portfolio",
-                "Làm sao để tăng khả năng hiển thị hồ sơ"
+                "Hiện tại có bao nhiêu công việc với skill {skill}?",
+                "Có bao nhiêu việc làm yêu cầu {skill}?",
+                "Đếm số công việc cần kỹ năng {skill}",
+                "Số lượng công việc cho người biết {skill}",
+                "Mấy công việc cần {skill}?",
+                "{skill} có bao nhiêu công việc?",
+                "Đếm việc làm cho {skill}",
+                "Tổng số việc làm về {skill}",
+                "Có bn công việc về {skill}?",
+                "Việc làm {skill} hiện có bao nhiêu?"
         );
 
         for (String phrase : trainingPhrases) {
@@ -165,137 +175,54 @@ public class ChatbotInitializer {
             trainingPhrase.setIsProcessed(true);
             trainingPhrase.setIntent(intent);
             chatTrainingPhraseRepository.save(trainingPhrase);
-        }
-
-        // Responses
-        List<String> responses = Arrays.asList(
-                "Để cập nhật hồ sơ, bạn có thể vào mục 'Hồ sơ' từ menu tài khoản ở góc trên bên phải. Tại đây, bạn có thể chỉnh sửa thông tin cá nhân, thêm kỹ năng, học vấn, kinh nghiệm làm việc và portfolio.",
-                "Một hồ sơ freelancer hoàn chỉnh nên bao gồm: thông tin cá nhân, mô tả ngắn về bạn, các kỹ năng chuyên môn, kinh nghiệm làm việc, học vấn và các dự án đã thực hiện. Bạn cũng nên tải lên ảnh đại diện chuyên nghiệp để tăng độ tin cậy.",
-                "Để thêm dự án vào portfolio, vào mục 'Hồ sơ' > 'Portfolio' > 'Thêm dự án mới'. Bạn có thể điền thông tin dự án, mô tả, công nghệ sử dụng và đính kèm hình ảnh hoặc link đến dự án."
-        );
-
-        int order = 0;
-        for (String response : responses) {
-            ChatResponse chatResponse = new ChatResponse();
-            chatResponse.setResponseText(response);
-            chatResponse.setDisplayOrder(order++);
-            chatResponse.setIntent(intent);
-            chatResponseRepository.save(chatResponse);
-        }
-    }
-
-    private void createPaymentIntent() {
-        ChatIntent intent = new ChatIntent();
-        intent.setIntentName("payment");
-        intent.setDescription("Thông tin về thanh toán");
-        intent = chatIntentRepository.save(intent);
-
-        // Training phrases
-        List<String> trainingPhrases = Arrays.asList(
-                "Làm sao để rút tiền",
-                "Các phương thức thanh toán",
-                "Phí sử dụng nền tảng",
-                "Tôi muốn thanh toán cho dự án",
-                "Cách nhận tiền",
-                "Thanh toán an toàn",
-                "Phí rút tiền",
-                "Thời gian nhận tiền",
-                "Cách thanh toán cho freelancer"
-        );
-
-        for (String phrase : trainingPhrases) {
-            ChatTrainingPhrase trainingPhrase = new ChatTrainingPhrase();
-            trainingPhrase.setPhraseText(phrase);
-            trainingPhrase.setIsProcessed(true);
-            trainingPhrase.setIntent(intent);
-            chatTrainingPhraseRepository.save(trainingPhrase);
-        }
-
-        // Responses
-        List<String> responses = Arrays.asList(
-                "Freelancer Hub hỗ trợ nhiều phương thức thanh toán như: thẻ tín dụng/ghi nợ, PayPal, chuyển khoản ngân hàng và ví điện tử phổ biến tại Việt Nam.",
-                "Để rút tiền, bạn cần vào mục 'Tài chính' > 'Rút tiền' trong tài khoản của bạn. Bạn có thể chọn phương thức rút tiền và số tiền muốn rút. Thời gian nhận tiền thường từ 1-3 ngày làm việc tùy thuộc vào phương thức rút tiền.",
-                "Phí sử dụng nền tảng là 10% cho mỗi dự án thành công. Phí này sẽ được trừ trực tiếp từ số tiền bạn nhận được."
-        );
-
-        int order = 0;
-        for (String response : responses) {
-            ChatResponse chatResponse = new ChatResponse();
-            chatResponse.setResponseText(response);
-            chatResponse.setDisplayOrder(order++);
-            chatResponse.setIntent(intent);
-            chatResponseRepository.save(chatResponse);
-        }
-    }
-
-    private void createFreelancerIntent() {
-        ChatIntent intent = new ChatIntent();
-        intent.setIntentName("find_freelancer");
-        intent.setDescription("Tìm kiếm freelancer");
-        intent = chatIntentRepository.save(intent);
-
-        // Training phrases
-        List<String> trainingPhrases = Arrays.asList(
-                "Làm sao để tìm freelancer",
-                "Tôi cần thuê người làm việc",
-                "Tìm freelancer giỏi",
-                "Làm thế nào để đánh giá freelancer",
-                "Cách đăng công việc",
-                "Tôi muốn thuê freelancer",
-                "Phương thức liên hệ với freelancer",
-                "Các tiêu chí chọn freelancer"
-        );
-
-        for (String phrase : trainingPhrases) {
-            ChatTrainingPhrase trainingPhrase = new ChatTrainingPhrase();
-            trainingPhrase.setPhraseText(phrase);
-            trainingPhrase.setIsProcessed(true);
-            trainingPhrase.setIntent(intent);
-            chatTrainingPhraseRepository.save(trainingPhrase);
-        }
-
-        // Responses
-        List<String> responses = Arrays.asList(
-                "Để tìm freelancer, bạn có thể vào mục 'Tìm Freelancer' trên thanh điều hướng. Tại đây, bạn có thể sử dụng bộ lọc để tìm freelancer theo kỹ năng, kinh nghiệm, đánh giá hoặc ngân sách.",
-                "Để đăng công việc mới, vào mục 'Đăng việc' và điền đầy đủ thông tin về dự án của bạn. Sau khi đăng, các freelancer phù hợp sẽ gửi đề xuất và bạn có thể lựa chọn người phù hợp nhất.",
-                "Khi đánh giá freelancer, bạn nên xem xét các yếu tố: đánh giá từ khách hàng trước, tỷ lệ hoàn thành công việc, portfolio, và mức độ phù hợp của kỹ năng với nhu cầu của bạn."
-        );
-
-        int order = 0;
-        for (String response : responses) {
-            ChatResponse chatResponse = new ChatResponse();
-            chatResponse.setResponseText(response);
-            chatResponse.setDisplayOrder(order++);
-            chatResponse.setIntent(intent);
-            chatResponseRepository.save(chatResponse);
         }
 
         // Response with database query
-        ChatResponse dbResponse = new ChatResponse();
-        dbResponse.setResponseText("Hiện tại có {{count}} freelancer trong lĩnh vực {{category}}. Bạn có thể vào mục 'Tìm Freelancer' để xem chi tiết.");
-        dbResponse.setDisplayOrder(order++);
-        dbResponse.setIntent(intent);
-        dbResponse.setRequiresDbQuery(true);
-        dbResponse.setQueryTemplate("SELECT COUNT(f.id) as count, c.name as category FROM freelancer f JOIN category c ON f.category_id = c.id GROUP BY f.category_id");
-        chatResponseRepository.save(dbResponse);
+        ChatResponse response = new ChatResponse();
+        response.setResponseText("Hiện tại có {{job_count}} công việc yêu cầu kỹ năng {{skill}}. Một số công việc tiêu biểu là: {{title SEPARATOR '}}.");
+        response.setDisplayOrder(0);
+        response.setIntent(intent);
+        response.setRequiresDbQuery(true);
+        response.setQueryTemplate(
+                "SELECT " +
+                        "s.skill_name as skill, " +
+                        "COUNT(DISTINCT j.id) as job_count, " +
+                        "SUBSTRING_INDEX(GROUP_CONCAT(DISTINCT j.title SEPARATOR ', '), ', ', 3) as sample_jobs " +
+                        "FROM job j " +
+                        "JOIN job_skill js ON j.id = js.job_id " +
+                        "JOIN skill s ON js.skill_id = s.id " +
+                        "WHERE LOWER(s.skill_name) LIKE LOWER('%{{skill}}%') " +
+                        "GROUP BY s.skill_name " +
+                        "LIMIT 1"
+        );
+        chatResponseRepository.save(response);
+
+        ChatResponse fallbackResponse = new ChatResponse();
+        fallbackResponse.setResponseText("Hiện tại tôi không tìm thấy công việc nào cho kỹ năng {{skill}} trong cơ sở dữ liệu. Tuy nhiên, đây là một kỹ năng có tiềm năng và bạn có thể thử tìm kiếm với từ khóa tương tự hoặc xem các kỹ năng đang hot nhất hiện nay.");
+        fallbackResponse.setDisplayOrder(1);
+        fallbackResponse.setIntent(intent);
+        fallbackResponse.setRequiresDbQuery(false);
+        chatResponseRepository.save(fallbackResponse);
     }
 
-    private void createSkillsIntent() {
+    private void createTrendingSkillsIntent() {
         ChatIntent intent = new ChatIntent();
-        intent.setIntentName("skills");
-        intent.setDescription("Thông tin về kỹ năng và danh mục");
+        intent.setIntentName("trending_skills");
+        intent.setDescription("Kỹ năng đang hot và được săn đón");
         intent = chatIntentRepository.save(intent);
 
         // Training phrases
         List<String> trainingPhrases = Arrays.asList(
-                "Các kỹ năng phổ biến",
-                "Danh mục công việc",
-                "Lĩnh vực nào được trả lương cao nhất",
-                "Kỹ năng nào đang có nhu cầu",
-                "Những ngành nghề phổ biến nhất",
-                "Công việc freelance phổ biến",
-                "Kỹ năng nên học để kiếm việc freelance",
-                "Ngành nghề nào kiếm tiền tốt nhất"
+                "Những kỹ năng nào đang hot?",
+                "Kỹ năng nào đang được săn đón?",
+                "Top kỹ năng có nhiều công việc nhất",
+                "Kỹ năng nào đang được yêu cầu nhiều nhất?",
+                "Kỹ năng phổ biến hiện nay",
+                "Những skill nào đang được săn đón nhiều nhất?",
+                "Kỹ năng nào nhiều việc làm nhất?",
+                "Đâu là những kỹ năng được cần nhiều nhất?",
+                "Xu hướng kỹ năng hiện nay",
+                "Skill nào đang hot trên thị trường?"
         );
 
         for (String phrase : trainingPhrases) {
@@ -306,73 +233,139 @@ public class ChatbotInitializer {
             chatTrainingPhraseRepository.save(trainingPhrase);
         }
 
-        // Responses
-        List<String> responses = Arrays.asList(
-                "Các kỹ năng phổ biến trên Freelancer Hub bao gồm: lập trình web, thiết kế đồ họa, viết nội dung, dịch thuật, marketing số, phát triển ứng dụng di động, và SEO.",
-                "Những lĩnh vực được trả lương cao nhất thường là phát triển blockchain, khoa học dữ liệu, AI/ML, phát triển phần mềm enterprise, và tư vấn chiến lược kinh doanh.",
-                "Để tăng khả năng kiếm việc, bạn nên phát triển các kỹ năng có nhu cầu cao như lập trình (JavaScript, Python, React), thiết kế UI/UX, tối ưu hóa SEO, viết content marketing hoặc quản lý mạng xã hội."
+        // Response with database query - Sử dụng subqueries thay vì CTE cho tương thích với MySQL 5.x
+        ChatResponse response = new ChatResponse();
+        response.setResponseText("Dựa trên dữ liệu của chúng tôi, những kỹ năng đang hot nhất hiện nay là: {{GROUP_CONCAT(skill_name ORDER BY job_count DESC SEPARATOR '}}. Trong đó, {{top_skills}} đang được yêu cầu trong nhiều công việc nhất với {{(SELECT skill_name}} công việc hiện có.\n" +
+                "\n");
+        response.setDisplayOrder(0);
+        response.setIntent(intent);
+        response.setRequiresDbQuery(true);
+        response.setQueryTemplate(
+                "SELECT " +
+                        "GROUP_CONCAT(skill_name ORDER BY job_count DESC SEPARATOR ', ') AS top_skills, " +
+                        "(SELECT skill_name FROM " +
+                        "    (SELECT s.skill_name, COUNT(js.job_id) as job_count " +
+                        "     FROM skill s " +
+                        "     JOIN job_skill js ON s.id = js.skill_id " +
+                        "     GROUP BY s.skill_name " +
+                        "     ORDER BY job_count DESC " +
+                        "     LIMIT 1) AS top_single" +
+                        ") AS top_skill, " +
+                        "(SELECT job_count FROM " +
+                        "    (SELECT s.skill_name, COUNT(js.job_id) as job_count " +
+                        "     FROM skill s " +
+                        "     JOIN job_skill js ON s.id = js.skill_id " +
+                        "     GROUP BY s.skill_name " +
+                        "     ORDER BY job_count DESC " +
+                        "     LIMIT 1) AS top_count" +
+                        ") AS job_count " +
+                        "FROM " +
+                        "    (SELECT s.skill_name, COUNT(js.job_id) as job_count " +
+                        "     FROM skill s " +
+                        "     JOIN job_skill js ON s.id = js.skill_id " +
+                        "     GROUP BY s.skill_name " +
+                        "     ORDER BY job_count DESC " +
+                        "     LIMIT 5) AS skill_data"
+        );
+        chatResponseRepository.save(response);
+    }
+
+    private void createPopularCategoriesIntent() {
+        ChatIntent intent = new ChatIntent();
+        intent.setIntentName("popular_categories");
+        intent.setDescription("Ngành nghề và danh mục công việc đang hot");
+        intent = chatIntentRepository.save(intent);
+
+        // Training phrases
+        List<String> trainingPhrases = Arrays.asList(
+                "Ngành nghề nào đang hot?",
+                "Danh mục công việc phổ biến nhất",
+                "Lĩnh vực nào đang cần nhiều người?",
+                "Ngành nào đang thiếu nhân lực?",
+                "Những ngành có nhiều việc làm nhất",
+                "Danh mục công việc hot nhất hiện nay",
+                "Lĩnh vực nào đang phát triển?",
+                "Top ngành nghề hot nhất",
+                "Ngành nào đang có nhu cầu cao?",
+                "Xu hướng ngành nghề hiện nay"
         );
 
-        int order = 0;
-        for (String response : responses) {
-            ChatResponse chatResponse = new ChatResponse();
-            chatResponse.setResponseText(response);
-            chatResponse.setDisplayOrder(order++);
-            chatResponse.setIntent(intent);
-            chatResponseRepository.save(chatResponse);
+        for (String phrase : trainingPhrases) {
+            ChatTrainingPhrase trainingPhrase = new ChatTrainingPhrase();
+            trainingPhrase.setPhraseText(phrase);
+            trainingPhrase.setIsProcessed(true);
+            trainingPhrase.setIntent(intent);
+            chatTrainingPhraseRepository.save(trainingPhrase);
+        }
+
+        // Response with database query - Sử dụng subqueries thay vì CTE cho tương thích với MySQL 5.x
+        ChatResponse response = new ChatResponse();
+        response.setResponseText("Những ngành nghề đang hot nhất trên nền tảng của chúng tôi là: {{GROUP_CONCAT(category_title ORDER BY job_count DESC SEPARATOR '}}. Đặc biệt, ngành {{top_categories}} đang dẫn đầu với {{(SELECT category_title}} công việc hiện có.");
+        response.setDisplayOrder(0);
+        response.setIntent(intent);
+        response.setRequiresDbQuery(true);
+        response.setQueryTemplate(
+                "SELECT GROUP_CONCAT(category_title ORDER BY job_count DESC SEPARATOR ', ') AS top_categories, (SELECT category_title FROM     (SELECT c.category_title, COUNT(j.id) as job_count      FROM category c      JOIN job j ON c.id = j.category_id      GROUP BY c.category_title      ORDER BY job_count DESC      LIMIT 1) AS top_single) AS top_category, (SELECT job_count FROM     (SELECT c.category_title, COUNT(j.id) as job_count      FROM category c      JOIN job j ON c.id = j.category_id      GROUP BY c.category_title      ORDER BY job_count DESC      LIMIT 1) AS top_count) AS job_count FROM     (SELECT c.category_title, COUNT(j.id) as job_count      FROM category c      JOIN job j ON c.id = j.category_id      GROUP BY c.category_title      ORDER BY job_count DESC      LIMIT 5) AS cat_data\n" +
+                        "\n" +
+                        "\n"
+        );
+        chatResponseRepository.save(response);
+    }
+
+    private void createJobCountByCategoryIntent() {
+        ChatIntent intent = new ChatIntent();
+        intent.setIntentName("job_count_by_category");
+        intent.setDescription("Đếm số lượng công việc theo danh mục");
+        intent = chatIntentRepository.save(intent);
+
+        // Training phrases
+        List<String> trainingPhrases = Arrays.asList(
+                "Hiện tại có bao nhiêu công việc với danh mục {category}?",
+                "Có bao nhiêu việc làm trong ngành {category}?",
+                "Đếm số công việc trong lĩnh vực {category}",
+                "Số lượng công việc cho ngành {category}",
+                "Mấy công việc thuộc ngành {category}?",
+                "{category} có bao nhiêu công việc?",
+                "Đếm việc làm ngành {category}",
+                "Tổng số việc làm thuộc {category}",
+                "Có bn công việc thuộc lĩnh vực {category}?",
+                "Việc làm ngành {category} hiện có bao nhiêu?"
+        );
+
+        for (String phrase : trainingPhrases) {
+            ChatTrainingPhrase trainingPhrase = new ChatTrainingPhrase();
+            trainingPhrase.setPhraseText(phrase);
+            trainingPhrase.setIsProcessed(true);
+            trainingPhrase.setIntent(intent);
+            chatTrainingPhraseRepository.save(trainingPhrase);
         }
 
         // Response with database query
-        ChatResponse dbResponse = new ChatResponse();
-        dbResponse.setResponseText("Dựa trên dữ liệu của chúng tôi, kỹ năng {{skill}} đang được yêu cầu trong {{count}} công việc. Đây là một trong những kỹ năng có nhu cầu cao trên nền tảng.");
-        dbResponse.setDisplayOrder(order++);
-        dbResponse.setIntent(intent);
-        dbResponse.setRequiresDbQuery(true);
-        dbResponse.setQueryTemplate("SELECT s.name as skill, COUNT(js.id) as count FROM job_skills js JOIN skills s ON js.skill_id = s.id GROUP BY js.skill_id ORDER BY count DESC LIMIT 1");
-        chatResponseRepository.save(dbResponse);
-    }
-
-    private void createPasswordResetIntent() {
-        ChatIntent intent = new ChatIntent();
-        intent.setIntentName("password_reset");
-        intent.setDescription("Hỗ trợ đặt lại mật khẩu");
-        intent = chatIntentRepository.save(intent);
-
-        // Training phrases
-        List<String> trainingPhrases = Arrays.asList(
-                "Tôi quên mật khẩu",
-                "Làm sao để đặt lại mật khẩu",
-                "Không thể đăng nhập",
-                "Cách lấy lại mật khẩu",
-                "Đổi mật khẩu",
-                "Reset password",
-                "Mất mật khẩu",
-                "Khôi phục mật khẩu"
+        ChatResponse response = new ChatResponse();
+        response.setResponseText("Hiện tại có {{job_count}} công việc trong danh mục {{category}}. Một số công việc tiêu biểu là: {{title SEPARATOR '}}.");
+        response.setDisplayOrder(0);
+        response.setIntent(intent);
+        response.setRequiresDbQuery(true);
+        response.setQueryTemplate(
+                "SELECT " +
+                        "c.category_title AS category, " +
+                        "COUNT(j.id) AS job_count, " +
+                        "SUBSTRING_INDEX(GROUP_CONCAT(DISTINCT j.title SEPARATOR ', '), ', ', 3) AS sample_jobs " +
+                        "FROM job j " +
+                        "JOIN category c ON j.category_id = c.id " +
+                        "WHERE LOWER(c.category_title) LIKE LOWER('%{{category}}%') " +
+                        "GROUP BY c.category_title " +
+                        "LIMIT 1"
         );
+        chatResponseRepository.save(response);
 
-        for (String phrase : trainingPhrases) {
-            ChatTrainingPhrase trainingPhrase = new ChatTrainingPhrase();
-            trainingPhrase.setPhraseText(phrase);
-            trainingPhrase.setIsProcessed(true);
-            trainingPhrase.setIntent(intent);
-            chatTrainingPhraseRepository.save(trainingPhrase);
-        }
-
-        // Responses
-        List<String> responses = Arrays.asList(
-                "Để đặt lại mật khẩu, bạn có thể nhấn vào liên kết 'Quên mật khẩu' trên trang đăng nhập. Sau đó, nhập email đã đăng ký và hệ thống sẽ gửi cho bạn link đặt lại mật khẩu.",
-                "Nếu bạn quên mật khẩu, vui lòng truy cập trang đăng nhập và nhấn vào 'Quên mật khẩu'. Bạn sẽ nhận được email hướng dẫn cách đặt lại mật khẩu trong vòng vài phút.",
-                "Để bảo mật tài khoản, bạn nên đặt mật khẩu mạnh với ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt. Không nên sử dụng cùng một mật khẩu cho nhiều tài khoản khác nhau."
-        );
-
-        int order = 0;
-        for (String response : responses) {
-            ChatResponse chatResponse = new ChatResponse();
-            chatResponse.setResponseText(response);
-            chatResponse.setDisplayOrder(order++);
-            chatResponse.setIntent(intent);
-            chatResponseRepository.save(chatResponse);
-        }
+        // Fallback response
+        ChatResponse fallbackResponse = new ChatResponse();
+        fallbackResponse.setResponseText("Tôi không tìm thấy danh mục {{category}} trong cơ sở dữ liệu. Có thể bạn muốn tìm kiếm với tên danh mục khác hoặc xem danh sách tất cả các danh mục trên trang chủ của chúng tôi.");
+        fallbackResponse.setDisplayOrder(1);
+        fallbackResponse.setIntent(intent);
+        fallbackResponse.setRequiresDbQuery(false);
+        chatResponseRepository.save(fallbackResponse);
     }
 
     private void createHelpIntent() {
@@ -385,13 +378,14 @@ public class ChatbotInitializer {
         List<String> trainingPhrases = Arrays.asList(
                 "Bạn có thể giúp gì cho tôi",
                 "Tôi cần trợ giúp",
-                "Hướng dẫn sử dụng",
-                "Trung tâm hỗ trợ",
-                "FAQ",
-                "Câu hỏi thường gặp",
-                "Hỗ trợ",
-                "Help",
-                "Giúp đỡ"
+                "Bạn làm được gì",
+                "Chatbot này có chức năng gì",
+                "Những câu hỏi có thể hỏi",
+                "Bạn trả lời được câu hỏi nào",
+                "Hướng dẫn sử dụng bot",
+                "Có thể hỏi những gì",
+                "Giúp đỡ",
+                "Tôi không biết hỏi gì"
         );
 
         for (String phrase : trainingPhrases) {
@@ -404,9 +398,15 @@ public class ChatbotInitializer {
 
         // Responses
         List<String> responses = Arrays.asList(
-                "Tôi có thể giúp bạn về: Tìm kiếm công việc, tìm kiếm freelancer, quản lý hồ sơ, phương thức thanh toán, hoặc các vấn đề kỹ thuật khác. Bạn cần hỗ trợ về vấn đề gì?",
-                "Bạn có thể truy cập Trung tâm Hỗ trợ của chúng tôi tại menu chính để xem các câu hỏi thường gặp hoặc tìm kiếm giải pháp cho vấn đề cụ thể.",
-                "Nếu bạn cần hỗ trợ trực tiếp, bạn có thể liên hệ với đội ngũ hỗ trợ khách hàng qua email support@freelancerhub.example.com hoặc gọi điện đến số hotline 1900-xxxx trong giờ làm việc."
+                "Tôi có thể giúp bạn với các câu hỏi như:\n" +
+                        "- \"Tôi có kỹ năng Java, Python thì có công việc nào phù hợp không?\"\n" +
+                        "- \"Có công việc nào cho skill React hay không?\"\n" +
+                        "- \"Ngành nghề nào đang hot?\"\n" +
+                        "- \"Những skill nào đang được săn đón nhiều nhất?\"\n" +
+                        "- \"Hiện tại có bao nhiêu công việc với skill JavaScript?\"\n" +
+                        "- \"Hiện tại có bao nhiêu công việc với danh mục IT?\"",
+
+                "Bạn có thể hỏi tôi về thông tin công việc theo kỹ năng, ngành nghề đang hot, kỹ năng được săn đón nhiều, hoặc số lượng công việc theo kỹ năng và danh mục. Ví dụ như \"Những skill nào đang hot?\" hoặc \"Tôi có kỹ năng Python, có công việc nào phù hợp không?\""
         );
 
         int order = 0;

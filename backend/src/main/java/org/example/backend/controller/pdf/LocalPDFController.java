@@ -118,7 +118,6 @@ public class LocalPDFController {
             return ResponseEntity.notFound().build();
         }
     }
-
     @GetMapping("/freelancer/{freelancerId}")
     public ResponseEntity<Map<String, Object>> getCVsWithJobsByFreelancerId(@PathVariable Long freelancerId) {
         try {
