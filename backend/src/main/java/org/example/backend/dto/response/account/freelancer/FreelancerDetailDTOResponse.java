@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.backend.entity.child.account.freelancer.Education;
 import org.example.backend.entity.child.account.freelancer.Experience;
+import org.example.backend.entity.child.account.freelancer.Project;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -28,6 +29,7 @@ public class FreelancerDetailDTOResponse {
     private List<String> skills;
     private List<Education> educations;
     private List<Experience> experiences;
+    private List<Project> projects;
 
     private double lat;
     private double lng;

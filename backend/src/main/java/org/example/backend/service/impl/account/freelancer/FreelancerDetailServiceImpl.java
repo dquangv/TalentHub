@@ -3,15 +3,18 @@ package org.example.backend.service.impl.account.freelancer;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.response.account.freelancer.FreelancerDetailDTOResponse;
 import org.example.backend.entity.child.account.freelancer.Freelancer;
+import org.example.backend.entity.child.account.freelancer.Project;
 import org.example.backend.enums.StatusFreelancerJob;
 import org.example.backend.exception.BadRequestException;
 import org.example.backend.repository.ClientReviewRepository;
 import org.example.backend.repository.FreelancerJobRepository;
 import org.example.backend.repository.FreelancerRepository;
+import org.example.backend.repository.ProjectRepository;
 import org.example.backend.service.intf.account.freelancer.FreelancerDetailService;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -21,6 +24,7 @@ public class FreelancerDetailServiceImpl implements FreelancerDetailService {
     private final FreelancerRepository freelancerRepository;
     private final ClientReviewRepository clientReviewRepository;
     private final FreelancerJobRepository freelancerJobRepository;
+    private final ProjectRepository projectRepository;
 
     @Override
     public FreelancerDetailDTOResponse getFreelancerDetail(Long freelancerId) {
@@ -32,6 +36,8 @@ public class FreelancerDetailServiceImpl implements FreelancerDetailService {
 
         Float rating = clientReviewRepository.findAverageRating(freelancerId);
         Long completedProject = freelancerJobRepository.countByFreelancerIdAndStatus(freelancerId, StatusFreelancerJob.Completed);
+
+        List<Project> projects = projectRepository.findByFreelancerId(freelancerId);
 
         Freelancer freelancerExist = freelancer.get();
         FreelancerDetailDTOResponse dtoResponse = new FreelancerDetailDTOResponse();
@@ -52,6 +58,7 @@ public class FreelancerDetailServiceImpl implements FreelancerDetailService {
 
         dtoResponse.setEducations(freelancerExist.getEducations());
         dtoResponse.setExperiences(freelancerExist.getExperiences());
+        dtoResponse.setProjects(projects); // Set the projects
         dtoResponse.setLat(freelancerExist.getUser().getAccount().getLat() != null ? freelancerExist.getUser().getAccount().getLat() : 0.0);
         dtoResponse.setLng(freelancerExist.getUser().getAccount().getLng() != null ? freelancerExist.getUser().getAccount().getLng() : 0.0);
         return dtoResponse;
