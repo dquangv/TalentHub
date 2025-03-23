@@ -116,9 +116,8 @@ public class ChatbotInitializer {
             chatTrainingPhraseRepository.save(trainingPhrase);
         }
 
-        // Response với database query - Cập nhật để xử lý nhiều kỹ năng
         ChatResponse response = new ChatResponse();
-        response.setResponseText("Với kỹ năng {{skills}}, hiện có {{job_count}} công việc phù hợp. Các công việc phổ biến nhất là: {{title SEPARATOR '}}. Bạn có thể vào mục 'Tìm việc' và tìm kiếm theo kỹ năng này để xem chi tiết.\n" +
+        response.setResponseText("Với kỹ năng {{skills}}, hiện có {{job_count}} công việc phù hợp. Các công việc phổ biến nhất là: {{title SEPARATOR '}}. Bạn có thể vào mục Quản lý công việc => Công việc để có thể tìm kiếm từ khóa và xem chi tiết hơn.\n" +
                 "\n");
         response.setDisplayOrder(0);
         response.setIntent(intent);

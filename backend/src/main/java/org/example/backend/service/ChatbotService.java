@@ -1610,7 +1610,6 @@ public class ChatbotService {
             }if ("greeting".equals(intent.getIntentName())) {
                 continue;
             }
-
             Map<String, Object> intentData = new HashMap<>();
             intentData.put("id", intent.getId());
             intentData.put("name", intent.getIntentName());
