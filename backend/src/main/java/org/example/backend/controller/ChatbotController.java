@@ -329,4 +329,59 @@ public class ChatbotController {
                 .status(HttpStatus.OK.value())
                 .build();
     }
+
+    /**
+     * Lấy danh sách các ý định gợi ý
+     */
+    @GetMapping("/suggestions/intents")
+    public ResponseObject<List<Map<String, Object>>> getSuggestedIntents() {
+        List<Map<String, Object>> suggestedIntents = chatbotService.getSuggestedIntents();
+
+        return ResponseObject.<List<Map<String, Object>>>builder()
+                .data(suggestedIntents)
+                .message("Suggested intents retrieved successfully")
+                .status(HttpStatus.OK.value())
+                .build();
+    }
+
+    /**
+     * Lấy câu hỏi gợi ý cho một ý định
+     */
+    @GetMapping("/suggestions/questions/{intentId}")
+    public ResponseObject<List<String>> getSuggestedQuestions(@PathVariable Long intentId) {
+        List<String> suggestedQuestions = chatbotService.getSuggestedQuestionsForIntent(intentId);
+
+        return ResponseObject.<List<String>>builder()
+                .data(suggestedQuestions)
+                .message("Suggested questions retrieved successfully")
+                .status(HttpStatus.OK.value())
+                .build();
+    }
+
+    /**
+     * Lấy tất cả gợi ý cho chatbot
+     */
+    @GetMapping("/suggestions")
+    public ResponseObject<Map<String, Object>> getAllSuggestions() {
+        Map<String, Object> allSuggestions = new HashMap<>();
+
+        // Lấy danh sách các ý định
+        List<Map<String, Object>> intentsList = chatbotService.getSuggestedIntents();
+        allSuggestions.put("intents", intentsList);
+
+        // Lấy câu hỏi gợi ý cho mỗi ý định
+        Map<String, List<String>> questionsByIntent = new HashMap<>();
+        for (Map<String, Object> intent : intentsList) {
+            Long intentId = ((Number) intent.get("id")).longValue();
+            List<String> questions = chatbotService.getSuggestedQuestionsForIntent(intentId);
+            questionsByIntent.put(intentId.toString(), questions);
+        }
+        allSuggestions.put("questionsByIntent", questionsByIntent);
+
+        return ResponseObject.<Map<String, Object>>builder()
+                .data(allSuggestions)
+                .message("All suggestions retrieved successfully")
+                .status(HttpStatus.OK.value())
+                .build();
+    }
 }

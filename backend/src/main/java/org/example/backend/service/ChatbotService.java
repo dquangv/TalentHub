@@ -84,14 +84,9 @@ public class ChatbotService {
         logger.debug("Saved user message with ID: {}", userMessage.getId());
 
         try {
-            // Phân tích ý định
             Map<String, Object> intentResult = detectIntent(message);
             ChatIntent detectedIntent = (ChatIntent) intentResult.get("intent");
-
-            // Sử dụng helper method để lấy confidence score an toàn
             float confidenceScore = getConfidenceAsFloat(intentResult.get("confidence"));
-
-            // Log intent detection result
             if (detectedIntent != null) {
                 logger.info("Detected intent: '{}' with confidence: {}",
                         detectedIntent.getIntentName(), confidenceScore);
@@ -100,27 +95,22 @@ public class ChatbotService {
                         message, confidenceScore);
             }
 
-            // Tạo tin nhắn trả lời từ bot
             ChatBotMessage botResponse = new ChatBotMessage();
             botResponse.setIsFromBot(true);
             botResponse.setConversation(conversation);
             botResponse.setSentAt(LocalDateTime.now());
-
-            // Lấy ngưỡng confidence từ settings
             float confidenceThreshold = getConfidenceThresholdAsFloat();
-
-            // Nếu không nhận dạng được ý định hoặc độ tin cậy thấp
             if (detectedIntent == null || confidenceScore < confidenceThreshold) {
-                // Lưu câu hỏi chưa được xử lý
-                saveUnprocessedQuery(message);
-                logger.info("Query saved as unprocessed due to low confidence: {}", confidenceScore);
-
-                // Trả lời mặc định
-                botResponse.setMessageText("Tôi không hiểu câu hỏi của bạn. Có thể bạn thử diễn đạt theo cách khác?");
+                if (message.trim().length() <= 2) {
+                    botResponse.setMessageText("Vui lòng cung cấp thêm thông tin để tôi có thể hỗ trợ bạn hiệu quả hơn.");
+                } else {
+                    saveUnprocessedQuery(message);
+                    logger.info("Query saved as unprocessed due to low confidence: {}", confidenceScore);
+                    botResponse.setMessageText("Tôi chưa hiểu câu hỏi của bạn. Có thể bạn thử diễn đạt theo cách khác?");
+                }
                 botResponse.setDetectedIntent(null);
                 botResponse.setConfidenceScore(confidenceScore);
             } else {
-                // Lấy phản hồi dựa trên ý định
                 String responseText = getResponseForIntent(detectedIntent, message);
                 botResponse.setMessageText(responseText);
                 botResponse.setDetectedIntent(detectedIntent);
@@ -410,6 +400,11 @@ public class ChatbotService {
      * Tính toán độ tương đồng giữa hai chuỗi - cải tiến để mạnh hơn cho tiếng Việt
      */
     private float calculateSimilarity(String text1, String text2) {
+        // Nếu một trong hai chuỗi quá ngắn (ví dụ: chỉ có 1-2 ký tự), đặt ngưỡng giới hạn
+        if (text1.length() <= 2 || text2.length() <= 2) {
+            return 0.1f; // Giá trị tin cậy thấp cho chuỗi rất ngắn
+        }
+
         // Nếu hai chuỗi giống hệt nhau
         if (text1.equals(text2)) {
             return 1.0f;
@@ -417,12 +412,26 @@ public class ChatbotService {
 
         // Nếu một chuỗi chứa chuỗi còn lại
         if (text1.contains(text2) || text2.contains(text1)) {
+            // Nếu chúng khác biệt quá nhiều về độ dài, giảm điểm tin cậy
+            int lengthDiff = Math.abs(text1.length() - text2.length());
+            if (lengthDiff > 10) {
+                return 0.5f;
+            }
             return 0.8f;
         }
 
         // Đếm số từ chung
         Set<String> set1 = new HashSet<>(Arrays.asList(text1.split(" ")));
         Set<String> set2 = new HashSet<>(Arrays.asList(text2.split(" ")));
+
+        // Nếu hai tập đều chỉ có một từ ngắn, giảm điểm tin cậy
+        if (set1.size() == 1 && set2.size() == 1) {
+            String word1 = set1.iterator().next();
+            String word2 = set2.iterator().next();
+            if (word1.length() <= 3 || word2.length() <= 3) {
+                return 0.2f;
+            }
+        }
 
         Set<String> intersection = new HashSet<>(set1);
         intersection.retainAll(set2);
@@ -687,6 +696,7 @@ public class ChatbotService {
         logger.info("Đã chọn phản hồi không yêu cầu truy vấn database");
         return responseText;
     }
+
     /**
      * Trích xuất tất cả các tham số có thể từ tin nhắn
      */
@@ -817,7 +827,7 @@ public class ChatbotService {
                     replacedValues.put(placeholder, paramValue);
                     String pattern = "LOWER\\(c\\.category_title\\) LIKE LOWER\\('%\\{\\{" + placeholder + "\\}\\}%'\\)";
                     processedQuery = processedQuery.replaceAll(pattern, "LOWER(c.category_title) LIKE LOWER('%" + paramValue + "%')");
-                }else if (placeholder.equals("skills") || placeholder.equals("skill")) {
+                } else if (placeholder.equals("skills") || placeholder.equals("skill")) {
                     // Tách các kỹ năng
                     String[] skillArray = paramValue.split(",\\s*");
                     StringBuilder skillConditions = new StringBuilder();
@@ -928,6 +938,7 @@ public class ChatbotService {
             return getErrorResponse(params);
         }
     }
+
     /**
      * Xử lý placeholder cho skills và skill
      */
@@ -1008,6 +1019,7 @@ public class ChatbotService {
 
         return fallbackResponse;
     }
+
     /**
      * Thực hiện truy vấn SQL và trả về kết quả dưới dạng List<Map>
      */
@@ -1082,6 +1094,7 @@ public class ChatbotService {
             return defaultResults;
         }
     }
+
     /**
      * Thực hiện truy vấn SQL với parameters
      */
@@ -1134,6 +1147,7 @@ public class ChatbotService {
             return fallbackResults;
         }
     }
+
     /**
      * Trích xuất danh mục từ tin nhắn (cho job_count_by_category)
      */
@@ -1207,6 +1221,7 @@ public class ChatbotService {
             }
         }
     }
+
     /**
      * Trích xuất tên cột từ câu lệnh SQL
      */
@@ -1581,5 +1596,161 @@ public class ChatbotService {
      */
     public Map<String, Object> getSettings() {
         return new HashMap<>(settings);
+    }
+    /**
+     * Lấy danh sách các ý định để gợi ý
+     */
+    public List<Map<String, Object>> getSuggestedIntents() {
+        List<ChatIntent> allIntents = chatIntentRepository.findAll();
+        List<Map<String, Object>> suggestedIntents = new ArrayList<>();
+
+        for (ChatIntent intent : allIntents) {
+            if ("ignored_query".equals(intent.getIntentName())) {
+                continue;
+            }if ("greeting".equals(intent.getIntentName())) {
+                continue;
+            }
+
+            Map<String, Object> intentData = new HashMap<>();
+            intentData.put("id", intent.getId());
+            intentData.put("name", intent.getIntentName());
+            intentData.put("description", intent.getDescription());
+
+            // Thêm mô tả người dùng thân thiện
+            String friendlyDescription = getFriendlyIntentDescription(intent.getIntentName());
+            intentData.put("friendlyDescription", friendlyDescription);
+
+            suggestedIntents.add(intentData);
+        }
+
+        return suggestedIntents;
+    }
+
+    /**
+     * Lấy câu hỏi gợi ý cho một ý định cụ thể
+     */
+    public List<String> getSuggestedQuestionsForIntent(Long intentId) {
+        // Tìm intent
+        ChatIntent intent = chatIntentRepository.findById(intentId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy intent với ID: " + intentId));
+
+        // Lấy các câu training mẫu từ intent
+        List<ChatTrainingPhrase> trainingPhrases = chatTrainingPhraseRepository.findByIntentId(intentId);
+
+        // Chọn các câu mẫu phù hợp nhất để gợi ý
+        List<String> suggestedQuestions = new ArrayList<>();
+
+        // Ưu tiên các câu có tần suất cao
+        trainingPhrases.sort((a, b) -> b.getFrequency().compareTo(a.getFrequency()));
+
+        // Lấy tối đa 5 câu gợi ý
+        int count = 0;
+        for (ChatTrainingPhrase phrase : trainingPhrases) {
+            // Thay thế các placeholder bằng giá trị mẫu
+            String processedPhrase = replaceIntentPlaceholders(phrase.getPhraseText(), intent.getIntentName());
+            suggestedQuestions.add(processedPhrase);
+
+            count++;
+            if (count >= 5) {
+                break;
+            }
+        }
+
+        // Nếu không tìm thấy đủ câu gợi ý từ training phrases, thêm các câu gợi ý mặc định
+        if (suggestedQuestions.isEmpty()) {
+            suggestedQuestions.addAll(getDefaultQuestionsForIntent(intent.getIntentName()));
+        }
+
+        return suggestedQuestions;
+    }
+
+    /**
+     * Thay thế các placeholder trong câu training với giá trị mẫu
+     */
+    private String replaceIntentPlaceholders(String phraseText, String intentName) {
+        // Thay thế các placeholder tùy theo loại intent
+        switch (intentName) {
+            case "job_by_skills":
+                return phraseText.replaceAll("\\{skills\\}", "Java, Python");
+            case "job_count_by_skill":
+                return phraseText.replaceAll("\\{skill\\}", "React");
+            case "job_count_by_category":
+                return phraseText.replaceAll("\\{category\\}", "Web Development");
+            default:
+                return phraseText;
+        }
+    }
+
+    /**
+     * Lấy mô tả thân thiện cho ý định
+     */
+    private String getFriendlyIntentDescription(String intentName) {
+        switch (intentName) {
+            case "greeting":
+                return "Chào hỏi";
+            case "job_by_skills":
+                return "Tìm công việc theo kỹ năng";
+            case "job_count_by_skill":
+                return "Số lượng công việc theo kỹ năng";
+            case "trending_skills":
+                return "Kỹ năng đang hot";
+            case "popular_categories":
+                return "Ngành nghề đang hot";
+            case "job_count_by_category":
+                return "Số lượng công việc theo ngành";
+            case "help":
+                return "Trợ giúp";
+            default:
+                return intentName;
+        }
+    }
+
+    /**
+     * Cung cấp các câu gợi ý mặc định cho từng loại intent
+     */
+    private List<String> getDefaultQuestionsForIntent(String intentName) {
+        List<String> defaultQuestions = new ArrayList<>();
+
+        switch (intentName) {
+            case "greeting":
+                defaultQuestions.add("Xin chào");
+                defaultQuestions.add("Chào bạn");
+                defaultQuestions.add("Bạn có thể giúp gì cho tôi?");
+                break;
+            case "job_by_skills":
+                defaultQuestions.add("Tôi có kỹ năng Java, Python thì có công việc nào phù hợp không?");
+                defaultQuestions.add("Với kỹ năng React thì tôi có thể làm công việc gì?");
+                defaultQuestions.add("Có công việc nào cho người biết SQL không?");
+                break;
+            case "job_count_by_skill":
+                defaultQuestions.add("Hiện tại có bao nhiêu công việc với skill React?");
+                defaultQuestions.add("Có bao nhiêu việc làm yêu cầu Java?");
+                defaultQuestions.add("Python có bao nhiêu công việc?");
+                break;
+            case "trending_skills":
+                defaultQuestions.add("Những kỹ năng nào đang hot?");
+                defaultQuestions.add("Kỹ năng nào đang được săn đón?");
+                defaultQuestions.add("Top kỹ năng có nhiều công việc nhất?");
+                break;
+            case "popular_categories":
+                defaultQuestions.add("Ngành nghề nào đang hot?");
+                defaultQuestions.add("Danh mục công việc phổ biến nhất?");
+                defaultQuestions.add("Lĩnh vực nào đang cần nhiều người?");
+                break;
+            case "job_count_by_category":
+                defaultQuestions.add("Hiện tại có bao nhiêu công việc với danh mục IT?");
+                defaultQuestions.add("Có bao nhiêu việc làm trong ngành Marketing?");
+                defaultQuestions.add("Web Development có bao nhiêu công việc?");
+                break;
+            case "help":
+                defaultQuestions.add("Bạn có thể giúp gì cho tôi?");
+                defaultQuestions.add("Tôi cần trợ giúp");
+                defaultQuestions.add("Chatbot này có chức năng gì?");
+                break;
+            default:
+                defaultQuestions.add("Tôi muốn biết thêm về " + intentName);
+        }
+
+        return defaultQuestions;
     }
 }
