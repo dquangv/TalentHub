@@ -358,17 +358,98 @@ VALUES (1, 12),
        (12, 60),
        (12, 61),
        (12, 63);
+INSERT INTO cv (title, url, status, freelancer_id)
+VALUES
+    ('CV Java Developer', 'cv-sample1.pdf', true, 1),
+    ('CV Digital Marketing Specialist', 'cv-sample2.pdf', true, 2),
+    ('CV Mobile App Developer', 'cv-sample3.pdf', true, 3),
+    ('CV Data Analyst', 'cv-sample4.pdf', true, 4),
+    ('CV Video Editor Portfolio', 'cv-sample5.pdf', true, 5),
+    ('CV Translator & Editor', 'cv-sample6.pdf', true, 6),
+    ('CV Content Marketing Tutor', 'cv-sample7.pdf', true, 7),
+    ('CV Backend Developer - Spring Boot', 'cv-sample8.pdf', false, 1),
+    ('CV Digital Marketing Expert', 'cv-sample9.pdf', false, 2),
+    ('CV Flutter Developer', 'cv-sample10.pdf', false, 3),
+    ('CV Business Intelligence Analyst', 'cv-sample11.pdf', false, 4),
+    ('CV Motion Graphics Specialist', 'cv-sample12.pdf', false, 5),
+    ('CV Technical Writer', 'cv-sample13.pdf', false, 6);
 
 INSERT INTO freelancer_review (rating, note)
-VALUES (4.5, 'Freelancer hoàn thành dự án đúng hạn, chất lượng tốt.'),
-       (3.8, 'Cần cải thiện kỹ năng giao tiếp, nhưng chất lượng ổn.');
+VALUES
+    (4.5, 'Freelancer hoàn thành dự án đúng hạn, chất lượng tốt.'),
+    (3.8, 'Cần cải thiện kỹ năng giao tiếp, nhưng chất lượng ổn.');
 
 INSERT INTO client_review (rating, note)
-VALUES (4.0, 'Client có yêu cầu rõ ràng và thanh toán đúng hạn.'),
-       (3.5, 'Dự án có chút thay đổi giữa chừng, nhưng xử lý ổn.');
+VALUES
+    (4.0, 'Client có yêu cầu rõ ràng và thanh toán đúng hạn.'),
+    (3.5, 'Dự án có chút thay đổi giữa chừng, nhưng xử lý ổn.');
 
-INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, freelancer_review_id, client_review_id)
-VALUES (true, 'Applied', null, 1, 1, NULL, NULL),
-       (false, 'InProgress', null, 2, 2, NULL, NULL),
-       (true, 'Completed', null, 1, 3, 1, 1),
-       (false, 'Completed', null, 2, 4, 2, 2);
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, freelancer_review_id, client_review_id, applied_date)
+VALUES
+    (true, 'Applied', 1, 1, 1, NULL, NULL, NOW() - INTERVAL 30 DAY),
+    (false, 'InProgress', 2, 2, 2, NULL, NULL, NOW() - INTERVAL 25 DAY),
+    (true, 'Completed', 1, 1, 3, 1, 1, NOW() - INTERVAL 90 DAY),
+    (false, 'Completed', 2, 2, 4, 2, 2, NOW() - INTERVAL 85 DAY),
+    (true, 'Applied', 3, 3, 5, NULL, NULL, NOW() - INTERVAL 20 DAY),
+    (false, 'InProgress', 4, 4, 7, NULL, NULL, NOW() - INTERVAL 15 DAY),
+    (true, 'Applied', 5, 5, 9, NULL, NULL, NOW() - INTERVAL 10 DAY),
+    (false, 'Viewed', 6, 6, 10, NULL, NULL, NOW() - INTERVAL 8 DAY),
+    (true, 'Cancelled', 7, 7, 11, NULL, NULL, NOW() - INTERVAL 40 DAY);
+
+
+INSERT INTO projects (title, tech, description, link, image, freelancer_id)
+VALUES ('E-commerce Platform', 'Java, Spring Boot, MySQL', 'Developed a full-featured e-commerce platform with shopping cart, payment integration, and admin dashboard.', 'https://github.com/quangvu/ecommerce', 'project1.jpg', 1),
+       ('CRM Dashboard', 'React, Redux, Node.js', 'Created a responsive client management dashboard with analytics and reporting features.', 'https://github.com/quangvu/crm-dashboard', 'project2.jpg', 1),
+       ('SEO Campaign Manager', 'Google Analytics, SEMrush', 'Managed SEO campaigns that increased organic traffic by 150% over 6 months.', 'https://digitalmarketer.com/portfolio', 'project3.jpg', 2),
+       ('PPC Optimization Tool', 'Google Ads, Python', 'Built a tool to optimize PPC campaigns and reduce cost per acquisition by 35%.', 'https://github.com/tiending/ppc-optimizer', 'project4.jpg', 2),
+       ('Mobile Banking App', 'Flutter, Firebase', 'Developed a cross-platform mobile banking application with secure authentication and real-time transactions.', 'https://github.com/hoanganh/bank-app', 'project5.jpg', 3),
+       ('Fitness Tracker', 'React Native, GraphQL', 'Created a fitness tracking app with workout plans, progress tracking, and social features.', 'https://github.com/hoanganh/fitness-tracker', 'project6.jpg', 3),
+       ('Sales Analytics Dashboard', 'Power BI, SQL', 'Designed an interactive sales analytics dashboard for a retail company.', 'https://ngoclan-analyst.com/portfolio', 'project7.jpg', 4),
+       ('Customer Segmentation Model', 'Python, scikit-learn', 'Developed a machine learning model for customer segmentation and targeting.', 'https://github.com/ngoclan/customer-segments', 'project8.jpg', 4),
+       ('Wedding Highlight Video', 'Adobe Premiere, After Effects', 'Created a cinematic wedding highlight video with custom animations and effects.', 'https://vimeo.com/lananh/wedding', 'project9.jpg', 5),
+       ('Corporate Brand Video', 'Final Cut Pro, DaVinci Resolve', 'Produced a corporate brand video for a tech startup.', 'https://vimeo.com/lananh/techbrand', 'project10.jpg', 5),
+       ('Technical Manual Translation', 'CAT Tools, Glossary Management', 'Translated a 200-page technical manual from English to Vietnamese with specialized terminology.', 'https://kimngan-translator.com/portfolio', 'project11.jpg', 6),
+       ('Website Localization Project', 'Localization Tools, SEO', 'Managed the localization of an e-commerce website into 5 languages.', 'https://kimngan-translator.com/localization', 'project12.jpg', 6),
+       ('Digital Marketing Course', 'Canvas, Zoom', 'Created and delivered a 12-week digital marketing course for beginners.', 'https://hieututors.com/marketing-course', 'project13.jpg', 7),
+       ('SEO Fundamentals Workshop', 'SEO Tools, Analytics', 'Conducted workshops on SEO fundamentals for small business owners.', 'https://hieututors.com/seo-workshop', 'project14.jpg', 7);
+
+INSERT INTO experiences (company_name, position, start_date, end_date, description, status, freelancer_id)
+VALUES ('FPT Software', 'Java Developer', '2018-06-01', '2020-12-31', 'Developed enterprise applications using Java and Spring Boot. Collaborated in an Agile team environment.', 'VERIFIED', 1),
+       ('Nashtech', 'Senior Backend Developer', '2021-01-01', NULL, 'Leading backend development team for financial services applications.', 'VERIFIED', 1),
+       ('Digital Agency Vietnam', 'Digital Marketing Specialist', '2019-03-15', '2021-05-30', 'Managed SEO, Google Ads, and Facebook advertising campaigns for clients across various industries.', 'VERIFIED', 2),
+       ('Sendo', 'Marketing Analyst', '2021-06-01', NULL, 'Analyzing marketing campaign performance and optimizing digital marketing strategies.', 'VERIFIED', 2),
+       ('KMS Technology', 'Mobile Developer', '2018-07-01', '2021-04-30', 'Developed mobile applications using Flutter and React Native for Android and iOS platforms.', 'VERIFIED', 3),
+       ('VNG Corporation', 'Senior Mobile Developer', '2021-05-01', NULL, 'Developing and maintaining high-traffic mobile applications with focus on performance optimization.', 'VERIFIED', 3),
+       ('Nielsen Vietnam', 'Data Analyst', '2017-09-01', '2020-08-31', 'Conducted market research analysis and created reports for clients in FMCG sector.', 'VERIFIED', 4),
+       ('Masan Group', 'Business Intelligence Analyst', '2020-09-01', NULL, 'Developing dashboards and analytics solutions to support business decision-making.', 'VERIFIED', 4),
+       ('Yolo Studio', 'Video Editor', '2018-02-15', '2021-01-31', 'Edited wedding and event videos. Created motion graphics and animations for commercial projects.', 'VERIFIED', 5),
+       ('VTV Digital', 'Senior Video Producer', '2021-02-01', NULL, 'Producing and editing digital content for multi-platform distribution.', 'VERIFIED', 5),
+       ('TransPerfect', 'Translator', '2019-05-01', '2021-03-31', 'Translated technical and marketing documents for international clients.', 'VERIFIED', 6),
+       ('Freelance', 'Translator & Editor', '2021-04-01', NULL, 'Providing translation and editing services for technical, legal, and creative content.', 'PENDING', 6),
+       ('FPT Education', 'Instructor', '2018-08-01', '2020-12-31', 'Taught digital marketing and content creation courses at FPT Arena.', 'VERIFIED', 7),
+       ('Online Education Platform', 'Course Creator & Tutor', '2021-01-01', NULL, 'Creating and delivering online courses in digital marketing and content strategy.', 'PENDING', 7);
+
+
+SELECT @fj1 := id FROM freelancer_job WHERE freelancer_id = 1 AND job_id = 1 LIMIT 1;
+SELECT @fj2 := id FROM freelancer_job WHERE freelancer_id = 2 AND job_id = 2 LIMIT 1;
+SELECT @fj3 := id FROM freelancer_job WHERE freelancer_id = 1 AND job_id = 3 LIMIT 1;
+SELECT @fj4 := id FROM freelancer_job WHERE freelancer_id = 2 AND job_id = 4 LIMIT 1;
+SELECT @fj5 := id FROM freelancer_job WHERE freelancer_id = 3 AND job_id = 5 LIMIT 1;
+SELECT @fj6 := id FROM freelancer_job WHERE freelancer_id = 6 AND job_id = 10 LIMIT 1;
+
+INSERT INTO appointments (topic, start_time, duration, description, link, client_id, freelancer_job_id)
+VALUES
+    ('Phỏng vấn Java Developer', '2023-11-15 10:00:00', 60, 'Phỏng vấn cho vị trí Java Developer, thảo luận về kinh nghiệm Spring Boot và Microservices', 'https://meet.google.com/abc-defg-hij', 1, @fj1),
+    ('Thảo luận dự án Digital Marketing', '2023-11-16 14:30:00', 45, 'Thảo luận về chiến lược SEO và PPC cho website thương mại điện tử', 'https://zoom.us/j/12345678', 2, @fj2),
+    ('Đánh giá portfolio', '2023-11-17 09:00:00', 90, 'Đánh giá portfolio và thảo luận chi tiết yêu cầu dự án phát triển phần mềm', 'https://teams.microsoft.com/l/meetup-join/19%3a...', 3, @fj3),
+    ('Phỏng vấn Data Analyst', '2023-11-18 16:00:00', 60, 'Phỏng vấn cho vị trí Data Analyst, thảo luận về kỹ năng phân tích dữ liệu và trực quan hóa', 'https://meet.google.com/jkl-mnop-qrs', 4, @fj4),
+    ('Thảo luận dự án Video Editing', '2023-11-20 11:00:00', 45, 'Thảo luận về yêu cầu và phong cách cho dự án chỉnh sửa video quảng cáo', 'https://zoom.us/j/87654321', 5, @fj5),
+    ('Thảo luận dự án dịch thuật', '2023-11-22 13:30:00', 60, 'Thảo luận chi tiết về dự án dịch thuật tài liệu kỹ thuật và deadline', 'https://meet.google.com/stu-vwx-yz', 6, @fj6);
+
+INSERT INTO reported_job (reason_freelancer, reason_admin, description, status, image, created_at, freelancer_id, job_id)
+VALUES
+    ('Thông tin công việc không chính xác', NULL, 'Mức lương được đăng khác với thỏa thuận thực tế sau khi liên hệ với khách hàng.', 'REPORTED', 'report1.jpg', NOW(), 1, 4),
+    ('Khách hàng yêu cầu thêm công việc ngoài phạm vi', NULL, 'Khách hàng liên tục yêu cầu thêm tính năng mà không điều chỉnh ngân sách hoặc thời gian.', 'REPORTED', 'report2.jpg', NOW(), 2, 3),
+    ('Khách hàng trễ thanh toán', 'Vi phạm điều khoản thanh toán', 'Khách hàng trễ hạn thanh toán hơn 30 ngày sau khi hoàn thành công việc.', 'RESOLVED', 'report3.jpg', NOW() - INTERVAL 15 DAY, 3, 5),
+    ('Công việc vi phạm điều khoản sử dụng', 'Công việc yêu cầu viết nội dung vi phạm bản quyền', 'Khách hàng yêu cầu sao chép nội dung từ các website khác mà không có sự cho phép.', 'IN_PROGRESS', 'report4.jpg', NOW() - INTERVAL 30 DAY, 4, 8),
+    ('Quấy rối, giao tiếp không chuyên nghiệp', NULL, 'Khách hàng sử dụng ngôn ngữ thiếu tôn trọng và gây áp lực quá mức.', 'REPORTED', 'report5.jpg', NOW(), 5, 10);
