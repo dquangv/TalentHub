@@ -91,11 +91,16 @@ public class JobServiceImpl implements JobService {
     }
 
 
-
     @Override
     public JobDetailDTOResponse getJobById(Long id) {
         Job job = jobRepository.findById(id).orElse(null);
-        return jobDetailMapper.toResponseDto(job);
+
+        Long totalApplicants = freelancerJobRepository.countByJobAndStatus(job, StatusFreelancerJob.Applied);
+
+        JobDetailDTOResponse jobDetailDTOResponse = jobDetailMapper.toResponseDto(job);
+        jobDetailDTOResponse.setTotalApplicants(totalApplicants);
+
+        return jobDetailDTOResponse;
     }
 
     @Override
@@ -184,6 +189,7 @@ public class JobServiceImpl implements JobService {
     public List<JobDTOResponse> getAll() {
         return List.of();
     }
+
     public JobAdminDTOResponse getJobAdminDTOResponse(Job job) {
         Long appliedQuantity = freelancerJobRepository.countByJobAndStatus(job, StatusFreelancerJob.Applied);
         Long cancelledQuantity = freelancerJobRepository.countByJobAndStatus(job, StatusFreelancerJob.Cancelled);
@@ -210,7 +216,7 @@ public class JobServiceImpl implements JobService {
         return false;
     }
 
-  @Override
+    @Override
     public List<JobDTOResponse> findAllJobs() {
         List<JobDTOResponse> jobs = jobRepository.findAll().stream()
                 .filter(job -> job.getStatus() == StatusJob.POSTED)
@@ -237,8 +243,13 @@ public class JobServiceImpl implements JobService {
                 Company company = companyRepository.getCompanyByClientId(job.getClient().getId())
                         .orElseThrow(() -> new RuntimeException("Company not found for client ID: " + job.getClient().getId()));
                 dto.setCompanyName(company.getCompanyName());
+
+                Long totalApplicants = freelancerJobRepository.countByJobAndStatus(job, StatusFreelancerJob.Applied);
+                dto.setTotalApplicants(totalApplicants);
+
                 return Optional.of(dto);
             }
+
             return Optional.empty();
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
@@ -263,6 +274,7 @@ public class JobServiceImpl implements JobService {
             throw new BadRequestException("Error while fetching apply jobs");
         }
     }
+
     public List<PostJobsDTOResponse> getPostedJobs(Long clientId) {
         return jobRepository.getPostedJobs(clientId).stream().map(postedJobsMapper::toResponseDto).collect(toList());
     }

@@ -24,4 +24,5 @@ public class DetailJobDTOResponse {
     private String description;
     private List<String> skillNames;
     private StatusJob status;
+    private Long totalApplicants;
 }
