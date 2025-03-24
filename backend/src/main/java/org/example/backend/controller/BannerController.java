@@ -26,7 +26,7 @@ public class BannerController {
     @PostMapping
     public ResponseObject<BannerDTOResponse> createBanner(
             @RequestParam String title,
-            @RequestParam String status,
+            @RequestParam boolean status,
             @RequestParam String vendor,
             @RequestParam String startTime,
             @RequestParam String endTime,
@@ -65,7 +65,7 @@ public class BannerController {
     public ResponseObject<BannerDTOResponse> updateBanner(
             @PathVariable("id") Long id,
             @RequestParam String title,
-            @RequestParam String status,
+            @RequestParam boolean status,
             @RequestParam String vendor,
             @RequestParam(required = false) MultipartFile image) {
 
