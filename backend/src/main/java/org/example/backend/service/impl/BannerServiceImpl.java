@@ -85,8 +85,8 @@ public class BannerServiceImpl implements BannerService {
         response.setImage(banner.getImage());
         response.setStatus(banner.isStatus());
         response.setVendor(banner.getVendor());
-        response.setStartTime(banner.getStartTime().toString());
-        response.setEndTime(banner.getEndTime() != null ? banner.getEndTime().toString() : null);
+        response.setStartTime(banner.getStartTime());
+        response.setEndTime(banner.getEndTime() != null ? banner.getEndTime() : null);
         return response;
     }
 

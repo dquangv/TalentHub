@@ -1,5 +1,6 @@
 package org.example.backend.entity.child;
 
+import com.google.type.DateTime;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Table(name = "banner")
@@ -35,19 +37,19 @@ public class Banner extends AbstractEntity<Long> {
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
+    private DateTime createdAt;
 
     @Column(name = "updated_at", insertable = false)
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
+    private DateTime updatedAt;
 
     @Column(name = "price", nullable = false)
     private double price;
 
     @Column(name = "start_time", nullable = false)
-    private LocalDate startTime;
+    private LocalDateTime startTime;
 
     @Column(name = "end_time", nullable = false)
-    private LocalDate endTime;
+    private LocalDateTime endTime;
 }
