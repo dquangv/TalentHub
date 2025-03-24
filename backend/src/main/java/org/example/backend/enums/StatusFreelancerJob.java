@@ -5,8 +5,10 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum StatusFreelancerJob {
     Applied("Applied"),       // Applied
     Cancelled("Cancelled"),    // Cancelled
-    InProgress("In Progress"), // In Progress
-    Completed("Completed"),    // Completed
+//    InProgress("In Progress"), // In Progress
+//    Completed("Completed"),    // Completed
+    Approved("Approved"),
+    Rejected("Rejected"),
     Viewed("Viewed");          // Viewed
 
     private final String displayName;

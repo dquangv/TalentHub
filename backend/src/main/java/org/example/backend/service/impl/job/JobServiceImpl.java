@@ -115,7 +115,7 @@ public class JobServiceImpl implements JobService {
         Optional<Job> job = jobRepository.findById(id);
         if (job.isPresent()) {
             Job foundAccount = job.get();
-            foundAccount.setStatus(StatusJob.OPEN);
+            foundAccount.setStatus(StatusJob.POSTED);
             jobRepository.save(foundAccount);
             return true;
         }
@@ -187,11 +187,13 @@ public class JobServiceImpl implements JobService {
     public JobAdminDTOResponse getJobAdminDTOResponse(Job job) {
         Long appliedQuantity = freelancerJobRepository.countByJobAndStatus(job, StatusFreelancerJob.Applied);
         Long cancelledQuantity = freelancerJobRepository.countByJobAndStatus(job, StatusFreelancerJob.Cancelled);
-        Long inProgressQuantity = freelancerJobRepository.countByJobAndStatus(job, StatusFreelancerJob.InProgress);
+//        Long inProgressQuantity = freelancerJobRepository.countByJobAndStatus(job, StatusFreelancerJob.InProgress);
+        Long approvedQuantity = freelancerJobRepository.countByJobAndStatus(job, StatusFreelancerJob.Approved);
+        Long rejectedQuantity = freelancerJobRepository.countByJobAndStatus(job, StatusFreelancerJob.Rejected);
         Long viewedQuantity = freelancerJobRepository.countByJobAndStatus(job, StatusFreelancerJob.Viewed);
 
         return jobAdminMapper.toResponseDto(job, appliedQuantity, cancelledQuantity,
-                inProgressQuantity, viewedQuantity);
+                approvedQuantity, rejectedQuantity, viewedQuantity);
     }
 
     @Override
@@ -211,7 +213,7 @@ public class JobServiceImpl implements JobService {
   @Override
     public List<JobDTOResponse> findAllJobs() {
         List<JobDTOResponse> jobs = jobRepository.findAll().stream()
-                .filter(job -> job.getStatus() == StatusJob.OPEN)
+                .filter(job -> job.getStatus() == StatusJob.POSTED)
                 .map(job -> {
                     JobDTOResponse dto = jobMapper.toResponseDto(job);
                     Long clientId = job.getClient().getId();

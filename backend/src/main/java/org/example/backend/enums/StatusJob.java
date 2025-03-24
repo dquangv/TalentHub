@@ -7,7 +7,7 @@ public enum StatusJob {
     POSTED("Đã đăng"),
     CLOSED("Đóng"),
     BANNED("Bị cấm"),
-    OPEN("Mở"),
+//    OPEN("Mở"),
     DRAFT("Bản nháp");
 
     private final String displayName;

@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
@@ -26,10 +27,10 @@ public class BannerController {
     @PostMapping
     public ResponseObject<BannerDTOResponse> createBanner(
             @RequestParam String title,
-            @RequestParam String status,
+            @RequestParam boolean status,
             @RequestParam String vendor,
-            @RequestParam String startTime,
-            @RequestParam String endTime,
+            @RequestParam LocalDateTime startTime,
+            @RequestParam LocalDateTime endTime,
             @RequestParam MultipartFile image) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -37,20 +38,20 @@ public class BannerController {
         LocalDate startLocalDate;
         LocalDate endLocalDate;
 
-        try {
+        /*try {
             startLocalDate = LocalDate.parse(startTime, formatter);
             endLocalDate = LocalDate.parse(endTime, formatter);
         } catch (DateTimeParseException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid date format. Use yyyy-MM-dd.");
-        }
+        }*/
 
         BannerDTORequest bannerDTORequest = new BannerDTORequest();
         bannerDTORequest.setTitle(title);
         bannerDTORequest.setStatus(status);
         bannerDTORequest.setVendor(vendor);
         bannerDTORequest.setImage(image);
-        bannerDTORequest.setStartTime(startLocalDate);
-        bannerDTORequest.setEndTime(endLocalDate);
+        bannerDTORequest.setStartTime(startTime);
+        bannerDTORequest.setEndTime(endTime);
 
         BannerDTOResponse createdBanner = bannerService.create(bannerDTORequest);
 
@@ -65,7 +66,7 @@ public class BannerController {
     public ResponseObject<BannerDTOResponse> updateBanner(
             @PathVariable("id") Long id,
             @RequestParam String title,
-            @RequestParam String status,
+            @RequestParam boolean status,
             @RequestParam String vendor,
             @RequestParam(required = false) MultipartFile image) {
 
