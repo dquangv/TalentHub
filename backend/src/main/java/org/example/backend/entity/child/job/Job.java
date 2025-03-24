@@ -48,10 +48,10 @@ public class Job extends AbstractEntity<Long> {
     @Column(name = "job_opportunity")
     private Boolean jobOpportunity;
 
-    @Column(name = "from_price", precision = 10, scale = 2)
+    @Column(name = "from_price", precision = 20, scale = 2)
     private BigDecimal fromPrice;
 
-    @Column(name = "to_price", precision = 10, scale = 2)
+    @Column(name = "to_price", precision = 20, scale = 2)
     private BigDecimal toPrice;
 
     @Lob
