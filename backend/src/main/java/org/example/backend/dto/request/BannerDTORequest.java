@@ -13,7 +13,7 @@ import java.time.LocalDate;
 public class BannerDTORequest {
     private String title;
     private MultipartFile image;
-    private String status;
+    private boolean status;
     private String vendor;
     private LocalDate startTime;
     private LocalDate endTime;
