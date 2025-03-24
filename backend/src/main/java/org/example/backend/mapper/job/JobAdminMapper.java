@@ -11,9 +11,11 @@ public interface JobAdminMapper {
     @Mapping(source = "job.client.user.account.email", target = "clientEmail")
     @Mapping(target = "appliedQuantity", expression = "java(appliedQuantity)")
     @Mapping(target = "cancelledQuantity", expression = "java(cancelledQuantity)")
-    @Mapping(target = "inProgressQuantity", expression = "java(inProgressQuantity)")
+//    @Mapping(target = "inProgressQuantity", expression = "java(inProgressQuantity)")
+    @Mapping(target = "approvedQuantity", expression = "java(approvedQuantity)")
+    @Mapping(target = "rejectedQuantity", expression = "java(rejectedQuantity)")
     @Mapping(target = "viewedQuantity", expression = "java(viewedQuantity)")
     @Mapping(source="job.category.categoryTitle", target="categoryName")
     JobAdminDTOResponse toResponseDto(Job job, Long appliedQuantity, Long cancelledQuantity,
-                                      Long inProgressQuantity, Long viewedQuantity);
+                                      Long approvedQuantity, Long rejectedQuantity, Long viewedQuantity);
 }
