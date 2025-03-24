@@ -29,6 +29,26 @@ public class CategoryController {
                 .build();
     }
 
+    @PutMapping("/{id}")
+    public ResponseObject<CategoryDTOResponse> updateCategory(@PathVariable Long id,
+                                                              @RequestBody @Valid CategoryDTORequest categoryDTORequest) {
+        CategoryDTOResponse updatedCategory = categoryService.update(id, categoryDTORequest);
+
+        if (updatedCategory == null) {
+            return ResponseObject.<CategoryDTOResponse>builder()
+                    .message("Category not found")
+                    .status(HttpStatus.NOT_FOUND.value())
+                    .build();
+        }
+
+        return ResponseObject.<CategoryDTOResponse>builder()
+                .message("Category updated successfully")
+                .status(HttpStatus.OK.value())
+                .data(updatedCategory)
+                .build();
+    }
+
+
     @GetMapping("/{id}")
     public ResponseObject<CategoryDTOResponse> getCategoryById(@PathVariable Long id) {
         Optional<CategoryDTOResponse> category = categoryService.getById(id);

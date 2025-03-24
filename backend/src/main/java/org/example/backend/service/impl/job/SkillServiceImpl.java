@@ -3,6 +3,8 @@ package org.example.backend.service.impl.job;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.job.SkillDTORequest;
 import org.example.backend.dto.response.job.SkillDTOResponse;
+import org.example.backend.entity.child.account.freelancer.FreelancerSkill;
+import org.example.backend.entity.child.job.JobSkill;
 import org.example.backend.entity.child.job.Skill;
 import org.example.backend.exception.BadRequestException;
 import org.example.backend.exception.NotFoundException;
@@ -70,15 +72,28 @@ public class SkillServiceImpl implements SkillService {
                 })
                 .collect(Collectors.toList());
     }
-
     @Override
     public Boolean deleteById(Long id) {
-        if (skillRepository.existsById(id)) {
-            skillRepository.deleteById(id);
-            return true;
+        Skill skill = skillRepository.findById(id).orElse(null);
+
+        if (skill == null) {
+            return false;
         }
-        return false;
+
+        for (FreelancerSkill freelancerSkill : skill.getFreelancerSkills()) {
+            freelancerSkillRepository.delete(freelancerSkill);
+        }
+
+        List<JobSkill> listJobSkills = jobSkillRepository.findBySkillId(skill.getId());
+        for (JobSkill jobSkill : listJobSkills) {
+            jobSkillRepository.delete(jobSkill);
+        }
+
+        skillRepository.deleteById(id);
+        return true;
     }
+
+
 
     @Override
     public SkillDTOResponse update(Long id, SkillDTORequest skillDTORequest) {
