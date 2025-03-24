@@ -23,4 +23,5 @@ public class ApplyJobsDTOResponse {
     private Date applyDate;
     private String description;
     private List<String> SkillNames;
+    private Long freelancerJobId;
 }
