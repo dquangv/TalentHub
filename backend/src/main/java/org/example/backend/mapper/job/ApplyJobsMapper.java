@@ -23,6 +23,7 @@ public interface ApplyJobsMapper  extends BaseMapper<FreelancerJob, ApplyJobsDTO
     @Mapping(source = "job.toPrice", target = "toPrice")
     @Mapping(source = "job.description", target = "description")
     @Mapping(expression = "java(mapSkillNames(freelancerJob))", target = "skillNames")
+    @Mapping(source = "id", target="freelancerJobId")
     ApplyJobsDTOResponse toResponseDto(FreelancerJob freelancerJob);
 
     default List<String> mapSkillNames(FreelancerJob freelancerJob) {
