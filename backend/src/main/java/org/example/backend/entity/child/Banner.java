@@ -25,9 +25,12 @@ public class Banner extends AbstractEntity<Long> {
     @Column(name = "image", nullable = false)
     private String image;
     @Column(name = "status", nullable = false)
-    private String status;
+    private boolean status;
     @Column(name = "vendor", nullable = false)
     private String vendor;
+
+    @Column(name = "duration")
+    private Long duration;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreationTimestamp
