@@ -31,7 +31,7 @@ public class FreelancerDetailServiceImpl implements FreelancerDetailService {
         }
 
         Float rating = clientReviewRepository.findAverageRating(freelancerId);
-        Long completedProject = freelancerJobRepository.countByFreelancerIdAndStatus(freelancerId, StatusFreelancerJob.Completed);
+        Long completedProject = freelancerJobRepository.countByFreelancerIdAndStatus(freelancerId, StatusFreelancerJob.Approved);
 
         Freelancer freelancerExist = freelancer.get();
         FreelancerDetailDTOResponse dtoResponse = new FreelancerDetailDTOResponse();
