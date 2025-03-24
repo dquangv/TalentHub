@@ -1,3 +1,5 @@
+create database job_e_commerce_platform;
+
 use job_e_commerce_platform;
 
 INSERT INTO school (school_name)
@@ -481,19 +483,21 @@ INSERT INTO freelancer_job (
     is_saved, status, cv_id, freelancer_id, job_id, freelancer_review_id, client_review_id, applied_date
 ) VALUES
 -- Freelancer 1: Backend Developer (Category 1)
-(false, 'APPROVED', 1, 1, 1, NULL, NULL, NOW()),
+(false, 'APPROVED', 1, 1, 1, 1, 1, NOW()),
 (false, 'APPLIED', 1, 1, 3, NULL, NULL, NOW()),
 (false, 'APPLIED', 1, 1, 4, NULL, NULL, NOW()),
 (false, 'CANCELLED', 1, 1, 13, NULL, NULL, NOW()),
-(false, 'APPROVED', 1, 1, 14, NULL, NULL, NOW()),
+(false, 'APPROVED', 1, 1, 14, 2, 2, NOW()),
 
 -- Freelancer 3: Mobile Developer (Category 1)
 (false, 'APPLIED', NULL, 3, 2, NULL, NULL, NOW()),
 (false, 'APPLIED', NULL, 3, 15, NULL, NULL, NOW()),
+(false, 'APPLIED', NULL, 3, 3, NULL, NULL, NOW()),
 
 -- Freelancer 4: Data Analyst (Category 7)
 (false, 'VIEWED', NULL, 4, 7, NULL, NULL, NOW()),
 (false, 'APPLIED', NULL, 4, 8, NULL, NULL, NOW()),
+(false, 'APPLIED', NULL, 3, 3, NULL, NULL, NOW()),
 
 -- Freelancer 5: Video Editor (Category 9)
 (false, 'VIEWED', NULL, 5, 12, NULL, NULL, NOW()),
