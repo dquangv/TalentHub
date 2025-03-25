@@ -49,7 +49,8 @@ public class BannerServiceImpl implements BannerService {
         existingBanner.setTitle(bannerDTORequest.getTitle());
         existingBanner.setStatus(bannerDTORequest.isStatus());
         existingBanner.setVendor(bannerDTORequest.getVendor());
-
+        existingBanner.setEndTime(bannerDTORequest.getEndTime());
+        existingBanner.setStartTime(bannerDTORequest.getStartTime());
         Banner updatedBanner = bannerRepository.save(existingBanner);
 
         return toDTO(updatedBanner);
