@@ -28,4 +28,5 @@ public class JobDetailDTOResponse {
     private Long clientId;
     private Long categoryId;
     private List<Long> skillId;
+    private Long totalApplicants;
 }

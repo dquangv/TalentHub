@@ -7,14 +7,15 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 public class BannerDTORequest {
     private String title;
     private MultipartFile image;
-    private String status;
+    private boolean status;
     private String vendor;
-    private LocalDate startTime;
-    private LocalDate endTime;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
 }

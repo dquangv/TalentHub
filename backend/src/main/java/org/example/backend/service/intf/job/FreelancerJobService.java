@@ -15,7 +15,7 @@ import org.example.backend.entity.child.account.client.ClientReview;
 import org.example.backend.entity.child.account.freelancer.CV;
 import org.example.backend.entity.child.job.FreelancerJob;
 import org.example.backend.service.BaseService;
-
+import org.example.backend.dto.response.job.FreelancerJobDetailDTOResponse;
 import java.util.List;
 
 public interface FreelancerJobService extends BaseService<FreelancerJobDTORequest, FreelancerJobDTOResponse, Long> {
@@ -32,4 +32,5 @@ public interface FreelancerJobService extends BaseService<FreelancerJobDTOReques
     CV getCVByFreeLancer_IdAndJob_Id(Long freeLancerId, Long jobId);
     ClientReviewDTOResponse freelancerReview(Long freelancerJobId, ClientReviewDTORequest request);
     FreelancerReviewDTOResponse clientReview(Long freelancerJobId, FreelancerReviewDTORequest request);
+    List<FreelancerJobDetailDTOResponse> getJobDetailsByFreelancerId(Long freelancerId);
 }

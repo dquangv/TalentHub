@@ -28,9 +28,12 @@ import org.example.backend.service.impl.notify.NotifyService;
 import org.example.backend.service.intf.job.FreelancerJobService;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.example.backend.dto.response.job.FreelancerJobDetailDTOResponse;
 
 
 @Service
@@ -257,7 +260,7 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
             throw new BadRequestException("Can only approve applications with Applied status");
         }
 
-        freelancerJob.setStatus(StatusFreelancerJob.InProgress);
+        freelancerJob.setStatus(StatusFreelancerJob.Approved);
         FreelancerJob updatedFreelancerJob = freelancerJobRepository.save(freelancerJob);
 
         return new FreelancerJobDTOResponse(
@@ -354,5 +357,52 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
         return freelancerJobRepository.findById(jobId).orElseThrow(() -> new BadRequestException("Job Not Found"));
     }
 
+    @Override
+    public List<FreelancerJobDetailDTOResponse> getJobDetailsByFreelancerId(Long freelancerId) {
+        if (freelancerId == null) {
+            throw new BadRequestException("Freelancer ID is null");
+        }
+
+        List<FreelancerJob> freelancerJobs = freelancerJobRepository.findByFreelancer_Id(freelancerId);
+        if (freelancerJobs.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return freelancerJobs.stream().map(freelancerJob -> {
+            Job job = freelancerJob.getJob();
+            if (job == null) {
+                throw new BadRequestException("Job Not Found for FreelancerJob ID: " + freelancerJob.getId());
+            }
+
+            String clientName = job.getClient() != null && job.getClient().getUser() != null
+                    ? job.getClient().getUser().getFirstName() + " " + job.getClient().getUser().getLastName()
+                    : "Unknown Client";
+
+            ClientReview clientReview = freelancerJob.getClientReview();
+            Float rating = clientReview != null ? clientReview.getRating() : null;
+            String note = clientReview != null ? clientReview.getNote() : null;
+
+            Date startDate = job.getCreatedAt();
+            Date endDate = null;
+            if (startDate != null && job.getDuration() != null) {
+                java.util.Calendar calendar = java.util.Calendar.getInstance();
+                calendar.setTime(startDate);
+                calendar.add(java.util.Calendar.DATE, job.getDuration().intValue());
+                endDate = calendar.getTime();
+            }
+
+            return new FreelancerJobDetailDTOResponse(
+                    job.getTitle(),
+                    job.getScope(),
+                    clientName,
+                    job.getDuration(),
+                    job.getHourWork(),
+                    startDate,
+                    endDate,
+                    rating,
+                    note
+            );
+        }).collect(Collectors.toList());
+    }
 
 }

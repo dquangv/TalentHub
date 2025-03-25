@@ -63,4 +63,5 @@ public interface FreelancerJobRepository extends JpaRepository<FreelancerJob, Lo
     CV getCVByFreelancer_IdAndJob_Id(@Param("freelancerId") Long freelancerId, @Param("jobId") Long jobId);
 
     long countByStatus(StatusFreelancerJob status);
+    List<FreelancerJob> findByFreelancer_Id(Long freelancerId);
 }
