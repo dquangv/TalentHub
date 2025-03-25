@@ -44,7 +44,6 @@ public class FreelancerDetailServiceImpl implements FreelancerDetailService {
         dtoResponse.setId(freelancerExist.getId());
         dtoResponse.setName(freelancerExist.getUser().getLastName() + " " + freelancerExist.getUser().getFirstName());
         dtoResponse.setTitle(freelancerExist.getUser().getTitle());
-        dtoResponse.setUserId(freelancerExist.getUser().getId());
         dtoResponse.setAvatar(freelancerExist.getUser().getImage());
         dtoResponse.setProvince(freelancerExist.getUser().getProvince());
         dtoResponse.setCountry(freelancerExist.getUser().getCountry());
