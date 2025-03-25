@@ -216,7 +216,7 @@ public class JobServiceImpl implements JobService {
         return false;
     }
 
-    @Override
+    /*@Override
     public List<JobDTOResponse> findAllJobs() {
         List<JobDTOResponse> jobs = jobRepository.findAll().stream()
                 .filter(job -> job.getStatus() == StatusJob.POSTED)
@@ -225,6 +225,26 @@ public class JobServiceImpl implements JobService {
                     Long clientId = job.getClient().getId();
                     companyRepository.getCompanyByClientId(clientId)
                             .ifPresent(company -> dto.setCompanyName(company.getCompanyName()));
+                    return dto;
+                })
+                .collect(Collectors.toList());
+
+        return jobs;
+    }*/
+
+    @Override
+    public List<JobDTOResponse> findAllJobs(Long freelancerId) {
+        List<JobDTOResponse> jobs = jobRepository.findByStatus(StatusJob.POSTED).stream()
+                .map(job -> {
+                    JobDTOResponse dto = jobMapper.toResponseDto(job);
+                    Long clientId = job.getClient().getId();
+
+                    companyRepository.getCompanyByClientId(clientId)
+                            .ifPresent(company -> dto.setCompanyName(company.getCompanyName()));
+
+                    boolean seen = freelancerJobRepository.existsByFreelancerIdAndJobId(freelancerId, job.getId());
+                    dto.setSeen(seen);
+
                     return dto;
                 })
                 .collect(Collectors.toList());
