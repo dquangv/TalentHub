@@ -165,6 +165,8 @@ public class ChatbotInitializer {
                 "Đếm việc làm cho {skill}",
                 "Tổng số việc làm về {skill}",
                 "Có bn công việc về {skill}?",
+                "Công việc với skill {skill}?",
+                "Cho tôi danh sách công việc yêu cầu {skill}?",
                 "Việc làm {skill} hiện có bao nhiêu?"
         );
 
@@ -304,10 +306,33 @@ public class ChatbotInitializer {
         response.setIntent(intent);
         response.setRequiresDbQuery(true);
         response.setQueryTemplate(
-                "SELECT GROUP_CONCAT(category_title ORDER BY job_count DESC SEPARATOR ', ') AS top_categories, (SELECT category_title FROM     (SELECT c.category_title, COUNT(j.id) as job_count      FROM category c      JOIN job j ON c.id = j.category_id      GROUP BY c.category_title      ORDER BY job_count DESC      LIMIT 1) AS top_single) AS top_category, (SELECT job_count FROM     (SELECT c.category_title, COUNT(j.id) as job_count      FROM category c      JOIN job j ON c.id = j.category_id      GROUP BY c.category_title      ORDER BY job_count DESC      LIMIT 1) AS top_count) AS job_count FROM     (SELECT c.category_title, COUNT(j.id) as job_count      FROM category c      JOIN job j ON c.id = j.category_id      GROUP BY c.category_title      ORDER BY job_count DESC      LIMIT 5) AS cat_data\n" +
-                        "\n" +
-                        "\n"
+                "SELECT GROUP_CONCAT(category_title ORDER BY job_count DESC SEPARATOR ', ') AS top_categories, " +
+                        "(SELECT category_title FROM " +
+                        "    (SELECT c.category_title, COUNT(j.id) as job_count " +
+                        "     FROM category c " +
+                        "     JOIN job j ON c.id = j.category_id " +
+                        "     WHERE j.status = 'POSTED' " +
+                        "     GROUP BY c.category_title " +
+                        "     ORDER BY job_count DESC " +
+                        "     LIMIT 1) AS top_single) AS top_category, " +
+                        "(SELECT job_count FROM " +
+                        "    (SELECT c.category_title, COUNT(j.id) as job_count " +
+                        "     FROM category c " +
+                        "     JOIN job j ON c.id = j.category_id " +
+                        "     WHERE j.status = 'POSTED' " +
+                        "     GROUP BY c.category_title " +
+                        "     ORDER BY job_count DESC " +
+                        "     LIMIT 1) AS top_count) AS job_count " +
+                        "FROM " +
+                        "    (SELECT c.category_title, COUNT(j.id) as job_count " +
+                        "     FROM category c " +
+                        "     JOIN job j ON c.id = j.category_id " +
+                        "     WHERE j.status = 'POSTED' " +
+                        "     GROUP BY c.category_title " +
+                        "     ORDER BY job_count DESC " +
+                        "     LIMIT 5) AS cat_data;"
         );
+
         chatResponseRepository.save(response);
     }
 

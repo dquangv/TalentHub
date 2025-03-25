@@ -165,6 +165,8 @@ public class ChatbotInitializer {
                 "Đếm việc làm cho {skill}",
                 "Tổng số việc làm về {skill}",
                 "Có bn công việc về {skill}?",
+                "Công việc với skill {skill}?",
+                "Cho tôi danh sách công việc yêu cầu {skill}?",
                 "Việc làm {skill} hiện có bao nhiêu?"
         );
 
@@ -195,7 +197,6 @@ public class ChatbotInitializer {
                         "LIMIT 1"
         );
         chatResponseRepository.save(response);
-
         ChatResponse fallbackResponse = new ChatResponse();
         fallbackResponse.setResponseText("Hiện tại tôi không tìm thấy công việc nào cho kỹ năng {{skill}} trong cơ sở dữ liệu. Tuy nhiên, đây là một kỹ năng có tiềm năng và bạn có thể thử tìm kiếm với từ khóa tương tự hoặc xem các kỹ năng đang hot nhất hiện nay.");
         fallbackResponse.setDisplayOrder(1);
