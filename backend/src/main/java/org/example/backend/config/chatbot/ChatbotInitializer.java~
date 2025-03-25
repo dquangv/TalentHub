@@ -197,6 +197,7 @@ public class ChatbotInitializer {
                         "LIMIT 1"
         );
         chatResponseRepository.save(response);
+
         ChatResponse fallbackResponse = new ChatResponse();
         fallbackResponse.setResponseText("Hiện tại tôi không tìm thấy công việc nào cho kỹ năng {{skill}} trong cơ sở dữ liệu. Tuy nhiên, đây là một kỹ năng có tiềm năng và bạn có thể thử tìm kiếm với từ khóa tương tự hoặc xem các kỹ năng đang hot nhất hiện nay.");
         fallbackResponse.setDisplayOrder(1);

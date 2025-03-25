@@ -1,7 +1,7 @@
 package org.example.backend.enums;
 
 public enum ReportedJobStatus {
-    REPORTED,
+//    REPORTED,
     RESOLVED,
     IN_PROGRESS
 }

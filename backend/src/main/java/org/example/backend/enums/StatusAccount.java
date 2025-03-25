@@ -3,27 +3,22 @@ package org.example.backend.enums;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum StatusJob {
-    POSTED("Đã đăng"),
-    CLOSED("Đóng"),
-    BANNED("Bị cấm"),
-//    OPEN("Mở"),
-    DRAFT("Bản nháp");
+public enum StatusAccount {
+    VERIFIED("Xác thực"),
+    UNVERIFIED("Chưa xác thực"),
+    BANNED("Cấm");
 
     private final String displayName;
 
-    // Constructor
-    StatusJob(String displayName) {
+    StatusAccount(String displayName) {
         this.displayName = displayName;
     }
 
-    // Trả về displayName khi chuyển Enum sang JSON
     @JsonValue
     public String getDisplayName() {
         return displayName;
     }
 
-    // Chuyển JSON thành Enum
     @JsonCreator
     public static StatusJob fromString(String status) {
         for (StatusJob jobStatus : StatusJob.values()) {

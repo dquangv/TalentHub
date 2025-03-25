@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.backend.entity.AbstractEntity;
 import org.example.backend.entity.child.account.client.Client;
+import org.example.backend.enums.ScopeJob;
 import org.example.backend.enums.StatusFreelancerJob;
 import org.example.backend.enums.StatusJob;
 import org.example.backend.enums.TypePayment;
@@ -33,9 +34,10 @@ public class Job extends AbstractEntity<Long> {
     @Column(name = "title", nullable = false)
     private String title;
 
+    @Enumerated(EnumType.STRING)
     @Lob
     @Column(name = "scope")
-    private String scope;
+    private ScopeJob scope;
 
     @Column(name = "hour_work", precision = 10, scale = 2)
     private BigDecimal hourWork;
@@ -46,10 +48,10 @@ public class Job extends AbstractEntity<Long> {
     @Column(name = "job_opportunity")
     private Boolean jobOpportunity;
 
-    @Column(name = "from_price", precision = 10, scale = 2)
+    @Column(name = "from_price", precision = 20, scale = 2)
     private BigDecimal fromPrice;
 
-    @Column(name = "to_price", precision = 10, scale = 2)
+    @Column(name = "to_price", precision = 20, scale = 2)
     private BigDecimal toPrice;
 
     @Lob

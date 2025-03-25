@@ -11,6 +11,7 @@ import org.example.backend.entity.child.account.client.Client;
 import org.example.backend.entity.child.account.client.Company;
 import org.example.backend.entity.child.account.client.SoldPackage;
 import org.example.backend.entity.child.job.*;
+import org.example.backend.enums.ScopeJob;
 import org.example.backend.enums.StatusFreelancerJob;
 import org.example.backend.enums.StatusJob;
 import org.example.backend.exception.BadRequestException;
@@ -60,7 +61,7 @@ public class JobServiceImpl implements JobService {
         job.setCategory(category);
 
         job.setTitle(jobDetailDTORequest.getTitle());
-        job.setScope(jobDetailDTORequest.getScope());
+        job.setScope(ScopeJob.valueOf(jobDetailDTORequest.getScope()));
         job.setHourWork(jobDetailDTORequest.getHourWork());
         job.setDuration(jobDetailDTORequest.getDuration());
         job.setJobOpportunity(jobDetailDTORequest.getJobOpportunity());
@@ -90,11 +91,16 @@ public class JobServiceImpl implements JobService {
     }
 
 
-
     @Override
     public JobDetailDTOResponse getJobById(Long id) {
         Job job = jobRepository.findById(id).orElse(null);
-        return jobDetailMapper.toResponseDto(job);
+
+        Long totalApplicants = freelancerJobRepository.countByJobAndStatus(job, StatusFreelancerJob.Applied);
+
+        JobDetailDTOResponse jobDetailDTOResponse = jobDetailMapper.toResponseDto(job);
+        jobDetailDTOResponse.setTotalApplicants(totalApplicants);
+
+        return jobDetailDTOResponse;
     }
 
     @Override
@@ -114,7 +120,7 @@ public class JobServiceImpl implements JobService {
         Optional<Job> job = jobRepository.findById(id);
         if (job.isPresent()) {
             Job foundAccount = job.get();
-            foundAccount.setStatus(StatusJob.OPEN);
+            foundAccount.setStatus(StatusJob.POSTED);
             jobRepository.save(foundAccount);
             return true;
         }
@@ -183,14 +189,17 @@ public class JobServiceImpl implements JobService {
     public List<JobDTOResponse> getAll() {
         return List.of();
     }
+
     public JobAdminDTOResponse getJobAdminDTOResponse(Job job) {
         Long appliedQuantity = freelancerJobRepository.countByJobAndStatus(job, StatusFreelancerJob.Applied);
         Long cancelledQuantity = freelancerJobRepository.countByJobAndStatus(job, StatusFreelancerJob.Cancelled);
-        Long inProgressQuantity = freelancerJobRepository.countByJobAndStatus(job, StatusFreelancerJob.InProgress);
+//        Long inProgressQuantity = freelancerJobRepository.countByJobAndStatus(job, StatusFreelancerJob.InProgress);
+        Long approvedQuantity = freelancerJobRepository.countByJobAndStatus(job, StatusFreelancerJob.Approved);
+        Long rejectedQuantity = freelancerJobRepository.countByJobAndStatus(job, StatusFreelancerJob.Rejected);
         Long viewedQuantity = freelancerJobRepository.countByJobAndStatus(job, StatusFreelancerJob.Viewed);
 
         return jobAdminMapper.toResponseDto(job, appliedQuantity, cancelledQuantity,
-                inProgressQuantity, viewedQuantity);
+                approvedQuantity, rejectedQuantity, viewedQuantity);
     }
 
     @Override
@@ -207,10 +216,10 @@ public class JobServiceImpl implements JobService {
         return false;
     }
 
-  @Override
+    @Override
     public List<JobDTOResponse> findAllJobs() {
         List<JobDTOResponse> jobs = jobRepository.findAll().stream()
-                .filter(job -> job.getStatus() == StatusJob.OPEN)
+                .filter(job -> job.getStatus() == StatusJob.POSTED)
                 .map(job -> {
                     JobDTOResponse dto = jobMapper.toResponseDto(job);
                     Long clientId = job.getClient().getId();
@@ -234,8 +243,13 @@ public class JobServiceImpl implements JobService {
                 Company company = companyRepository.getCompanyByClientId(job.getClient().getId())
                         .orElseThrow(() -> new RuntimeException("Company not found for client ID: " + job.getClient().getId()));
                 dto.setCompanyName(company.getCompanyName());
+
+                Long totalApplicants = freelancerJobRepository.countByJobAndStatus(job, StatusFreelancerJob.Applied);
+                dto.setTotalApplicants(totalApplicants);
+
                 return Optional.of(dto);
             }
+
             return Optional.empty();
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
@@ -260,6 +274,7 @@ public class JobServiceImpl implements JobService {
             throw new BadRequestException("Error while fetching apply jobs");
         }
     }
+
     public List<PostJobsDTOResponse> getPostedJobs(Long clientId) {
         return jobRepository.getPostedJobs(clientId).stream().map(postedJobsMapper::toResponseDto).collect(toList());
     }

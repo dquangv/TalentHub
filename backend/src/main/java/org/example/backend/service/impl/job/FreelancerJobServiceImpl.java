@@ -260,7 +260,7 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
             throw new BadRequestException("Can only approve applications with Applied status");
         }
 
-        freelancerJob.setStatus(StatusFreelancerJob.InProgress);
+        freelancerJob.setStatus(StatusFreelancerJob.Approved);
         FreelancerJob updatedFreelancerJob = freelancerJobRepository.save(freelancerJob);
 
         return new FreelancerJobDTOResponse(

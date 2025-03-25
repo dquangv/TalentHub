@@ -3,6 +3,7 @@ package org.example.backend.dto.response.job;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.backend.entity.child.account.client.Client;
+import org.example.backend.enums.ScopeJob;
 import org.example.backend.enums.StatusJob;
 
 import java.math.BigDecimal;
@@ -24,4 +25,8 @@ public class DetailJobDTOResponse {
     private String description;
     private List<String> skillNames;
     private StatusJob status;
+    private Long totalApplicants;
+    private Long duration;
+    private ScopeJob scope;
+    private boolean jobOpportunity;
 }
