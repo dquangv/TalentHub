@@ -64,4 +64,6 @@ public interface FreelancerJobRepository extends JpaRepository<FreelancerJob, Lo
 
     long countByStatus(StatusFreelancerJob status);
     List<FreelancerJob> findByFreelancer_Id(Long freelancerId);
+
+    boolean existsByFreelancerIdAndJobId(Long freelancerId, Long jobId);
 }

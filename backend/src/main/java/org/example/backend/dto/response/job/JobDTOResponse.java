@@ -24,5 +24,5 @@ public class JobDTOResponse {
     private BigDecimal toPrice;
     private String description;
     private List<String> skillName;
-
+    private boolean seen;
 }

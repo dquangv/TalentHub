@@ -497,7 +497,7 @@ INSERT INTO freelancer_job (
 -- Freelancer 4: Data Analyst (Category 7)
 (false, 'VIEWED', NULL, 4, 7, NULL, NULL, NOW()),
 (false, 'APPLIED', NULL, 4, 8, NULL, NULL, NOW()),
-(false, 'APPLIED', NULL, 3, 3, NULL, NULL, NOW()),
+(false, 'APPLIED', NULL, 4, 3, NULL, NULL, NOW()),
 
 -- Freelancer 5: Video Editor (Category 9)
 (false, 'VIEWED', NULL, 5, 12, NULL, NULL, NOW()),

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.backend.enums.ScopeJob;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -14,7 +15,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class FreelancerJobDetailDTOResponse {
     private String projectName;
-    private String scope;
+    private ScopeJob scope;
     private String clientName;
     private Long duration;
     private BigDecimal hourWork;
