@@ -10,9 +10,14 @@ import java.util.List;
 public interface VoucherPackageRepository extends JpaRepository<VoucherPackage, Long> {
     VoucherPackage findTopByTypePackageOrderByIdDesc(TypePackage typePackage);
 
-    @Query("SELECT v FROM VoucherPackage v WHERE " +
+    /*@Query("SELECT v FROM VoucherPackage v WHERE " +
             "COALESCE(v.updatedAt, v.createdAt) = " +
             "(SELECT MAX(COALESCE(v2.updatedAt, v2.createdAt)) " +
             " FROM VoucherPackage v2 WHERE v2.typePackage = v.typePackage)")
+    List<VoucherPackage> findLatestVoucherPackagesByType();*/
+
+
+    @Query("SELECT v FROM VoucherPackage v WHERE v.createdAt = " +
+            "(SELECT MAX(v2.createdAt) FROM VoucherPackage v2 WHERE v2.typePackage = v.typePackage)")
     List<VoucherPackage> findLatestVoucherPackagesByType();
 }

@@ -40,25 +40,28 @@ public class VoucherPackageServiceImpl implements VoucherPackageService {
     }
 
     @Override
-    public VoucherPackageDTOResponse update(Long id, VoucherPackageDTORequest request) {
+    public VoucherPackageDTOResponse update(TypePackage typePackage, VoucherPackageDTORequest request) {
         Account account = accountRepository.findById(request.getAccountId())
                 .orElseThrow(() -> new NotFoundException("Account not found"));
 
-        VoucherPackage existingVoucherPackage = voucherPackageRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Voucher Package not found"));
+        VoucherPackage existingVoucherPackage = voucherPackageRepository.findTopByTypePackageOrderByIdDesc(typePackage);
 
+        if (existingVoucherPackage == null) {
+            throw new NotFoundException("Voucher package not found");
+        }
 
         if (request.getAccountId() != null) {
             existingVoucherPackage.setStatus(false);
         }
 
+        voucherPackageRepository.save(existingVoucherPackage);
+
         VoucherPackage voucherPackage = voucherPackageMapper.toEntity(request);
         voucherPackage.setAccount(account);
         voucherPackage.setStatus(request.isStatus());
-        voucherPackage.setUpdatedAt(LocalDateTime.now());
+        voucherPackage.setTypePackage(typePackage);
 
         voucherPackageRepository.save(voucherPackage);
-        voucherPackageRepository.save(existingVoucherPackage);
 
         return voucherPackageMapper.toDTO(voucherPackage);
     }

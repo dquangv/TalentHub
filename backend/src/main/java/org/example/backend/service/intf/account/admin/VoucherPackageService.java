@@ -9,7 +9,7 @@ import org.example.backend.service.BaseService;
 import java.util.List;
 
 public interface VoucherPackageService extends BaseService<VoucherPackageDTORequest, VoucherPackageDTOResponse, Long> {
-    public VoucherPackageDTOResponse update(Long id, VoucherPackageDTORequest request);
+    public VoucherPackageDTOResponse update(TypePackage typePackage, VoucherPackageDTORequest request);
     VoucherPackageDTOResponse getDetailByTypePackage(TypePackage typePackage);
     List<VoucherPackageDTOResponse> findLatestVoucherPackagesByType();
 }
