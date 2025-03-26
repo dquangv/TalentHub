@@ -24,7 +24,7 @@ public class ReportedJobController {
             @RequestParam String reasonFreelancer,
             @RequestParam String reasonAdmin,
             @RequestParam String description,
-            @RequestParam ReportedJobStatus status,
+//            @RequestParam ReportedJobStatus status,
             @RequestParam Long freelancerId,
             @RequestParam Long jobId,
             @RequestParam MultipartFile image) {
@@ -33,7 +33,7 @@ public class ReportedJobController {
         reportedJobDTORequest.setReasonFreelancer(reasonFreelancer);
         reportedJobDTORequest.setReasonAdmin(reasonAdmin);
         reportedJobDTORequest.setDescription(description);
-        reportedJobDTORequest.setStatus(status);
+        reportedJobDTORequest.setStatus(ReportedJobStatus.IN_PROGRESS);
         reportedJobDTORequest.setFreelancerId(freelancerId);
         reportedJobDTORequest.setJobId(jobId);
         reportedJobDTORequest.setImage(image);
