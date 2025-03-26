@@ -121,7 +121,7 @@ public class JobServiceImpl implements JobService {
         Optional<Job> job = jobRepository.findById(id);
         if (job.isPresent()) {
             Job foundAccount = job.get();
-            foundAccount.setStatus(StatusJob.POSTED);
+            foundAccount.setStatus(StatusJob.OPEN);
             jobRepository.save(foundAccount);
             return true;
         }
@@ -235,7 +235,7 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public List<JobDTOResponse> findAllJobs(Long freelancerId) {
-        List<JobDTOResponse> jobs = jobRepository.findByStatus(StatusJob.POSTED).stream()
+        List<JobDTOResponse> jobs = jobRepository.findByStatus(StatusJob.OPEN).stream()
                 .map(job -> {
                     JobDTOResponse dto = jobMapper.toResponseDto(job);
                     Long clientId = job.getClient().getId();

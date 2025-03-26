@@ -301,39 +301,39 @@ INSERT INTO job (
 -- 2
 ('Lập trình viên ReactJS hỗ trợ UI/UX', 'MEDIUM', 20, 30, false, 3000000, 8000000, 'VNĐ',
  'Tìm kiếm một lập trình viên ReactJS giúp tối ưu hóa UI/UX cho hệ thống CRM.',
- 'HOURLY', 'POSTED', NOW(), NULL, 1, 1),
+ 'HOURLY', 'OPEN', NOW(), NULL, 1, 1),
 -- 3
 ('Backend Developer Java Spring Boot', 'LARGE', 30, 90, true, 7000000, 20000000, 'VNĐ',
  'Cần backend developer có kinh nghiệm với Java Spring Boot, tối ưu hóa hiệu suất và bảo mật.',
- 'FULL', 'POSTED', NOW(), NULL, 2, 1),
+ 'FULL', 'OPEN', NOW(), NULL, 2, 1),
 -- 4
 ('Kiểm thử và kiểm tra bảo mật hệ thống backend', 'MEDIUM', 25, 45, false, 5000000, 12000000, 'VNĐ',
  'Cần tester chuyên kiểm tra bảo mật hệ thống và viết báo cáo lỗi chi tiết.',
- 'HOURLY', 'POSTED', NOW(), NULL, 2, 1),
+ 'HOURLY', 'OPEN', NOW(), NULL, 2, 1),
 -- 5
 ('Quản lý dự án phần mềm', 'LARGE', 40, 120, true, 10000000, 25000000, 'VNĐ',
  'Tìm kiếm freelancer có kinh nghiệm quản lý dự án Agile/Scrum cho ứng dụng di động.',
- 'FULL', 'POSTED', NOW(), NULL, 3, 8),
+ 'FULL', 'OPEN', NOW(), NULL, 3, 8),
 -- 6
 ('Hỗ trợ lập kế hoạch và giám sát tiến độ dự án', 'MEDIUM', 15, 30, false, 0, 7000000, 'VNĐ',
  'Phụ trách lập kế hoạch chi tiết và báo cáo tiến độ cho dự án.',
- 'HOURLY', 'POSTED', NOW(), NULL, 3, 8),
+ 'HOURLY', 'OPEN', NOW(), NULL, 3, 8),
 -- 7
 ('Phân tích nghiệp vụ hệ thống ERP', 'MEDIUM', 35, 60, true, 8000000, 18000000, 'VNĐ',
  'Cần BA có kinh nghiệm ERP để tư vấn và phân tích yêu cầu nghiệp vụ.',
- 'FULL', 'POSTED', NOW(), NULL, 4, 7),
+ 'FULL', 'OPEN', NOW(), NULL, 4, 7),
 -- 8
 ('Viết tài liệu SRS và Use Case', 'SMALL', 20, 30, false, 5000000, 10000000, 'VNĐ',
  'Cần người có kinh nghiệm viết tài liệu phân tích nghiệp vụ, SRS và Use Case.',
- 'HOURLY', 'POSTED', NOW(), NULL, 4, 7),
+ 'HOURLY', 'OPEN', NOW(), NULL, 4, 7),
 -- 9
 ('Thiết kế logo thương hiệu', 'SMALL', 10, 14, false, 2000000, 5000000, 'VNĐ',
  'Cần freelancer thiết kế logo sáng tạo và chuyên nghiệp cho công ty khởi nghiệp.',
- 'HOURLY', 'POSTED', NOW(), NULL, 5, 2),
+ 'HOURLY', 'OPEN', NOW(), NULL, 5, 2),
 -- 10
 ('Thiết kế giao diện website UX/UI', 'MEDIUM', 30, 45, true, 5000000, 12000000, 'VNĐ',
  'Cần designer có kinh nghiệm thiết kế UX/UI cho ngành thời trang, ưu tiên có portfolio.',
- 'FULL', 'POSTED', NOW(), NULL, 5, 2),
+ 'FULL', 'OPEN', NOW(), NULL, 5, 2),
 -- 11
 ('Chỉnh sửa ảnh cưới chuyên nghiệp', 'SMALL', 15, 30, true, 3000000, 7000000, 'VNĐ',
  'Cần freelancer chỉnh sửa ảnh cưới, blend màu sáng tạo theo yêu cầu studio.',
@@ -341,7 +341,7 @@ INSERT INTO job (
 -- 12
 ('Biên tập video highlight đám cưới', 'SMALL', 20, 21, false, 4000000, 8000000, 'VNĐ',
  'Biên tập video cưới, thêm hiệu ứng và âm thanh phù hợp.',
- 'HOURLY', 'POSTED', NOW(), NULL, 6, 9),
+ 'HOURLY', 'OPEN', NOW(), NULL, 6, 9),
 -- 13
 ('Phát triển Website bán hàng đa kênh', 'LARGE', 50, 75, true, 6000000, 16000000, 'VNĐ',
  'Cần xây dựng một website bán hàng đa kênh tích hợp quản lý kho và đồng bộ hóa đơn hàng từ các nền tảng TMĐT.',
@@ -353,15 +353,15 @@ INSERT INTO job (
 -- 15
 ('Scrum Master cho dự án phát triển app mobile', 'LARGE', 30, 90, false, 9000000, 22000000, 'VNĐ',
  'Tuyển Scrum Master để điều phối nhóm phát triển ứng dụng di động, theo dõi tiến độ và đảm bảo chất lượng.',
- 'FULL', 'POSTED', NOW(), NULL, 3, 8),
+ 'FULL', 'OPEN', NOW(), NULL, 3, 8),
 -- 16
 ('Thiết kế UX/UI cho sàn thương mại điện tử', 'MEDIUM', 40, 60, true, 7000000, 15000000, 'VNĐ',
  'Cần UI/UX designer thiết kế giao diện thân thiện, tối ưu trải nghiệm người dùng cho sàn thương mại điện tử.',
- 'FULL', 'POSTED', NOW(), NULL, 5, 2),
+ 'FULL', 'OPEN', NOW(), NULL, 5, 2),
 -- 17
 ('Chỉnh sửa ảnh sự kiện chuyên nghiệp', 'SMALL', 12, 20, false, 2500000, 6000000, 'VNĐ',
  'Tuyển freelancer chỉnh sửa ảnh sự kiện hội nghị và lễ khai trương, yêu cầu chỉnh màu và blend tự nhiên.',
- 'HOURLY', 'POSTED', NOW(), NULL, 6, 9);
+ 'HOURLY', 'OPEN', NOW(), NULL, 6, 9);
 
 
 

@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum StatusJob {
-    POSTED("Đã đăng"),
+//    POSTED("Đã đăng"),
     CLOSED("Đóng"),
     BANNED("Bị cấm"),
-//    OPEN("Mở"),
+    OPEN("Mở"),
     DRAFT("Bản nháp");
 
     private final String displayName;

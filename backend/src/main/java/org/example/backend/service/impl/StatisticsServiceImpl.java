@@ -29,7 +29,7 @@ public class StatisticsServiceImpl {
             long freelancerCount = freelancerRepository.count();
             long totalAccounts = clientCount + freelancerCount;
 
-            long postedJobsCount = jobRepository.countByStatus(StatusJob.POSTED);
+            long postedJobsCount = jobRepository.countByStatus(StatusJob.OPEN);
 
             long approvedFreelancerJobsCount = freelancerJobRepository.countByStatus(StatusFreelancerJob.Approved);
 
