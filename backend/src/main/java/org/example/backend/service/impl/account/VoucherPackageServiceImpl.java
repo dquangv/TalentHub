@@ -6,6 +6,7 @@ import org.example.backend.dto.request.account.admin.VoucherPackageDTORequest;
 import org.example.backend.dto.response.account.admin.VoucherPackageDTOResponse;
 import org.example.backend.entity.child.admin.VoucherPackage;
 import org.example.backend.entity.child.account.Account;
+import org.example.backend.enums.TypePackage;
 import org.example.backend.exception.NotFoundException;
 import org.example.backend.mapper.Account.admin.VoucherPackageMapper;
 import org.example.backend.repository.AccountRepository;
@@ -84,5 +85,25 @@ public class VoucherPackageServiceImpl implements VoucherPackageService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public VoucherPackageDTOResponse getDetailByTypePackage(TypePackage typePackage) {
+        VoucherPackage voucherPackage = voucherPackageRepository.findTopByTypePackageOrderByIdDesc(typePackage);
+
+        if (voucherPackage == null) {
+            throw new NotFoundException("Voucher Package not found");
+        }
+
+        return voucherPackageMapper.toDTO(voucherPackage);
+    }
+
+    @Override
+    public List<VoucherPackageDTOResponse> findLatestVoucherPackagesByType() {
+        List<VoucherPackage> voucherPackages = voucherPackageRepository.findLatestVoucherPackagesByType();
+
+        return voucherPackages.stream()
+                .map(voucherPackageMapper::toDTO)
+                .collect(Collectors.toList());
     }
 }
