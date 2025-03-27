@@ -52,8 +52,8 @@ public class JobController {
     }
 
     @GetMapping
-    public ResponseObject<List<JobDTOResponse>> findAllJobs() {
-        List<JobDTOResponse> response = jobService.findAllJobs();
+    public ResponseObject<List<JobDTOResponse>> findAllJobs(@RequestParam Long freelancerId) {
+        List<JobDTOResponse> response = jobService.findAllJobs(freelancerId);
         return ResponseObject
                 .<List<JobDTOResponse>>builder()
                 .message("Get all job successful")

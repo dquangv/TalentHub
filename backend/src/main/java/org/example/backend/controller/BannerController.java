@@ -68,6 +68,10 @@ public class BannerController {
             @RequestParam String title,
             @RequestParam boolean status,
             @RequestParam String vendor,
+            @RequestParam LocalDateTime endTime,
+            @RequestParam LocalDateTime startTime,
+
+
             @RequestParam(required = false) MultipartFile image) {
 
         BannerDTORequest bannerDTORequest = new BannerDTORequest();
@@ -75,6 +79,9 @@ public class BannerController {
         bannerDTORequest.setStatus(status);
         bannerDTORequest.setVendor(vendor);
         bannerDTORequest.setImage(image);
+        bannerDTORequest.setStartTime(startTime);
+        bannerDTORequest.setEndTime(endTime);
+
 
         BannerDTOResponse updatedBanner = bannerService.update(id, bannerDTORequest);
 

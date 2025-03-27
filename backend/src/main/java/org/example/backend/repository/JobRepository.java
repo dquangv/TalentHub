@@ -29,4 +29,6 @@
                 "WHERE c.id = :clientId")
         List<Job> getPostedJobs(@Param("clientId") Long clientId);
         long countByStatus(StatusJob status);
+
+        List<Job> findByStatus(StatusJob status);
     }

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface JobService extends BaseService<JobDTORequest, JobDTOResponse, Long> {
-    List<JobDTOResponse> findAllJobs();
+    List<JobDTOResponse> findAllJobs(Long freelancerId);
     Optional<DetailJobDTOResponse> getDetailJobById(Long id);
     List<ApplyJobsDTOResponse> getApplyJobs(Long freeLancerId);
    List<PostJobsDTOResponse> getPostedJobs(Long clientId);

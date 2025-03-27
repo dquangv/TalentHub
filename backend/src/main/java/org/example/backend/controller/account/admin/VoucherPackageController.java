@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.ResponseObject;
 import org.example.backend.dto.request.account.admin.VoucherPackageDTORequest;
 import org.example.backend.dto.response.account.admin.VoucherPackageDTOResponse;
+import org.example.backend.enums.TypePackage;
 import org.example.backend.service.intf.account.admin.VoucherPackageService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,9 +28,10 @@ public class VoucherPackageController {
                 .build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseObject<VoucherPackageDTOResponse> update(@PathVariable Long id, @RequestBody VoucherPackageDTORequest request) {
-        VoucherPackageDTOResponse response = voucherPackageService.update(id, request);
+    @PutMapping("/typePackage")
+    public ResponseObject<VoucherPackageDTOResponse> update(@RequestParam TypePackage typePackage, @RequestBody VoucherPackageDTORequest request) {
+        VoucherPackageDTOResponse response = voucherPackageService.update(typePackage, request);
+
         return ResponseObject.<VoucherPackageDTOResponse>builder()
                 .message("Voucher package updated successfully")
                 .status(200)
@@ -48,6 +51,17 @@ public class VoucherPackageController {
                         .message("Voucher package not found")
                         .status(404)
                         .build());
+    }
+
+    @GetMapping("/type-package")
+    public ResponseEntity<ResponseObject<VoucherPackageDTOResponse>> getDetailByTypePackage(@RequestParam TypePackage typePackage) {
+        VoucherPackageDTOResponse response = voucherPackageService.getDetailByTypePackage(typePackage);
+
+        return ResponseEntity.status(200).body(ResponseObject.<VoucherPackageDTOResponse>builder()
+                .message("Get voucher by type successfully")
+                .status(200)
+                .data(response)
+                .build());
     }
 
     @GetMapping
@@ -74,5 +88,16 @@ public class VoucherPackageController {
                     .status(404)
                     .build();
         }
+    }
+
+    @GetMapping("/all-voucher")
+    public ResponseEntity<ResponseObject<List<VoucherPackageDTOResponse>>> getAllVoucher() {
+        List<VoucherPackageDTOResponse> response = voucherPackageService.findLatestVoucherPackagesByType();
+
+        return ResponseEntity.status(200).body(ResponseObject.<List<VoucherPackageDTOResponse>>builder()
+                .message("Get all voucher successfully")
+                .status(200)
+                .data(response)
+                .build());
     }
 }

@@ -6,6 +6,7 @@ import org.example.backend.dto.request.account.admin.VoucherPackageDTORequest;
 import org.example.backend.dto.response.account.admin.VoucherPackageDTOResponse;
 import org.example.backend.entity.child.admin.VoucherPackage;
 import org.example.backend.entity.child.account.Account;
+import org.example.backend.enums.TypePackage;
 import org.example.backend.exception.NotFoundException;
 import org.example.backend.mapper.Account.admin.VoucherPackageMapper;
 import org.example.backend.repository.AccountRepository;
@@ -39,25 +40,28 @@ public class VoucherPackageServiceImpl implements VoucherPackageService {
     }
 
     @Override
-    public VoucherPackageDTOResponse update(Long id, VoucherPackageDTORequest request) {
+    public VoucherPackageDTOResponse update(TypePackage typePackage, VoucherPackageDTORequest request) {
         Account account = accountRepository.findById(request.getAccountId())
                 .orElseThrow(() -> new NotFoundException("Account not found"));
 
-        VoucherPackage existingVoucherPackage = voucherPackageRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Voucher Package not found"));
+        VoucherPackage existingVoucherPackage = voucherPackageRepository.findTopByTypePackageOrderByIdDesc(typePackage);
 
+        if (existingVoucherPackage == null) {
+            throw new NotFoundException("Voucher package not found");
+        }
 
         if (request.getAccountId() != null) {
             existingVoucherPackage.setStatus(false);
         }
 
+        voucherPackageRepository.save(existingVoucherPackage);
+
         VoucherPackage voucherPackage = voucherPackageMapper.toEntity(request);
         voucherPackage.setAccount(account);
         voucherPackage.setStatus(request.isStatus());
-        voucherPackage.setUpdatedAt(LocalDateTime.now());
+        voucherPackage.setTypePackage(typePackage);
 
         voucherPackageRepository.save(voucherPackage);
-        voucherPackageRepository.save(existingVoucherPackage);
 
         return voucherPackageMapper.toDTO(voucherPackage);
     }
@@ -84,5 +88,25 @@ public class VoucherPackageServiceImpl implements VoucherPackageService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public VoucherPackageDTOResponse getDetailByTypePackage(TypePackage typePackage) {
+        VoucherPackage voucherPackage = voucherPackageRepository.findTopByTypePackageOrderByIdDesc(typePackage);
+
+        if (voucherPackage == null) {
+            throw new NotFoundException("Voucher Package not found");
+        }
+
+        return voucherPackageMapper.toDTO(voucherPackage);
+    }
+
+    @Override
+    public List<VoucherPackageDTOResponse> findLatestVoucherPackagesByType() {
+        List<VoucherPackage> voucherPackages = voucherPackageRepository.findLatestVoucherPackagesByType();
+
+        return voucherPackages.stream()
+                .map(voucherPackageMapper::toDTO)
+                .collect(Collectors.toList());
     }
 }
