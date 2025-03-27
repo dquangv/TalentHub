@@ -3,6 +3,7 @@ package org.example.backend.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.backend.entity.child.account.client.SoldPackage;
+import org.example.backend.enums.TypePackage;
 import org.example.backend.repository.SoldPackageRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -20,9 +21,11 @@ public class SoldPackageSchedulerServiceImpl {
     public void checkAndExpirePackages() {
         log.info("Scheduler running: Checking expired sold packages...");
 
+        List<TypePackage> allowedPackages = List.of(TypePackage.SILVER, TypePackage.GOLD, TypePackage.DIAMOND);
+
         // find expired packages with true status
         List<SoldPackage> expiredPackages = soldPackageRepository
-                .findByEndDateBeforeAndStatus(LocalDateTime.now(), true);
+                .findByEndDateBeforeAndStatusAndVoucherPackage_TypePackageIn(LocalDateTime.now(), true, allowedPackages);
 
         log.info("Found {} packages to expire", expiredPackages.size());
 
