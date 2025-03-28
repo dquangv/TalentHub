@@ -913,76 +913,76 @@ VALUES ('TechCorp Solutions', 'Backend Developer', '2020-01-01', '2022-06-30',
 
 INSERT INTO job (title, scope, hour_work, duration, job_opportunity,
                  from_price, to_price, type_price, description,
-                 type_payment, status, created_at, updated_at, client_id, category_id)
+                 type_payment, status, created_at, updated_at, client_id, category_id, end_date)
 VALUES
 -- 1
 ('Phát triển Website thương mại điện tử', 'LARGE', 40, 60, true, 5000000, 15000000, 'VNĐ',
  'Cần phát triển một website thương mại điện tử hoàn chỉnh, tích hợp thanh toán online và giao diện thân thiện với người dùng.',
- 'FULL', 'CLOSED', NOW(), NULL, 1, 1),
+ 'FULL', 'CLOSED', NOW(), NULL, 1, 1, NOW() - INTERVAL 15 DAY),
 -- 2
 ('Lập trình viên ReactJS hỗ trợ UI/UX', 'MEDIUM', 20, 30, false, 3000000, 8000000, 'VNĐ',
  'Tìm kiếm một lập trình viên ReactJS giúp tối ưu hóa UI/UX cho hệ thống CRM.',
- 'HOURLY', 'OPEN', NOW(), NULL, 1, 1),
+ 'HOURLY', 'OPEN', NOW(), NULL, 1, 1, NOW() + INTERVAL 14 DAY),
 -- 3
 ('Backend Developer Java Spring Boot', 'LARGE', 30, 90, true, 7000000, 20000000, 'VNĐ',
  'Cần backend developer có kinh nghiệm với Java Spring Boot, tối ưu hóa hiệu suất và bảo mật.',
- 'FULL', 'OPEN', NOW(), NULL, 2, 1),
+ 'FULL', 'OPEN', NOW(), NULL, 2, 1, NOW() + INTERVAL 14 DAY),
 -- 4
 ('Kiểm thử và kiểm tra bảo mật hệ thống backend', 'MEDIUM', 25, 45, false, 5000000, 12000000, 'VNĐ',
  'Cần tester chuyên kiểm tra bảo mật hệ thống và viết báo cáo lỗi chi tiết.',
- 'HOURLY', 'OPEN', NOW(), NULL, 2, 1),
+ 'HOURLY', 'OPEN', NOW(), NULL, 2, 1, NOW() + INTERVAL 14 DAY),
 -- 5
 ('Quản lý dự án phần mềm', 'LARGE', 40, 120, true, 10000000, 25000000, 'VNĐ',
  'Tìm kiếm freelancer có kinh nghiệm quản lý dự án Agile/Scrum cho ứng dụng di động.',
- 'FULL', 'OPEN', NOW(), NULL, 3, 8),
+ 'FULL', 'OPEN', NOW(), NULL, 3, 8, NOW() + INTERVAL 30 DAY),
 -- 6
 ('Hỗ trợ lập kế hoạch và giám sát tiến độ dự án', 'MEDIUM', 15, 30, false, 0, 7000000, 'VNĐ',
  'Phụ trách lập kế hoạch chi tiết và báo cáo tiến độ cho dự án.',
- 'HOURLY', 'OPEN', NOW(), NULL, 3, 8),
+ 'HOURLY', 'OPEN', NOW(), NULL, 3, 8, NOW() + INTERVAL 30 DAY),
 -- 7
 ('Phân tích nghiệp vụ hệ thống ERP', 'MEDIUM', 35, 60, true, 8000000, 18000000, 'VNĐ',
  'Cần BA có kinh nghiệm ERP để tư vấn và phân tích yêu cầu nghiệp vụ.',
- 'FULL', 'OPEN', NOW(), NULL, 4, 7),
+ 'FULL', 'OPEN', NOW(), NULL, 4, 7, NOW() + INTERVAL 14 DAY),
 -- 8
 ('Viết tài liệu SRS và Use Case', 'SMALL', 20, 30, false, 5000000, 10000000, 'VNĐ',
  'Cần người có kinh nghiệm viết tài liệu phân tích nghiệp vụ, SRS và Use Case.',
- 'HOURLY', 'OPEN', NOW(), NULL, 4, 7),
+ 'HOURLY', 'OPEN', NOW(), NULL, 4, 7, NOW() + INTERVAL 14 DAY),
 -- 9
 ('Thiết kế logo thương hiệu', 'SMALL', 10, 14, false, 2000000, 5000000, 'VNĐ',
  'Cần freelancer thiết kế logo sáng tạo và chuyên nghiệp cho công ty khởi nghiệp.',
- 'HOURLY', 'OPEN', NOW(), NULL, 5, 2),
+ 'HOURLY', 'OPEN', NOW(), NULL, 5, 2, NOW() + INTERVAL 30 DAY),
 -- 10
 ('Thiết kế giao diện website UX/UI', 'MEDIUM', 30, 45, true, 5000000, 12000000, 'VNĐ',
  'Cần designer có kinh nghiệm thiết kế UX/UI cho ngành thời trang, ưu tiên có portfolio.',
- 'FULL', 'OPEN', NOW(), NULL, 5, 2),
+ 'FULL', 'OPEN', NOW(), NULL, 5, 2, NOW() + INTERVAL 30 DAY),
 -- 11
 ('Chỉnh sửa ảnh cưới chuyên nghiệp', 'SMALL', 15, 30, true, 3000000, 7000000, 'VNĐ',
  'Cần freelancer chỉnh sửa ảnh cưới, blend màu sáng tạo theo yêu cầu studio.',
- 'HOURLY', 'DRAFT', NOW(), NULL, 6, 9),
+ 'HOURLY', 'DRAFT', NOW(), NULL, 6, 9, NOW() + INTERVAL 14 DAY),
 -- 12
 ('Biên tập video highlight đám cưới', 'SMALL', 20, 21, false, 4000000, 8000000, 'VNĐ',
  'Biên tập video cưới, thêm hiệu ứng và âm thanh phù hợp.',
- 'HOURLY', 'OPEN', NOW(), NULL, 6, 9),
+ 'HOURLY', 'OPEN', NOW(), NULL, 6, 9, NOW() + INTERVAL 14 DAY),
 -- 13
 ('Phát triển Website bán hàng đa kênh', 'LARGE', 50, 75, true, 6000000, 16000000, 'VNĐ',
  'Cần xây dựng một website bán hàng đa kênh tích hợp quản lý kho và đồng bộ hóa đơn hàng từ các nền tảng TMĐT.',
- 'FULL', 'BANNED', NOW(), NULL, 1, 1),
+ 'FULL', 'BANNED', NOW(), NULL, 1, 1, NOW() + INTERVAL 14 DAY),
 -- 14
 ('Phát triển API cho hệ thống quản lý khách hàng', 'LARGE', 35, 60, true, 8000000, 18000000, 'VNĐ',
  'Tuyển backend developer chuyên phát triển RESTful API với Java Spring Boot và tối ưu hóa bảo mật.',
- 'FULL', 'CLOSED', NOW(), NULL, 2, 1),
+ 'FULL', 'CLOSED', NOW(), NULL, 2, 1, NOW() - INTERVAL 14 DAY),
 -- 15
 ('Scrum Master cho dự án phát triển app mobile', 'LARGE', 30, 90, false, 9000000, 22000000, 'VNĐ',
  'Tuyển Scrum Master để điều phối nhóm phát triển ứng dụng di động, theo dõi tiến độ và đảm bảo chất lượng.',
- 'FULL', 'OPEN', NOW(), NULL, 3, 8),
+ 'FULL', 'OPEN', NOW(), NULL, 3, 8, NOW() + INTERVAL 30 DAY),
 -- 16
 ('Thiết kế UX/UI cho sàn thương mại điện tử', 'MEDIUM', 40, 60, true, 7000000, 15000000, 'VNĐ',
  'Cần UI/UX designer thiết kế giao diện thân thiện, tối ưu trải nghiệm người dùng cho sàn thương mại điện tử.',
- 'FULL', 'OPEN', NOW(), NULL, 5, 2),
+ 'FULL', 'OPEN', NOW(), NULL, 5, 2, NOW() + INTERVAL 30 DAY),
 -- 17
 ('Chỉnh sửa ảnh sự kiện chuyên nghiệp', 'SMALL', 12, 20, false, 2500000, 6000000, 'VNĐ',
  'Tuyển freelancer chỉnh sửa ảnh sự kiện hội nghị và lễ khai trương, yêu cầu chỉnh màu và blend tự nhiên.',
- 'HOURLY', 'OPEN', NOW(), NULL, 6, 9);
+ 'HOURLY', 'OPEN', NOW(), NULL, 6, 9, NOW() + INTERVAL 14 DAY);
 
 
 
@@ -1131,39 +1131,40 @@ INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, free
                             applied_date)
 VALUES
 -- Freelancer 1: Backend Developer (Category 1)
-(false, 'APPROVED', 1, 1, 1, 1, 1, NOW() - INTERVAL 15 DAY),
-(false, 'APPLIED', 1, 1, 3, NULL, NULL, NOW() - INTERVAL 10 DAY),
-(false, 'APPLIED', 2, 1, 4, NULL, NULL, NOW() - INTERVAL 8 DAY),
-(false, 'CANCELLED', 2, 1, 13, NULL, NULL, NOW() - INTERVAL 20 DAY),
-(false, 'APPROVED', 1, 1, 14, 2, 2, NOW() - INTERVAL 30 DAY),
+(false, 'APPROVED', 1, 1, 1, 1, 1, NOW() + INTERVAL 15 DAY),
+(false, 'APPLIED', 1, 1, 3, NULL, NULL, NOW() + INTERVAL 10 DAY),
+(false, 'APPLIED', 2, 1, 4, NULL, NULL, NOW() + INTERVAL 8 DAY),
+(false, 'CANCELLED', 2, 1, 13, NULL, NULL, NOW() + INTERVAL 2 DAY),
+(false, 'APPROVED', 1, 1, 14, 2, 2, NOW() + INTERVAL 3 DAY),
 
 -- Freelancer 2: Digital Marketer (Category 4)
-(false, 'APPLIED', 3, 2, 9, NULL, NULL, NOW() - INTERVAL 5 DAY),
-(false, 'APPROVED', 3, 2, 10, 4, 5, NOW() - INTERVAL 12 DAY),
-(false, 'VIEWED', 4, 2, 16, NULL, NULL, NOW() - INTERVAL 3 DAY),
+(false, 'APPLIED', 3, 2, 9, NULL, NULL, NOW() + INTERVAL 5 DAY),
+(false, 'APPROVED', 3, 2, 10, 4, 5, NOW() + INTERVAL 2 DAY),
+(false, 'VIEWED', 4, 2, 16, NULL, NULL, NOW() + INTERVAL 3 DAY),
 
 -- Freelancer 3: Mobile Developer (Category 1)
-(false, 'APPLIED', 5, 3, 2, NULL, NULL, NOW() - INTERVAL 7 DAY),
-(false, 'APPLIED', 6, 3, 15, NULL, NULL, NOW() - INTERVAL 4 DAY),
-(false, 'APPLIED', 5, 3, 3, NULL, NULL, NOW() - INTERVAL 6 DAY),
+(false, 'APPLIED', 5, 3, 2, NULL, NULL, NOW() + INTERVAL 7 DAY),
+(false, 'APPLIED', 6, 3, 15, NULL, NULL, NOW() + INTERVAL 4 DAY),
+(false, 'APPLIED', 5, 3, 3, NULL, NULL, NOW() + INTERVAL 6 DAY),
 
 -- Freelancer 4: Data Analyst (Category 7)
-(false, 'VIEWED', 7, 4, 7, NULL, NULL, NOW() - INTERVAL 2 DAY),
-(false, 'APPLIED', 8, 4, 8, NULL, NULL, NOW() - INTERVAL 9 DAY),
-(false, 'APPLIED', 7, 4, 3, NULL, NULL, NOW() - INTERVAL 11 DAY),
+(false, 'VIEWED', 7, 4, 7, NULL, NULL, NOW() + INTERVAL 2 DAY),
+(false, 'APPLIED', 8, 4, 8, NULL, NULL, NOW() + INTERVAL 9 DAY),
+(false, 'APPLIED', 7, 4, 3, NULL, NULL, NOW() + INTERVAL 11 DAY),
 
 -- Freelancer 5: Video Editor (Category 9)
-(false, 'VIEWED', 9, 5, 12, NULL, NULL, NOW() - INTERVAL 1 DAY),
-(false, 'APPLIED', 10, 5, 17, NULL, NULL, NOW() - INTERVAL 5 DAY),
-(false, 'APPROVED', 9, 5, 11, 3, 3, NOW() - INTERVAL 14 DAY),
+(false, 'VIEWED', 9, 5, 12, NULL, NULL, NOW() + INTERVAL 1 DAY),
+(false, 'APPLIED', 10, 5, 17, NULL, NULL, NOW() + INTERVAL 5 DAY),
+(false, 'APPROVED', 9, 5, 11, 3, 3, NOW() + INTERVAL 14 DAY),
 
 -- Freelancer 6: Translator & Editor (Category 3)
-(false, 'APPLIED', 11, 6, 8, NULL, NULL, NOW() - INTERVAL 3 DAY),
-(false, 'VIEWED', 12, 6, 4, NULL, NULL, NOW() - INTERVAL 2 DAY),
+(false, 'APPLIED', 11, 6, 8, NULL, NULL, NOW() + INTERVAL 3 DAY),
+(false, 'VIEWED', 12, 6, 4, NULL, NULL, NOW() + INTERVAL 2 DAY),
 
 -- Freelancer 7: Online Tutor (Category 5)
-(false, 'APPLIED', 13, 7, 6, NULL, NULL, NOW() - INTERVAL 5 DAY),
-(false, 'APPROVED', 13, 7, 15, 5, 4, NOW() - INTERVAL 25 DAY);
+(false, 'APPLIED', 13, 7, 6, NULL, NULL, NOW() + INTERVAL 5 DAY),
+(false, 'APPROVED', 13, 7, 15, 5, 4, NOW() + INTERVAL 25 DAY);
+
 INSERT INTO reported_job (reason_freelancer, reason_admin, description, status, image, created_at, updated_at,
                           freelancer_id, job_id)
 VALUES ('Công việc không rõ ràng về yêu cầu và phạm vi.', 'Đang xem xét thêm bằng chứng từ hai phía.',
