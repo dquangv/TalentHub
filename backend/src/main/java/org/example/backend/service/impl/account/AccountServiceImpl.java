@@ -140,6 +140,7 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
                     soldPackage.setPrice(voucherPackage.getPrice());
                     soldPackage.setVoucherPackage(voucherPackage);
                     soldPackage.setClient(client);
+                    soldPackage.setStatus(true);
 
                     soldPackageRepository.save(soldPackage);
                 }
