@@ -94,6 +94,9 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
         account.setPassword(passwordEncoder.encode(accountRequestDTO.getPassword()));
         account.setRole(accountRequestDTO.getRole());
         account.setStatus(accountRequestDTO.getStatus());
+        System.out.println("lat " + accountRequestDTO.getLat());
+        System.out.println("lng " + accountRequestDTO.getLng());
+
         account.setLat(accountRequestDTO.getLat());
         account.setLng(accountRequestDTO.getLng());
 
