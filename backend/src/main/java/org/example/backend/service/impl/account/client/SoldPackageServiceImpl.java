@@ -48,7 +48,7 @@ public class SoldPackageServiceImpl implements SoldPackageService {
 
         SoldPackage soldPackage = soldPackageMapper.toEntity(soldPackageDTORequest);
         soldPackage.setStartDate(LocalDateTime.now());
-        soldPackage.setEndDate(LocalDateTime.now().plusDays(voucherPackage.getDuration()));
+        soldPackage.setEndDate(LocalDateTime.now().plusDays(30));
         soldPackage.setNumberPost(voucherPackage.getNumberPost());
         soldPackage.setNumberPosted(Long.valueOf(0));
         soldPackage.setVoucherPackage(voucherPackage);
