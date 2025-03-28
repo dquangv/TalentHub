@@ -14,6 +14,7 @@ import org.example.backend.entity.child.job.*;
 import org.example.backend.enums.ScopeJob;
 import org.example.backend.enums.StatusFreelancerJob;
 import org.example.backend.enums.StatusJob;
+import org.example.backend.enums.TypePackage;
 import org.example.backend.exception.BadRequestException;
 import org.example.backend.mapper.job.*;
 import org.example.backend.repository.*;
@@ -22,9 +23,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
@@ -154,6 +155,10 @@ public class JobServiceImpl implements JobService {
         createJobDTORequest.setCategoryId(category.getId());
 
         Job job = createJobMapper.toEntity(createJobDTORequest);
+
+        Long durationPost = soldPackage.getVoucherPackage().getDuration();
+
+        job.setEndDate(Date.from(LocalDateTime.now().plusDays(durationPost).atZone(ZoneId.systemDefault()).toInstant()));
 
         Job savedJob = jobRepository.save(job);
 
