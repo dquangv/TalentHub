@@ -6,6 +6,7 @@ import org.example.backend.dto.request.job.JobAdminDTOResponse;
 import org.example.backend.dto.request.job.JobDTORequest;
 import org.example.backend.dto.request.job.JobDetailDTORequest;
 import org.example.backend.dto.response.job.*;
+import org.example.backend.dto.response.job.JobWithPackageDTOResponse;
 import org.example.backend.entity.child.account.Account;
 import org.example.backend.entity.child.account.client.Client;
 import org.example.backend.entity.child.account.client.Company;
@@ -14,6 +15,7 @@ import org.example.backend.entity.child.job.*;
 import org.example.backend.enums.ScopeJob;
 import org.example.backend.enums.StatusFreelancerJob;
 import org.example.backend.enums.StatusJob;
+import org.example.backend.enums.TypePackage;
 import org.example.backend.exception.BadRequestException;
 import org.example.backend.mapper.job.*;
 import org.example.backend.repository.*;
@@ -22,9 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
@@ -299,5 +299,48 @@ public class JobServiceImpl implements JobService {
 
     public List<PostJobsDTOResponse> getPostedJobs(Long clientId) {
         return jobRepository.getPostedJobs(clientId).stream().map(postedJobsMapper::toResponseDto).collect(toList());
+    }
+
+    @Override
+    public List<JobWithPackageDTOResponse> getTop6JobsByTypePriority() {
+        List<JobWithPackageDTOResponse> result = new ArrayList<>();
+        Set<Long> usedClientIds = new HashSet<>();
+        TypePackage[] priorityOrder = {TypePackage.DIAMOND, TypePackage.GOLD, TypePackage.SILVER, TypePackage.NORMAL};
+
+        for (TypePackage type : priorityOrder) {
+            if (result.size() >= 6) break;
+
+            List<SoldPackage> soldPackages = soldPackageRepository.findByVoucherPackageType(type);
+            for (SoldPackage sp : soldPackages) {
+                if (result.size() >= 6) break;
+
+                Long clientId = sp.getClient().getId();
+                if (!usedClientIds.contains(clientId)) {
+                    List<Job> jobsByClient = jobRepository.findByClientIdOrderByCreatedAtDesc(clientId);
+                    for (Job job : jobsByClient) {
+                        if (result.size() < 6) {
+                            JobWithPackageDTOResponse dto = jobMapper.toResponseWithPackageDto(job, type);
+                            result.add(dto);
+                        } else {
+                            break;
+                        }
+                    }
+                    usedClientIds.add(clientId);
+                }
+            }
+        }
+
+        if (result.size() < 6) {
+            List<Job> remainingJobs = jobRepository.findAllByOrderByCreatedAtDesc();
+            for (Job job : remainingJobs) {
+                if (!result.stream().anyMatch(dto -> dto.getId().equals(job.getId())) && result.size() < 6) {
+                    JobWithPackageDTOResponse dto = jobMapper.toResponseWithPackageDto(job, TypePackage.NORMAL);
+                    result.add(dto);
+                }
+                if (result.size() >= 6) break;
+            }
+        }
+
+        return result;
     }
 }
