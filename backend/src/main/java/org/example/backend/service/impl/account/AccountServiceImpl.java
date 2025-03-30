@@ -3,6 +3,7 @@ package org.example.backend.service.impl.account;
 import com.nimbusds.jose.JOSEException;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.account.AccountDTORequest;
+import org.example.backend.dto.request.account.AuthenticationDTORequest;
 import org.example.backend.dto.response.account.AccountDTOResponse;
 import org.example.backend.dto.response.account.AdminAccountDTOResponse;
 import org.example.backend.dto.response.account.AuthenticationDtoResponse;
@@ -134,6 +135,74 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
 
         emailService.sendEmail(accountRequestDTO.getEmail(), EmailType.REGISTER_SUCCESS, "Account is registered");
         return accountMapper.toResponseDto(savedAccount);
+    }
+    private final AuthenticationService authenticationService;
+    @Transactional
+    @Override
+    public AuthenticationDtoResponse register(AccountDTORequest accountRequestDTO) {
+        if (accountRepository.existsByEmail(accountRequestDTO.getEmail())) {
+            throw new IllegalArgumentException("Account with email "
+                    + accountRequestDTO.getEmail() + " already exists");
+        }
+
+        Account account = accountMapper.toEntity(accountRequestDTO);
+        account.setEmail(accountRequestDTO.getEmail());
+        account.setPassword(passwordEncoder.encode(accountRequestDTO.getPassword()));
+        account.setRole(accountRequestDTO.getRole());
+        account.setStatus(accountRequestDTO.getStatus());
+        System.out.println("lat " + accountRequestDTO.getLat());
+        System.out.println("lng " + accountRequestDTO.getLng());
+
+        account.setLat(accountRequestDTO.getLat());
+        account.setLng(accountRequestDTO.getLng());
+
+        Account savedAccount = accountRepository.save(account);
+
+        User user = new User();
+
+//        user.setFirstName(accountRequestDTO.getFirstName());
+//        user.setLastName(accountRequestDTO.getLastName());
+//        user.setPhoneNumber(accountRequestDTO.getPhoneNumber());
+//        user.setAddress(accountRequestDTO.getAddress());
+//        user.setTitle(accountRequestDTO.getTitle());
+//        user.setIntroduction(accountRequestDTO.getIntroduction());
+
+        user.setAccount(savedAccount);
+
+//        account.setUser(user);
+
+        accountRepository.save(account);
+        userRepository.save(user);
+
+        try {
+            RoleUser role = RoleUser.valueOf(accountRequestDTO.getRole().getValue().toUpperCase());
+
+            switch (role) {
+                case FREELANCER -> {
+                    Freelancer freelancer = new Freelancer();
+                    freelancer.setUser(user);
+                    freelancerRepository.save(freelancer);
+                }
+                case CLIENT -> {
+                    Client client = new Client();
+                    client.setUser(user);
+                    clientRepository.save(client);
+                }
+            }
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Invalid role: " + accountRequestDTO.getRole());
+        }
+
+        emailService.sendEmail(accountRequestDTO.getEmail(), EmailType.REGISTER_SUCCESS, "Account is registered");
+        try {
+            return authenticationService.authenticate(AuthenticationDTORequest.builder().email(account.getEmail())
+                    .lat(account.getLat())
+                    .lng(account.getLng())
+                    .password(accountRequestDTO.getPassword()).build());
+        } catch (JOSEException e) {
+            throw new RuntimeException(e);
+        }
+//        return accountMapper.toResponseDto(savedAccount);
     }
 
 
