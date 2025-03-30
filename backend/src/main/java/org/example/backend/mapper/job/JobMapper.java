@@ -2,8 +2,10 @@ package org.example.backend.mapper.job;
 
 import org.example.backend.dto.request.job.JobDTORequest;
 import org.example.backend.dto.response.job.JobDTOResponse;
+import org.example.backend.dto.response.job.JobWithPackageDTOResponse;
 import org.example.backend.entity.child.job.Job;
 import org.example.backend.entity.child.job.JobSkill;
+import org.example.backend.enums.TypePackage;
 import org.example.backend.mapper.BaseMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -20,6 +22,11 @@ public interface JobMapper extends BaseMapper<Job, JobDTORequest, JobDTOResponse
     JobDTOResponse toResponseDto(Job job);
 
 
+    @Mapping(target = "skillName", expression = "java(mapSkills(job.getJobSkills()))")
+    @Mapping(target = "categoryName", source = "job.category.categoryTitle")
+    @Mapping(target = "typePackage", source = "typePackage")
+    JobWithPackageDTOResponse toResponseWithPackageDto(Job job, TypePackage typePackage);
+
     default List<String> mapSkills(List<JobSkill> jobSkills) {
         if (jobSkills == null || jobSkills.isEmpty()) {
             return List.of(); // Return an empty list if there are no skills
@@ -28,4 +35,5 @@ public interface JobMapper extends BaseMapper<Job, JobDTORequest, JobDTOResponse
                 .map(js -> js.getSkill().getSkillName()) // Get skill name from `Skill`
                 .toList(); // Collect to a list
     }
+
 }
