@@ -167,9 +167,9 @@ public class AccountController {
     }
 
     @PostMapping("/register")
-    public ResponseObject<AccountDTOResponse> register(@Valid @RequestBody AccountDTORequest request) {
-        AccountDTOResponse response = accountService.create(request);
-        return ResponseObject.<AccountDTOResponse>builder()
+    public ResponseObject<AuthenticationDtoResponse> register(@Valid @RequestBody AccountDTORequest request) {
+        AuthenticationDtoResponse response = accountService.register(request);
+        return ResponseObject.<AuthenticationDtoResponse>builder()
                 .message("Register successful")
                 .status(200)
                 .data(response)
