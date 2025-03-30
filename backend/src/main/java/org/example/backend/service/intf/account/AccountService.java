@@ -27,6 +27,6 @@ public interface AccountService extends BaseService<AccountDTORequest, AccountDT
     Boolean unBanAccount(String email);
     List<LocationDTOResponse> getLocations();
     boolean changePassword(String email, String currentPassword, String newPassword);
-
+    public AuthenticationDtoResponse register(AccountDTORequest accountRequestDTO);
 }
 
