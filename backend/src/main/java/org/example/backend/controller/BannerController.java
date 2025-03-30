@@ -29,29 +29,29 @@ public class BannerController {
             @RequestParam String title,
             @RequestParam boolean status,
             @RequestParam String vendor,
-            @RequestParam LocalDateTime startTime,
-            @RequestParam LocalDateTime endTime,
+            @RequestParam String startTime,
+            @RequestParam String endTime,
             @RequestParam MultipartFile image) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        LocalDate startLocalDate;
-        LocalDate endLocalDate;
+        LocalDateTime startLocalDate;
+        LocalDateTime endLocalDate;
 
-        /*try {
-            startLocalDate = LocalDate.parse(startTime, formatter);
-            endLocalDate = LocalDate.parse(endTime, formatter);
+        try {
+            startLocalDate = LocalDate.parse(startTime, formatter).atStartOfDay();;
+            endLocalDate = LocalDate.parse(endTime, formatter).atStartOfDay();;
         } catch (DateTimeParseException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid date format. Use yyyy-MM-dd.");
-        }*/
+        }
 
         BannerDTORequest bannerDTORequest = new BannerDTORequest();
         bannerDTORequest.setTitle(title);
         bannerDTORequest.setStatus(status);
         bannerDTORequest.setVendor(vendor);
         bannerDTORequest.setImage(image);
-        bannerDTORequest.setStartTime(startTime);
-        bannerDTORequest.setEndTime(endTime);
+        bannerDTORequest.setStartTime(startLocalDate);
+        bannerDTORequest.setEndTime(endLocalDate);
 
         BannerDTOResponse createdBanner = bannerService.create(bannerDTORequest);
 
@@ -68,19 +68,29 @@ public class BannerController {
             @RequestParam String title,
             @RequestParam boolean status,
             @RequestParam String vendor,
-            @RequestParam LocalDateTime endTime,
-            @RequestParam LocalDateTime startTime,
+            @RequestParam String endTime,
+            @RequestParam String startTime,
 
 
             @RequestParam(required = false) MultipartFile image) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+        LocalDateTime startLocalDate;
+        LocalDateTime endLocalDate;
+
+        try {
+            startLocalDate = LocalDate.parse(startTime, formatter).atStartOfDay();;
+            endLocalDate = LocalDate.parse(endTime, formatter).atStartOfDay();;
+        } catch (DateTimeParseException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid date format. Use yyyy-MM-dd.");
+        }
         BannerDTORequest bannerDTORequest = new BannerDTORequest();
         bannerDTORequest.setTitle(title);
         bannerDTORequest.setStatus(status);
         bannerDTORequest.setVendor(vendor);
         bannerDTORequest.setImage(image);
-        bannerDTORequest.setStartTime(startTime);
-        bannerDTORequest.setEndTime(endTime);
+        bannerDTORequest.setStartTime(startLocalDate);
+        bannerDTORequest.setEndTime(endLocalDate);
 
 
         BannerDTOResponse updatedBanner = bannerService.update(id, bannerDTORequest);
