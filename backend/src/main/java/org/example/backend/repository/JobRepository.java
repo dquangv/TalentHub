@@ -31,4 +31,13 @@
         long countByStatus(StatusJob status);
 
         List<Job> findByStatus(StatusJob status);
+
+        @Query("SELECT j FROM Job j ORDER BY j.createdAt DESC")
+        List<Job> findAllByOrderByCreatedAtDesc();
+
+        @Query("SELECT j FROM Job j " +
+                "WHERE j.client.id = :clientId " +
+                "ORDER BY j.createdAt DESC")
+        List<Job> findByClientIdOrderByCreatedAtDesc(Long clientId);
+
     }
