@@ -4,6 +4,7 @@ import com.nimbusds.jose.JOSEException;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.account.AccountDTORequest;
 import org.example.backend.dto.request.account.AuthenticationDTORequest;
+import org.example.backend.dto.request.account.client.SoldPackageDTORequest;
 import org.example.backend.dto.response.account.AccountDTOResponse;
 import org.example.backend.dto.response.account.AdminAccountDTOResponse;
 import org.example.backend.dto.response.account.AuthenticationDtoResponse;
@@ -11,21 +12,22 @@ import org.example.backend.dto.response.account.LocationDTOResponse;
 import org.example.backend.entity.child.account.Account;
 import org.example.backend.entity.child.account.User;
 import org.example.backend.entity.child.account.client.Client;
+import org.example.backend.entity.child.account.client.SoldPackage;
 import org.example.backend.entity.child.account.freelancer.Freelancer;
+import org.example.backend.entity.child.admin.VoucherPackage;
 import org.example.backend.enums.EmailType;
 import org.example.backend.enums.RoleUser;
 import org.example.backend.enums.StatusAccount;
+import org.example.backend.enums.TypePackage;
 import org.example.backend.exception.NotFoundException;
 import org.example.backend.mapper.Account.AccountMapper;
 import org.example.backend.mapper.Account.AdminAccountMapper;
 import org.example.backend.mapper.Account.LocationMapper;
-import org.example.backend.repository.AccountRepository;
-import org.example.backend.repository.ClientRepository;
-import org.example.backend.repository.FreelancerRepository;
-import org.example.backend.repository.UserRepository;
+import org.example.backend.repository.*;
 import org.example.backend.service.intf.EmailService;
 import org.example.backend.service.intf.account.AccountService;
 import org.example.backend.service.intf.account.AuthenticationService;
+import org.example.backend.service.intf.account.client.SoldPackageService;
 import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.example.backend.utils.GeoUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,6 +39,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.management.relation.Role;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -55,6 +58,8 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
     private final AuthenticationServiceImpl authenticationServiceImpl;
+    private final SoldPackageRepository soldPackageRepository;
+    private final VoucherPackageRepository voucherPackageRepository;
 
     @Override
     public boolean changePassword(String email, String currentPassword, String newPassword) {
@@ -127,6 +132,21 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
                     Client client = new Client();
                     client.setUser(user);
                     clientRepository.save(client);
+
+                    VoucherPackage voucherPackage = voucherPackageRepository.findTopByTypePackageOrderByIdDesc(TypePackage.NORMAL);
+
+                    SoldPackage soldPackage = new SoldPackage();
+                    soldPackage.setStartDate(LocalDateTime.now());
+                    soldPackage.setEndDate(LocalDateTime.now().plusDays(voucherPackage.getDuration()));
+                    soldPackage.setNumberPost(voucherPackage.getNumberPost());
+                    soldPackage.setNumberPosted(Long.valueOf(0));
+                    soldPackage.setVoucherPackage(voucherPackage);
+                    soldPackage.setPrice(voucherPackage.getPrice());
+                    soldPackage.setVoucherPackage(voucherPackage);
+                    soldPackage.setClient(client);
+                    soldPackage.setStatus(true);
+
+                    soldPackageRepository.save(soldPackage);
                 }
             }
         } catch (IllegalArgumentException e) {

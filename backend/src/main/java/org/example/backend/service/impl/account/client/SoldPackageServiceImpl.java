@@ -37,11 +37,18 @@ public class SoldPackageServiceImpl implements SoldPackageService {
             throw new BadRequestException("Type Package cannot be null");
         }
 
+        SoldPackage oldSoldPackage = soldPackageRepository.findTopByClientIdAndStatusOrderByStartDateDesc(soldPackageDTORequest.getClientId(), true);
+
+        if (oldSoldPackage != null) {
+            oldSoldPackage.setStatus(false);
+            soldPackageRepository.save(oldSoldPackage);
+        }
+
         VoucherPackage voucherPackage = voucherPackageRepository.findTopByTypePackageOrderByIdDesc(soldPackageDTORequest.getTypePackage());
 
         SoldPackage soldPackage = soldPackageMapper.toEntity(soldPackageDTORequest);
         soldPackage.setStartDate(LocalDateTime.now());
-        soldPackage.setEndDate(LocalDateTime.now().plusDays(voucherPackage.getDuration()));
+        soldPackage.setEndDate(LocalDateTime.now().plusDays(30));
         soldPackage.setNumberPost(voucherPackage.getNumberPost());
         soldPackage.setNumberPosted(Long.valueOf(0));
         soldPackage.setVoucherPackage(voucherPackage);

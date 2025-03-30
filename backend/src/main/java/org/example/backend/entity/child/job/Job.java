@@ -19,6 +19,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -44,6 +45,9 @@ public class Job extends AbstractEntity<Long> {
 
     @Column(name = "duration")
     private Long duration;
+
+    @Column(name = "end_date")
+    private Date endDate;
 
     @Column(name = "job_opportunity")
     private Boolean jobOpportunity;
