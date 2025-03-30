@@ -8,6 +8,7 @@
     import org.springframework.data.repository.query.Param;
     import org.example.backend.enums.StatusJob;
 
+    import java.util.Date;
     import java.util.List;
     import java.util.Optional;
 
@@ -31,4 +32,7 @@
         long countByStatus(StatusJob status);
 
         List<Job> findByStatus(StatusJob status);
+
+        List<Job> findByEndDateLessThanEqualAndStatusNot(Date endDate, StatusJob status);
+
     }
