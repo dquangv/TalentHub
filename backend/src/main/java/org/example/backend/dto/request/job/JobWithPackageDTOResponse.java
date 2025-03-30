@@ -25,4 +25,5 @@ public class JobWithPackageDTOResponse {
     private List<String> skillName;
     private boolean seen;
     private TypePackage typePackage;
+    private Long jobId;
 }
