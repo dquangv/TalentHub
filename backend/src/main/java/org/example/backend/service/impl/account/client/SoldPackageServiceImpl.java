@@ -2,6 +2,7 @@ package org.example.backend.service.impl.account.client;
 
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.account.client.SoldPackageDTORequest;
+import org.example.backend.dto.response.account.client.CurrentPackageDTOResponse;
 import org.example.backend.dto.response.account.client.SoldPackageDTOResponse;
 import org.example.backend.entity.child.account.client.SoldPackage;
 import org.example.backend.entity.child.admin.VoucherPackage;
@@ -71,5 +72,52 @@ public class SoldPackageServiceImpl implements SoldPackageService {
     @Override
     public Boolean deleteById(Long aLong) {
         return null;
+    }
+
+    @Override
+    public Optional<CurrentPackageDTOResponse> getCurrentPackage(Long clientId) {
+        if (clientId == null) {
+            throw new BadRequestException("Client ID cannot be null");
+        }
+
+        SoldPackage currentPackage = soldPackageRepository.findTopByClientIdAndStatusOrderByStartDateDesc(clientId, true);
+
+        if (currentPackage == null) {
+            return Optional.empty();
+        }
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime endDate = currentPackage.getEndDate();
+
+        long remainingHours = 0;
+        String remainingFormatted = "Đã hết hạn";
+
+        if (endDate.isAfter(now)) {
+            remainingHours = java.time.Duration.between(now, endDate).toHours();
+            long days = remainingHours / 24;
+            long hours = remainingHours % 24;
+
+            if (days > 0) {
+                remainingFormatted = days + " ngày " + hours + " giờ";
+            } else {
+                remainingFormatted = hours + " giờ";
+            }
+        }
+        Long postsRemaining = currentPackage.getNumberPost() - currentPackage.getNumberPosted();
+        if (postsRemaining < 0) postsRemaining = 0L;
+
+        return Optional.of(CurrentPackageDTOResponse.builder()
+                .id(currentPackage.getId())
+                .startDate(currentPackage.getStartDate())
+                .endDate(currentPackage.getEndDate())
+                .price(currentPackage.getPrice())
+                .numberPost(currentPackage.getNumberPost())
+                .numberPosted(currentPackage.getNumberPosted())
+                .postsRemaining(postsRemaining)
+                .packageType(currentPackage.getVoucherPackage().getTypePackage())
+                .packageTypeName(currentPackage.getVoucherPackage().getTypePackage().getDisplayName())
+                .remainingTimeInHours(remainingHours)
+                .remainingTimeFormatted(remainingFormatted)
+                .isActive(currentPackage.isStatus())
+                .build());
     }
 }
