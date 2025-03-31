@@ -1204,6 +1204,229 @@ VALUES (NOW(), DATE_ADD(NOW(), INTERVAL 14 DAY), 200000, 10, 3, true, 3, 1),
        (NOW(), DATE_ADD(NOW(), INTERVAL 14 DAY), 90000, 5, 2, true, 2, 4),
        (NOW(), DATE_ADD(NOW(), INTERVAL 30 DAY), 390000, 10, 3, true, 4, 5),
        (NOW(), DATE_ADD(NOW(), INTERVAL 14 DAY), 90000, 5, 2, true, 2, 6);
+INSERT INTO sold_packages (start_date, end_date, price, number_post, number_posted, status, voucher_packages, client)
+VALUES
+    (DATE_SUB(NOW(), INTERVAL 2 MONTH), DATE_SUB(NOW(), INTERVAL 1 MONTH), 90000, 5, 5, false, 2, 1),
+    (DATE_SUB(NOW(), INTERVAL 1 MONTH), DATE_SUB(NOW(), INTERVAL 5 DAY), 290000, 10, 7, false, 3, 1);
+
+INSERT INTO sold_packages (start_date, end_date, price, number_post, number_posted, status, voucher_packages, client)
+VALUES
+    (DATE_SUB(NOW(), INTERVAL 3 MONTH), DATE_SUB(NOW(), INTERVAL 2 MONTH), 0, 1, 1, false, 1, 2),
+    (DATE_SUB(NOW(), INTERVAL 2 MONTH), DATE_SUB(NOW(), INTERVAL 15 DAY), 90000, 5, 5, false, 2, 2);
+
+INSERT INTO sold_packages (start_date, end_date, price, number_post, number_posted, status, voucher_packages, client)
+VALUES
+    (DATE_SUB(NOW(), INTERVAL 3 MONTH), DATE_SUB(NOW(), INTERVAL 2 MONTH), 90000, 5, 4, false, 2, 3),
+    (DATE_SUB(NOW(), INTERVAL 2 MONTH), DATE_SUB(NOW(), INTERVAL 5 DAY), 290000, 10, 8, false, 3, 3);
+
+INSERT INTO sold_packages (start_date, end_date, price, number_post, number_posted, status, voucher_packages, client)
+VALUES
+    (DATE_SUB(NOW(), INTERVAL 2 MONTH), DATE_SUB(NOW(), INTERVAL 1 MONTH), 90000, 5, 3, false, 2, 4),
+    (DATE_SUB(NOW(), INTERVAL 1 MONTH), DATE_SUB(NOW(), INTERVAL 5 DAY), 90000, 5, 4, false, 2, 4);
+
+INSERT INTO sold_packages (start_date, end_date, price, number_post, number_posted, status, voucher_packages, client)
+VALUES
+    (DATE_SUB(NOW(), INTERVAL 3 MONTH), DATE_SUB(NOW(), INTERVAL 2 MONTH), 290000, 10, 9, false, 3, 5),
+    (DATE_SUB(NOW(), INTERVAL 2 MONTH), DATE_SUB(NOW(), INTERVAL 5 DAY), 290000, 10, 8, false, 3, 5);
+
+INSERT INTO sold_packages (start_date, end_date, price, number_post, number_posted, status, voucher_packages, client)
+VALUES
+    (DATE_SUB(NOW(), INTERVAL 2 MONTH), DATE_SUB(NOW(), INTERVAL 1 MONTH), 90000, 5, 3, false, 2, 6),
+    (DATE_SUB(NOW(), INTERVAL 1 MONTH), DATE_SUB(NOW(), INTERVAL 5 DAY), 90000, 5, 4, false, 2, 6);
+
+INSERT INTO job (title, scope, hour_work, duration, job_opportunity, from_price, to_price, type_price, description, type_payment, status, created_at, updated_at, client_id, category_id, end_date)
+VALUES
+    ('Lập trình viên Backend Java', 'MEDIUM', 30, 45, true, 4500000, 12000000, 'VNĐ', 'Phát triển các API và dịch vụ backend cho ứng dụng thương mại điện tử bằng Java Spring Boot.', 'FULL', 'CLOSED', DATE_SUB(NOW(), INTERVAL 55 DAY), NULL, 1, 1, DATE_SUB(NOW(), INTERVAL 35 DAY)),
+    ('Phát triển cơ sở dữ liệu', 'SMALL', 20, 30, false, 3000000, 8000000, 'VNĐ', 'Thiết kế và tối ưu hóa cơ sở dữ liệu MySQL cho ứng dụng web có lưu lượng truy cập cao.', 'HOURLY', 'CLOSED', DATE_SUB(NOW(), INTERVAL 50 DAY), NULL, 1, 1, DATE_SUB(NOW(), INTERVAL 35 DAY)),
+    ('Tích hợp thanh toán online', 'MEDIUM', 25, 35, true, 4000000, 9000000, 'VNĐ', 'Tích hợp các cổng thanh toán như VNPay, Momo vào hệ thống website hiện có.', 'FULL', 'CLOSED', DATE_SUB(NOW(), INTERVAL 45 DAY), NULL, 1, 1, DATE_SUB(NOW(), INTERVAL 35 DAY)),
+    ('Phát triển API Authentication', 'SMALL', 15, 25, false, 2500000, 6000000, 'VNĐ', 'Xây dựng hệ thống xác thực người dùng bằng JWT và OAuth2.', 'HOURLY', 'CLOSED', DATE_SUB(NOW(), INTERVAL 40 DAY), NULL, 1, 1, DATE_SUB(NOW(), INTERVAL 35 DAY)),
+    ('Thiết kế UI Dashboard', 'SMALL', 20, 30, false, 3000000, 7000000, 'VNĐ', 'Thiết kế giao diện dashboard quản trị cho website bán hàng bằng ReactJS.', 'HOURLY', 'CLOSED', DATE_SUB(NOW(), INTERVAL 35 DAY), NULL, 1, 2, DATE_SUB(NOW(), INTERVAL 35 DAY));
+
+INSERT INTO job (title, scope, hour_work, duration, job_opportunity, from_price, to_price, type_price, description, type_payment, status, created_at, updated_at, client_id, category_id, end_date)
+VALUES
+    ('Phát triển ứng dụng mobile Cross-platform', 'LARGE', 40, 60, true, 8000000, 20000000, 'VNĐ', 'Phát triển ứng dụng mobile đa nền tảng sử dụng Flutter hoặc React Native.', 'FULL', 'CLOSED', DATE_SUB(NOW(), INTERVAL 25 DAY), NULL, 1, 1, DATE_SUB(NOW(), INTERVAL 5 DAY)),
+    ('Thiết kế UI/UX cho ứng dụng mobile', 'MEDIUM', 30, 45, true, 6000000, 15000000, 'VNĐ', 'Thiết kế giao diện người dùng và trải nghiệm cho ứng dụng di động thương mại điện tử.', 'FULL', 'CLOSED', DATE_SUB(NOW(), INTERVAL 20 DAY), NULL, 1, 2, DATE_SUB(NOW(), INTERVAL 5 DAY)),
+    ('Phát triển backend cho ứng dụng di động', 'LARGE', 45, 60, true, 9000000, 22000000, 'VNĐ', 'Xây dựng hệ thống backend cho ứng dụng di động, bao gồm API và hệ thống đồng bộ dữ liệu.', 'FULL', 'CLOSED', DATE_SUB(NOW(), INTERVAL 18 DAY), NULL, 1, 1, DATE_SUB(NOW(), INTERVAL 5 DAY)),
+    ('Xây dựng hệ thống thông báo push', 'SMALL', 20, 30, false, 3500000, 8000000, 'VNĐ', 'Xây dựng hệ thống thông báo đẩy cho ứng dụng di động sử dụng Firebase Cloud Messaging.', 'HOURLY', 'CLOSED', DATE_SUB(NOW(), INTERVAL 15 DAY), NULL, 1, 1, DATE_SUB(NOW(), INTERVAL 5 DAY)),
+    ('Tích hợp Analytics và Tracking', 'SMALL', 15, 25, false, 3000000, 7000000, 'VNĐ', 'Tích hợp các công cụ phân tích dữ liệu như Google Analytics, Firebase Analytics vào ứng dụng.', 'HOURLY', 'CLOSED', DATE_SUB(NOW(), INTERVAL 10 DAY), NULL, 1, 1, DATE_SUB(NOW(), INTERVAL 5 DAY)),
+    ('Thiết kế logo và bộ nhận diện', 'SMALL', 10, 20, false, 2000000, 5000000, 'VNĐ', 'Thiết kế logo và bộ nhận diện thương hiệu cho ứng dụng di động.', 'HOURLY', 'CLOSED', DATE_SUB(NOW(), INTERVAL 8 DAY), NULL, 1, 2, DATE_SUB(NOW(), INTERVAL 5 DAY)),
+    ('Viết nội dung cho ứng dụng', 'SMALL', 15, 20, false, 2000000, 4500000, 'VNĐ', 'Viết nội dung giới thiệu, hướng dẫn sử dụng và các thông tin khác cho ứng dụng di động.', 'HOURLY', 'CLOSED', DATE_SUB(NOW(), INTERVAL 7 DAY), NULL, 1, 3, DATE_SUB(NOW(), INTERVAL 5 DAY));
+
+INSERT INTO job (title, scope, hour_work, duration, job_opportunity, from_price, to_price, type_price, description, type_payment, status, created_at, updated_at, client_id, category_id, end_date)
+VALUES
+    ('Nhập liệu sản phẩm lên website', 'SMALL', 10, 15, false, 1000000, 2000000, 'VNĐ', 'Nhập thông tin sản phẩm lên hệ thống website bán hàng.', 'HOURLY', 'CLOSED', DATE_SUB(NOW(), INTERVAL 80 DAY), NULL, 2, 10, DATE_SUB(NOW(), INTERVAL 65 DAY)),
+    ('Thiết kế banner quảng cáo', 'SMALL', 15, 20, false, 2000000, 4500000, 'VNĐ', 'Thiết kế các banner quảng cáo cho website và mạng xã hội.', 'HOURLY', 'CLOSED', DATE_SUB(NOW(), INTERVAL 55 DAY), NULL, 2, 2, DATE_SUB(NOW(), INTERVAL 35 DAY)),
+    ('Viết bài blog về công nghệ', 'SMALL', 10, 15, false, 1500000, 3500000, 'VNĐ', 'Viết các bài blog về công nghệ và xu hướng kỹ thuật mới.', 'HOURLY', 'CLOSED', DATE_SUB(NOW(), INTERVAL 50 DAY), NULL, 2, 3, DATE_SUB(NOW(), INTERVAL 35 DAY)),
+    ('Chỉnh sửa video giới thiệu', 'MEDIUM', 25, 30, true, 4000000, 9000000, 'VNĐ', 'Chỉnh sửa video giới thiệu sản phẩm và công ty, độ dài 2-3 phút.', 'FULL', 'CLOSED', DATE_SUB(NOW(), INTERVAL 45 DAY), NULL, 2, 9, DATE_SUB(NOW(), INTERVAL 35 DAY)),
+    ('Tối ưu SEO cho website', 'MEDIUM', 20, 25, false, 3500000, 8000000, 'VNĐ', 'Tối ưu hóa website để cải thiện thứ hạng tìm kiếm trên Google.', 'HOURLY', 'CLOSED', DATE_SUB(NOW(), INTERVAL 40 DAY), NULL, 2, 4, DATE_SUB(NOW(), INTERVAL 35 DAY)),
+    ('Quản lý fanpage Facebook', 'SMALL', 15, 30, false, 3000000, 6000000, 'VNĐ', 'Quản lý fanpage Facebook của công ty, tạo nội dung và tương tác với khách hàng.', 'HOURLY', 'CLOSED', DATE_SUB(NOW(), INTERVAL 20 DAY), NULL, 2, 4, DATE_SUB(NOW(), INTERVAL 15 DAY));
+
+INSERT INTO job_skill (job_id, skill_id)
+VALUES
+    ((SELECT id FROM job WHERE title = 'Lập trình viên Backend Java'), 1),
+    ((SELECT id FROM job WHERE title = 'Lập trình viên Backend Java'), 2),
+    ((SELECT id FROM job WHERE title = 'Lập trình viên Backend Java'), 21),
+    ((SELECT id FROM job WHERE title = 'Lập trình viên Backend Java'), 22),
+    ((SELECT id FROM job WHERE title = 'Phát triển cơ sở dữ liệu'), 21),
+    ((SELECT id FROM job WHERE title = 'Phát triển cơ sở dữ liệu'), 22),
+    ((SELECT id FROM job WHERE title = 'Phát triển cơ sở dữ liệu'), 23),
+    ((SELECT id FROM job WHERE title = 'Tích hợp thanh toán online'), 1),
+    ((SELECT id FROM job WHERE title = 'Tích hợp thanh toán online'), 2),
+    ((SELECT id FROM job WHERE title = 'Tích hợp thanh toán online'), 6),
+    ((SELECT id FROM job WHERE title = 'Tích hợp thanh toán online'), 25),
+    ((SELECT id FROM job WHERE title = 'Phát triển API Authentication'), 1),
+    ((SELECT id FROM job WHERE title = 'Phát triển API Authentication'), 2),
+    ((SELECT id FROM job WHERE title = 'Phát triển API Authentication'), 6),
+    ((SELECT id FROM job WHERE title = 'Thiết kế UI Dashboard'), 3),
+    ((SELECT id FROM job WHERE title = 'Thiết kế UI Dashboard'), 39),
+    ((SELECT id FROM job WHERE title = 'Thiết kế UI Dashboard'), 41);
+
+INSERT INTO job_skill (job_id, skill_id)
+VALUES
+    ((SELECT id FROM job WHERE title = 'Phát triển ứng dụng mobile Cross-platform'), 19),
+    ((SELECT id FROM job WHERE title = 'Phát triển ứng dụng mobile Cross-platform'), 20),
+    ((SELECT id FROM job WHERE title = 'Phát triển ứng dụng mobile Cross-platform'), 25),
+    ((SELECT id FROM job WHERE title = 'Thiết kế UI/UX cho ứng dụng mobile'), 39),
+    ((SELECT id FROM job WHERE title = 'Thiết kế UI/UX cho ứng dụng mobile'), 41),
+    ((SELECT id FROM job WHERE title = 'Thiết kế UI/UX cho ứng dụng mobile'), 42),
+    ((SELECT id FROM job WHERE title = 'Thiết kế UI/UX cho ứng dụng mobile'), 43),
+    ((SELECT id FROM job WHERE title = 'Phát triển backend cho ứng dụng di động'), 1),
+    ((SELECT id FROM job WHERE title = 'Phát triển backend cho ứng dụng di động'), 2),
+    ((SELECT id FROM job WHERE title = 'Phát triển backend cho ứng dụng di động'), 21),
+    ((SELECT id FROM job WHERE title = 'Phát triển backend cho ứng dụng di động'), 22),
+    ((SELECT id FROM job WHERE title = 'Phát triển backend cho ứng dụng di động'), 33),
+    ((SELECT id FROM job WHERE title = 'Xây dựng hệ thống thông báo push'), 1),
+    ((SELECT id FROM job WHERE title = 'Xây dựng hệ thống thông báo push'), 6),
+    ((SELECT id FROM job WHERE title = 'Xây dựng hệ thống thông báo push'), 25);
+
+INSERT INTO job_skill (job_id, skill_id)
+VALUES
+    ((SELECT id FROM job WHERE title = 'Thiết kế banner quảng cáo'), 40),
+    ((SELECT id FROM job WHERE title = 'Thiết kế banner quảng cáo'), 41),
+    ((SELECT id FROM job WHERE title = 'Thiết kế banner quảng cáo'), 42),
+    ((SELECT id FROM job WHERE title = 'Viết bài blog về công nghệ'), 49),
+    ((SELECT id FROM job WHERE title = 'Viết bài blog về công nghệ'), 50),
+    ((SELECT id FROM job WHERE title = 'Viết bài blog về công nghệ'), 51),
+    ((SELECT id FROM job WHERE title = 'Chỉnh sửa video giới thiệu'), 59),
+    ((SELECT id FROM job WHERE title = 'Chỉnh sửa video giới thiệu'), 60),
+    ((SELECT id FROM job WHERE title = 'Chỉnh sửa video giới thiệu'), 61),
+    ((SELECT id FROM job WHERE title = 'Tối ưu SEO cho website'), 48),
+    ((SELECT id FROM job WHERE title = 'Tối ưu SEO cho website'), 49),
+    ((SELECT id FROM job WHERE title = 'Tối ưu SEO cho website'), 50),
+    ((SELECT id FROM job WHERE title = 'Quản lý fanpage Facebook'), 54),
+    ((SELECT id FROM job WHERE title = 'Quản lý fanpage Facebook'), 55),
+    ((SELECT id FROM job WHERE title = 'Quản lý fanpage Facebook'), 56);
+
+INSERT INTO client_review (rating, note)
+VALUES
+    (4.0, 'Client đánh giá cao về kỹ năng và tiến độ làm việc.'),
+    (4.5, 'Ứng viên hoàn thành công việc xuất sắc, đúng yêu cầu.'),
+    (4.2, 'Chất lượng công việc tốt, giao tiếp hiệu quả.'),
+    (4.6, 'Đáp ứng tốt yêu cầu, giao nộp đúng hạn.'),
+    (4.3, 'Freelancer có kỹ năng chuyên môn tốt, dễ hợp tác.'),
+    (4.1, 'Hoàn thành công việc tốt, đáp ứng mọi yêu cầu.'),
+    (4.7, 'Làm việc chuyên nghiệp, kết quả xuất sắc.'),
+    (4.4, 'Phản hồi nhanh chóng, chất lượng công việc cao.'),
+    (4.8, 'Rất hài lòng với kết quả và cách làm việc.'),
+    (4.2, 'Kỹ năng tốt, giao tiếp hiệu quả.');
+
+INSERT INTO freelancer_review (rating, note)
+VALUES
+    (4.2, 'Client hỗ trợ tốt, yêu cầu rõ ràng.'),
+    (4.5, 'Dự án thú vị, client dễ làm việc cùng.'),
+    (4.0, 'Yêu cầu rõ ràng, thanh toán đúng hạn.'),
+    (4.6, 'Client chuyên nghiệp, cung cấp feedback kịp thời.'),
+    (4.3, 'Hợp tác tốt, dự án được quản lý hiệu quả.'),
+    (4.1, 'Client thân thiện, yêu cầu hợp lý.'),
+    (4.7, 'Rất tốt, mong được hợp tác lần sau.'),
+    (4.4, 'Giao tiếp thuận lợi, yêu cầu rõ ràng.'),
+    (4.8, 'Trải nghiệm làm việc tuyệt vời.'),
+    (4.2, 'Client hỗ trợ nhiệt tình, dễ hợp tác.');
+
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date, freelancer_review_id, client_review_id)
+SELECT false, 'APPROVED', 1, 1, id, DATE_SUB(NOW(), INTERVAL 54 DAY), 6, 6
+FROM job WHERE title = 'Lập trình viên Backend Java'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 1 AND job_id = job.id);
+
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date, freelancer_review_id, client_review_id)
+SELECT false, 'APPROVED', 2, 1, id, DATE_SUB(NOW(), INTERVAL 49 DAY), 7, 7
+FROM job WHERE title = 'Phát triển cơ sở dữ liệu'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 1 AND job_id = job.id);
+
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date, freelancer_review_id, client_review_id)
+SELECT false, 'APPROVED', 1, 1, id, DATE_SUB(NOW(), INTERVAL 44 DAY), 8, 8
+FROM job WHERE title = 'Tích hợp thanh toán online'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 1 AND job_id = job.id);
+
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date, freelancer_review_id, client_review_id)
+SELECT false, 'REJECTED', 5, 3, id, DATE_SUB(NOW(), INTERVAL 53 DAY), NULL, NULL
+FROM job WHERE title = 'Lập trình viên Backend Java'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 3 AND job_id = job.id);
+
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date, freelancer_review_id, client_review_id)
+SELECT false, 'APPROVED', 5, 3, id, DATE_SUB(NOW(), INTERVAL 39 DAY), 9, 9
+FROM job WHERE title = 'Phát triển API Authentication'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 3 AND job_id = job.id);
+
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date, freelancer_review_id, client_review_id)
+SELECT false, 'APPLIED', 3, 2, id, DATE_SUB(NOW(), INTERVAL 34 DAY), NULL, NULL
+FROM job WHERE title = 'Thiết kế UI Dashboard'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 2 AND job_id = job.id);
+
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date, freelancer_review_id, client_review_id)
+SELECT false, 'APPROVED', 6, 3, id, DATE_SUB(NOW(), INTERVAL 24 DAY), 10, 10
+FROM job WHERE title = 'Phát triển ứng dụng mobile Cross-platform'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 3 AND job_id = job.id);
+
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date, freelancer_review_id, client_review_id)
+SELECT false, 'APPROVED', 3, 2, id, DATE_SUB(NOW(), INTERVAL 19 DAY), 11, 11
+FROM job WHERE title = 'Thiết kế UI/UX cho ứng dụng mobile'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 2 AND job_id = job.id);
+
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date, freelancer_review_id, client_review_id)
+SELECT false, 'APPROVED', 1, 1, id, DATE_SUB(NOW(), INTERVAL 17 DAY), 12, 12
+FROM job WHERE title = 'Phát triển backend cho ứng dụng di động'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 1 AND job_id = job.id);
+
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date, freelancer_review_id, client_review_id)
+SELECT false, 'APPROVED', 5, 3, id, DATE_SUB(NOW(), INTERVAL 14 DAY), 13, 13
+FROM job WHERE title = 'Xây dựng hệ thống thông báo push'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 3 AND job_id = job.id);
+
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date, freelancer_review_id, client_review_id)
+SELECT false, 'APPLIED', 9, 5, id, DATE_SUB(NOW(), INTERVAL 7 DAY), NULL, NULL
+FROM job WHERE title = 'Thiết kế logo và bộ nhận diện'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 5 AND job_id = job.id);
+
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date, freelancer_review_id, client_review_id)
+SELECT false, 'APPROVED', 3, 2, id, DATE_SUB(NOW(), INTERVAL 6 DAY), 14, 14
+FROM job WHERE title = 'Viết nội dung cho ứng dụng'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 2 AND job_id = job.id);
+
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date, freelancer_review_id, client_review_id)
+SELECT false, 'APPROVED', 3, 2, id, DATE_SUB(NOW(), INTERVAL 39 DAY), 15, 15
+FROM job WHERE title = 'Tối ưu SEO cho website'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 2 AND job_id = job.id);
+
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date, freelancer_review_id, client_review_id)
+SELECT false, 'APPROVED', 4, 2, id, DATE_SUB(NOW(), INTERVAL 49 DAY), null, null
+FROM job WHERE title = 'Viết bài blog về công nghệ'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 2 AND job_id = job.id);
+
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date, freelancer_review_id, client_review_id)
+SELECT false, 'APPROVED', 9, 5, id, DATE_SUB(NOW(), INTERVAL 54 DAY), null, null
+FROM job WHERE title = 'Thiết kế banner quảng cáo'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 5 AND job_id = job.id);
+
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date, freelancer_review_id, client_review_id)
+SELECT false, 'APPROVED', 10, 5, id, DATE_SUB(NOW(), INTERVAL 44 DAY), null, null
+FROM job WHERE title = 'Chỉnh sửa video giới thiệu'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 5 AND job_id = job.id);
+
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date, freelancer_review_id, client_review_id)
+SELECT false, 'APPLIED', 4, 2, id, DATE_SUB(NOW(), INTERVAL 19 DAY), NULL, NULL
+FROM job WHERE title = 'Quản lý fanpage Facebook'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 2 AND job_id = job.id);
 
 INSERT INTO banner (title, image, status, vendor, duration, created_at, updated_at, price, start_time, end_time, logo)
 VALUES ('Grand Opening - Ưu đãi khai trương', '/images/opening_banner.jpg', true, 'TalentHub', 30, NOW(), NULL, 0,
