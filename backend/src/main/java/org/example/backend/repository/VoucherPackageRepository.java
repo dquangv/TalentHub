@@ -1,5 +1,6 @@
 package org.example.backend.repository;
 
+import org.example.backend.entity.child.account.client.SoldPackage;
 import org.example.backend.entity.child.admin.VoucherPackage;
 import org.example.backend.enums.TypePackage;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,4 +21,11 @@ public interface VoucherPackageRepository extends JpaRepository<VoucherPackage, 
     @Query("SELECT v FROM VoucherPackage v WHERE v.createdAt = " +
             "(SELECT MAX(v2.createdAt) FROM VoucherPackage v2 WHERE v2.typePackage = v.typePackage)")
     List<VoucherPackage> findLatestVoucherPackagesByType();
+
+    @Query("SELECT sp FROM SoldPackage sp " +
+            "WHERE sp.voucherPackage.typePackage = :type " +
+            "AND sp.status = true " +
+            "ORDER BY sp.startDate DESC")
+    List<SoldPackage> findByVoucherPackageType(TypePackage type);
+
 }
