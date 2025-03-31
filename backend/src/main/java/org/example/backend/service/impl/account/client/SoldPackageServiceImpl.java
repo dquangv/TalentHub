@@ -3,6 +3,7 @@ package org.example.backend.service.impl.account.client;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.account.client.SoldPackageDTORequest;
 import org.example.backend.dto.response.account.client.CurrentPackageDTOResponse;
+import org.example.backend.dto.response.account.client.PackageHistoryDTOResponse;
 import org.example.backend.dto.response.account.client.SoldPackageDTOResponse;
 import org.example.backend.entity.child.account.client.SoldPackage;
 import org.example.backend.entity.child.admin.VoucherPackage;
@@ -14,8 +15,10 @@ import org.example.backend.service.intf.account.client.SoldPackageService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -119,5 +122,57 @@ public class SoldPackageServiceImpl implements SoldPackageService {
                 .remainingTimeFormatted(remainingFormatted)
                 .isActive(currentPackage.isStatus())
                 .build());
+    }
+
+    @Override
+    public List<PackageHistoryDTOResponse> getPackageHistory(Long clientId) {
+        if (clientId == null) {
+            throw new BadRequestException("Client ID cannot be null");
+        }
+
+        List<SoldPackage> packageHistory = soldPackageRepository.findPackageHistoryByClientId(clientId);
+        LocalDateTime now = LocalDateTime.now();
+
+        return packageHistory.stream()
+                .map(pkg -> {
+                    String status;
+                    if (pkg.isStatus()) {
+                        if (pkg.getNumberPosted() >= pkg.getNumberPost()) {
+                            status = "Đã dùng hết bài đăng";
+                        } else {
+                            status = "Đang sử dụng";
+                        }
+                    } else {
+                        status = "Đã hết hạn";
+                    }
+
+                    String usagePeriod = formatDateTime(pkg.getStartDate()) + " - " + formatDateTime(pkg.getEndDate());
+
+                    Long postsUsed = pkg.getNumberPosted();
+
+                    return PackageHistoryDTOResponse.builder()
+                            .id(pkg.getId())
+                            .startDate(pkg.getStartDate())
+                            .endDate(pkg.getEndDate())
+                            .price(pkg.getPrice())
+                            .numberPost(pkg.getNumberPost())
+                            .numberPosted(pkg.getNumberPosted())
+                            .postsUsed(postsUsed)
+                            .packageType(pkg.getVoucherPackage().getTypePackage())
+                            .packageTypeName(pkg.getVoucherPackage().getTypePackage().getDisplayName())
+                            .isActive(pkg.isStatus())
+                            .usagePeriod(usagePeriod)
+                            .status(status)
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
+
+    private String formatDateTime(LocalDateTime dateTime) {
+        if (dateTime == null) {
+            return "N/A";
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        return dateTime.format(formatter);
     }
 }
