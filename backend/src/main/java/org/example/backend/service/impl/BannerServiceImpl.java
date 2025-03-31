@@ -23,10 +23,11 @@ public class BannerServiceImpl implements BannerService {
     @Override
     public BannerDTOResponse create(BannerDTORequest bannerDTORequest) {
         String imageUrl = cloudinaryImageService.uploadImage(bannerDTORequest.getImage());
-
+        String logoUrl = cloudinaryImageService.uploadImage(bannerDTORequest.getLogo());
         Banner banner = new Banner();
         banner.setTitle(bannerDTORequest.getTitle());
         banner.setImage(imageUrl);
+        banner.setImage(logoUrl);
         banner.setStatus(bannerDTORequest.isStatus());
         banner.setVendor(bannerDTORequest.getVendor());
         banner.setStartTime(bannerDTORequest.getStartTime());
@@ -44,6 +45,10 @@ public class BannerServiceImpl implements BannerService {
         if (bannerDTORequest.getImage() != null && !bannerDTORequest.getImage().isEmpty()) {
             String newImageUrl = cloudinaryImageService.uploadImage(bannerDTORequest.getImage());
             existingBanner.setImage(newImageUrl);
+        }
+        if (bannerDTORequest.getLogo() != null && !bannerDTORequest.getLogo().isEmpty()) {
+            String newLogoUrl = cloudinaryImageService.uploadImage(bannerDTORequest.getLogo());
+            existingBanner.setLogo(newLogoUrl);
         }
 
         existingBanner.setTitle(bannerDTORequest.getTitle());
