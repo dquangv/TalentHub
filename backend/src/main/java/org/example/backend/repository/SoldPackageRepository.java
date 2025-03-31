@@ -19,7 +19,7 @@ public interface SoldPackageRepository extends JpaRepository<SoldPackage, Long> 
 
     @Query("SELECT sp FROM SoldPackage sp " +
             "WHERE sp.voucherPackage.typePackage = :type " +
-            "AND sp.status = true " + // Chỉ lấy package còn hiệu lực
+            "AND sp.status = true " +
             "ORDER BY sp.startDate DESC")
     List<SoldPackage> findByVoucherPackageType(TypePackage type);
 }
