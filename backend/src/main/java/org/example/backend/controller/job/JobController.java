@@ -110,12 +110,12 @@ public class JobController {
                 .build();
     }
 
-    @GetMapping("/PostedJobs/{jobId}")
-    public ResponseObject<List<PostJobsDTOResponse>> getPostedJobs(@PathVariable Long jobId) {
-        List<PostJobsDTOResponse> response = jobService.getPostedJobs(jobId);
+    @GetMapping("/PostedJobs/{clientId}")
+    public ResponseObject<List<PostJobsDTOResponse>> getPostedJobs(@PathVariable Long clientId) {
+        List<PostJobsDTOResponse> response = jobService.getPostedJobs(clientId);
         return ResponseObject
                 .<List<PostJobsDTOResponse>>builder()
-                .message("Get all apply job successful")
+                .message("Get all posted jobs successful")
                 .status(HttpStatus.OK.value())
                 .data(response)
                 .build();
