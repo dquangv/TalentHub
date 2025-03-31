@@ -45,4 +45,36 @@ public class RevenueServiceImpl implements RevenueService {
                 .map(obj -> new RevenueDTOResponse((int) obj[0], (Double) obj[1]))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<RevenueDTOResponse> getRevenueBannerByMonth(int year) {
+        List<Object[]> results = revenueRepository.getRevenueBannerByMonth(year);
+
+        return results.stream()
+                .map(row -> new RevenueDTOResponse((int) row[0], (Double) row[1]))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RevenueDTOResponse> getRevenueBannerByQuater(int year) {
+        List<Object[]> results = revenueRepository.getRevenueBannerByQuarter(year);
+
+        return results.stream()
+                .map(row -> {
+                    Integer quarter = ((Number) row[0]).intValue();
+                    Double totalRevenue = row[1] != null ? ((Number) row[1]).doubleValue() : 0.0;
+                    return new RevenueDTOResponse(quarter, totalRevenue);
+                })
+                .collect(Collectors.toList());
+    }
+
+
+    @Override
+    public List<RevenueDTOResponse> getRevenueBannerByYear() {
+        List<Object[]> result = revenueRepository.getRevenueBannerByYear();
+
+        return result.stream()
+                .map(obj -> new RevenueDTOResponse((int) obj[0], (Double) obj[1]))
+                .collect(Collectors.toList());
+    }
 }

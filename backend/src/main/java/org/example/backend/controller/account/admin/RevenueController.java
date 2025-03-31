@@ -51,4 +51,37 @@ public class RevenueController {
                 .data(revenues)
                 .build());
     }
+
+    @GetMapping("/banner/month/{year}")
+    public ResponseEntity<ResponseObject<List<RevenueDTOResponse>>> getRevenueBannerByMonth(@PathVariable int year) {
+        List<RevenueDTOResponse> revenues = revenueService.getRevenueBannerByMonth(year);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseObject.<List<RevenueDTOResponse>>builder()
+                .message("Get banner revenue by month for year " + year + " successfully")
+                .status(HttpStatus.OK.value())
+                .data(revenues)
+                .build());
+    }
+
+    @GetMapping("/banner/quarter/{year}")
+    public ResponseEntity<ResponseObject<List<RevenueDTOResponse>>> getRevenueBannerByQuater(@PathVariable int year) {
+        List<RevenueDTOResponse> revenues = revenueService.getRevenueBannerByQuater(year);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseObject.<List<RevenueDTOResponse>>builder()
+                .message("Get banner revenue by quarter for year " + year + " successfully")
+                .status(HttpStatus.OK.value())
+                .data(revenues)
+                .build());
+    }
+
+    @GetMapping("/banner/year")
+    public ResponseEntity<ResponseObject<List<RevenueDTOResponse>>> getRevenueBannerByYear() {
+        List<RevenueDTOResponse> revenues = revenueService.getRevenueBannerByYear();
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseObject.<List<RevenueDTOResponse>>builder()
+                .message("Get revenue by year successfully")
+                .status(HttpStatus.OK.value())
+                .data(revenues)
+                .build());
+    }
 }

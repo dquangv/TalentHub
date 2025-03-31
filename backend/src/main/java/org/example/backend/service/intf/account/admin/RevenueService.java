@@ -8,4 +8,7 @@ public interface RevenueService {
     List<RevenueDTOResponse> getRevenueByMonth(int year);
     List<RevenueDTOResponse> getRevenueByQuater(int year);
     List<RevenueDTOResponse> getRevenueByYear();
+    List<RevenueDTOResponse> getRevenueBannerByMonth(int year);
+    List<RevenueDTOResponse> getRevenueBannerByQuater(int year);
+    List<RevenueDTOResponse> getRevenueBannerByYear();
 }
