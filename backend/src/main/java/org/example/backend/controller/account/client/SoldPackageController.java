@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.ResponseObject;
 import org.example.backend.dto.request.account.client.SoldPackageDTORequest;
 import org.example.backend.dto.response.account.client.CurrentPackageDTOResponse;
+import org.example.backend.dto.response.account.client.PackageHistoryDTOResponse;
 import org.example.backend.dto.response.account.client.SoldPackageDTOResponse;
 import org.example.backend.entity.child.account.client.SoldPackage;
 import org.example.backend.service.intf.account.client.SoldPackageService;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -47,5 +49,16 @@ public class SoldPackageController {
                     .status(404)
                     .build());
         }
+    }
+
+    @GetMapping("/history/{clientId}")
+    public ResponseEntity<ResponseObject<List<PackageHistoryDTOResponse>>> getPackageHistory(@PathVariable Long clientId) {
+        List<PackageHistoryDTOResponse> packageHistory = soldPackageService.getPackageHistory(clientId);
+
+        return ResponseEntity.ok(ResponseObject.<List<PackageHistoryDTOResponse>>builder()
+                .message("Package purchase history retrieved successfully")
+                .status(200)
+                .data(packageHistory)
+                .build());
     }
 }

@@ -22,4 +22,10 @@ public interface SoldPackageRepository extends JpaRepository<SoldPackage, Long> 
             "AND sp.status = true " +
             "ORDER BY sp.startDate DESC")
     List<SoldPackage> findByVoucherPackageType(TypePackage type);
+
+
+    @Query("SELECT sp FROM SoldPackage sp " +
+            "WHERE sp.client.id = :clientId " +
+            "ORDER BY sp.startDate DESC")
+    List<SoldPackage> findPackageHistoryByClientId(@Param("clientId") Long clientId);
 }
