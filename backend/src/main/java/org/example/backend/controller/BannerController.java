@@ -31,6 +31,7 @@ public class BannerController {
             @RequestParam String vendor,
             @RequestParam String startTime,
             @RequestParam String endTime,
+            @RequestParam MultipartFile logo,
             @RequestParam MultipartFile image) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -50,6 +51,7 @@ public class BannerController {
         bannerDTORequest.setStatus(status);
         bannerDTORequest.setVendor(vendor);
         bannerDTORequest.setImage(image);
+        bannerDTORequest.setLogo(logo);
         bannerDTORequest.setStartTime(startLocalDate);
         bannerDTORequest.setEndTime(endLocalDate);
 
@@ -71,7 +73,7 @@ public class BannerController {
             @RequestParam String endTime,
             @RequestParam String startTime,
 
-
+            @RequestParam(required = false) MultipartFile logo,
             @RequestParam(required = false) MultipartFile image) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -89,6 +91,7 @@ public class BannerController {
         bannerDTORequest.setStatus(status);
         bannerDTORequest.setVendor(vendor);
         bannerDTORequest.setImage(image);
+        bannerDTORequest.setLogo(logo);
         bannerDTORequest.setStartTime(startLocalDate);
         bannerDTORequest.setEndTime(endLocalDate);
 
