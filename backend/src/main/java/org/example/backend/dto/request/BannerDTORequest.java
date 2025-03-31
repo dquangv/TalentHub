@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 public class BannerDTORequest {
     private String title;
     private MultipartFile image;
+    private MultipartFile logo;
     private boolean status;
     private String vendor;
     private LocalDateTime startTime;
