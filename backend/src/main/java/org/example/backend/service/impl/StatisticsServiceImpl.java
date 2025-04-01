@@ -1,10 +1,7 @@
 package org.example.backend.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.example.backend.repository.ClientRepository;
-import org.example.backend.repository.FreelancerRepository;
-import org.example.backend.repository.JobRepository;
-import org.example.backend.repository.FreelancerJobRepository; // Add this
+import org.example.backend.repository.*;
 import org.example.backend.enums.StatusJob;
 import org.example.backend.enums.StatusFreelancerJob;
 import org.springframework.stereotype.Service;
@@ -20,6 +17,8 @@ public class StatisticsServiceImpl {
     private final FreelancerRepository freelancerRepository;
     private final JobRepository jobRepository;
     private final FreelancerJobRepository freelancerJobRepository;
+    private final SoldPackageRepository soldPackageRepository;
+    private final BannerRepository bannerRepository;
 
     public Map<String, Object> getOverallStatistics() {
         Map<String, Object> statistics = new HashMap<>();
@@ -28,16 +27,18 @@ public class StatisticsServiceImpl {
             long clientCount = clientRepository.count();
             long freelancerCount = freelancerRepository.count();
             long totalAccounts = freelancerCount + clientCount;
-
             long postedJobsCount = jobRepository.countByStatus(StatusJob.OPEN);
-
             long approvedFreelancerJobsCount = freelancerJobRepository.countByStatus(StatusFreelancerJob.Approved);
+            double totalSoldPackageRevenue = soldPackageRepository.getTotalSoldPackageRevenue();
+            double totalBannerRevenue = bannerRepository.getTotalBannerRevenue();
+            double totalRevenue = totalSoldPackageRevenue + totalBannerRevenue;
 
             statistics.put("totalAccounts", totalAccounts);
             statistics.put("postedJobs", postedJobsCount);
             statistics.put("totalClients", clientCount);
             statistics.put("totalFreelancers", freelancerCount);
             statistics.put("approvedFreelancerJobs", approvedFreelancerJobsCount);
+            statistics.put("totalRevenue", totalRevenue);
             statistics.put("timestamp", LocalDateTime.now());
             statistics.put("success", true);
 
