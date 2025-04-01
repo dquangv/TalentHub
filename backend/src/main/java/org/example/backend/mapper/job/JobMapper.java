@@ -7,20 +7,21 @@ import org.example.backend.entity.child.job.Job;
 import org.example.backend.entity.child.job.JobSkill;
 import org.example.backend.enums.TypePackage;
 import org.example.backend.mapper.BaseMapper;
+import org.example.backend.utils.TimeRemainingUtils;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", imports = {TimeRemainingUtils.class})
 public interface JobMapper extends BaseMapper<Job, JobDTORequest, JobDTOResponse> {
 
-//    @Mapping(target = "companyName", source = "job.client.company.companyName")
-//    @Mapping(target = "statusJob", source = "status")
     @Mapping(target = "skillName", expression = "java(mapSkills(job.getJobSkills()))")
     @Mapping(target = "categoryName", source = "category.categoryTitle")
+    @Mapping(source = "endDate", target = "endDate")
+    @Mapping(target = "remainingTimeInHours", expression = "java(TimeRemainingUtils.calculateRemainingTimeInHours(job.getEndDate()))")
+    @Mapping(target = "remainingTimeFormatted", expression = "java(TimeRemainingUtils.getFormattedTimeRemaining(job.getEndDate()))")
     JobDTOResponse toResponseDto(Job job);
-
 
     @Mapping(target = "skillName", expression = "java(mapSkills(job.getJobSkills()))")
     @Mapping(target = "categoryName", source = "job.category.categoryTitle")
@@ -35,5 +36,4 @@ public interface JobMapper extends BaseMapper<Job, JobDTORequest, JobDTOResponse
                 .map(js -> js.getSkill().getSkillName()) // Get skill name from `Skill`
                 .toList(); // Collect to a list
     }
-
 }
