@@ -27,6 +27,7 @@ public class BannerController {
     @PostMapping
     public ResponseObject<BannerDTOResponse> createBanner(
             @RequestParam String title,
+            @RequestParam Double price,
             @RequestParam boolean status,
             @RequestParam String vendor,
             @RequestParam String startTime,
@@ -52,6 +53,7 @@ public class BannerController {
         bannerDTORequest.setVendor(vendor);
         bannerDTORequest.setImage(image);
         bannerDTORequest.setLogo(logo);
+        bannerDTORequest.setPrice(price);
         bannerDTORequest.setStartTime(startLocalDate);
         bannerDTORequest.setEndTime(endLocalDate);
 
@@ -72,7 +74,7 @@ public class BannerController {
             @RequestParam String vendor,
             @RequestParam String endTime,
             @RequestParam String startTime,
-
+            @RequestParam Double price,
             @RequestParam(required = false) MultipartFile logo,
             @RequestParam(required = false) MultipartFile image) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -88,6 +90,7 @@ public class BannerController {
         }
         BannerDTORequest bannerDTORequest = new BannerDTORequest();
         bannerDTORequest.setTitle(title);
+        bannerDTORequest.setPrice(price);
         bannerDTORequest.setStatus(status);
         bannerDTORequest.setVendor(vendor);
         bannerDTORequest.setImage(image);
