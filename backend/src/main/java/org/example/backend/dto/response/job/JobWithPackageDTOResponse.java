@@ -26,6 +26,8 @@ public class JobWithPackageDTOResponse {
     private List<String> skillName;
     private boolean seen;
     private TypePackage typePackage;
+    private long remainingTimeInHours;
+    private String remainingTimeFormatted;
     private Date createdAt;
     private String createdTimeFormatted;
 }
