@@ -25,6 +25,7 @@ public class JobDTOResponse {
     private BigDecimal toPrice;
     private String description;
     private List<String> skillName;
+    private boolean applied;
     private boolean seen;
     private Date endDate;
     private long remainingTimeInHours;
