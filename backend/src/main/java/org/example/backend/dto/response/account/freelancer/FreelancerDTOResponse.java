@@ -14,7 +14,6 @@ public class FreelancerDTOResponse {
 
     private Long id;
     private String name;
-
 //    private String image;
     private BigDecimal hourlyRate;
     private String description;
@@ -23,5 +22,6 @@ public class FreelancerDTOResponse {
     private String avatar;
     private Float rating;
     private List<String> skills;
+
 }
 
