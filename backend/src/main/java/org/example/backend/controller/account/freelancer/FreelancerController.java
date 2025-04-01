@@ -74,6 +74,16 @@ public class FreelancerController {
                 .build();
     }
 
+    @GetMapping("/admin")
+    public ResponseObject<List<FreelancerAdminDTOResponse>> getAllFreelancersByAdmin() {
+        List<FreelancerAdminDTOResponse> freelancerDTOResponses = freelancerService.getAllByAdmin();
+        return ResponseObject.<List<FreelancerAdminDTOResponse>>builder()
+                .message("All freelancers retrieved successfully")
+                .status(HttpStatus.OK.value())
+                .data(freelancerDTOResponses)
+                .build();
+    }
+
     @DeleteMapping("/{id}")
     public ResponseObject<Void> deleteFreelancerById(@PathVariable Long id) {
         return freelancerService.deleteById(id)
