@@ -15,4 +15,5 @@ public class VoucherPackageDTOResponse {
     private String createdAt;
     private String updatedAt;
     private Long accountId;
+    private boolean myPackage;
 }

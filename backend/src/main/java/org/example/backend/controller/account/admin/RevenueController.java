@@ -3,6 +3,7 @@ package org.example.backend.controller.account.admin;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.ResponseObject;
 import org.example.backend.dto.response.account.admin.RevenueDTOResponse;
+import org.example.backend.service.intf.account.AccountService;
 import org.example.backend.service.intf.account.admin.RevenueService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/revenues")
@@ -50,5 +52,43 @@ public class RevenueController {
                 .status(HttpStatus.OK.value())
                 .data(revenues)
                 .build());
+    }
+
+    @GetMapping("/banner/month/{year}")
+    public ResponseEntity<ResponseObject<List<RevenueDTOResponse>>> getRevenueBannerByMonth(@PathVariable int year) {
+        List<RevenueDTOResponse> revenues = revenueService.getRevenueBannerByMonth(year);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseObject.<List<RevenueDTOResponse>>builder()
+                .message("Get banner revenue by month for year " + year + " successfully")
+                .status(HttpStatus.OK.value())
+                .data(revenues)
+                .build());
+    }
+
+    @GetMapping("/banner/quarter/{year}")
+    public ResponseEntity<ResponseObject<List<RevenueDTOResponse>>> getRevenueBannerByQuater(@PathVariable int year) {
+        List<RevenueDTOResponse> revenues = revenueService.getRevenueBannerByQuater(year);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseObject.<List<RevenueDTOResponse>>builder()
+                .message("Get banner revenue by quarter for year " + year + " successfully")
+                .status(HttpStatus.OK.value())
+                .data(revenues)
+                .build());
+    }
+
+    @GetMapping("/banner/year")
+    public ResponseEntity<ResponseObject<List<RevenueDTOResponse>>> getRevenueBannerByYear() {
+        List<RevenueDTOResponse> revenues = revenueService.getRevenueBannerByYear();
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseObject.<List<RevenueDTOResponse>>builder()
+                .message("Get revenue by year successfully")
+                .status(HttpStatus.OK.value())
+                .data(revenues)
+                .build());
+    }
+
+    @GetMapping("/growth-rate")
+    public ResponseEntity<Map<String, Object>> getGrowthRate() {
+        return ResponseEntity.ok(revenueService.getGrowthRates());
     }
 }

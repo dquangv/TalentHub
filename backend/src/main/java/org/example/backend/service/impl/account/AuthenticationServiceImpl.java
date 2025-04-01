@@ -81,9 +81,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
             clientId = client.getId();
         }
+        System.out.println("lat " + request.getLat());
+        System.out.println("lng " + request.getLng());
+        if (request.getLat() != 0){
+            account.setLat(request.getLat());
+        }
+        if (request.getLng() != 0) {
+            account.setLng(request.getLng());
+        }
 
-        account.setLat(request.getLat());
-        account.setLng(request.getLng());
         accountRepository.save(account);
 
         // Trả về kết quả
@@ -93,8 +99,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .freelancerId(freelancerId)
                 .clientId(clientId)
                 .role(account.getRole())
-                .lat(request.getLat())
-                .lng(request.getLng())
+                .lat(account.getLat() != null ? account.getLat() : 0)
+                .lng(account.getLng() != null ? account.getLng() : 0)
                 .email(account.getEmail())
                 .build();
     }

@@ -100,4 +100,15 @@ public class VoucherPackageController {
                 .data(response)
                 .build());
     }
+
+    @GetMapping("/all-voucher/client")
+    public ResponseEntity<ResponseObject<List<VoucherPackageDTOResponse>>> getAllVoucherByClient(@RequestParam Long clientId) {
+        List<VoucherPackageDTOResponse> responses = voucherPackageService.findLatestVoucherPackagesByTypeByClientId(clientId);
+
+        return ResponseEntity.status(200).body(ResponseObject.<List<VoucherPackageDTOResponse>>builder()
+                .message("Get all voucher by client id successfully")
+                .status(200)
+                .data(responses)
+                .build());
+    }
 }

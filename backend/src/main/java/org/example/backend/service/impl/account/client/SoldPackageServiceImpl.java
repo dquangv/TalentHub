@@ -2,6 +2,8 @@ package org.example.backend.service.impl.account.client;
 
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.account.client.SoldPackageDTORequest;
+import org.example.backend.dto.response.account.client.CurrentPackageDTOResponse;
+import org.example.backend.dto.response.account.client.PackageHistoryDTOResponse;
 import org.example.backend.dto.response.account.client.SoldPackageDTOResponse;
 import org.example.backend.entity.child.account.client.SoldPackage;
 import org.example.backend.entity.child.admin.VoucherPackage;
@@ -13,8 +15,10 @@ import org.example.backend.service.intf.account.client.SoldPackageService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,11 +41,18 @@ public class SoldPackageServiceImpl implements SoldPackageService {
             throw new BadRequestException("Type Package cannot be null");
         }
 
+        SoldPackage oldSoldPackage = soldPackageRepository.findTopByClientIdAndStatusOrderByStartDateDesc(soldPackageDTORequest.getClientId(), true);
+
+        if (oldSoldPackage != null) {
+            oldSoldPackage.setStatus(false);
+            soldPackageRepository.save(oldSoldPackage);
+        }
+
         VoucherPackage voucherPackage = voucherPackageRepository.findTopByTypePackageOrderByIdDesc(soldPackageDTORequest.getTypePackage());
 
         SoldPackage soldPackage = soldPackageMapper.toEntity(soldPackageDTORequest);
         soldPackage.setStartDate(LocalDateTime.now());
-        soldPackage.setEndDate(LocalDateTime.now().plusDays(voucherPackage.getDuration()));
+        soldPackage.setEndDate(LocalDateTime.now().plusDays(30));
         soldPackage.setNumberPost(voucherPackage.getNumberPost());
         soldPackage.setNumberPosted(Long.valueOf(0));
         soldPackage.setVoucherPackage(voucherPackage);
@@ -64,5 +75,104 @@ public class SoldPackageServiceImpl implements SoldPackageService {
     @Override
     public Boolean deleteById(Long aLong) {
         return null;
+    }
+
+    @Override
+    public Optional<CurrentPackageDTOResponse> getCurrentPackage(Long clientId) {
+        if (clientId == null) {
+            throw new BadRequestException("Client ID cannot be null");
+        }
+
+        SoldPackage currentPackage = soldPackageRepository.findTopByClientIdAndStatusOrderByStartDateDesc(clientId, true);
+
+        if (currentPackage == null) {
+            return Optional.empty();
+        }
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime endDate = currentPackage.getEndDate();
+
+        long remainingHours = 0;
+        String remainingFormatted = "Đã hết hạn";
+
+        if (endDate.isAfter(now)) {
+            remainingHours = java.time.Duration.between(now, endDate).toHours();
+            long days = remainingHours / 24;
+            long hours = remainingHours % 24;
+
+            if (days > 0) {
+                remainingFormatted = days + " ngày " + hours + " giờ";
+            } else {
+                remainingFormatted = hours + " giờ";
+            }
+        }
+        Long postsRemaining = currentPackage.getNumberPost() - currentPackage.getNumberPosted();
+        if (postsRemaining < 0) postsRemaining = 0L;
+
+        return Optional.of(CurrentPackageDTOResponse.builder()
+                .id(currentPackage.getId())
+                .startDate(currentPackage.getStartDate())
+                .endDate(currentPackage.getEndDate())
+                .price(currentPackage.getPrice())
+                .numberPost(currentPackage.getNumberPost())
+                .numberPosted(currentPackage.getNumberPosted())
+                .postsRemaining(postsRemaining)
+                .packageType(currentPackage.getVoucherPackage().getTypePackage())
+                .packageTypeName(currentPackage.getVoucherPackage().getTypePackage().getDisplayName())
+                .remainingTimeInHours(remainingHours)
+                .remainingTimeFormatted(remainingFormatted)
+                .isActive(currentPackage.isStatus())
+                .build());
+    }
+
+    @Override
+    public List<PackageHistoryDTOResponse> getPackageHistory(Long clientId) {
+        if (clientId == null) {
+            throw new BadRequestException("Client ID cannot be null");
+        }
+
+        List<SoldPackage> packageHistory = soldPackageRepository.findPackageHistoryByClientId(clientId);
+        LocalDateTime now = LocalDateTime.now();
+
+        return packageHistory.stream()
+                .map(pkg -> {
+                    String status;
+                    if (pkg.isStatus()) {
+                        if (pkg.getNumberPosted() >= pkg.getNumberPost()) {
+                            status = "Đã dùng hết bài đăng";
+                        } else {
+                            status = "Đang sử dụng";
+                        }
+                    } else {
+                        status = "Đã hết hạn";
+                    }
+
+                    String usagePeriod = formatDateTime(pkg.getStartDate()) + " - " + formatDateTime(pkg.getEndDate());
+
+                    Long postsUsed = pkg.getNumberPosted();
+
+                    return PackageHistoryDTOResponse.builder()
+                            .id(pkg.getId())
+                            .startDate(pkg.getStartDate())
+                            .endDate(pkg.getEndDate())
+                            .price(pkg.getPrice())
+                            .numberPost(pkg.getNumberPost())
+                            .numberPosted(pkg.getNumberPosted())
+                            .postsUsed(postsUsed)
+                            .packageType(pkg.getVoucherPackage().getTypePackage())
+                            .packageTypeName(pkg.getVoucherPackage().getTypePackage().getDisplayName())
+                            .isActive(pkg.isStatus())
+                            .usagePeriod(usagePeriod)
+                            .status(status)
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
+
+    private String formatDateTime(LocalDateTime dateTime) {
+        if (dateTime == null) {
+            return "N/A";
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        return dateTime.format(formatter);
     }
 }

@@ -1,8 +1,6 @@
 package org.example.backend.dto.response.account.freelancer;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -10,11 +8,12 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-public class FreelancerDTOResponse {
-
+@Builder
+@NoArgsConstructor
+public class FreelancerAdminDTOResponse {
     private Long id;
     private String name;
-//    private String image;
+    private String email;
     private BigDecimal hourlyRate;
     private String description;
     private String categoryName;
@@ -22,6 +21,4 @@ public class FreelancerDTOResponse {
     private String avatar;
     private Float rating;
     private List<String> skills;
-
 }
-

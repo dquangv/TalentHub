@@ -24,6 +24,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -154,6 +156,10 @@ public class JobServiceImpl implements JobService {
         createJobDTORequest.setCategoryId(category.getId());
 
         Job job = createJobMapper.toEntity(createJobDTORequest);
+
+        Long durationPost = soldPackage.getVoucherPackage().getDuration();
+
+        job.setEndDate(Date.from(LocalDateTime.now().plusDays(durationPost).atZone(ZoneId.systemDefault()).toInstant()));
 
         Job savedJob = jobRepository.save(job);
 

@@ -3,11 +3,15 @@ package org.example.backend.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.backend.entity.child.account.client.SoldPackage;
+import org.example.backend.entity.child.admin.VoucherPackage;
+import org.example.backend.enums.TypePackage;
 import org.example.backend.repository.SoldPackageRepository;
+import org.example.backend.repository.VoucherPackageRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -15,24 +19,50 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SoldPackageSchedulerServiceImpl {
     private final SoldPackageRepository soldPackageRepository;
+    private final VoucherPackageRepository voucherPackageRepository;
 
     @Scheduled(cron = "0 */1 * * * ?") // cron format
     public void checkAndExpirePackages() {
         log.info("Scheduler running: Checking expired sold packages...");
 
+        List<TypePackage> allowedPackages = List.of(TypePackage.SILVER, TypePackage.GOLD, TypePackage.DIAMOND);
+
         // find expired packages with true status
         List<SoldPackage> expiredPackages = soldPackageRepository
-                .findByEndDateBeforeAndStatus(LocalDateTime.now(), true);
+                .findByEndDateBeforeAndStatusAndVoucherPackage_TypePackageIn(LocalDateTime.now(), true, allowedPackages);
 
         log.info("Found {} packages to expire", expiredPackages.size());
 
-        // update status
-        expiredPackages.forEach(packageItem -> {
-            packageItem.setStatus(false);
-            log.info("Expired package ID: {}", packageItem.getId());
-        });
+        List<SoldPackage> newNormalPackages = new ArrayList<>();
 
-        // save at database
+        for (SoldPackage expiredPackage : expiredPackages) {
+            expiredPackage.setStatus(false);
+            log.info("Expired package ID: {}", expiredPackage.getId());
+
+            Long clientId = expiredPackage.getClient().getId();
+
+            VoucherPackage normalPackage = voucherPackageRepository.findTopByTypePackageOrderByIdDesc(TypePackage.NORMAL);
+
+            if (normalPackage != null) {
+                SoldPackage newPackage = new SoldPackage();
+                newPackage.setClient(expiredPackage.getClient());
+                newPackage.setVoucherPackage(normalPackage);
+                newPackage.setStartDate(LocalDateTime.now());
+                newPackage.setEndDate(LocalDateTime.now().plusDays(normalPackage.getDuration()));
+                newPackage.setNumberPost(normalPackage.getNumberPost());
+                newPackage.setNumberPosted(0L);
+                newPackage.setStatus(true);
+                newPackage.setPrice(0.0);
+
+                newNormalPackages.add(newPackage);
+                log.info("Assigned NORMAL package to client ID: {}", clientId);
+            }
+        }
+
         soldPackageRepository.saveAll(expiredPackages);
+
+        if (!newNormalPackages.isEmpty()) {
+            soldPackageRepository.saveAll(newNormalPackages);
+        }
     }
 }

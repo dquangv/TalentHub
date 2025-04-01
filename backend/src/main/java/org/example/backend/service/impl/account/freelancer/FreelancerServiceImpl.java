@@ -5,6 +5,7 @@ import org.example.backend.dto.request.account.freelancer.CreateFreelancerDTOReq
 import org.example.backend.dto.request.account.freelancer.FreelancerDTORequest;
 import org.example.backend.dto.request.account.freelancer.UpdateHourlyRateDTORequest;
 import org.example.backend.dto.response.account.freelancer.CreateFreelancerDTOResponse;
+import org.example.backend.dto.response.account.freelancer.FreelancerAdminDTOResponse;
 import org.example.backend.dto.response.account.freelancer.FreelancerDTOResponse;
 import org.example.backend.dto.response.account.freelancer.UpdateHourlyRateDTOResponse;
 import org.example.backend.entity.child.account.freelancer.Freelancer;
@@ -140,6 +141,30 @@ public class FreelancerServiceImpl implements FreelancerService {
                 ))
                 .collect(Collectors.toList());
     }
+
+    public List<FreelancerAdminDTOResponse> getAllByAdmin() {
+        List<Freelancer> freelancers = freelancerRepository.findAll();
+        return freelancers.stream()
+                .map(f -> new FreelancerAdminDTOResponse(
+                        f.getId(),
+                        f.getUser().getFirstName() + " " + f.getUser().getLastName(),
+                        f.getUser().getAccount().getEmail(),
+                        f.getHourlyRate(),
+                        f.getDescription(),
+                        f.getCategory() != null && f.getCategory().getCategoryTitle() != null
+                                ? f.getCategory().getCategoryTitle()
+                                : "No category",
+                        f.getUser().getId(),
+                        f.getUser().getImage(),
+                        clientReviewRepository.findAverageRating(f.getId()),
+                        f.getFreelancerSkills() != null ? f.getFreelancerSkills()
+                                .stream()
+                                .map(fs -> fs.getSkill().getSkillName())
+                                .collect(Collectors.toList()) : List.of()
+                ))
+                .collect(Collectors.toList());
+    }
+
 
 
     @Override
