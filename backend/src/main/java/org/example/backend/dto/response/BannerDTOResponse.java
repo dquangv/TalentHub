@@ -15,6 +15,7 @@ public class BannerDTOResponse {
     private String logo;
     private boolean status;
     private String vendor;
+    private Double price;
 //    private String createdAt;
 //    private String updatedAt;
     private LocalDateTime startTime;

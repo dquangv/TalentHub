@@ -19,4 +19,5 @@ public class BannerDTORequest {
     private String vendor;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+    private Double price;
 }
