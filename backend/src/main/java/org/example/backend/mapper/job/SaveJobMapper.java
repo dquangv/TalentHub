@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @Mapper(componentModel = "spring", imports = {TimeRemainingUtils.class})
 public interface SaveJobMapper extends BaseMapper<FreelancerJob, SaveJobDTORequest, SaveJobDTOResponse> {
 
@@ -23,6 +24,8 @@ public interface SaveJobMapper extends BaseMapper<FreelancerJob, SaveJobDTOReque
     @Mapping(source = "job.description", target = "description")
     @Mapping(expression = "java(mapSkillNames(freelancerJob))", target = "skillNames")
     @Mapping(source = "job.endDate", target = "endDate")
+    @Mapping(source = "job.createdAt", target = "createdAt")
+    @Mapping(target = "createdTimeFormatted", expression = "java(TimeRemainingUtils.getRelativeTimeFormatted(freelancerJob.getJob().getCreatedAt()))")
     @Mapping(target = "remainingTimeInHours", expression = "java(TimeRemainingUtils.calculateRemainingTimeInHours(freelancerJob.getJob().getEndDate()))")
     @Mapping(target = "remainingTimeFormatted", expression = "java(TimeRemainingUtils.getFormattedTimeRemaining(freelancerJob.getJob().getEndDate()))")
     SaveJobDTOResponse toResponseDto(FreelancerJob freelancerJob);
