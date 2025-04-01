@@ -28,4 +28,17 @@ public interface SoldPackageRepository extends JpaRepository<SoldPackage, Long> 
             "WHERE sp.client.id = :clientId " +
             "ORDER BY sp.startDate DESC")
     List<SoldPackage> findPackageHistoryByClientId(@Param("clientId") Long clientId);
+
+    // COALESCE giúp tránh trường hợp data null, thay = 0
+    @Query("SELECT COALESCE(SUM(s.price), 0) FROM SoldPackage s")
+    Double getTotalSoldPackageRevenue();
+
+    @Query("""
+                SELECT SUM(sp.price)
+                FROM SoldPackage sp
+                WHERE FUNCTION('YEAR', sp.startDate) = :year 
+                AND FUNCTION('MONTH', sp.startDate) = :month
+            """)
+    Long countSumSoldPackageRevenue(@Param("year") int year, @Param("month") int month);
+
 }
