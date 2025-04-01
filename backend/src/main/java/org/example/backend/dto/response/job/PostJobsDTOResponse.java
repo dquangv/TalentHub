@@ -18,4 +18,6 @@ public class PostJobsDTOResponse {
     private Date endDate;
     private long remainingTimeInHours;
     private String remainingTimeFormatted;
+    private Date createdAt;
+    private String createdTimeFormatted;
 }
