@@ -6,13 +6,13 @@ import org.example.backend.entity.child.job.Job;
 import org.example.backend.entity.child.job.JobSkill;
 import org.example.backend.entity.child.job.Skill;
 import org.example.backend.mapper.BaseMapper;
+import org.example.backend.utils.TimeRemainingUtils;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
 import java.util.List;
-
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", imports = {TimeRemainingUtils.class})
 public interface CreateJobMapper extends BaseMapper<Job, CreateJobDTORequest, CreateJobDTOResponse> {
 
     @Mapping(source = "clientId", target = "client.id")
@@ -25,6 +25,8 @@ public interface CreateJobMapper extends BaseMapper<Job, CreateJobDTORequest, Cr
     @Mapping(source = "category.id", target = "categoryId")
     @Mapping(target = "skillId", expression = "java(mapSkillIds(job.getJobSkills()))")
     @Mapping(source = "status", target = "statusJob")
+    @Mapping(source = "createdAt", target = "createdAt")
+    @Mapping(target = "createdTimeFormatted", expression = "java(TimeRemainingUtils.getRelativeTimeFormatted(job.getCreatedAt()))")
     CreateJobDTOResponse toResponseDto(Job job);
 
     default List<Long> mapSkillIds(List<JobSkill> jobSkills) {
@@ -44,6 +46,4 @@ public interface CreateJobMapper extends BaseMapper<Job, CreateJobDTORequest, Cr
                 })
                 .toList();
     }
-
-
 }
