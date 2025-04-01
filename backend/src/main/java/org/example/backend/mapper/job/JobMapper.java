@@ -29,6 +29,8 @@ public interface JobMapper extends BaseMapper<Job, JobDTORequest, JobDTOResponse
     @Mapping(source = "job.createdAt", target = "createdAt")
     @Mapping(target = "createdTimeFormatted", expression = "java(TimeRemainingUtils.getRelativeTimeFormatted(job.getCreatedAt()))")
     @Mapping(target = "typePackage", source = "typePackage")
+    @Mapping(target = "remainingTimeInHours", expression = "java(TimeRemainingUtils.calculateRemainingTimeInHours(job.getEndDate()))")
+    @Mapping(target = "remainingTimeFormatted", expression = "java(TimeRemainingUtils.getFormattedTimeRemaining(job.getEndDate()))")
     JobWithPackageDTOResponse toResponseWithPackageDto(Job job, TypePackage typePackage);
 
     default List<String> mapSkills(List<JobSkill> jobSkills) {

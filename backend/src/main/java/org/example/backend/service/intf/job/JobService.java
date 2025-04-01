@@ -24,4 +24,5 @@ public interface JobService extends BaseService<JobDTORequest, JobDTOResponse, L
     JobDetailDTOResponse getJobById(Long id);
     JobDetailDTOResponse updateJob(Long id, JobDetailDTORequest jobDetailDTORequest);
     List<JobWithPackageDTOResponse> getTop6JobsByTypePriority();
+    List<JobDTOResponse> getRecommendedJobsForFreelancer(Long freelancerId);
 }
