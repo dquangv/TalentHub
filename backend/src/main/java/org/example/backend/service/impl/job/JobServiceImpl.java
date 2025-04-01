@@ -238,7 +238,6 @@ public class JobServiceImpl implements JobService {
 
         return jobs;
     }*/
-
     @Override
     public List<JobDTOResponse> findAllJobs(Long freelancerId) {
         List<JobDTOResponse> jobs = jobRepository.findByStatus(StatusJob.OPEN).stream()
@@ -254,7 +253,10 @@ public class JobServiceImpl implements JobService {
 
                     return dto;
                 })
-                .sorted(Comparator.comparing(JobDTOResponse::isSeen))
+                .sorted(
+                        Comparator.comparing(JobDTOResponse::isSeen)
+                                .thenComparing(JobDTOResponse::getCreatedAt, Comparator.reverseOrder())
+                )
                 .collect(Collectors.toList());
 
         return jobs;
