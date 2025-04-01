@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.example.backend.enums.TypePackage;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -25,4 +26,6 @@ public class JobWithPackageDTOResponse {
     private List<String> skillName;
     private boolean seen;
     private TypePackage typePackage;
+    private Date createdAt;
+    private String createdTimeFormatted;
 }
