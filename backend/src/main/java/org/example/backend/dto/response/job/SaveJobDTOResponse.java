@@ -22,4 +22,7 @@ public class SaveJobDTOResponse {
     private LocalDateTime appliedDate;
     private String description;
     private List<String> skillNames;
+    private Date endDate;
+    private long remainingTimeInHours;
+    private String remainingTimeFormatted;
 }

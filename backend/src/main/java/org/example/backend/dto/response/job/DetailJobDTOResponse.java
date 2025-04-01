@@ -7,6 +7,7 @@ import org.example.backend.enums.ScopeJob;
 import org.example.backend.enums.StatusJob;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -29,4 +30,7 @@ public class DetailJobDTOResponse {
     private Long duration;
     private ScopeJob scope;
     private boolean jobOpportunity;
+    private Date endDate;
+    private long remainingTimeInHours;
+    private String remainingTimeFormatted;
 }
