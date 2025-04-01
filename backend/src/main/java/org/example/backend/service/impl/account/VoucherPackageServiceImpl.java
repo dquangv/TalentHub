@@ -4,12 +4,14 @@ package org.example.backend.service.impl.account;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.account.admin.VoucherPackageDTORequest;
 import org.example.backend.dto.response.account.admin.VoucherPackageDTOResponse;
+import org.example.backend.entity.child.account.client.SoldPackage;
 import org.example.backend.entity.child.admin.VoucherPackage;
 import org.example.backend.entity.child.account.Account;
 import org.example.backend.enums.TypePackage;
 import org.example.backend.exception.NotFoundException;
 import org.example.backend.mapper.Account.admin.VoucherPackageMapper;
 import org.example.backend.repository.AccountRepository;
+import org.example.backend.repository.SoldPackageRepository;
 import org.example.backend.repository.VoucherPackageRepository;
 import org.example.backend.service.intf.account.admin.VoucherPackageService;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,7 @@ public class VoucherPackageServiceImpl implements VoucherPackageService {
     private final VoucherPackageRepository voucherPackageRepository;
     private final AccountRepository accountRepository;
     private final VoucherPackageMapper voucherPackageMapper;
+    private final SoldPackageRepository soldPackageRepository;
 
     @Override
     public VoucherPackageDTOResponse create(VoucherPackageDTORequest request) {
@@ -107,6 +110,24 @@ public class VoucherPackageServiceImpl implements VoucherPackageService {
 
         return voucherPackages.stream()
                 .map(voucherPackageMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<VoucherPackageDTOResponse> findLatestVoucherPackagesByTypeByClientId(Long clientId) {
+        List<VoucherPackage> voucherPackages = voucherPackageRepository.findLatestVoucherPackagesByType();
+
+        SoldPackage soldPackage = soldPackageRepository.findTopByClientIdAndStatusOrderByStartDateDesc(clientId, true);
+        TypePackage clientTypePackage = (soldPackage != null) ? soldPackage.getVoucherPackage().getTypePackage() : null;
+
+        return voucherPackages.stream()
+                .map(voucherPackage -> {
+                    VoucherPackageDTOResponse dto = voucherPackageMapper.toDTO(voucherPackage);
+
+                    dto.setMyPackage(clientTypePackage != null && clientTypePackage == voucherPackage.getTypePackage());
+
+                    return dto;
+                })
                 .collect(Collectors.toList());
     }
 }

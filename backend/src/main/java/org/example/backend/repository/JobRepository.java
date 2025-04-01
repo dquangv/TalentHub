@@ -8,6 +8,7 @@
     import org.springframework.data.repository.query.Param;
     import org.example.backend.enums.StatusJob;
 
+    import java.util.Date;
     import java.util.List;
     import java.util.Optional;
 
@@ -31,4 +32,17 @@
         long countByStatus(StatusJob status);
 
         List<Job> findByStatus(StatusJob status);
+
+        List<Job> findByEndDateLessThanEqualAndStatusNot(Date endDate, StatusJob status);
+        @Query("SELECT j FROM Job j ORDER BY j.createdAt DESC")
+        List<Job> findAllByOrderByCreatedAtDesc();
+
+        @Query("SELECT j FROM Job j " +
+                "WHERE j.client.id = :clientId " +
+                "ORDER BY j.createdAt DESC")
+        List<Job> findByClientIdOrderByCreatedAtDesc(Long clientId);
+
+        @Query("SELECT COUNT(j) FROM Job j WHERE j.status = 'OPEN' AND MONTH(j.createdAt) = :month AND YEAR(j.createdAt) = :year")
+        Long countOpenJobsByMonth(@Param("month") int month, @Param("year") int year);
+
     }

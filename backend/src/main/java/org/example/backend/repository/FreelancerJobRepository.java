@@ -66,4 +66,25 @@ public interface FreelancerJobRepository extends JpaRepository<FreelancerJob, Lo
     List<FreelancerJob> findByFreelancer_Id(Long freelancerId);
 
     boolean existsByFreelancerIdAndJobId(Long freelancerId, Long jobId);
+
+    @Query("SELECT j FROM Job j " +
+            "LEFT JOIN FETCH j.category " +
+            "LEFT JOIN FETCH j.client c " +
+            "LEFT JOIN FETCH j.jobSkills js " +
+            "LEFT JOIN FETCH js.skill " +
+            "WHERE j.client.id = :clientId " +
+            "ORDER BY j.createdAt DESC")
+    List<Job> findByClientIdOrderByCreatedAtDesc(Long clientId);
+
+    @Query("SELECT j FROM Job j " +
+            "LEFT JOIN FETCH j.category " +
+            "LEFT JOIN FETCH j.client c " +
+            "LEFT JOIN FETCH j.jobSkills js " +
+            "LEFT JOIN FETCH js.skill " +
+            "ORDER BY j.createdAt DESC")
+    List<Job> findAllByOrderByCreatedAtDesc();
+
+    @Query("SELECT COUNT(fj) FROM FreelancerJob fj WHERE fj.status = 'Approved' AND MONTH(fj.appliedDate) = :month AND YEAR(fj.appliedDate) = :year")
+    Long countApprovedFreelancerJobsByMonth(@Param("month") int month, @Param("year") int year);
+
 }

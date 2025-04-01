@@ -5,6 +5,8 @@ import org.example.backend.dto.request.job.JobAdminDTOResponse;
 import org.example.backend.dto.request.job.JobDTORequest;
 import org.example.backend.dto.request.job.JobDetailDTORequest;
 import org.example.backend.dto.response.job.*;
+import org.example.backend.dto.response.job.JobWithPackageDTOResponse;
+import org.example.backend.entity.child.job.Job;
 import org.example.backend.service.BaseService;
 
 import java.util.List;
@@ -21,4 +23,5 @@ public interface JobService extends BaseService<JobDTORequest, JobDTOResponse, L
     Boolean unBanJob(Long id);
     JobDetailDTOResponse getJobById(Long id);
     JobDetailDTOResponse updateJob(Long id, JobDetailDTORequest jobDetailDTORequest);
+    List<JobWithPackageDTOResponse> getTop6JobsByTypePriority();
 }

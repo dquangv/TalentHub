@@ -34,15 +34,18 @@ public class Banner extends AbstractEntity<Long> {
     @Column(name = "duration")
     private Long duration;
 
+    @Column(name = "logo")
+    private String logo;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    private DateTime createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at", insertable = false)
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    private DateTime updatedAt;
+    private LocalDateTime updatedAt;
 
     @Column(name = "price", nullable = false)
     private double price;

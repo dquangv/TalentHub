@@ -4,6 +4,7 @@ import org.example.backend.dto.request.job.DetailJobDTORequest;
 import org.example.backend.dto.response.job.DetailJobDTOResponse;
 import org.example.backend.entity.child.job.Job;
 import org.example.backend.mapper.BaseMapper;
+import org.example.backend.utils.TimeRemainingUtils;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -11,8 +12,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", imports = {TimeRemainingUtils.class})
 public interface DetailJobMapper extends BaseMapper<Job, DetailJobDTORequest, DetailJobDTOResponse> {
 
     @Mapping(source = "client.id", target = "clientId")
@@ -24,6 +24,9 @@ public interface DetailJobMapper extends BaseMapper<Job, DetailJobDTORequest, De
     @Mapping(source = "scope", target = "scope")
     @Mapping(source = "jobOpportunity", target = "jobOpportunity")
     @Mapping(expression = "java(mapSkillNames(job))", target = "skillNames")
+    @Mapping(source = "endDate", target = "endDate")
+    @Mapping(target = "remainingTimeInHours", expression = "java(TimeRemainingUtils.calculateRemainingTimeInHours(job.getEndDate()))")
+    @Mapping(target = "remainingTimeFormatted", expression = "java(TimeRemainingUtils.getFormattedTimeRemaining(job.getEndDate()))")
     DetailJobDTOResponse toResponseDto(Job job);
 
     default List<String> mapSkillNames(Job job) {

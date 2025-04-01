@@ -12,4 +12,5 @@ public interface VoucherPackageService extends BaseService<VoucherPackageDTORequ
     public VoucherPackageDTOResponse update(TypePackage typePackage, VoucherPackageDTORequest request);
     VoucherPackageDTOResponse getDetailByTypePackage(TypePackage typePackage);
     List<VoucherPackageDTOResponse> findLatestVoucherPackagesByType();
+    List<VoucherPackageDTOResponse> findLatestVoucherPackagesByTypeByClientId(Long clientId);
 }

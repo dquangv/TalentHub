@@ -3,15 +3,17 @@ package org.example.backend.controller.account.client;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.ResponseObject;
 import org.example.backend.dto.request.account.client.SoldPackageDTORequest;
+import org.example.backend.dto.response.account.client.CurrentPackageDTOResponse;
+import org.example.backend.dto.response.account.client.PackageHistoryDTOResponse;
 import org.example.backend.dto.response.account.client.SoldPackageDTOResponse;
 import org.example.backend.entity.child.account.client.SoldPackage;
 import org.example.backend.service.intf.account.client.SoldPackageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,6 +29,36 @@ public class SoldPackageController {
                 .message("Successfully subcribe a package")
                 .status(201)
                 .data(soldPackageDTOResponse)
+                .build());
+    }
+
+
+    @GetMapping("/current/{clientId}")
+    public ResponseEntity<ResponseObject<CurrentPackageDTOResponse>> getCurrentPackage(@PathVariable Long clientId) {
+        Optional<CurrentPackageDTOResponse> currentPackage = soldPackageService.getCurrentPackage(clientId);
+
+        if (currentPackage.isPresent()) {
+            return ResponseEntity.ok(ResponseObject.<CurrentPackageDTOResponse>builder()
+                    .message("Current package retrieved successfully")
+                    .status(200)
+                    .data(currentPackage.get())
+                    .build());
+        } else {
+            return ResponseEntity.ok(ResponseObject.<CurrentPackageDTOResponse>builder()
+                    .message("No active package found")
+                    .status(404)
+                    .build());
+        }
+    }
+
+    @GetMapping("/history/{clientId}")
+    public ResponseEntity<ResponseObject<List<PackageHistoryDTOResponse>>> getPackageHistory(@PathVariable Long clientId) {
+        List<PackageHistoryDTOResponse> packageHistory = soldPackageService.getPackageHistory(clientId);
+
+        return ResponseEntity.ok(ResponseObject.<List<PackageHistoryDTOResponse>>builder()
+                .message("Package purchase history retrieved successfully")
+                .status(200)
+                .data(packageHistory)
                 .build());
     }
 }

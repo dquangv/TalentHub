@@ -24,4 +24,7 @@ public class ApplyJobsDTOResponse {
     private String description;
     private List<String> SkillNames;
     private Long freelancerJobId;
+    private Date endDate;
+    private long remainingTimeInHours;
+    private String remainingTimeFormatted;
 }

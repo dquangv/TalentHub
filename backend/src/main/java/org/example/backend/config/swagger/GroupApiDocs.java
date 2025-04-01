@@ -109,6 +109,12 @@ public class GroupApiDocs {
                 .group("School APIs")
                 .pathsToMatch("/api/v1/schools/**")
                 .build();
+    }    @Bean
+    public GroupedOpenApi soldPackageAPis() {
+        return GroupedOpenApi.builder()
+                .group("Sold Packages APIs")
+                .pathsToMatch("/api/v1/clients/soldpackages/**")
+                .build();
     }
 
     @Bean

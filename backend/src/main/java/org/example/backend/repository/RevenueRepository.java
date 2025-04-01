@@ -16,18 +16,41 @@ public interface RevenueRepository extends JpaRepository<SoldPackage, Long> {
             nativeQuery = true)
     List<Object[]> getRevenueByMonth(@Param("year") int year);
 
-    @Query(value = "SELECT CEIL(MONTH(s.start_date) / 3.0) AS quarter, SUM(s.price) " +
-            "FROM sold_packages s " +
-            "WHERE YEAR(s.start_date) = :year " +
-            "GROUP BY CEIL(MONTH(s.start_date) / 3.0) " +
-            "ORDER BY quarter ASC",
-            nativeQuery = true)
+    @Query("SELECT CEIL(MONTH(s.startDate) / 3.0) AS quarter, SUM(s.price) " +
+            "FROM SoldPackage s " +
+            "WHERE YEAR(s.startDate) = :year " +
+            "GROUP BY CEIL(MONTH(s.startDate) / 3.0) " +
+            "ORDER BY CEIL(MONTH(s.startDate) / 3.0) ASC")
     List<Object[]> getRevenueByQuarter(@Param("year") int year);
 
-    @Query(value = "SELECT YEAR(s.start_date) AS year, SUM(s.price) " +
-            "FROM sold_packages s " +
-            "GROUP BY YEAR(s.start_date) " +
-            "ORDER BY year ASC",
-            nativeQuery = true)
+
+    @Query("SELECT YEAR(s.startDate) AS year, SUM(s.price) " +
+            "FROM SoldPackage s " +
+            "GROUP BY YEAR(s.startDate) " +
+            "ORDER BY YEAR(s.startDate) ASC")
     List<Object[]> getRevenueByYear();
+
+
+    @Query("SELECT MONTH(b.startTime) AS month, SUM(b.price) " +
+            "FROM Banner b " +
+            "WHERE YEAR(b.startTime) = :year " +
+            "GROUP BY MONTH(b.startTime) " +
+            "ORDER BY MONTH(b.startTime) ASC")
+    List<Object[]> getRevenueBannerByMonth(@Param("year") int year);
+
+
+    @Query("SELECT CEIL(MONTH(b.startTime) / 3.0) AS quarter, SUM(b.price) " +
+            "FROM Banner b " +
+            "WHERE YEAR(b.startTime) = :year " +
+            "GROUP BY CEIL(MONTH(b.startTime) / 3.0) " +
+            "ORDER BY CEIL(MONTH(b.startTime) / 3.0) ASC")
+    List<Object[]> getRevenueBannerByQuarter(@Param("year") int year);
+
+
+    @Query("SELECT YEAR(b.startTime) AS year, SUM(b.price) AS totalRevenue " +
+            "FROM Banner b " +
+            "GROUP BY YEAR(b.startTime) " +
+            "ORDER BY YEAR(b.startTime) DESC")
+    List<Object[]> getRevenueBannerByYear();
+
 }
