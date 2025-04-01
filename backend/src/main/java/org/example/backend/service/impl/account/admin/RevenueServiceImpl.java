@@ -3,10 +3,7 @@ package org.example.backend.service.impl.account.admin;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.response.account.admin.RevenueDTOResponse;
 import org.example.backend.enums.RoleUser;
-import org.example.backend.repository.AccountRepository;
-import org.example.backend.repository.FreelancerJobRepository;
-import org.example.backend.repository.JobRepository;
-import org.example.backend.repository.RevenueRepository;
+import org.example.backend.repository.*;
 import org.example.backend.service.intf.account.AccountService;
 import org.example.backend.service.intf.account.admin.RevenueService;
 import org.springframework.stereotype.Service;
@@ -24,6 +21,8 @@ public class RevenueServiceImpl implements RevenueService {
     private final AccountRepository accountRepository;
     private final JobRepository jobRepository;
     private final FreelancerJobRepository freelancerJobRepository;
+    private final SoldPackageRepository soldPackageRepository;
+    private final BannerRepository bannerRepository;
 
     @Override
     public List<RevenueDTOResponse> getRevenueByMonth(int year) {
@@ -107,23 +106,35 @@ public class RevenueServiceImpl implements RevenueService {
             Long currentClients = accountRepository.countAccountsByRoleAndMonth(currentYear, currentMonth, RoleUser.CLIENT);
             Long currentJobs = jobRepository.countOpenJobsByMonth(currentMonth, currentYear);
             Long currentApprovedJobs = freelancerJobRepository.countApprovedFreelancerJobsByMonth(currentMonth, currentYear);
-            // Đếm số freelancer và client trong tháng trước
+            Long currentAccounts = currentClients + currentFreelancers;
+            Long currentSoldPackageRevenue = soldPackageRepository.countSumSoldPackageRevenue(currentYear, currentMonth);
+            Long currentBannerRevenue = bannerRepository.countSumSoldPackageRevenue(currentYear, currentMonth);
+            Long currentRevenue = currentBannerRevenue + currentSoldPackageRevenue;
 
+            // Đếm số freelancer và client trong tháng trước
             Long previousFreelancers = accountRepository.countAccountsByRoleAndMonth(previousYear, previousMonth, RoleUser.FREELANCER);
             Long previousClients = accountRepository.countAccountsByRoleAndMonth(previousYear, previousMonth, RoleUser.CLIENT);
             Long previousJobs = jobRepository.countOpenJobsByMonth(previousMonth, previousYear);
             Long previousApprovedJobs = freelancerJobRepository.countApprovedFreelancerJobsByMonth(previousMonth, previousYear);
-            // Tính phần trăm thay đổi
+            Long previousAccounts = previousClients + previousFreelancers;
+            Long previousSoldPackageRevenue = soldPackageRepository.countSumSoldPackageRevenue(previousYear, previousMonth);
+            Long previousBannerRevenue = bannerRepository.countSumSoldPackageRevenue(previousYear, previousMonth);
+            Long previousRevenue = previousBannerRevenue + previousSoldPackageRevenue;
 
+            // Tính phần trăm thay đổi
             Double freelancerGrowth = calculateGrowthRate(currentFreelancers, previousFreelancers);
             Double clientGrowth = calculateGrowthRate(currentClients, previousClients);
             Double jobGrowth = calculateGrowthRate(currentJobs, previousJobs);
             Double approvedJobGrowth = calculateGrowthRate(currentApprovedJobs, previousApprovedJobs);
+            Double accountGrowth = calculateGrowthRate(currentAccounts, previousAccounts);
+            Double revenueGrowth = calculateGrowthRate(currentRevenue, previousRevenue);
 
             growthRates.put("freelancerGrowth", freelancerGrowth);
             growthRates.put("clientGrowth", clientGrowth);
             growthRates.put("jobGrowth", jobGrowth);
             growthRates.put("approvedJobGrowth", approvedJobGrowth);
+            growthRates.put("accountGrowth", accountGrowth);
+            growthRates.put("revenueGrowth", revenueGrowth);
             growthRates.put("success", true);
 
             return growthRates;
