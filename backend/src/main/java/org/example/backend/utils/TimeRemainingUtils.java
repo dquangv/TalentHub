@@ -38,4 +38,36 @@ public class TimeRemainingUtils {
         long hours = calculateRemainingTimeInHours(endDate);
         return formatRemainingTime(hours);
     }
+
+    public static String getRelativeTimeFormatted(Date date) {
+        if (date == null) {
+            return "";
+        }
+        long now = System.currentTimeMillis();
+        long timeCreated = date.getTime();
+        long diff = now - timeCreated;
+
+        long diffMinutes = diff / (60 * 1000);
+        long diffHours = diff / (60 * 60 * 1000);
+        long diffDays = diff / (24 * 60 * 60 * 1000);
+        long diffWeeks = diffDays / 7;
+        long diffMonths = diffDays / 30;
+        long diffYears = diffDays / 365;
+
+        if (diffMinutes < 1) {
+            return "vừa xong";
+        } else if (diffMinutes < 60) {
+            return diffMinutes + " phút trước";
+        } else if (diffHours < 24) {
+            return diffHours + " giờ trước";
+        } else if (diffDays < 7) {
+            return diffDays + " ngày trước";
+        } else if (diffWeeks < 4) {
+            return diffWeeks + " tuần trước";
+        } else if (diffMonths < 12) {
+            return diffMonths + " tháng trước";
+        } else {
+            return diffYears + " năm trước";
+        }
+    }
 }

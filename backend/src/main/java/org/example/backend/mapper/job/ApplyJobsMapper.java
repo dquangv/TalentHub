@@ -8,7 +8,9 @@ import org.example.backend.utils.TimeRemainingUtils;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +26,8 @@ public interface ApplyJobsMapper extends BaseMapper<FreelancerJob, ApplyJobsDTOR
     @Mapping(expression = "java(mapSkillNames(freelancerJob))", target = "skillNames")
     @Mapping(source = "id", target="freelancerJobId")
     @Mapping(source = "job.endDate", target = "endDate")
+    @Mapping(source = "appliedDate", target = "createdAt")
+    @Mapping(target = "createdTimeFormatted", expression = "java(TimeRemainingUtils.getRelativeTimeFormatted(convertToDateViaInstant(freelancerJob.getAppliedDate())))")
     @Mapping(target = "remainingTimeInHours", expression = "java(TimeRemainingUtils.calculateRemainingTimeInHours(freelancerJob.getJob().getEndDate()))")
     @Mapping(target = "remainingTimeFormatted", expression = "java(TimeRemainingUtils.getFormattedTimeRemaining(freelancerJob.getJob().getEndDate()))")
     ApplyJobsDTOResponse toResponseDto(FreelancerJob freelancerJob);
@@ -35,5 +39,12 @@ public interface ApplyJobsMapper extends BaseMapper<FreelancerJob, ApplyJobsDTOR
         return freelancerJob.getJob().getJobSkills().stream()
                 .map(jobSkill -> jobSkill.getSkill().getSkillName())
                 .collect(Collectors.toList());
+    }
+
+    default Date convertToDateViaInstant(LocalDateTime dateToConvert) {
+        if (dateToConvert == null) {
+            return null;
+        }
+        return java.util.Date.from(dateToConvert.atZone(java.time.ZoneId.systemDefault()).toInstant());
     }
 }

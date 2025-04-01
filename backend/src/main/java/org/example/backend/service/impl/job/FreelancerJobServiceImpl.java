@@ -132,7 +132,7 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
                 updatedFreelancerJob.getStatus(),
                 updatedFreelancerJob.getJob().getId(),
                 updatedFreelancerJob.getFreelancer().getId(),
-                updatedFreelancerJob.getCv().getUrl()
+                ""
         );
     }
 
@@ -155,7 +155,7 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
                 updatedFreelancerJob.getStatus(),
                 updatedFreelancerJob.getJob().getId(),
                 updatedFreelancerJob.getFreelancer().getId(),
-                updatedFreelancerJob.getCv().getUrl()
+                ""
         );
     }
     @Override
