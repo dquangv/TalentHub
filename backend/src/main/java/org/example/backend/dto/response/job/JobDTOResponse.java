@@ -8,6 +8,7 @@ import org.example.backend.enums.StatusJob;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -25,4 +26,7 @@ public class JobDTOResponse {
     private String description;
     private List<String> skillName;
     private boolean seen;
+    private Date endDate;
+    private long remainingTimeInHours;
+    private String remainingTimeFormatted;
 }
