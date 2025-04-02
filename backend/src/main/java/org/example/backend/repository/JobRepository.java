@@ -55,6 +55,6 @@
                 @Param("categoryId") Long categoryId
         );
 
-
+        List<Job> findByClientId(Long clientId);
 
     }
