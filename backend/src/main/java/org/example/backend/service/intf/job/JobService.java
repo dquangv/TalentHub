@@ -4,6 +4,7 @@ import org.example.backend.dto.request.job.CreateJobDTORequest;
 import org.example.backend.dto.request.job.JobAdminDTOResponse;
 import org.example.backend.dto.request.job.JobDTORequest;
 import org.example.backend.dto.request.job.JobDetailDTORequest;
+import org.example.backend.dto.response.account.freelancer.FreelancerDTOResponse;
 import org.example.backend.dto.response.job.*;
 import org.example.backend.dto.response.job.JobWithPackageDTOResponse;
 import org.example.backend.entity.child.job.Job;
@@ -25,4 +26,5 @@ public interface JobService extends BaseService<JobDTORequest, JobDTOResponse, L
     JobDetailDTOResponse updateJob(Long id, JobDetailDTORequest jobDetailDTORequest);
     List<JobWithPackageDTOResponse> getTop6JobsByTypePriority();
     List<JobDTOResponse> getRecommendedJobsForFreelancer(Long freelancerId);
+    List<FreelancerDTOResponse> getFreelancersByClientJobCategories(Long clientId);
 }

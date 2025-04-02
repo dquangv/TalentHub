@@ -16,5 +16,6 @@ public interface FreelancerService extends BaseService<FreelancerDTORequest, Fre
     UpdateHourlyRateDTOResponse updateHourlyRate(UpdateHourlyRateDTORequest request);
     FreelancerDTOResponse updateCategory(Long freelancerId, Long categoryId);
     public List<FreelancerAdminDTOResponse> getAllByAdmin();
+    List<FreelancerDTOResponse> getFreelancersByCategoryId(Long categoryId);
 }
 

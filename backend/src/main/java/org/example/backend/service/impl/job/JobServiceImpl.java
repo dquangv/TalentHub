@@ -6,6 +6,7 @@ import org.example.backend.dto.request.job.CreateJobDTORequest;
 import org.example.backend.dto.request.job.JobAdminDTOResponse;
 import org.example.backend.dto.request.job.JobDTORequest;
 import org.example.backend.dto.request.job.JobDetailDTORequest;
+import org.example.backend.dto.response.account.freelancer.FreelancerDTOResponse;
 import org.example.backend.dto.response.job.*;
 import org.example.backend.dto.response.job.JobWithPackageDTOResponse;
 import org.example.backend.entity.child.account.Account;
@@ -21,6 +22,7 @@ import org.example.backend.enums.TypePackage;
 import org.example.backend.exception.BadRequestException;
 import org.example.backend.mapper.job.*;
 import org.example.backend.repository.*;
+import org.example.backend.service.impl.account.freelancer.FreelancerServiceImpl;
 import org.example.backend.service.intf.job.JobService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,6 +56,7 @@ public class JobServiceImpl implements JobService {
     private final JobDetailMapper jobDetailMapper;
     private final SoldPackageRepository soldPackageRepository;
     private final FreelancerRepository freelancerRepository;
+    private final FreelancerServiceImpl freelancerServiceImpl;
 
     @Override
     @Transactional
@@ -392,6 +395,21 @@ public class JobServiceImpl implements JobService {
         log.info("Returning {} recommended jobs for freelancer {}", result.size(), freelancerId);
         return result;
     }
-
+    @Override
+    public List<FreelancerDTOResponse> getFreelancersByClientJobCategories(Long clientId) {
+        List<Job> clientJobs = jobRepository.findByClientId(clientId);
+        Set<Long> categoryIds = clientJobs.stream()
+                .filter(job -> job.getCategory() != null)
+                .map(job -> job.getCategory().getId())
+                .collect(Collectors.toSet());
+        List<FreelancerDTOResponse> result = new ArrayList<>();
+        for (Long categoryId : categoryIds) {
+            List<FreelancerDTOResponse> freelancers = freelancerServiceImpl.getFreelancersByCategoryId(categoryId);
+            result.addAll(freelancers);
+        }
+        return result.stream()
+                .distinct()
+                .collect(Collectors.toList());
+    }
 
 }
