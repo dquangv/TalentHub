@@ -205,4 +205,27 @@ public class FreelancerServiceImpl implements FreelancerService {
 
         return updateHourlyRateMapper.toResponseDto(updatedFreelancer);
     }
+
+    @Override
+    public List<FreelancerDTOResponse> getFreelancersByCategoryId(Long categoryId) {
+        List<Freelancer> freelancers = freelancerRepository.findByCategoryId(categoryId);
+        return freelancers.stream()
+                .map(f -> new FreelancerDTOResponse(
+                        f.getId(),
+                        f.getUser().getFirstName() + " " + f.getUser().getLastName(),
+                        f.getHourlyRate(),
+                        f.getDescription(),
+                        f.getCategory() != null && f.getCategory().getCategoryTitle() != null
+                                ? f.getCategory().getCategoryTitle()
+                                : "No category",
+                        f.getUser().getId(),
+                        f.getUser().getImage(),
+                        clientReviewRepository.findAverageRating(f.getId()),
+                        f.getFreelancerSkills() != null ? f.getFreelancerSkills()
+                                .stream()
+                                .map(fs -> fs.getSkill().getSkillName())
+                                .collect(Collectors.toList()) : List.of()
+                ))
+                .collect(Collectors.toList());
+    }
 }
