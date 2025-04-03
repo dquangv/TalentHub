@@ -8,6 +8,7 @@ import org.example.backend.enums.StatusJob;
 import org.example.backend.enums.TypePayment;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -28,4 +29,6 @@ public class CreateJobDTOResponse {
     private Long clientId;
     private Long categoryId;
     private List<Long> skillId;
+    private Date createdAt;
+    private String createdTimeFormatted;
 }

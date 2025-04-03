@@ -213,5 +213,13 @@ public class JobController {
                 .data(jobs)
                 .build();
     }
-
+    @GetMapping("/recommended/{freelancerId}")
+    public ResponseObject<List<JobDTOResponse>> getRecommendedJobsForFreelancer(@PathVariable Long freelancerId) {
+        List<JobDTOResponse> recommendedJobs = jobService.getRecommendedJobsForFreelancer(freelancerId);
+        return ResponseObject.<List<JobDTOResponse>>builder()
+                .status(200)
+                .message("Recommended jobs retrieved successfully")
+                .data(recommendedJobs)
+                .build();
+    }
 }

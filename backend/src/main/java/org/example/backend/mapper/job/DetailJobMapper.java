@@ -11,7 +11,6 @@ import org.mapstruct.Mapping;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-
 @Mapper(componentModel = "spring", imports = {TimeRemainingUtils.class})
 public interface DetailJobMapper extends BaseMapper<Job, DetailJobDTORequest, DetailJobDTOResponse> {
 
@@ -25,6 +24,8 @@ public interface DetailJobMapper extends BaseMapper<Job, DetailJobDTORequest, De
     @Mapping(source = "jobOpportunity", target = "jobOpportunity")
     @Mapping(expression = "java(mapSkillNames(job))", target = "skillNames")
     @Mapping(source = "endDate", target = "endDate")
+    @Mapping(source = "createdAt", target = "createdAt")
+    @Mapping(target = "createdTimeFormatted", expression = "java(TimeRemainingUtils.getRelativeTimeFormatted(job.getCreatedAt()))")
     @Mapping(target = "remainingTimeInHours", expression = "java(TimeRemainingUtils.calculateRemainingTimeInHours(job.getEndDate()))")
     @Mapping(target = "remainingTimeFormatted", expression = "java(TimeRemainingUtils.getFormattedTimeRemaining(job.getEndDate()))")
     DetailJobDTOResponse toResponseDto(Job job);

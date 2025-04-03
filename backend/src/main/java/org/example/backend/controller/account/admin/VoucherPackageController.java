@@ -28,11 +28,20 @@ public class VoucherPackageController {
                 .build();
     }
 
-    @PutMapping("/typePackage")
-    public ResponseObject<VoucherPackageDTOResponse> update(@RequestParam TypePackage typePackage, @RequestBody VoucherPackageDTORequest request) {
-        VoucherPackageDTOResponse response = voucherPackageService.update(typePackage, request);
-
+    @PutMapping("/{id}")
+    public ResponseObject<VoucherPackageDTOResponse> update(@PathVariable Long id, @RequestBody VoucherPackageDTORequest request) {
+        VoucherPackageDTOResponse response = voucherPackageService.update(request.getTypePackage(), request);
         return ResponseObject.<VoucherPackageDTOResponse>builder()
+                .message("Voucher package updated successfully")
+                .status(200)
+                .data(response)
+                .build();
+    }
+
+    @PutMapping("/update-by-name")
+    public ResponseObject<String> updateByName(@RequestParam String name, @RequestBody VoucherPackageDTORequest request) {
+        String response = voucherPackageService.updateByName(name, request);
+        return ResponseObject.<String>builder()
                 .message("Voucher package updated successfully")
                 .status(200)
                 .data(response)

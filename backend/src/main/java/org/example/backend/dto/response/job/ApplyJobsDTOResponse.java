@@ -27,4 +27,6 @@ public class ApplyJobsDTOResponse {
     private Date endDate;
     private long remainingTimeInHours;
     private String remainingTimeFormatted;
+    private Date createdAt;
+    private String createdTimeFormatted;
 }

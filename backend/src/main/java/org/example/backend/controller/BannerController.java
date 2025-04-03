@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.ResponseObject;
 import org.example.backend.dto.request.BannerDTORequest;
 import org.example.backend.dto.response.BannerDTOResponse;
+import org.example.backend.dto.response.LogoDTOResponse;
 import org.example.backend.service.intf.BannerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -130,6 +131,16 @@ public class BannerController {
                 .message("All banners retrieved successfully")
                 .status(HttpStatus.OK.value())
                 .data(banners)
+                .build();
+    }
+
+    @GetMapping("/logos")
+    public ResponseObject<List<LogoDTOResponse>> getAllLogo() {
+        List<LogoDTOResponse> logos = bannerService.getAllLogo();
+        return ResponseObject.<List<LogoDTOResponse>>builder()
+                .message("All banners retrieved successfully")
+                .status(HttpStatus.OK.value())
+                .data(logos)
                 .build();
     }
 

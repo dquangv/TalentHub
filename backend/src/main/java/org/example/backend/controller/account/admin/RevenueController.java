@@ -7,10 +7,7 @@ import org.example.backend.service.intf.account.AccountService;
 import org.example.backend.service.intf.account.admin.RevenueService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -43,7 +40,20 @@ public class RevenueController {
                 .build());
     }
 
-    @GetMapping("/year")
+    @GetMapping("/week")
+    public ResponseEntity<ResponseObject<List<RevenueDTOResponse>>> getRevenueByWeek(
+            @RequestParam int year,
+            @RequestParam int month) {
+        List<RevenueDTOResponse> revenue = revenueService.getRevenueByWeek(year, month);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseObject.<List<RevenueDTOResponse>>builder()
+                .message("Get revenue by week successfully")
+                .status(200)
+                .data(revenue)
+                .build());
+    }
+
+    /*@GetMapping("/year")
     public ResponseEntity<ResponseObject<List<RevenueDTOResponse>>> getRevenueByYear() {
         List<RevenueDTOResponse> revenues = revenueService.getRevenueByYear();
 
@@ -52,7 +62,7 @@ public class RevenueController {
                 .status(HttpStatus.OK.value())
                 .data(revenues)
                 .build());
-    }
+    }*/
 
     @GetMapping("/banner/month/{year}")
     public ResponseEntity<ResponseObject<List<RevenueDTOResponse>>> getRevenueBannerByMonth(@PathVariable int year) {
@@ -76,14 +86,27 @@ public class RevenueController {
                 .build());
     }
 
-    @GetMapping("/banner/year")
+    /*@GetMapping("/banner/year")
     public ResponseEntity<ResponseObject<List<RevenueDTOResponse>>> getRevenueBannerByYear() {
         List<RevenueDTOResponse> revenues = revenueService.getRevenueBannerByYear();
 
         return ResponseEntity.status(HttpStatus.OK).body(ResponseObject.<List<RevenueDTOResponse>>builder()
-                .message("Get revenue by year successfully")
+                .message("Get banner revenue by year successfully")
                 .status(HttpStatus.OK.value())
                 .data(revenues)
+                .build());
+    }*/
+
+    @GetMapping("/banner/week")
+    public ResponseEntity<ResponseObject<List<RevenueDTOResponse>>> getRevenueBannerByWeek(
+            @RequestParam int year,
+            @RequestParam int month) {
+        List<RevenueDTOResponse> revenue = revenueService.getRevenueBannerByWeek(year, month);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseObject.<List<RevenueDTOResponse>>builder()
+                .message("Get banner revenue by week successfully")
+                .status(200)
+                .data(revenue)
                 .build());
     }
 

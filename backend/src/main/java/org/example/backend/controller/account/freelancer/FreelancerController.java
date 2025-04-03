@@ -6,6 +6,7 @@ import org.example.backend.dto.request.account.freelancer.CreateFreelancerDTOReq
 import org.example.backend.dto.request.account.freelancer.FreelancerDTORequest;
 import org.example.backend.dto.request.account.freelancer.UpdateHourlyRateDTORequest;
 import org.example.backend.dto.response.account.freelancer.*;
+import org.example.backend.service.impl.job.JobServiceImpl;
 import org.example.backend.service.intf.account.freelancer.FreelancerDetailService;
 import org.example.backend.service.intf.account.freelancer.FreelancerInfoService;
 import org.example.backend.service.intf.account.freelancer.FreelancerService;
@@ -24,6 +25,7 @@ public class FreelancerController {
     private final FreelancerService freelancerService;
     private final FreelancerInfoService freelancerInfoService;
     private final FreelancerDetailService freelancerDetailService;
+    private final JobServiceImpl jobServiceImpl;
 
 
     @PutMapping("/{freelancerId}/category/{categoryId}")
@@ -142,6 +144,16 @@ public class FreelancerController {
                         .data(response)
                         .build()
         );
+    }
+
+    @GetMapping("/clients/{clientId}/job-category-freelancers")
+    public ResponseObject<List<FreelancerDTOResponse>> getFreelancersByClientJobCategories(@PathVariable Long clientId) {
+        List<FreelancerDTOResponse> freelancers = jobServiceImpl.getFreelancersByClientJobCategories(clientId);
+        return ResponseObject.<List<FreelancerDTOResponse>>builder()
+                .message("Freelancers fetched successfully")
+                .status(HttpStatus.OK.value())
+                .data(freelancers)
+                .build();
     }
 }
 

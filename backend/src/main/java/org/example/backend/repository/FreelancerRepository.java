@@ -17,4 +17,6 @@ public interface FreelancerRepository extends JpaRepository<Freelancer,Long> {
     public Optional<Freelancer> findByUserId(Long userId);
     public Long countByCategoryId(Long categoryId);
     List<Freelancer> findByCategory(Category category);
+    @Query("SELECT f FROM Freelancer f WHERE f.category.id = :categoryId")
+    List<Freelancer> findByCategoryId(@Param("categoryId") Long categoryId);
 }

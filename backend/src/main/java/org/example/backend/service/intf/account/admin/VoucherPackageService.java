@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface VoucherPackageService extends BaseService<VoucherPackageDTORequest, VoucherPackageDTOResponse, Long> {
     public VoucherPackageDTOResponse update(TypePackage typePackage, VoucherPackageDTORequest request);
+    public String updateByName(String name, VoucherPackageDTORequest request);
     VoucherPackageDTOResponse getDetailByTypePackage(TypePackage typePackage);
     List<VoucherPackageDTOResponse> findLatestVoucherPackagesByType();
     List<VoucherPackageDTOResponse> findLatestVoucherPackagesByTypeByClientId(Long clientId);

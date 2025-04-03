@@ -45,4 +45,16 @@
         @Query("SELECT COUNT(j) FROM Job j WHERE j.status = 'OPEN' AND MONTH(j.createdAt) = :month AND YEAR(j.createdAt) = :year")
         Long countOpenJobsByMonth(@Param("month") int month, @Param("year") int year);
 
+
+        @Query("SELECT DISTINCT j FROM Job j " +
+                "LEFT JOIN j.category c " +
+                "WHERE j.status = 'OPEN' AND " +
+                "(:categoryId IS NOT NULL AND c.id = :categoryId) " +
+                "ORDER BY j.createdAt DESC")
+        List<Job> findRecommendedJobsForFreelancer(
+                @Param("categoryId") Long categoryId
+        );
+
+        List<Job> findByClientId(Long clientId);
+
     }
