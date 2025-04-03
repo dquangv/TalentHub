@@ -20,7 +20,10 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
             "p.activity, CAST(COALESCE(SUM(p.balance), 0) AS BigDecimal), MAX(p.createdAt)) " +
             "FROM Payment p " +
             "WHERE p.account.id = :accountId " +
-            "AND (p.activity = 'DEPOSIT' OR p.activity = 'WITHDRAW') " +
+            "AND (p.activity = 'DEPOSIT' OR p.activity = 'WITHDRAW')  " +
+            "AND FUNCTION('DATE', p.createdAt) = (" +
+            "    SELECT FUNCTION('DATE', MAX(p2.createdAt)) FROM Payment p2 WHERE p2.account.id = :accountId" +
+            ") " +
             "GROUP BY p.activity")
     List<PaymentSummaryDTO> getLatestPaymentInfo(@Param("accountId") Long accountId);
 
