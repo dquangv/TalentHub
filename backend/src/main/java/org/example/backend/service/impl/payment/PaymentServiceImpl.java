@@ -26,6 +26,7 @@ import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -197,15 +198,19 @@ public class PaymentServiceImpl implements PaymentService {
         BigDecimal todaySpending = BigDecimal.ZERO;
         LocalDateTime latestSpendingDate = null;
 
-        // Duyệt danh sách và ánh xạ vào biến phù hợp
+        BigDecimal totalDepositToday = BigDecimal.ZERO;
+        BigDecimal totalWithdrawToday = BigDecimal.ZERO;
+
+
+        // Duyệt danh sách giao dịc
         for (PaymentSummaryDTO payment : payments) {
-            if (payment.getActivity() == ActivityType.DEPOSIT) {
-                latestDeposit = payment.getTotalAmount();
-                latestDepositDate = payment.getLatestTransactionDate();
-            } else if (payment.getActivity() == ActivityType.WITHDRAW) {
-                todaySpending = payment.getTotalAmount();
-                latestSpendingDate = payment.getLatestTransactionDate();
-            }
+                if (payment.getActivity() == ActivityType.DEPOSIT) {
+                    latestDeposit = totalDepositToday.add(payment.getTotalAmount());
+                    latestDepositDate = payment.getLatestTransactionDate();
+                } else if (payment.getActivity() == ActivityType.WITHDRAW) {
+                    todaySpending =  totalWithdrawToday.add(payment.getTotalAmount());
+                    latestSpendingDate = payment.getLatestTransactionDate();
+                }
         }
 
         // Trả về DTO chứa thông tin tài khoản
