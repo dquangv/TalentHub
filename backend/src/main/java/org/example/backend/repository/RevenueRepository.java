@@ -53,4 +53,22 @@ public interface RevenueRepository extends JpaRepository<SoldPackage, Long> {
             "ORDER BY YEAR(b.startTime) DESC")
     List<Object[]> getRevenueBannerByYear();
 
+    @Query("""
+                SELECT FUNCTION('WEEK', b.startTime) AS week, SUM(b.price)
+                FROM Banner b 
+                WHERE YEAR(b.startTime) = :year AND MONTH(b.startTime) = :month
+                GROUP BY FUNCTION('WEEK', b.startTime)
+                ORDER BY FUNCTION('WEEK', b.startTime) ASC
+            """)
+    List<Object[]> getRevenueBannerByWeek(@Param("year") int year, @Param("month") int month);
+
+    @Query("""
+                SELECT FUNCTION('WEEK', s.startDate) AS week, SUM(s.price)
+                FROM SoldPackage s 
+                WHERE YEAR(s.startDate) = :year AND MONTH(s.startDate) = :month
+                GROUP BY FUNCTION('WEEK', s.startDate)
+                ORDER BY FUNCTION('WEEK', s.startDate) ASC
+            """)
+    List<Object[]> getRevenueByWeek(@Param("year") int year, @Param("month") int month);
+
 }

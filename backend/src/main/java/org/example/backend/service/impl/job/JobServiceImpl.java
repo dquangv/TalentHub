@@ -1,16 +1,19 @@
 package org.example.backend.service.impl.job;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.backend.dto.request.job.CreateJobDTORequest;
 import org.example.backend.dto.request.job.JobAdminDTOResponse;
 import org.example.backend.dto.request.job.JobDTORequest;
 import org.example.backend.dto.request.job.JobDetailDTORequest;
+import org.example.backend.dto.response.account.freelancer.FreelancerDTOResponse;
 import org.example.backend.dto.response.job.*;
 import org.example.backend.dto.response.job.JobWithPackageDTOResponse;
 import org.example.backend.entity.child.account.Account;
 import org.example.backend.entity.child.account.client.Client;
 import org.example.backend.entity.child.account.client.Company;
 import org.example.backend.entity.child.account.client.SoldPackage;
+import org.example.backend.entity.child.account.freelancer.Freelancer;
 import org.example.backend.entity.child.job.*;
 import org.example.backend.enums.ScopeJob;
 import org.example.backend.enums.StatusFreelancerJob;
@@ -19,6 +22,7 @@ import org.example.backend.enums.TypePackage;
 import org.example.backend.exception.BadRequestException;
 import org.example.backend.mapper.job.*;
 import org.example.backend.repository.*;
+import org.example.backend.service.impl.account.freelancer.FreelancerServiceImpl;
 import org.example.backend.service.intf.job.JobService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +35,7 @@ import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class JobServiceImpl implements JobService {
@@ -51,6 +55,8 @@ public class JobServiceImpl implements JobService {
     private final SkillRepository skillRepository;
     private final JobDetailMapper jobDetailMapper;
     private final SoldPackageRepository soldPackageRepository;
+    private final FreelancerRepository freelancerRepository;
+    private final FreelancerServiceImpl freelancerServiceImpl;
 
     @Override
     @Transactional
@@ -238,7 +244,6 @@ public class JobServiceImpl implements JobService {
 
         return jobs;
     }*/
-
     @Override
     public List<JobDTOResponse> findAllJobs(Long freelancerId) {
         List<JobDTOResponse> jobs = jobRepository.findByStatus(StatusJob.OPEN).stream()
@@ -250,11 +255,18 @@ public class JobServiceImpl implements JobService {
                             .ifPresent(company -> dto.setCompanyName(company.getCompanyName()));
 
                     boolean seen = freelancerJobRepository.existsByFreelancerIdAndJobId(freelancerId, job.getId());
+                    boolean applied = freelancerJobRepository.existsByFreelancerIdAndJobIdAndStatus(
+                            freelancerId, job.getId(), StatusFreelancerJob.Applied);
+
                     dto.setSeen(seen);
+                    dto.setApplied(applied);
 
                     return dto;
                 })
-                .sorted(Comparator.comparing(JobDTOResponse::isSeen))
+                .sorted(
+                        Comparator.comparing(JobDTOResponse::isSeen)
+                                .thenComparing(JobDTOResponse::getCreatedAt, Comparator.reverseOrder())
+                )
                 .collect(Collectors.toList());
 
         return jobs;
@@ -349,4 +361,55 @@ public class JobServiceImpl implements JobService {
 
         return result;
     }
+    public List<JobDTOResponse> getRecommendedJobsForFreelancer(Long freelancerId) {
+        log.info("Start fetching recommended jobs for freelancerId: {}", freelancerId);
+
+        Freelancer freelancer = freelancerRepository.findById(freelancerId)
+                .orElseThrow(() -> {
+                    log.error("Freelancer with ID {} not found", freelancerId);
+                    return new BadRequestException("Freelancer not found");
+                });
+
+        Category freelancerCategory = freelancer.getCategory();
+        Long categoryId = (freelancerCategory != null) ? freelancerCategory.getId() : null;
+        log.info("Freelancer {} belongs to category ID: {}", freelancerId, categoryId);
+
+        List<Job> recommendedJobs = jobRepository.findRecommendedJobsForFreelancer(categoryId);
+        log.info("Found {} recommended jobs for category ID: {}", recommendedJobs.size(), categoryId);
+
+        List<JobDTOResponse> result = recommendedJobs.stream()
+                .limit(6)
+                .map(job -> {
+                    JobDTOResponse dto = jobMapper.toResponseDto(job);
+                    boolean applied = freelancerJobRepository.existsByFreelancerIdAndJobIdAndStatus(
+                            freelancerId, job.getId(), StatusFreelancerJob.Applied);
+                    dto.setApplied(applied);
+
+                    companyRepository.getCompanyByClientId(job.getClient().getId())
+                            .ifPresent(company -> dto.setCompanyName(company.getCompanyName()));
+
+                    return dto;
+                })
+                .collect(Collectors.toList());
+
+        log.info("Returning {} recommended jobs for freelancer {}", result.size(), freelancerId);
+        return result;
+    }
+    @Override
+    public List<FreelancerDTOResponse> getFreelancersByClientJobCategories(Long clientId) {
+        List<Job> clientJobs = jobRepository.findByClientId(clientId);
+        Set<Long> categoryIds = clientJobs.stream()
+                .filter(job -> job.getCategory() != null)
+                .map(job -> job.getCategory().getId())
+                .collect(Collectors.toSet());
+        List<FreelancerDTOResponse> result = new ArrayList<>();
+        for (Long categoryId : categoryIds) {
+            List<FreelancerDTOResponse> freelancers = freelancerServiceImpl.getFreelancersByCategoryId(categoryId);
+            result.addAll(freelancers);
+        }
+        return result.stream()
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
 }

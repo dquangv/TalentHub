@@ -13,4 +13,6 @@ public interface RevenueService {
     List<RevenueDTOResponse> getRevenueBannerByQuater(int year);
     List<RevenueDTOResponse> getRevenueBannerByYear();
     Map<String, Object> getGrowthRates();
+    List<RevenueDTOResponse> getRevenueBannerByWeek(int year, int month);
+    List<RevenueDTOResponse> getRevenueByWeek(int year, int month);
 }

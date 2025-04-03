@@ -26,23 +26,41 @@ public class RevenueServiceImpl implements RevenueService {
 
     @Override
     public List<RevenueDTOResponse> getRevenueByMonth(int year) {
-        List<Object[]> result = revenueRepository.getRevenueByMonth(year);
+        List<Object[]> results = revenueRepository.getRevenueByMonth(year);
 
-        return result.stream()
-                .map(obj -> new RevenueDTOResponse((int) obj[0], (Double) obj[1]))
+        Map<Integer, Double> revenueMap = new HashMap<>();
+        for (int month = 1; month <= 12; month++) {
+            revenueMap.put(month, 0.0);
+        }
+
+        for (Object[] row : results) {
+            Integer month = ((Number) row[0]).intValue();
+            Double totalRevenue = row[1] != null ? ((Number) row[1]).doubleValue() : 0.0;
+            revenueMap.put(month, totalRevenue);
+        }
+
+        return revenueMap.entrySet().stream()
+                .map(entry -> new RevenueDTOResponse(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<RevenueDTOResponse> getRevenueByQuater(int year) {
-        List<Object[]> result = revenueRepository.getRevenueByQuarter(year);
+        List<Object[]> results = revenueRepository.getRevenueByQuarter(year);
 
-        return result.stream()
-                .map(obj -> {
-                    Integer quarter = ((Number) obj[0]).intValue();
-                    Double totalRevenue = obj[1] != null ? ((Number) obj[1]).doubleValue() : 0.0;
-                    return new RevenueDTOResponse(quarter, totalRevenue);
-                })
+        Map<Integer, Double> revenueMap = new HashMap<>();
+        for (int quarter = 1; quarter <= 4; quarter++) {
+            revenueMap.put(quarter, 0.0);
+        }
+
+        for (Object[] row : results) {
+            Integer quarter = ((Number) row[0]).intValue();
+            Double totalRevenue = row[1] != null ? ((Number) row[1]).doubleValue() : 0.0;
+            revenueMap.put(quarter, totalRevenue);
+        }
+
+        return revenueMap.entrySet().stream()
+                .map(entry -> new RevenueDTOResponse(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList());
     }
 
@@ -60,8 +78,19 @@ public class RevenueServiceImpl implements RevenueService {
     public List<RevenueDTOResponse> getRevenueBannerByMonth(int year) {
         List<Object[]> results = revenueRepository.getRevenueBannerByMonth(year);
 
-        return results.stream()
-                .map(row -> new RevenueDTOResponse((int) row[0], (Double) row[1]))
+        Map<Integer, Double> revenueMap = new HashMap<>();
+        for (int month = 1; month <= 12; month++) {
+            revenueMap.put(month, 0.0);
+        }
+
+        for (Object[] row : results) {
+            Integer month = ((Number) row[0]).intValue();
+            Double totalRevenue = row[1] != null ? ((Number) row[1]).doubleValue() : 0.0;
+            revenueMap.put(month, totalRevenue);
+        }
+
+        return revenueMap.entrySet().stream()
+                .map(entry -> new RevenueDTOResponse(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList());
     }
 
@@ -69,14 +98,22 @@ public class RevenueServiceImpl implements RevenueService {
     public List<RevenueDTOResponse> getRevenueBannerByQuater(int year) {
         List<Object[]> results = revenueRepository.getRevenueBannerByQuarter(year);
 
-        return results.stream()
-                .map(row -> {
-                    Integer quarter = ((Number) row[0]).intValue();
-                    Double totalRevenue = row[1] != null ? ((Number) row[1]).doubleValue() : 0.0;
-                    return new RevenueDTOResponse(quarter, totalRevenue);
-                })
+        Map<Integer, Double> revenueMap = new HashMap<>();
+        for (int quarter = 1; quarter <= 4; quarter++) {
+            revenueMap.put(quarter, 0.0);
+        }
+
+        for (Object[] row : results) {
+            Integer quarter = ((Number) row[0]).intValue();
+            Double totalRevenue = row[1] != null ? ((Number) row[1]).doubleValue() : 0.0;
+            revenueMap.put(quarter, totalRevenue);
+        }
+
+        return revenueMap.entrySet().stream()
+                .map(entry -> new RevenueDTOResponse(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList());
     }
+
 
 
     @Override
@@ -145,6 +182,46 @@ public class RevenueServiceImpl implements RevenueService {
 
             return growthRates;
         }
+    }
+
+    @Override
+    public List<RevenueDTOResponse> getRevenueBannerByWeek(int year, int month) {
+        List<Object[]> results = revenueRepository.getRevenueBannerByWeek(year, month);
+
+        Map<Integer, Double> revenueMap = new HashMap<>();
+        for (int week = 1; week <= 4; week++) {
+            revenueMap.put(week, 0.0);
+        }
+
+        for (Object[] row : results) {
+            Integer week = ((Number) row[0]).intValue();
+            Double totalRevenue = row[1] != null ? ((Number) row[1]).doubleValue() : 0.0;
+            revenueMap.put(week, totalRevenue);
+        }
+
+        return revenueMap.entrySet().stream()
+                .map(entry -> new RevenueDTOResponse(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RevenueDTOResponse> getRevenueByWeek(int year, int month) {
+        List<Object[]> results = revenueRepository.getRevenueByWeek(year, month);
+
+        Map<Integer, Double> revenueMap = new HashMap<>();
+        for (int week = 1; week <= 4; week++) {
+            revenueMap.put(week, 0.0);
+        }
+
+        for (Object[] row : results) {
+            Integer week = ((Number) row[0]).intValue();
+            Double totalRevenue = row[1] != null ? ((Number) row[1]).doubleValue() : 0.0;
+            revenueMap.put(week, totalRevenue);
+        }
+
+        return revenueMap.entrySet().stream()
+                .map(entry -> new RevenueDTOResponse(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
     }
 
     private Double calculateGrowthRate(Long current, Long previous) {
