@@ -43,6 +43,28 @@ public class VoucherPackageServiceImpl implements VoucherPackageService {
     }
 
     @Override
+    public String updateByName(String name, VoucherPackageDTORequest request) {
+        Optional<VoucherPackage> optionalVoucherPackage = voucherPackageRepository.findByName(name);
+
+        if (optionalVoucherPackage.isPresent()) {
+            VoucherPackage voucherPackage = optionalVoucherPackage.get();
+
+            voucherPackage.setPrice(request.getPrice());
+            voucherPackage.setDuration(request.getDuration());
+            voucherPackage.setStatus(request.isStatus());
+            voucherPackage.setTypePackage(request.getTypePackage());
+            voucherPackage.setNumberPost(request.getNumberPost());
+
+            VoucherPackage updatedVoucherPackage = voucherPackageRepository.save(voucherPackage);
+
+            return "Update successful";
+        } else {
+            throw new RuntimeException("Voucher package with name " + name + " not found");
+        }
+    }
+
+
+    @Override
     public VoucherPackageDTOResponse update(TypePackage typePackage, VoucherPackageDTORequest request) {
         Account account = accountRepository.findById(request.getAccountId())
                 .orElseThrow(() -> new NotFoundException("Account not found"));
