@@ -3,6 +3,7 @@ package org.example.backend.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.BannerDTORequest;
 import org.example.backend.dto.response.BannerDTOResponse;
+import org.example.backend.dto.response.LogoDTOResponse;
 import org.example.backend.entity.child.Banner;
 import org.example.backend.exception.NotFoundException;
 import org.example.backend.repository.BannerRepository;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class BannerServiceImpl implements BannerService {
+
 
     private final BannerRepository bannerRepository;
     private final CloudinaryImageService cloudinaryImageService;
@@ -76,6 +78,17 @@ public class BannerServiceImpl implements BannerService {
     public List<BannerDTOResponse> getAll() {
         List<Banner> banners = bannerRepository.findAll();
         return banners.stream().map(this::toDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<LogoDTOResponse> getAllLogo() {
+        List<LogoDTOResponse> banners = bannerRepository.findAll().stream().map(banner ->
+                LogoDTOResponse.builder()
+                        .vendor(banner.getVendor())
+                        .logo(banner.getLogo())
+                        .status(banner.isStatus())
+                        .id(banner.getId()).build()).toList();
+        return banners;
     }
 
     @Override
