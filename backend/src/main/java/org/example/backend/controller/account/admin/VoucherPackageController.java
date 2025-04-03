@@ -38,6 +38,16 @@ public class VoucherPackageController {
                 .build();
     }
 
+    @PutMapping("/update-by-name")
+    public ResponseObject<String> updateByName(@RequestParam String name, @RequestBody VoucherPackageDTORequest request) {
+        String response = voucherPackageService.updateByName(name, request);
+        return ResponseObject.<String>builder()
+                .message("Voucher package updated successfully")
+                .status(200)
+                .data(response)
+                .build();
+    }
+
     @GetMapping("/{id}")
     public ResponseObject<VoucherPackageDTOResponse> getById(@PathVariable Long id) {
         return voucherPackageService.getById(id)
