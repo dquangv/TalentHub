@@ -53,6 +53,10 @@ public class FreelancerDetailServiceImpl implements FreelancerDetailService {
         dtoResponse.setCompleteProject(completedProject != null ? completedProject : 0L);
         dtoResponse.setHourlyRate(freelancerExist.getHourlyRate());
         dtoResponse.setOverview(freelancerExist.getDescription());
+
+        if (freelancerExist.getCategory() != null) {
+            dtoResponse.setCategoryTitle(freelancerExist.getCategory().getCategoryTitle());
+        }
         dtoResponse.setSkills(freelancerExist.getFreelancerSkills()
                 .stream()
                 .map(fs -> fs.getSkill().getSkillName())
