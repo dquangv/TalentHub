@@ -369,7 +369,7 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
         }
 
         return freelancerJobs.stream()
-                .filter(freelancerJob -> freelancerJob.getClientReview() != null) // Chỉ lấy những job có client review
+                .filter(freelancerJob -> freelancerJob.getClientReview() != null) 
                 .map(freelancerJob -> {
                     Job job = freelancerJob.getJob();
                     if (job == null) {
