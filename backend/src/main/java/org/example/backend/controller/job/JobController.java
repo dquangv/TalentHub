@@ -198,7 +198,7 @@ public class JobController {
         List<FreelancerJobDetailDTOResponse> detailsList = freelancerJobService.getJobDetailsByFreelancerId(freelancerId);
 
         return ResponseObject.<List<FreelancerJobDetailDTOResponse>>builder()
-                .message(detailsList != null && !detailsList.isEmpty() ? "Get freelancer job details successful" : "No jobs found for this freelancer")
+                .message(detailsList != null && !detailsList.isEmpty() ? "  Get freelancer job details successful" : "No jobs found for this freelancer")
                 .status(detailsList != null && !detailsList.isEmpty() ? HttpStatus.OK.value() : HttpStatus.OK.value())
                 .data(detailsList)
                 .build();
