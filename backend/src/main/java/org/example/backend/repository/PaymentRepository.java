@@ -20,7 +20,7 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
 
     @Query("SELECT new org.example.backend.dto.response.payment.PaymentSummaryDTO(" +
-            "t.activity, CAST(COALESCE(SUM(t.money), 0) AS BigDecimal), MAX(t.createdAt)) " +
+            "t.activity, CAST(COALESCE(SUM(t.money), 0) AS BigDecimal), MAX(t.createdAt), MIN(t.createdAt)) " +
             "FROM  Transactions t " +
             "WHERE t.payment.account.id = :accountId " +
             "AND (t.activity = 'DEPOSIT' OR t.activity = 'WITHDRAW')  " +

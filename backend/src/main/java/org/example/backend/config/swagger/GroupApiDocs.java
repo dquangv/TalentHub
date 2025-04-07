@@ -148,6 +148,13 @@ public class GroupApiDocs {
                 .pathsToMatch("/api/v1/payments/**")
                 .build();
     }
+    @Bean
+    public GroupedOpenApi apiTransactions() {
+        return GroupedOpenApi.builder()
+                .group("transactions APIs")
+                .pathsToMatch("/api/v1/transactions/**")
+                .build();
+    }
 
     @Bean
     public GroupedOpenApi apiUsers() {
