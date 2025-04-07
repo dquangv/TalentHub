@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.backend.config.vnpay.ConfigVnPay;
 import org.example.backend.dto.PaymentResDTO;
 import org.example.backend.dto.request.payment.PaymentDTORequest;
+import org.example.backend.dto.request.payment.VNPayCallbackDTORequest;
 import org.example.backend.dto.response.ResultPaymentResponseDTO;
 import org.example.backend.dto.response.payment.BalanceResponseDTO;
 import org.example.backend.dto.response.payment.PaymentDTOResponse;
@@ -23,6 +24,7 @@ import org.example.backend.repository.TransactionRepository;
 import org.example.backend.repository.UserRepository;
 import org.example.backend.service.intf.payment.PaymentService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
@@ -102,68 +104,70 @@ public class PaymentServiceImpl implements PaymentService {
         return query.toString();
     }
 
-    public ResultPaymentResponseDTO handleVnPayCallback(String vnp_ResponseCode, BigDecimal vnpAmount, Long userId) {
-        if ("00".equals(vnp_ResponseCode)) {
-            // Lấy thông tin user
-            User user = userRepository.findById(userId)
-                    .orElseThrow(() -> new IllegalArgumentException("User not found"));
+ public ResultPaymentResponseDTO handleVnPayCallback(VNPayCallbackDTORequest request) {
+     // Lấy thông tin user
+     User user = userRepository.findById(request.getUserId())
+             .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-            // Lấy thông tin account từ user
-            Account account = accountRepository.findById(user.getAccount().getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+     // Lấy thông tin account từ user
+     Account account = accountRepository.findById(user.getAccount().getId())
+             .orElseThrow(() -> new IllegalArgumentException("Account not found"));
 
-            Optional<Payment> payment = paymentRepository.findByAccountId(account.getId());
+     Optional<Payment> payment = paymentRepository.findByAccountId(account.getId());
 
-            if (payment.isPresent()) {
-                // Cập nhật số dư tài khoản
-                Transactions transaction = new Transactions();
-                payment.get().setBalance(payment.get().getBalance().add(vnpAmount));
-                transaction.setMoney(vnpAmount);
-                transaction.setMoney(vnpAmount);
-                transaction.setActivity(ActivityType.DEPOSIT);
-                transaction.setStatus(TransactionStatus.SUCCESS);
-                transaction.setPayment(payment.get());
-                paymentRepository.save(payment.get());
-                transactionRepository.save(transaction);
-            } else {
-                // Nếu không tìm thấy bản ghi Payment, tạo mới
-                Payment newPayment = new Payment();
-                newPayment.setAccount(account);
-                newPayment.setBalance(vnpAmount);
-                Transactions transaction = new Transactions();
+     BigDecimal amount = Optional.ofNullable(request.getVnp_Amount()).orElse(BigDecimal.ZERO);
 
-                transaction.setMoney(vnpAmount);
-                transaction.setActivity(ActivityType.DEPOSIT);
-                transaction.setStatus(TransactionStatus.SUCCESS);
-                transaction.setPayment(newPayment);
-                paymentRepository.save(newPayment);
-                transactionRepository.save(transaction);
-            }
+     if ("00".equals(request.getVnp_ResponseCode())) {
+         Payment savePayment = payment.orElseGet(() -> {
+             Payment newPayment = new Payment();
+             newPayment.setAccount(account);
+             newPayment.setBalance(BigDecimal.ZERO);
+             return newPayment;
+         });
 
-            payment.get().setBalance(payment.get().getBalance().add(vnpAmount));
+         BigDecimal currentBalance = Optional.ofNullable(savePayment.getBalance()).orElse(BigDecimal.ZERO);
+         savePayment.setBalance(currentBalance.add(amount));
 
+         Transactions transaction = new Transactions();
+         transaction.setActivity(ActivityType.DEPOSIT);
+         transaction.setDescription("Nộp tiền thành công");
+         transaction.setMoney(amount);
+         transaction.setStatus(TransactionStatus.SUCCESS);
+         transaction.setPayment(savePayment);
 
-            return ResultPaymentResponseDTO.builder()
-                    .codeVnp(vnp_ResponseCode)
-                    .fristName(user.getFirstName())
-                    .lastName(user.getLastName())
-                    .amount(vnpAmount)
-                    .activity(ActivityType.DEPOSIT)
-                    .description("Nạp tiền thành công")
-                    .transactionStatus(TransactionStatus.SUCCESS)
-                    .build();
-        }
+         paymentRepository.save(savePayment);
+         transactionRepository.save(transaction);
 
-        return ResultPaymentResponseDTO.builder()
-                .codeVnp(vnp_ResponseCode)
-                .fristName(null)
-                .lastName(null)
-                .amount(null)
-                .activity(null)
-                .description("Nạp tiền thất bại")
-                .transactionStatus(TransactionStatus.FAILED)
-                .build();
-    }
+         return ResultPaymentResponseDTO.builder()
+                 .codeVnp(request.getVnp_ResponseCode())
+                 .fristName(user.getFirstName())
+                 .lastName(user.getLastName())
+                 .amount(request.getVnp_Amount())
+                 .activity(ActivityType.DEPOSIT)
+                 .description("Nạp tiền thành công")
+                 .transactionStatus(TransactionStatus.SUCCESS)
+                 .build();
+     } else {
+         Transactions transaction = new Transactions();
+         transaction.setDescription("Nộp tiền thất bại");
+         transaction.setActivity(ActivityType.DEPOSIT);
+         transaction.setMoney(BigDecimal.ZERO);
+         transaction.setStatus(TransactionStatus.FAILED);
+         transaction.setPayment(payment.orElse(null));
+         transactionRepository.save(transaction);
+
+         return ResultPaymentResponseDTO.builder()
+                 .codeVnp(request.getVnp_ResponseCode())
+                 .fristName(null)
+                 .lastName(null)
+                 .amount(BigDecimal.ZERO)
+                 .activity(null)
+                 .description("Nạp tiền thất bại")
+                 .transactionStatus(TransactionStatus.FAILED)
+                 .build();
+     }
+ }
+
 
     @Override
     public WithdrawResponseDTO handleVnPayWithCallback(BigDecimal vnpAmount, Long userId) {
@@ -175,24 +179,22 @@ public class PaymentServiceImpl implements PaymentService {
         // Lấy thông tin account từ user
         Account account = accountRepository.findById(user.getAccount().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Account not found"));
-//
-//        // Lấy tổng số dư của tài khoản
-//        BigDecimal balance = paymentRepository.getTotalAmountByAccountId(account.getId());
 
         BigDecimal balance = paymentRepository.findByAccountId(account.getId())
                 .map(Payment::getBalance)
-                .orElseThrow(() -> new IllegalArgumentException("Payment not found"));
+                .orElse(null);
 
         // Kiểm tra số dư trước khi rút tiền
         if (balance == null || balance.compareTo(vnpAmount) < 0) {
             return WithdrawResponseDTO.builder()
                     .amount(vnpAmount)
-                    .remainingBalance(balance)
+                    .remainingBalance(balance == null ? BigDecimal.ZERO : balance)
                     .activityType(ActivityType.WITHDRAW)
-                    .message("❌ Số dư không đủ để thực hiện giao dịch rút tiền!")
+                    .message(balance == null ? "❌ Bạn chưa nạp tiền lần đầu. Vui lòng nạp tiền trước khi thực hiện giao dịch!" : "❌ Số dư không đủ để thực hiện giao dịch rút tiền!")
                     .transactionStatus(TransactionStatus.FAILED)
                     .build();
         }
+
         // Tạo bản ghi mới cho giao dịch rút tiền
         Optional<Payment> paymentOptional = paymentRepository.findByAccountId(account.getId());
         Payment payment;
@@ -217,11 +219,10 @@ public class PaymentServiceImpl implements PaymentService {
         paymentRepository.save(payment);
         transactionRepository.save(transaction);
 
-
         // Trả về DTO chứa thông tin giao dịch
         return WithdrawResponseDTO.builder()
                 .amount(vnpAmount)
-                .remainingBalance(balance)
+                .remainingBalance(payment.getBalance())
                 .activityType(ActivityType.WITHDRAW)
                 .message("Rút tiền thành công")
                 .transactionStatus(TransactionStatus.SUCCESS)
@@ -249,6 +250,7 @@ public class PaymentServiceImpl implements PaymentService {
         LocalDateTime latestDepositDate = null;
         BigDecimal todaySpending = BigDecimal.ZERO;
         LocalDateTime latestSpendingDate = null;
+        LocalDateTime oldestTransactionDate = null;
 
         BigDecimal totalDepositToday = BigDecimal.ZERO;
         BigDecimal totalWithdrawToday = BigDecimal.ZERO;
@@ -256,13 +258,14 @@ public class PaymentServiceImpl implements PaymentService {
 
         // Duyệt danh sách giao dịc
         for (PaymentSummaryDTO payment : payments) {
-                if (payment.getActivity() == ActivityType.DEPOSIT) {
-                    latestDeposit = totalDepositToday.add(payment.getTotalAmount());
-                    latestDepositDate = payment.getLatestTransactionDate();
-                } else if (payment.getActivity() == ActivityType.WITHDRAW) {
-                    todaySpending =  totalWithdrawToday.add(payment.getTotalAmount());
-                    latestSpendingDate = payment.getLatestTransactionDate();
-                }
+            if (payment.getActivity() == ActivityType.DEPOSIT) {
+                latestDeposit = totalDepositToday.add(payment.getTotalAmount());
+                latestDepositDate = payment.getLatestTransactionDate();
+            } else if (payment.getActivity() == ActivityType.WITHDRAW) {
+                todaySpending = totalWithdrawToday.add(payment.getTotalAmount());
+                latestSpendingDate = payment.getLatestTransactionDate();
+            }
+            oldestTransactionDate = payment.getOldestTransactionDate();
         }
 
         // Trả về DTO chứa thông tin tài khoản
@@ -272,6 +275,7 @@ public class PaymentServiceImpl implements PaymentService {
                 .latestDepositDate(latestDepositDate)
                 .todaySpending(todaySpending)
                 .latestSpendingDate(latestSpendingDate)
+                .oldestTransactionDate(oldestTransactionDate)
                 .build();
     }
 
