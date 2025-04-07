@@ -61,7 +61,9 @@ public class Account extends AbstractEntity<Long> {
     @JoinColumn(name = "user_id")
     private User user;*/
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<Payment> payments = new ArrayList<>();
+
+
+//    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    @JsonIgnore
+//    private List<Payment> payments = new ArrayList<>();
 }

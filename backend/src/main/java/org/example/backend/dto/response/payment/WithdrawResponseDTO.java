@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.backend.enums.ActivityType;
+import org.example.backend.enums.TransactionStatus;
 
 import java.math.BigDecimal;
 
@@ -14,6 +15,6 @@ public class WithdrawResponseDTO {
     private BigDecimal amount;
     private ActivityType activityType;
     private String message;
-    private String status;
     private BigDecimal remainingBalance;
+    private TransactionStatus transactionStatus;
 }
