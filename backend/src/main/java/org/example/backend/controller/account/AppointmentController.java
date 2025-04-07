@@ -51,4 +51,18 @@ public class AppointmentController {
                 .data(response)
                 .build());
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ResponseObject<AppointmentDetailDTOResponse>> updateAppointment(
+            @PathVariable("id") Long id,
+            @RequestBody AppointmentDetailDTORequest request) {
+        AppointmentDetailDTOResponse response = appointmentService.update(id, request);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseObject.<AppointmentDetailDTOResponse>builder()
+                .message("Successfully updated appointment")
+                .status(200)
+                .data(response)
+                .build());
+    }
+
 }
