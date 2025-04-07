@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.backend.enums.ActivityType;
+import org.example.backend.enums.TransactionStatus;
 
 import java.math.BigDecimal;
 
@@ -16,4 +17,6 @@ public class ResultPaymentResponseDTO {
     private String lastName;
     private BigDecimal amount;
     private ActivityType activity;
+    private String description;
+    private TransactionStatus transactionStatus;
 }

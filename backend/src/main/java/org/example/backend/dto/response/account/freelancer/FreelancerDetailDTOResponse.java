@@ -27,6 +27,7 @@ public class FreelancerDetailDTOResponse {
     private BigDecimal hourlyRate;
     private String overview;
     private long userId;
+    private String categoryTitle;
     private List<String> skills;
     private List<Education> educations;
     private List<Experience> experiences;

@@ -368,41 +368,44 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
             return Collections.emptyList();
         }
 
-        return freelancerJobs.stream().map(freelancerJob -> {
-            Job job = freelancerJob.getJob();
-            if (job == null) {
-                throw new BadRequestException("Job Not Found for FreelancerJob ID: " + freelancerJob.getId());
-            }
+        return freelancerJobs.stream()
+                .filter(freelancerJob -> freelancerJob.getClientReview() != null) 
+                .map(freelancerJob -> {
+                    Job job = freelancerJob.getJob();
+                    if (job == null) {
+                        throw new BadRequestException("Job Not Found for FreelancerJob ID: " + freelancerJob.getId());
+                    }
 
-            String clientName = job.getClient() != null && job.getClient().getUser() != null
-                    ? job.getClient().getUser().getFirstName() + " " + job.getClient().getUser().getLastName()
-                    : "Unknown Client";
+                    String clientName = job.getClient() != null && job.getClient().getUser() != null
+                            ? job.getClient().getUser().getFirstName() + " " + job.getClient().getUser().getLastName()
+                            : "Unknown Client";
 
-            ClientReview clientReview = freelancerJob.getClientReview();
-            Float rating = clientReview != null ? clientReview.getRating() : null;
-            String note = clientReview != null ? clientReview.getNote() : null;
+                    ClientReview clientReview = freelancerJob.getClientReview();
+                    Float rating = clientReview.getRating();
+                    String note = clientReview.getNote();
 
-            Date startDate = job.getCreatedAt();
-            Date endDate = null;
-            if (startDate != null && job.getDuration() != null) {
-                java.util.Calendar calendar = java.util.Calendar.getInstance();
-                calendar.setTime(startDate);
-                calendar.add(java.util.Calendar.DATE, job.getDuration().intValue());
-                endDate = calendar.getTime();
-            }
+                    Date startDate = job.getCreatedAt();
+                    Date endDate = null;
+                    if (startDate != null && job.getDuration() != null) {
+                        java.util.Calendar calendar = java.util.Calendar.getInstance();
+                        calendar.setTime(startDate);
+                        calendar.add(java.util.Calendar.DATE, job.getDuration().intValue());
+                        endDate = calendar.getTime();
+                    }
 
-            return new FreelancerJobDetailDTOResponse(
-                    job.getTitle(),
-                    job.getScope(),
-                    clientName,
-                    job.getDuration(),
-                    job.getHourWork(),
-                    startDate,
-                    endDate,
-                    rating,
-                    note
-            );
-        }).collect(Collectors.toList());
+                    return new FreelancerJobDetailDTOResponse(
+                            job.getTitle(),
+                            job.getScope(),
+                            clientName,
+                            job.getDuration(),
+                            job.getHourWork(),
+                            startDate,
+                            endDate,
+                            rating,
+                            note
+                    );
+                })
+                .collect(Collectors.toList());
     }
 
 }
