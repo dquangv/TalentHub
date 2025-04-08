@@ -20,6 +20,7 @@ import org.example.backend.enums.StatusFreelancerJob;
 import org.example.backend.enums.StatusJob;
 import org.example.backend.enums.TypePackage;
 import org.example.backend.exception.BadRequestException;
+import org.example.backend.mapper.Account.client.ClientMapper;
 import org.example.backend.mapper.job.*;
 import org.example.backend.repository.*;
 import org.example.backend.service.impl.account.freelancer.FreelancerServiceImpl;
@@ -244,23 +245,28 @@ public class JobServiceImpl implements JobService {
 
         return jobs;
     }*/
+    private final ClientMapper clientMapper;
     @Override
     public List<JobDTOResponse> findAllJobs(Long freelancerId) {
         List<JobDTOResponse> jobs = jobRepository.findByStatus(StatusJob.OPEN).stream()
                 .map(job -> {
                     JobDTOResponse dto = jobMapper.toResponseDto(job);
                     Long clientId = job.getClient().getId();
-
+                    Optional<Client> byId = clientRepository.findById(clientId);
+                    Client client = null;
+                    if (byId.isPresent()) {
+                        client = byId.get();
+                        dto.setClient(clientMapper.toResponseDto(client));
+                    }
                     companyRepository.getCompanyByClientId(clientId)
                             .ifPresent(company -> dto.setCompanyName(company.getCompanyName()));
 
                     boolean seen = freelancerJobRepository.existsByFreelancerIdAndJobId(freelancerId, job.getId());
                     boolean applied = freelancerJobRepository.existsByFreelancerIdAndJobIdAndStatus(
                             freelancerId, job.getId(), StatusFreelancerJob.Applied);
-
+                    dto.setJobOpportunity(job.getJobOpportunity());
                     dto.setSeen(seen);
                     dto.setApplied(applied);
-
                     return dto;
                 })
                 .sorted(
