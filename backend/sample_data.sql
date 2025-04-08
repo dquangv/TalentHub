@@ -86,15 +86,15 @@ INSERT INTO account (email, password, role, created_at, updated_at, status, lat,
 
 INSERT INTO users (first_name, last_name, phone_number, province, country, title, introduction, image, account_id)
 VALUES ('Tùng', 'Võ', '0976543210', 'Đống Đa', 'Hà Nội', 'Frontend Developer',
-        'Chuyên gia ReactJS, VueJS với nhiều dự án UI/UX hiện đại.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/Huy.jpg', 1),
+        'Chuyên gia ReactJS, VueJS với nhiều dự án UI/UX hiện đại.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/Tung.jpg', 1),
        ('Quang', 'Vũ', '0987654321', 'Tân Phú', 'Hồ Chí Minh', 'Backend Developer',
-        'Lập trình viên backend với 3 năm kinh nghiệm trong Java Spring Boot.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/QuangV.jpg', 2),
+        'Lập trình viên backend với 3 năm kinh nghiệm trong Java Spring Boot.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/QuangV.jpg', 2),
        ('Quang', 'Bùi', '0965432109', 'Bình Thạnh', 'Đà Nẵng', 'CEO', 'Chủ doanh nghiệp công ty công nghệ.',
-        'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/QuangB.jpg', 3),
+        'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/QuangB.jpg', 3),
        ('Tiến', 'Đinh', '0954321098', 'Gò Vấp', 'Cần Thơ', 'Digital Marketer',
-        'Chuyên gia SEO, quảng cáo Google Ads và Facebook Ads.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/Tien.jpg', 4),
+        'Chuyên gia SEO, quảng cáo Google Ads và Facebook Ads.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/Tien.jpg', 4),
        ('Huy', 'Đinh', '0943210987', 'Gò Vấp', 'Cần Thơ', 'Tech Lead',
-        '10 năm kinh nghiệm với vai trò Back-end Development.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/Tung.jpg', 5),
+        '10 năm kinh nghiệm với vai trò Back-end Development.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/Huy.jpg', 5),
        ('Hoàng Anh', 'Phạm', '0912345678', 'Cầu Giấy', 'Hà Nội', 'Mobile Developer',
         'Phát triển ứng dụng Android/iOS với Flutter và React Native.', 'hoanganhpham.png', 6),
        ('Minh Thành', 'Nguyễn', '0923456789', 'Thủ Đức', 'Hồ Chí Minh', 'Project Manager',
@@ -1424,15 +1424,20 @@ FROM job WHERE title = 'Quản lý fanpage Facebook'
            AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 2 AND job_id = job.id);
 
 INSERT INTO banner (title, image, status, vendor, duration, created_at, updated_at, price, start_time, end_time, logo)
-VALUES ('Grand Opening - Ưu đãi khai trương', '/images/opening_banner.jpg', true, 'TalentHub', 30, NOW(), NULL, 0,
-        NOW(), DATE_ADD(NOW(), INTERVAL 30 DAY), NULL),
-       ('Khuyến mãi Mùa Hè cùng VinFast', '/images/vinfast_summer.jpg', true, 'VinFast', 15, NOW(), NULL, 5000000,
-        NOW(), DATE_ADD(NOW(), INTERVAL 15 DAY), NULL),
-       ('Viettel - Internet tốc độ cao ưu đãi lớn', '/images/viettel_internet.jpg', true, 'Viettel', 20, NOW(), NULL,
-        2000000, NOW(), DATE_ADD(NOW(), INTERVAL 20 DAY), NULL),
-       ('FPT Play - Xem phim thả ga', '/images/fptplay_promo.jpg', true, 'FPT Telecom', 10, NOW(), NULL, 1500000, NOW(),
-        DATE_ADD(NOW(), INTERVAL 10 DAY), NULL),
-       ('Highlands Coffee - Giảm giá 50% thức uống', '/images/highlands_discount.jpg', true, 'Highlands Coffee', 7,
-        NOW(), NULL, 1000000, NOW(), DATE_ADD(NOW(), INTERVAL 7 DAY), NULL),
-       ('Thế Giới Di Động - Mua sắm công nghệ giá sốc', '/images/tgdd_sale.jpg', true, 'Thế Giới Di Động', 14, NOW(),
-        NULL, 3000000, NOW(), DATE_ADD(NOW(), INTERVAL 14 DAY), NULL);
+VALUES
+
+    ('Khuyến mãi Mùa Hè cùng VinFast', 'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/vinfast.jpg', true, 'VinFast', 15, NOW(), NULL, 5000000,
+     NOW(), DATE_ADD(NOW(), INTERVAL 15 DAY), NULL),
+
+    ('Viettel - Internet tốc độ cao ưu đãi lớn', 'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/viettel.jpg', true, 'Viettel', 20, NOW(), NULL,
+     2000000, NOW(), DATE_ADD(NOW(), INTERVAL 20 DAY), NULL),
+
+    ('FPT Play - Xem phim thả ga', 'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/fptshop.webp', true, 'FPT Telecom', 10, NOW(), NULL, 1500000, NOW(),
+     DATE_ADD(NOW(), INTERVAL 10 DAY), NULL),
+
+    ('Highlands Coffee - Giảm giá 50% thức uống', 'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/highlands.jpg', true, 'Highlands Coffee', 7,
+     NOW(), NULL, 1000000, NOW(), DATE_ADD(NOW(), INTERVAL 7 DAY), NULL),
+
+    ('Thế Giới Di Động - Mua sắm công nghệ giá sốc', 'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/thegioididong.png', true, 'Thế Giới Di Động', 14, NOW(),
+     NULL, 3000000, NOW(), DATE_ADD(NOW(), INTERVAL 14 DAY), NULL);
+

@@ -91,4 +91,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<Map<String, Object>> handleAuthenticationException(AuthenticationException ex) {
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put("statusCode", HttpStatus.EXPECTATION_FAILED.value());
+        errorResponse.put("message", ex.getMessage());
+        errorResponse.put("error", "Invalid Token");
+        errorResponse.put("timestamp", System.currentTimeMillis());
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.EXPECTATION_FAILED);
+    }
+
 }

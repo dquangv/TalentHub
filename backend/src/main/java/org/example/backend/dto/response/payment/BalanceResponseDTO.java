@@ -16,4 +16,6 @@ public class BalanceResponseDTO {
     private LocalDateTime latestDepositDate;
     private BigDecimal todaySpending;
     private LocalDateTime latestSpendingDate;
+    private LocalDateTime oldestTransactionDate;
+
 }
