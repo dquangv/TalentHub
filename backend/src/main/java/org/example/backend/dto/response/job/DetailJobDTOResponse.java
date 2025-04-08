@@ -35,4 +35,5 @@ public class DetailJobDTOResponse {
     private String remainingTimeFormatted;
     private Date createdAt;
     private String createdTimeFormatted;
+    private Long totalViews;
 }
