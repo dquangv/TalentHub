@@ -52,7 +52,7 @@ public class FreelancerDetailServiceImpl implements FreelancerDetailService {
         dtoResponse.setRating(rating != null ? rating : 0.0f);
         dtoResponse.setCompleteProject(completedProject != null ? completedProject : 0L);
         dtoResponse.setHourlyRate(freelancerExist.getHourlyRate());
-        dtoResponse.setOverview(freelancerExist.getDescription());
+        dtoResponse.setOverview(freelancerExist.getUser().getIntroduction());
 
         if (freelancerExist.getCategory() != null) {
             dtoResponse.setCategoryTitle(freelancerExist.getCategory().getCategoryTitle());
