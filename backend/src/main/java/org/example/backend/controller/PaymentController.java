@@ -3,6 +3,7 @@ package org.example.backend.controller;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.PaymentResDTO;
 import org.example.backend.dto.ResponseObject;
+import org.example.backend.dto.request.payment.VNPayCallbackDTORequest;
 import org.example.backend.dto.response.ResultPaymentResponseDTO;
 import org.example.backend.dto.response.payment.BalanceResponseDTO;
 import org.example.backend.dto.response.payment.WithdrawResponseDTO;
@@ -41,10 +42,11 @@ public class PaymentController {
      */
     @PostMapping("/vnpay-callback")
     public ResponseEntity<ResponseObject<ResultPaymentResponseDTO>> vnpayCallback(
-            @RequestParam("vnp_ResponseCode") String vnp_ResponseCode,
-            @RequestParam("vnp_Amount") BigDecimal vnpAmount,
-            @RequestParam("userId") Long userId) throws UnsupportedEncodingException {
-        ResultPaymentResponseDTO result = paymentService.handleVnPayCallback(vnp_ResponseCode, vnpAmount, userId);
+            @RequestBody VNPayCallbackDTORequest request) throws UnsupportedEncodingException {
+        System.out.println("amount in controller = " + request.getVnp_Amount());
+
+        ResultPaymentResponseDTO result = paymentService.handleVnPayCallback(request);
+
         return ResponseEntity.ok(
                 ResponseObject.<ResultPaymentResponseDTO>builder()
                         .message("Xử lý giao dịch thành công!")
@@ -53,6 +55,7 @@ public class PaymentController {
                         .build()
         );
     }
+
 
     /**
      * Xử lý rút tiền qua VNPAY
