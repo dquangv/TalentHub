@@ -23,7 +23,10 @@ public class ApplicantResponseDTO {
     private double rating;
     private Long freelancerId;
     private Long jobId;
+    private String jobTitle;
     private Long appointmentId;
     private long cvId;
     private String cvURL;
+    private Double clientReviewRating;
+    private String clientReviewNote;
 }
