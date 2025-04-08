@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface FreelancerJobRepository extends JpaRepository<FreelancerJob, Long> {
     // tim freelancer job theo freelancer va job
     Optional<FreelancerJob> findByFreelancer_IdAndJob_Id(Long freelancerId, Long jobId);
-
+    List<FreelancerJob> findByJobId(Long jobId);
     // dem so luong freelancer job theo freelancer va status
     Long countByFreelancerIdAndStatus(Long freelancerId, StatusFreelancerJob status);
 
@@ -92,4 +92,7 @@ public interface FreelancerJobRepository extends JpaRepository<FreelancerJob, Lo
 
     @Query("SELECT COUNT(fj) FROM FreelancerJob fj WHERE fj.freelancer.id = :freelancerId AND fj.status = :status AND fj.clientReview IS NOT NULL")
     Long countByFreelancerIdAndStatusAndHasClientReview(@Param("freelancerId") Long freelancerId, @Param("status") StatusFreelancerJob status);
+
+    Long countViewsByJob(Job job);
+    List<FreelancerJob> findAllByJobId(Long jobId);
 }
