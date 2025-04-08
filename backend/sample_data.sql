@@ -91,7 +91,7 @@ VALUES ('tungvtps27852@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1
 
 INSERT INTO users (first_name, last_name, phone_number, province, country, title, introduction, image, account_id)
 VALUES ('Tùng', 'Võ', '0976543210', 'Đống Đa', 'Hà Nội', 'Frontend Developer',
-        'Chuyên gia ReactJS, VueJS với nhiều dự án UI/UX hiện đại.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/Huy.jpg', 1),
+        'Chuyên gia ReactJS, VueJS với nhiều dự án UI/UX hiện đại.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/Tung.jpg', 1),
        ('Quang', 'Vũ', '0987654321', 'Tân Phú', 'Hồ Chí Minh', 'Backend Developer',
         'Lập trình viên backend với 3 năm kinh nghiệm trong Java Spring Boot.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/QuangV.jpg', 2),
        ('Quang', 'Bùi', '0965432109', 'Bình Thạnh', 'Đà Nẵng', 'CEO', 'Chủ doanh nghiệp công ty công nghệ.',
@@ -99,7 +99,7 @@ VALUES ('Tùng', 'Võ', '0976543210', 'Đống Đa', 'Hà Nội', 'Frontend Deve
        ('Tiến', 'Đinh', '0954321098', 'Gò Vấp', 'Cần Thơ', 'Digital Marketer',
         'Chuyên gia SEO, quảng cáo Google Ads và Facebook Ads.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/Tien.jpg', 4),
        ('Huy', 'Đinh', '0943210987', 'Gò Vấp', 'Cần Thơ', 'Tech Lead',
-        '10 năm kinh nghiệm với vai trò Back-end Development.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/Tung.jpg', 5),
+        '10 năm kinh nghiệm với vai trò Back-end Development.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/Huy.jpg', 5),
        ('Hoàng Anh', 'Phạm', '0912345678', 'Cầu Giấy', 'Hà Nội', 'Mobile Developer',
         'Phát triển ứng dụng Android/iOS với Flutter và React Native.', 'hoanganhpham.png', 6),
        ('Minh Thành', 'Nguyễn', '0923456789', 'Thủ Đức', 'Hồ Chí Minh', 'Project Manager',

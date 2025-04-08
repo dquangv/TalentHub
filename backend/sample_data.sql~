@@ -1430,8 +1430,6 @@ FROM job WHERE title = 'Quản lý fanpage Facebook'
 
 INSERT INTO banner (title, image, status, vendor, duration, created_at, updated_at, price, start_time, end_time, logo)
 VALUES
-    ('Grand Opening - Ưu đãi khai trương', '/images/opening_banner.jpg', true, 'TalentHub', 30, NOW(), NULL, 0,
-     NOW(), DATE_ADD(NOW(), INTERVAL 30 DAY), NULL),
 
     ('Khuyến mãi Mùa Hè cùng VinFast', 'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/vinfast.jpg', true, 'VinFast', 15, NOW(), NULL, 5000000,
      NOW(), DATE_ADD(NOW(), INTERVAL 15 DAY), NULL),
