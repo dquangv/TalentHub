@@ -16,6 +16,7 @@ import org.example.backend.entity.child.account.User;
 import org.example.backend.entity.child.account.client.Client;
 import org.example.backend.entity.child.account.freelancer.Freelancer;
 import org.example.backend.enums.RoleUser;
+import org.example.backend.enums.StatusAccount;
 import org.example.backend.exception.AuthenticationException;
 import org.example.backend.exception.InvalidTokenException;
 import org.example.backend.exception.TokenExpiredException;
@@ -62,6 +63,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (!passwordEncoder.matches(request.getPassword(), account.getPassword())) {
             log.info("Wrong password.");
             throw new AuthenticationException("Mật khẩu không đúng.");
+        }
+        if(account.getStatus().equals(StatusAccount.BANNED)){
+            throw new AuthenticationException("Tài khoản đã bị cấm.");
         }
         User user = userRepository.findById(account.getId())
                 .orElseThrow(() -> new AuthenticationException("Không tìm thấy người dùng với id: " + account.getId()));
