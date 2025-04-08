@@ -1429,15 +1429,20 @@ FROM job WHERE title = 'Quản lý fanpage Facebook'
            AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 2 AND job_id = job.id);
 
 INSERT INTO banner (title, image, status, vendor, duration, created_at, updated_at, price, start_time, end_time, logo)
-VALUES ('Grand Opening - Ưu đãi khai trương', '/images/opening_banner.jpg', true, 'TalentHub', 30, NOW(), NULL, 0,
-        NOW(), DATE_ADD(NOW(), INTERVAL 30 DAY), NULL),
-       ('Khuyến mãi Mùa Hè cùng VinFast', '/images/vinfast_summer.jpg', true, 'VinFast', 15, NOW(), NULL, 5000000,
-        NOW(), DATE_ADD(NOW(), INTERVAL 15 DAY), NULL),
-       ('Viettel - Internet tốc độ cao ưu đãi lớn', '/images/viettel_internet.jpg', true, 'Viettel', 20, NOW(), NULL,
-        2000000, NOW(), DATE_ADD(NOW(), INTERVAL 20 DAY), NULL),
-       ('FPT Play - Xem phim thả ga', '/images/fptplay_promo.jpg', true, 'FPT Telecom', 10, NOW(), NULL, 1500000, NOW(),
-        DATE_ADD(NOW(), INTERVAL 10 DAY), NULL),
-       ('Highlands Coffee - Giảm giá 50% thức uống', '/images/highlands_discount.jpg', true, 'Highlands Coffee', 7,
-        NOW(), NULL, 1000000, NOW(), DATE_ADD(NOW(), INTERVAL 7 DAY), NULL),
-       ('Thế Giới Di Động - Mua sắm công nghệ giá sốc', '/images/tgdd_sale.jpg', true, 'Thế Giới Di Động', 14, NOW(),
-        NULL, 3000000, NOW(), DATE_ADD(NOW(), INTERVAL 14 DAY), NULL);
+VALUES
+
+    ('Khuyến mãi Mùa Hè cùng VinFast', 'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/vinfast.jpg', true, 'VinFast', 15, NOW(), NULL, 5000000,
+     NOW(), DATE_ADD(NOW(), INTERVAL 15 DAY), NULL),
+
+    ('Viettel - Internet tốc độ cao ưu đãi lớn', 'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/viettel.jpg', true, 'Viettel', 20, NOW(), NULL,
+     2000000, NOW(), DATE_ADD(NOW(), INTERVAL 20 DAY), NULL),
+
+    ('FPT Play - Xem phim thả ga', 'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/fptshop.webp', true, 'FPT Telecom', 10, NOW(), NULL, 1500000, NOW(),
+     DATE_ADD(NOW(), INTERVAL 10 DAY), NULL),
+
+    ('Highlands Coffee - Giảm giá 50% thức uống', 'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/highlands.jpg', true, 'Highlands Coffee', 7,
+     NOW(), NULL, 1000000, NOW(), DATE_ADD(NOW(), INTERVAL 7 DAY), NULL),
+
+    ('Thế Giới Di Động - Mua sắm công nghệ giá sốc', 'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/thegioididong.png', true, 'Thế Giới Di Động', 14, NOW(),
+     NULL, 3000000, NOW(), DATE_ADD(NOW(), INTERVAL 14 DAY), NULL);
+
