@@ -285,13 +285,19 @@ public class JobServiceImpl implements JobService {
             Optional<Job> jobOpt = jobRepository.getDetailJobById(id);
             if (jobOpt.isPresent()) {
                 Job job = jobOpt.get();
+                List<FreelancerJob> appliedQuantity = freelancerJobRepository.findByJobId(job.getId()).stream().filter(item -> item.getStatus() != null && item.getStatus().equals(StatusFreelancerJob.Applied)).toList();
+
                 DetailJobDTOResponse dto = detailJobMapper.toResponseDto(job);
+                dto.setTotalApplicants(Long.valueOf(appliedQuantity.size()));
                 Company company = companyRepository.getCompanyByClientId(job.getClient().getId())
                         .orElseThrow(() -> new RuntimeException("Company not found for client ID: " + job.getClient().getId()));
                 dto.setCompanyName(company.getCompanyName());
 
                 Long totalApplicants = freelancerJobRepository.countByJobAndStatus(job, StatusFreelancerJob.Applied);
                 dto.setTotalApplicants(totalApplicants);
+
+                Long totalViews = freelancerJobRepository.countViewsByJob(job);
+                dto.setTotalViews(totalViews);
 
                 return Optional.of(dto);
             }
