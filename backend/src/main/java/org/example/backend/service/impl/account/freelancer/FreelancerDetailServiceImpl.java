@@ -35,7 +35,8 @@ public class FreelancerDetailServiceImpl implements FreelancerDetailService {
         }
 
         Float rating = clientReviewRepository.findAverageRating(freelancerId);
-        Long completedProject = freelancerJobRepository.countByFreelancerIdAndStatus(freelancerId, StatusFreelancerJob.Approved);
+        Long completedProject = freelancerJobRepository.countByFreelancerIdAndStatusAndHasClientReview(
+                freelancerId, StatusFreelancerJob.Approved);
 
         List<Project> projects = projectRepository.findByFreelancerId(freelancerId);
 
@@ -51,7 +52,11 @@ public class FreelancerDetailServiceImpl implements FreelancerDetailService {
         dtoResponse.setRating(rating != null ? rating : 0.0f);
         dtoResponse.setCompleteProject(completedProject != null ? completedProject : 0L);
         dtoResponse.setHourlyRate(freelancerExist.getHourlyRate());
-        dtoResponse.setOverview(freelancerExist.getDescription());
+        dtoResponse.setOverview(freelancerExist.getUser().getIntroduction());
+
+        if (freelancerExist.getCategory() != null) {
+            dtoResponse.setCategoryTitle(freelancerExist.getCategory().getCategoryTitle());
+        }
         dtoResponse.setSkills(freelancerExist.getFreelancerSkills()
                 .stream()
                 .map(fs -> fs.getSkill().getSkillName())

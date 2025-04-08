@@ -8,6 +8,7 @@ import org.example.backend.entity.child.account.client.Appointment;
 import org.example.backend.entity.child.account.client.Client;
 import org.example.backend.entity.child.account.freelancer.Freelancer;
 import org.example.backend.entity.child.job.FreelancerJob;
+import org.example.backend.entity.child.job.Job;
 import org.example.backend.exception.BadRequestException;
 import org.example.backend.exception.NotFoundException;
 import org.example.backend.mapper.Account.client.AppointmentMapper;
@@ -95,10 +96,6 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         List<Appointment> appointments = appointmentRepository.findAppointmentsByClient_Id(clientId);
 
-//        if (appointments.isEmpty()) {
-//            throw new NotFoundException("No appointments found for this client");
-//        }
-
         return appointments.stream()
                 .map(appointment -> {
                     AppointmentDetailDTOResponse response = appointmentMapper.toResponseDto(appointment);
@@ -106,10 +103,13 @@ public class AppointmentServiceImpl implements AppointmentService {
                     FreelancerJob freelancerJob = appointment.getFreelancerJob();
                     Freelancer freelancer = freelancerJob.getFreelancer();
                     User user = freelancer.getUser();
+                    Job job = freelancerJob.getJob();
 
                     response.setName(freelancer.getUser().getLastName() + " " + freelancer.getUser().getFirstName());
                     response.setMail(user.getAccount().getEmail());
                     response.setPhone(user.getPhoneNumber());
+                    response.setJobId(job.getId());
+                    response.setJobTitle(job.getTitle());
 
                     return response;
                 })
@@ -123,20 +123,78 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         List<Appointment> appointments = appointmentRepository.findAppointmentsByFreelancerJob_Freelancer_Id(freelancerId);
 
-//        if (appointments.isEmpty()) {
-//            throw new NotFoundException("No appointments found for this freelancer");
-//        }
-
         return appointments.stream().map(appointment -> {
             AppointmentDetailDTOResponse response = appointmentMapper.toResponseDto(appointment);
 
             Client client = appointment.getClient();
             User user = client.getUser();
+            FreelancerJob freelancerJob = appointment.getFreelancerJob();
+            Job job = freelancerJob.getJob();
+
             response.setName(user.getLastName() + " " + user.getFirstName());
             response.setMail(user.getAccount().getEmail());
             response.setPhone(user.getPhoneNumber());
+            response.setJobId(job.getId());
+            response.setJobTitle(job.getTitle());
 
             return response;
         }).collect(Collectors.toList());
+    }
+
+
+    @Override
+    public AppointmentDetailDTOResponse update(Long id, AppointmentDetailDTORequest request) {
+        if (id == null) {
+            throw new BadRequestException("Appointment id cannot be null");
+        }
+
+        Appointment appointment = appointmentRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Appointment not found with id: " + id));
+
+        if (request.getTopic() != null) {
+            appointment.setTopic(request.getTopic());
+        }
+
+        if (request.getStartTime() != null) {
+            appointment.setStartTime(request.getStartTime());
+        }
+
+        if (request.getDuration() != null) {
+            appointment.setDuration(request.getDuration());
+        }
+
+        if (request.getDescription() != null) {
+            appointment.setDescription(request.getDescription());
+        }
+
+        if (request.getLink() != null) {
+            appointment.setLink(request.getLink());
+        }
+
+        if (request.getFreelancerJobId() != null &&
+                !request.getFreelancerJobId().equals(appointment.getFreelancerJob().getId())) {
+
+            FreelancerJob freelancerJob = freelancerJobRepository.findById(request.getFreelancerJobId())
+                    .orElseThrow(() -> new NotFoundException("FreelancerJob not found with id: " + request.getFreelancerJobId()));
+
+            appointment.setFreelancerJob(freelancerJob);
+        }
+
+        appointmentRepository.save(appointment);
+
+        AppointmentDetailDTOResponse response = appointmentMapper.toResponseDto(appointment);
+
+        FreelancerJob freelancerJob = appointment.getFreelancerJob();
+        Freelancer freelancer = freelancerJob.getFreelancer();
+        User user = freelancer.getUser();
+        Job job = freelancerJob.getJob();
+
+        response.setName(user.getLastName() + " " + user.getFirstName());
+        response.setMail(user.getAccount().getEmail());
+        response.setPhone(user.getPhoneNumber());
+        response.setJobId(job.getId());
+        response.setJobTitle(job.getTitle());
+
+        return response;
     }
 }
