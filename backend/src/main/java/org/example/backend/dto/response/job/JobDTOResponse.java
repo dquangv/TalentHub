@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.backend.dto.response.account.client.ClientDTOResponse;
 import org.example.backend.enums.StatusJob;
 
 import java.math.BigDecimal;
@@ -32,4 +33,6 @@ public class JobDTOResponse {
     private String remainingTimeFormatted;
     private Date createdAt;
     private String createdTimeFormatted;
+    private ClientDTOResponse client;
+    private boolean isJobOpportunity;
 }

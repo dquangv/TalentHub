@@ -17,5 +17,6 @@ public class PaymentSummaryDTO {
     private ActivityType activity;
     private BigDecimal totalAmount;
     private LocalDateTime latestTransactionDate;
+    private LocalDateTime oldestTransactionDate;
 
 }
