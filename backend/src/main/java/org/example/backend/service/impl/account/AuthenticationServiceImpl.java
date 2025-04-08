@@ -16,6 +16,7 @@ import org.example.backend.entity.child.account.User;
 import org.example.backend.entity.child.account.client.Client;
 import org.example.backend.entity.child.account.freelancer.Freelancer;
 import org.example.backend.enums.RoleUser;
+import org.example.backend.exception.AuthenticationException;
 import org.example.backend.exception.InvalidTokenException;
 import org.example.backend.exception.TokenExpiredException;
 import org.example.backend.repository.AccountRepository;
@@ -57,13 +58,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String email = request.getEmail();
 
         Account account = accountRepository.getByEmail(email)
-                .orElseThrow(() -> new IllegalIdentifierException("Tài khoản không tồn tại."));
+                .orElseThrow(() -> new AuthenticationException("Tài khoản không tồn tại."));
         if (!passwordEncoder.matches(request.getPassword(), account.getPassword())) {
             log.info("Wrong password.");
-            throw new IllegalIdentifierException("Mật khẩu không đúng.");
+            throw new AuthenticationException("Mật khẩu không đúng.");
         }
         User user = userRepository.findById(account.getId())
-                .orElseThrow(() -> new IllegalIdentifierException("Không tìm thấy người dùng với id: " + account.getId()));
+                .orElseThrow(() -> new AuthenticationException("Không tìm thấy người dùng với id: " + account.getId()));
 
 
         Long userId = user.getId();
