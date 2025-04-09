@@ -59,6 +59,8 @@ public class ChatbotService {
     private UserServiceImpl userServiceImpl;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private IntentDetectionService intentDetectionService;
 
     public ChatbotService() {
         settings.put("confidenceThreshold", DEFAULT_CONFIDENCE_THRESHOLD);
@@ -267,21 +269,31 @@ public class ChatbotService {
      * Phát hiện ý định từ tin nhắn
      */
     private Map<String, Object> detectIntent(String message) {
-        logger.debug("Detecting intent for message: '{}'", message);
+        logger.info("Detecting intent for message: '{}'", message);
         try {
+            // Trước tiên thử phát hiện kỹ năng thủ công từ message
+            Map<String, String> extractedParams = new HashMap<>();
+            extractSkillsFromMessage(message, extractedParams);
+
             // Sử dụng AIService để phân tích intent thông qua Ollama
             String prompt = buildIntentDetectionPrompt(message);
             String aiResponse = aiService.callOllamaForIntentDetection(prompt);
 
             // Phân tích kết quả từ AI
             Map<String, Object> result = parseAIIntentResponse(aiResponse, message);
-            logger.info("AI detected intent: {}, confidence: {}",
+
+            // Nếu AI không trích xuất được params nhưng ta đã trích xuất được thủ công
+            if (!result.containsKey("skills") && extractedParams.containsKey("skills")) {
+                result.put("skills", extractedParams.get("skills"));
+            }
+
+            logger.info("AI detected intent: {}, confidence: {}, skills: {}",
                     result.get("intent") != null ? ((ChatIntent)result.get("intent")).getIntentName() : "null",
-                    result.get("confidence"));
+                    result.get("confidence"),
+                    result.get("skills"));
             return result;
         } catch (Exception e) {
             logger.warn("Error using AI for intent detection: {}, falling back to pattern matching", e.getMessage());
-            // Fallback vào phương pháp pattern matching hiện tại nếu AI gặp lỗi
             return detectIntentWithPatternMatching(message);
         }
     }
@@ -459,20 +471,14 @@ public class ChatbotService {
      * Trích xuất kỹ năng từ tin nhắn (cho job_by_skills)
      */
     private void extractSkillsFromMessage(String message, Map<String, String> params) {
-        // Các mẫu regex để nhận diện các cấu trúc câu phổ biến
+        logger.info("Đang trích xuất kỹ năng từ: {}", message);
+
+        // Các mẫu regex để nhận diện các cấu trúc câu phổ biến - bổ sung cả kĩ và kỹ
         List<Pattern> patterns = Arrays.asList(
-                // "có công việc nào cho skill X hay không?"
-                Pattern.compile("(?i)có công việc nào cho skill\\s+(.*?)(?:\\s+hay không|\\?|$)"),
-                // "có công việc nào cho người biết X không?"
-                Pattern.compile("(?i)có công việc nào cho người biết\\s+(.*?)(?:\\s+không|\\?|$)"),
-                // "tôi có kỹ năng X, Y, Z"
-                Pattern.compile("(?i)tôi có kỹ năng\\s+(.*?)(?:\\s+thì|\\?|$)"),
-                // "với kỹ năng X thì..."
+                Pattern.compile("(?i)tôi có (?:những |các )?kỹ năng\\s+(.*?)(?:\\s+thì|\\?|$)"),
+                Pattern.compile("(?i)tôi có (?:những |các )?kĩ năng\\s+(.*?)(?:\\s+thì|\\?|$)"),
                 Pattern.compile("(?i)với kỹ năng\\s+(.*?)(?:\\s+thì|\\?|$)"),
-                // "tôi biết X, có việc nào..."
-                Pattern.compile("(?i)tôi biết\\s+(.*?)(?:,|\\s+tìm|\\s+có|\\?|$)"),
-                // "tôi giỏi X..."
-                Pattern.compile("(?i)tôi giỏi\\s+(.*?)(?:,|\\s+tìm|\\?|$)")
+                Pattern.compile("(?i)với kĩ năng\\s+(.*?)(?:\\s+thì|\\?|$)")
         );
 
         // Thử các pattern
@@ -480,79 +486,21 @@ public class ChatbotService {
             Matcher matcher = pattern.matcher(message);
             if (matcher.find()) {
                 String skills = matcher.group(1).trim();
-                // Loại bỏ "hay không" hoặc các từ dừng khác ở cuối
-                skills = skills.replaceAll("(?i)\\s+hay không\\s*$", "").trim();
                 params.put("skills", skills);
-                logger.debug("Extracted skills using pattern: '{}'", skills);
+                logger.info("Trích xuất kỹ năng qua regex: '{}'", skills);
                 return;
             }
         }
 
-        // Nếu không tìm thấy pattern cụ thể, tìm kiếm sau các từ khóa
-        String[] keywords = {"kỹ năng", "skill", "skills", "biết", "giỏi"};
-        String lowerMessage = message.toLowerCase();
-
-        for (String keyword : keywords) {
-            int keywordIndex = lowerMessage.indexOf(keyword);
-            if (keywordIndex >= 0) {
-                // Lấy phần văn bản sau từ khóa
-                String afterKeyword = message.substring(keywordIndex + keyword.length()).trim();
-
-                // Loại bỏ các từ nối như "như", "như là", "gồm", etc.
-                afterKeyword = afterKeyword.replaceAll("^(như|như là|gồm|bao gồm|là)\\s+", "");
-
-                // Loại bỏ các câu hỏi phía sau
-                String[] endMarkers = {"thì", "có công việc", "phù hợp", "hay không", "không", "?"};
-                for (String marker : endMarkers) {
-                    int markerIndex = afterKeyword.toLowerCase().indexOf(marker);
-                    if (markerIndex > 0) {
-                        afterKeyword = afterKeyword.substring(0, markerIndex).trim();
-                    }
-                }
-
-                // Loại bỏ các dấu câu cuối cùng
-                afterKeyword = afterKeyword.replaceAll("[,.?!]$", "");
-
-                if (!afterKeyword.isEmpty()) {
-                    params.put("skills", afterKeyword);
-                    logger.debug("Extracted skills using keyword '{}': '{}'", keyword, afterKeyword);
-                    return;
-                }
-            }
-        }
-
-        // Đặc biệt xử lý cho kỹ năng React/Reactjs
-        if (message.toLowerCase().contains("reactjs") || message.toLowerCase().contains("react.js") ||
-                message.toLowerCase().contains("react js") || message.toLowerCase().matches(".*\\breact\\b.*")) {
-
-            String skill = "React";
-            if (message.toLowerCase().contains("reactjs")) {
-                skill = "ReactJS";
-            } else if (message.toLowerCase().contains("react.js") || message.toLowerCase().contains("react js")) {
-                skill = "React.js";
-            }
-
-            params.put("skills", skill);
-            logger.debug("Extracted React skill as special case: '{}'", skill);
-            return;
-        }
-
-        // Tìm kiếm các kỹ năng phổ biến trong câu hỏi
+        // Nếu không tìm thấy qua regex, thử tìm kỹ năng trực tiếp
         List<String> commonSkills = Arrays.asList(
                 "React", "Angular", "Vue", "JavaScript", "TypeScript", "Java", "Python",
-                "PHP", "C#", "C++", "Swift", "Kotlin", "Ruby", "Go", "Rust",
-                "HTML", "CSS", "SASS", "LESS", "Bootstrap", "Tailwind",
-                "Node.js", ".NET", "Django", "Laravel", "Spring", "Express",
-                "SQL", "MongoDB", "PostgreSQL", "MySQL", "Redis", "Firebase",
-                "AWS", "Azure", "Google Cloud", "Docker", "Kubernetes",
-                "React Native", "Flutter", "Android", "iOS",
-                "Figma", "Sketch", "Adobe XD", "Photoshop", "Illustrator",
-                "UI/UX", "DevOps", "Data Science", "Machine Learning", "AI"
+                "PHP", "C#", "C++", "Swift", "Kotlin", "Ruby", "Go", "Rust"
+                // Thêm các kỹ năng phổ biến khác
         );
 
         List<String> foundSkills = new ArrayList<>();
         for (String skill : commonSkills) {
-            // Kiểm tra xem kỹ năng có trong câu hỏi không (case insensitive)
             if (message.toLowerCase().contains(skill.toLowerCase())) {
                 foundSkills.add(skill);
             }
@@ -560,10 +508,11 @@ public class ChatbotService {
 
         if (!foundSkills.isEmpty()) {
             params.put("skills", String.join(", ", foundSkills));
-            logger.debug("Extracted skills by direct search: '{}'", params.get("skills"));
+            logger.info("Trích xuất kỹ năng qua từ khóa: '{}'", params.get("skills"));
+        } else {
+            logger.info("Không tìm thấy kỹ năng trong câu hỏi");
         }
     }
-
     /**
      * Trích xuất kỹ năng đơn từ tin nhắn (cho job_count_by_skill)
      */
@@ -802,32 +751,55 @@ public class ChatbotService {
             // Đảm bảo các tham số cần thiết tồn tại
             ensureRequiredParams(response, params);
 
-            // Tạo bản sao của params để tránh sửa đổi map gốc
-            Map<String, Object> dbParams = new HashMap<>();
-
-            // Chuẩn bị tham số truy vấn an toàn
-            for (Map.Entry<String, String> entry : params.entrySet()) {
-                String paramName = entry.getKey();
-                String paramValue = entry.getValue();
-
-                // Làm sạch tham số để tránh SQL injection
-                String cleanValue = paramValue.replaceAll("[\\\\'\"]", "");
-                dbParams.put(paramName, cleanValue);
-            }
-
-            // Sử dụng NamedParameterJdbcTemplate thay vì xử lý regex
             String queryTemplate = response.getQueryTemplate();
             if (queryTemplate == null || queryTemplate.trim().isEmpty()) {
                 logger.error("Template truy vấn trống hoặc null");
                 return getErrorResponse(params);
             }
 
-            // Chuyển đổi template từ {{param}} sang :param
-            String namedParamQuery = convertToNamedParamQuery(queryTemplate);
+            // Log params và query template trước khi xử lý
+            logger.info("Template gốc: {}", queryTemplate);
+            logger.info("Params: {}", params);
 
+            // Xử lý đặc biệt cho kỹ năng
+            String skills = params.get("skills");
+            if (skills != null && !skills.isEmpty()) {
+                // Xử lý nhiều kỹ năng
+                String[] skillList = skills.split(",\\s*");
+
+                if (skillList.length > 1) {
+                    // Tạo điều kiện OR cho nhiều kỹ năng
+                    StringBuilder whereCondition = new StringBuilder("(");
+                    for (int i = 0; i < skillList.length; i++) {
+                        if (i > 0) whereCondition.append(" OR ");
+                        whereCondition.append("LOWER(s.skill_name) LIKE LOWER('%").append(skillList[i].trim()).append("%')");
+                    }
+                    whereCondition.append(")");
+
+                    // Thay thế trong query
+                    queryTemplate = queryTemplate.replaceAll(
+                            "LOWER\\(s\\.skill_name\\) LIKE LOWER\\('%\\{\\{skills\\}\\}%'\\)",
+                            whereCondition.toString()
+                    );
+
+                    logger.info("Đã thay thế điều kiện LIKE cho skills thành: {}", whereCondition);
+                }
+            }
+
+            // Thay thế tất cả các placeholder còn lại trong query
+            String finalQuery = queryTemplate;
+            for (Map.Entry<String, String> entry : params.entrySet()) {
+                String placeholder = "{{" + entry.getKey() + "}}";
+                finalQuery = finalQuery.replace(placeholder, entry.getValue());
+            }
+
+            logger.info("Query sau khi thay thế params: {}", finalQuery);
+
+            // Thực thi query
             List<Map<String, Object>> queryResults;
             try {
-                queryResults = executeNamedParameterQuery(namedParamQuery, dbParams);
+                queryResults = jdbcTemplate.queryForList(finalQuery);
+                logger.info("Query results: {}", queryResults);
             } catch (Exception e) {
                 logger.error("Lỗi khi thực thi truy vấn DB: " + e.getMessage(), e);
                 return getErrorResponse(params);
@@ -847,22 +819,18 @@ public class ChatbotService {
             return getErrorResponse(params);
         }
     }
+    private String convertToNamedParamQuery(String queryTemplate, Map<String, Object> params) {
+        String result = queryTemplate;
 
-    // Chuyển đổi template từ {{param}} sang :param
-    private String convertToNamedParamQuery(String queryTemplate) {
-        Pattern pattern = Pattern.compile("\\{\\{(.*?)\\}\\}");
-        Matcher matcher = pattern.matcher(queryTemplate);
-        StringBuffer sb = new StringBuffer();
-
-        while (matcher.find()) {
-            String paramName = matcher.group(1);
-            matcher.appendReplacement(sb, ":" + paramName);
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            String placeholder = "{{" + entry.getKey() + "}}";
+            String value = String.valueOf(entry.getValue());
+            result = result.replace(placeholder, value);
         }
-        matcher.appendTail(sb);
 
-        return sb.toString();
+        logger.debug("Converted query: {}", result);
+        return result;
     }
-
     // Thực thi truy vấn với tham số có tên
     private List<Map<String, Object>> executeNamedParameterQuery(String sql, Map<String, Object> params) {
         NamedParameterJdbcTemplate namedTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
