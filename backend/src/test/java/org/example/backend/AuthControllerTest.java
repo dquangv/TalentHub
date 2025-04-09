@@ -108,4 +108,18 @@ class AuthControllerTest {
         verify(authenticationService, times(1)).authenticate(request);
     }
 
+    @Test
+    void testAuthenticate_EmptyEmail_ValidationFailure() throws JOSEException {
+        AuthenticationDTORequest request = AuthenticationDTORequest.builder()
+                .email("")
+                .password("password123")
+                .build();
+
+        when(authenticationService.authenticate(request)).thenThrow(new IllegalArgumentException("Email is required"));
+
+        assertThrows(IllegalArgumentException.class, () -> authController.authenticate(request));
+
+        verify(authenticationService, times(1)).authenticate(request);
+    }
+
 }
