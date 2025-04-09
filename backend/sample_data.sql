@@ -1440,4 +1440,3 @@ VALUES
 
     ('Thế Giới Di Động - Mua sắm công nghệ giá sốc', 'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/thegioididong.png', true, 'Thế Giới Di Động', 14, NOW(),
      NULL, 3000000, NOW(), DATE_ADD(NOW(), INTERVAL 14 DAY), NULL);
-

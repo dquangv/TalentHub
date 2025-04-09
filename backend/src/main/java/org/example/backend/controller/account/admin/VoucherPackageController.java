@@ -83,7 +83,7 @@ public class VoucherPackageController {
                 .build();
     }
 
-    @DeleteMapping("/{id}")
+    /*@DeleteMapping("/{id}")
     public ResponseObject<Void> delete(@PathVariable Long id) {
         boolean deleted = voucherPackageService.deleteById(id);
         if (deleted) {
@@ -97,7 +97,7 @@ public class VoucherPackageController {
                     .status(404)
                     .build();
         }
-    }
+    }*/
 
     @GetMapping("/all-voucher")
     public ResponseEntity<ResponseObject<List<VoucherPackageDTOResponse>>> getAllVoucher() {
