@@ -809,6 +809,10 @@ VALUES ('Java'),
        ('French Translation'),
        ('German Translation'),
        ('Proofreading'),
+       ('Transcription'),
+       ('Podcast Editing'),
+       ('3D Modeling'),
+       ('Music Production'),
        ('Transcription');
 
 INSERT INTO freelancer (hourly_rate, description, category_id, user_id)
@@ -1445,4 +1449,1123 @@ VALUES
 
     ('Thế Giới Di Động - Mua sắm công nghệ giá sốc', 'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/thegioididong.png', true, 'Thế Giới Di Động', 14, NOW(),
      NULL, 3000000, NOW(), DATE_ADD(NOW(), INTERVAL 14 DAY), NULL);
+
+
+INSERT INTO account (email, password, role, created_at, updated_at, status, lat, lng)
+VALUES
+    ('hanhpps12345@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'FREELANCER', NOW(), null, 0, null, null),
+    ('duylps23456@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'FREELANCER', NOW(), null, 0, null, null),
+    ('thunps34567@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'CLIENT', NOW(), null, 0, null, null),
+    ('baotps45678@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'CLIENT', NOW(), null, 0, null, null),
+    ('mailyps56789@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'FREELANCER', NOW(), null, 0, null, null);
+
+INSERT INTO users (first_name, last_name, phone_number, province, country, title, introduction, image, account_id)
+VALUES
+    ('Hạnh', 'Phạm', '0912345678', 'Hải Phòng', 'Việt Nam', 'UI/UX Designer', 'Chuyên thiết kế giao diện cho các ứng dụng di động và website với 5 năm kinh nghiệm.', 'hanhpham.png', 16),
+    ('Duy', 'Lê', '0923456789', 'Bình Dương', 'Việt Nam', 'DevOps Engineer', 'Chuyên gia triển khai hệ thống CI/CD, Docker và Kubernetes với kinh nghiệm quốc tế.', 'duyle.png', 17),
+    ('Thu', 'Nguyễn', '0934567890', 'Huế', 'Việt Nam', 'Content Writer', 'Nhà văn sáng tạo với khả năng viết nội dung marketing hấp dẫn và tối ưu SEO.', 'thunguyen.png', 18),
+    ('Bảo', 'Trần', '0945678901', 'Đà Lạt', 'Việt Nam', 'Game Developer', 'Lập trình viên game với chuyên môn Unity và Unreal Engine, từng phát hành nhiều game indie.', 'baotran.png', 19),
+    ('Mai', 'Lý', '0956789012', 'Vũng Tàu', 'Việt Nam', 'Digital Illustrator', 'Họa sĩ kỹ thuật số chuyên vẽ minh họa cho sách, truyện tranh và ứng dụng.', 'maily.png', 20);
+INSERT INTO freelancer (hourly_rate, description, category_id, user_id)
+VALUES
+    (19.00, 'UI/UX Designer với 5 năm kinh nghiệm thiết kế giao diện người dùng cho website và ứng dụng di động.', 2, 16),
+    (25.00, 'DevOps Engineer chuyên triển khai CI/CD, Docker, Kubernetes và AWS.', 1, 17),
+    (16.00, 'Digital Illustrator chuyên vẽ minh họa kỹ thuật số cho sách, truyện tranh và ứng dụng.', 2, 20);
+
+INSERT INTO client (from_price, to_price, type_price, user_id)
+VALUES
+    (1500000, 4000000, 'VNĐ', 18),
+    (2000000, 6000000, 'VNĐ', 19);
+
+INSERT INTO company (company_name, phone_contact, address, industry, client_id)
+VALUES
+    ('Thu Content Creation', '0934567890', 'Huế', 'Content Writing & Marketing', 7),
+    ('GameVerse Studio', '0945678901', 'Đà Lạt', 'Game Development', 8);
+INSERT INTO cv (title, url, status, freelancer_id)
+VALUES
+    ('Content Marketing Expert', 'cv-sample14.pdf', TRUE, 7),
+    ('SEO Specialist', 'cv-sample15.pdf', TRUE, 7),
+    ('Full Stack Developer', 'cv-sample16.pdf', TRUE, 1),
+    ('React Native Developer', 'cv-sample17.pdf', TRUE, 3),
+    ('Data Visualization Expert', 'cv-sample18.pdf', TRUE, 4),
+    ('Advanced Video Production', 'cv-sample19.pdf', TRUE, 5),
+    ('IELTS Translation Specialist', 'cv-sample20.pdf', TRUE, 6);
+INSERT INTO cv (title, url, status, freelancer_id)
+VALUES
+    ('UI/UX Professional Portfolio', 'cv-sample21.pdf', TRUE, 8),
+    ('Mobile Design Expert', 'cv-sample22.pdf', TRUE, 8),
+    ('DevOps Infrastructure Specialist', 'cv-sample23.pdf', TRUE, 9),
+    ('Cloud Architecture Expert', 'cv-sample24.pdf', TRUE, 9),
+    ('Digital Illustration Portfolio', 'cv-sample25.pdf', TRUE, 10),
+    ('Character Design Specialist', 'cv-sample26.pdf', TRUE, 10);
+
+INSERT INTO freelancer_skill (freelancer_id, skill_id)
+VALUES
+(8, 39), -- UI/UX Design
+(8, 41), -- Figma
+(8, 42), -- Sketch
+(8, 40), -- Adobe Photoshop
+(8, 43), -- Canva
+
+(9, 34), -- Docker
+(9, 35), -- Kubernetes
+(9, 36), -- Jenkins
+(9, 37), -- CI/CD Pipelines
+(9, 32), -- AWS
+(9, 33), -- Azure
+
+(10, 40), -- Adobe Photoshop
+(10, 41), -- Adobe Illustrator
+(10, 43), -- Canva
+(10, 44), -- Blender 3D
+(10, 62); -- Animation
+
+INSERT INTO projects (title, tech, description, link, image, freelancer_id)
+VALUES
+-- UI/UX Designer (ID: 8)
+('E-commerce App Redesign', 'Figma, Adobe XD, Sketch', 'Thiết kế lại giao diện và trải nghiệm người dùng cho ứng dụng thương mại điện tử, tăng tỷ lệ chuyển đổi 40%.', 'https://behance.net/hanhpham/ecommerce-redesign', 'ecommerce-redesign.png', 8),
+('Banking App UI Kit', 'Figma, Sketch, Principle', 'Bộ UI kit cho ứng dụng ngân hàng di động với hơn 200 components và 50 màn hình mẫu.', 'https://behance.net/hanhpham/banking-ui-kit', 'banking-ui-kit.png', 8),
+
+-- DevOps Engineer (ID: 9)
+('Microservices CI/CD Pipeline', 'Jenkins, Docker, Kubernetes, AWS', 'Xây dựng quy trình CI/CD tự động hóa hoàn toàn cho hệ thống microservices với zero-downtime deployment.', 'https://github.com/duyle/microservices-cicd', 'cicd-pipeline.png', 9),
+('Cloud Infrastructure Automation', 'Terraform, AWS, Azure, Ansible', 'Tự động hóa việc triển khai hạ tầng đám mây đa nền tảng với Terraform và Ansible.', 'https://github.com/duyle/cloud-automation', 'cloud-automation.png', 9),
+
+-- Digital Illustrator (ID: 10)
+('Children Book Illustrations', 'Adobe Photoshop, Adobe Illustrator', 'Bộ minh họa cho sách truyện thiếu nhi "Cuộc phiêu lưu trong rừng", gồm 25 hình vẽ.', 'https://behance.net/maily/childrens-book', 'children-book.png', 10),
+('Game Character Designs', 'Adobe Photoshop, Blender 3D', 'Thiết kế nhân vật cho game mobile RPG với 15 nhân vật chính và phụ.', 'https://behance.net/maily/game-characters', 'game-characters.png', 10);
+
+INSERT INTO education (start_date, end_date, description, school_id, degree_id, major_id, freelancer_id, image)
+VALUES
+    ('2014-09-01', '2018-06-30', 'Tốt nghiệp loại xuất sắc chuyên ngành Thiết kế Đồ họa.', 15, 1, 2, 8, null),
+    ('2012-09-01', '2016-06-30', 'Chuyên ngành Khoa học Máy tính với chứng chỉ chuyên sâu về DevOps và Cloud Computing.', 1, 2, 1, 9, null),
+    ('2015-09-01', '2019-06-30', 'Tốt nghiệp khoa Mỹ thuật Ứng dụng, chuyên ngành Minh họa Kỹ thuật số.', 14, 1, 2, 10, null);
+
+INSERT INTO experiences (company_name, position, start_date, end_date, description, status, freelancer_id)
+VALUES
+-- UI/UX Designer (ID: 8)
+('Design Innovation Studio', 'Junior UI Designer', '2018-07-01', '2020-06-30', 'Thiết kế giao diện người dùng cho các ứng dụng web và mobile, làm việc trong nhóm 5 designer.', true, 8),
+('UX Solutions Agency', 'Senior UI/UX Designer', '2020-07-01', '2024-12-31', 'Dẫn dắt nhóm thiết kế UX/UI cho các dự án lớn, phối hợp với product manager và developer để tạo ra trải nghiệm người dùng tốt nhất.', true, 8),
+
+-- DevOps Engineer (ID: 9)
+('Tech Solutions Inc.', 'System Administrator', '2016-07-01', '2019-05-31', 'Quản trị hệ thống máy chủ, đảm bảo uptime và bảo mật cho hạ tầng CNTT của công ty.', true, 9),
+('Cloud Partners', 'DevOps Engineer', '2019-06-01', '2022-12-31', 'Triển khai và quản lý hạ tầng đám mây trên AWS và Azure, xây dựng pipeline CI/CD cho các dự án phần mềm.', true, 9),
+('Global Tech Corp', 'Senior DevOps Engineer', '2023-01-01', '2024-12-31', 'Thiết kế và triển khai kiến trúc microservices, tối ưu hóa quy trình phát triển và vận hành.', true, 9),
+
+-- Digital Illustrator (ID: 10)
+('Creative Publishing House', 'Illustrator', '2019-07-01', '2021-08-31', 'Minh họa cho sách thiếu nhi và tạp chí, tạo ra hơn 100 hình minh họa trong 2 năm.', true, 10),
+('Game Art Studio', 'Digital Artist', '2021-09-01', '2024-12-31', 'Thiết kế nhân vật và môi trường cho game mobile và PC, làm việc với các studio game trong và ngoài nước.', true, 10);
+
+INSERT INTO job (title, scope, hour_work, duration, job_opportunity, from_price, to_price, type_price, description, type_payment, status, created_at, updated_at, client_id, category_id, end_date)
+VALUES
+-- Client 7 (Thu Content Creation)
+('Viết nội dung blog về công nghệ AI', 'MEDIUM', 25, 45, true, 5000000, 12000000, 'VNĐ', 'Cần freelancer viết 15 bài blog chuyên sâu về AI và Machine Learning, mỗi bài khoảng 1500-2000 từ, tối ưu SEO.', 'FULL', 'OPEN', NOW(), NULL, 7, 3, NOW() + INTERVAL 21 DAY),
+('Copywriting cho landing page', 'SMALL', 10, 15, false, 3000000, 5000000, 'VNĐ', 'Cần copywriter có kinh nghiệm viết nội dung cho 5 landing page về các khóa học online, đảm bảo tỷ lệ chuyển đổi cao.', 'HOURLY', 'OPEN', NOW(), NULL, 7, 3, NOW() + INTERVAL 14 DAY),
+('Biên tập sách kỹ năng', 'LARGE', 40, 60, true, 15000000, 25000000, 'VNĐ', 'Cần biên tập viên chuyên nghiệp cho cuốn sách kỹ năng mềm dài khoảng 200 trang, yêu cầu kinh nghiệm trong lĩnh vực xuất bản.', 'FULL', 'OPEN', NOW(), NULL, 7, 3, NOW() + INTERVAL 30 DAY),
+
+-- Client 8 (GameVerse Studio)
+('Thiết kế nhân vật game mobile', 'MEDIUM', 30, 45, true, 8000000, 20000000, 'VNĐ', 'Cần thiết kế 10 nhân vật cho game mobile thể loại RPG với phong cách anime, bao gồm concept art và các animation cơ bản.', 'FULL', 'OPEN', NOW(), NULL, 8, 2, NOW() + INTERVAL 21 DAY),
+('Lập trình Unity game 2D', 'LARGE', 50, 75, true, 25000000, 50000000, 'VNĐ', 'Tuyển lập trình viên Unity có kinh nghiệm phát triển game 2D platformer, từ prototype đến hoàn thiện, bao gồm cả tích hợp IAP và Ads.', 'FULL', 'OPEN', NOW(), NULL, 8, 1, NOW() + INTERVAL 30 DAY),
+('Sáng tác nhạc nền cho game', 'SMALL', 15, 30, false, 5000000, 12000000, 'VNĐ', 'Cần nhà soạn nhạc sáng tác 5-7 bản nhạc nền và các hiệu ứng âm thanh cho game mobile thể loại phiêu lưu.', 'HOURLY', 'OPEN', NOW(), NULL, 8, 9, NOW() + INTERVAL 14 DAY);
+
+-- Thêm job_skill cho các job mới
+INSERT INTO job_skill (job_id, skill_id)
+VALUES
+-- Viết nội dung blog về công nghệ AI
+((SELECT id FROM job WHERE title = 'Viết nội dung blog về công nghệ AI'), 49), -- Copywriting
+((SELECT id FROM job WHERE title = 'Viết nội dung blog về công nghệ AI'), 50), -- Content Writing
+((SELECT id FROM job WHERE title = 'Viết nội dung blog về công nghệ AI'), 48), -- SEO Optimization
+((SELECT id FROM job WHERE title = 'Viết nội dung blog về công nghệ AI'), 51), -- Blog Writing
+((SELECT id FROM job WHERE title = 'Viết nội dung blog về công nghệ AI'), 28), -- Machine Learning
+
+-- Copywriting cho landing page
+((SELECT id FROM job WHERE title = 'Copywriting cho landing page'), 49), -- Copywriting
+((SELECT id FROM job WHERE title = 'Copywriting cho landing page'), 48), -- SEO Optimization
+((SELECT id FROM job WHERE title = 'Copywriting cho landing page'), 54), -- Email Marketing
+((SELECT id FROM job WHERE title = 'Copywriting cho landing page'), 55), -- Social Media Marketing
+
+-- Biên tập sách kỹ năng
+((SELECT id FROM job WHERE title = 'Biên tập sách kỹ năng'), 50), -- Content Writing
+((SELECT id FROM job WHERE title = 'Biên tập sách kỹ năng'), 84), -- Proofreading
+((SELECT id FROM job WHERE title = 'Biên tập sách kỹ năng'), 85), -- Transcription
+((SELECT id FROM job WHERE title = 'Biên tập sách kỹ năng'), 51), -- Blog Writing
+
+-- Thiết kế nhân vật game mobile
+((SELECT id FROM job WHERE title = 'Thiết kế nhân vật game mobile'), 40), -- Adobe Photoshop
+((SELECT id FROM job WHERE title = 'Thiết kế nhân vật game mobile'), 41), -- Adobe Illustrator
+((SELECT id FROM job WHERE title = 'Thiết kế nhân vật game mobile'), 62), -- Animation
+((SELECT id FROM job WHERE title = 'Thiết kế nhân vật game mobile'), 64), -- 3D Modeling
+
+-- Lập trình Unity game 2D
+((SELECT id FROM job WHERE title = 'Lập trình Unity game 2D'), 13), -- C#
+((SELECT id FROM job WHERE title = 'Lập trình Unity game 2D'), 25), -- Firebase
+((SELECT id FROM job WHERE title = 'Lập trình Unity game 2D'), 62), -- Animation
+((SELECT id FROM job WHERE title = 'Lập trình Unity game 2D'), 63), -- 3D Modeling
+
+-- Sáng tác nhạc nền cho game
+((SELECT id FROM job WHERE title = 'Sáng tác nhạc nền cho game'), 65), -- Music Production
+((SELECT id FROM job WHERE title = 'Sáng tác nhạc nền cho game'), 66), -- Podcast Editing
+((SELECT id FROM job WHERE title = 'Sáng tác nhạc nền cho game'), 59); -- Video Editing
+
+INSERT INTO sold_packages (start_date, end_date, price, number_post, number_posted, status, voucher_packages, client)
+VALUES
+    (NOW(), DATE_ADD(NOW(), INTERVAL 14 DAY), 90000, 5, 2, true, 2, 7),
+    (NOW(), DATE_ADD(NOW(), INTERVAL 30 DAY), 390000, 10, 3, true, 4, 8),
+    (DATE_SUB(NOW(), INTERVAL 2 MONTH), DATE_SUB(NOW(), INTERVAL 1 MONTH), 290000, 10, 8, false, 3, 7),
+    (DATE_SUB(NOW(), INTERVAL 3 MONTH), DATE_SUB(NOW(), INTERVAL 2 MONTH), 90000, 5, 5, false, 2, 8);
+
+-- Thêm dữ liệu cho bảng freelancer_job
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date)
+SELECT false, 'APPLIED', 13, 7, id, NOW() - INTERVAL 2 DAY
+FROM job WHERE title = 'Viết nội dung blog về công nghệ AI'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 7 AND job_id = job.id);
+
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date)
+SELECT false, 'VIEWED', 13, 7, id, NOW() - INTERVAL 1 DAY
+FROM job WHERE title = 'Copywriting cho landing page'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 7 AND job_id = job.id);
+
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date)
+SELECT false, 'APPLIED', 25, 10, id, NOW() - INTERVAL 3 DAY
+FROM job WHERE title = 'Thiết kế nhân vật game mobile'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 10 AND job_id = job.id);
+
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date)
+SELECT false, 'APPLIED', 4, 2, id, NOW() - INTERVAL 1 DAY
+FROM job WHERE title = 'Biên tập sách kỹ năng'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 2 AND job_id = job.id);
+
+
+-- Thêm đánh giá client và freelancer
+INSERT INTO client_review (rating, note)
+VALUES
+    (4.9, 'Freelancer làm việc chuyên nghiệp, tuyệt vời trong giao tiếp và đáp ứng mọi yêu cầu.'),
+    (4.7, 'Chất lượng thiết kế rất cao, sáng tạo và đúng theo yêu cầu. Sẽ hợp tác lần sau.'),
+    (4.8, 'Kỹ năng kỹ thuật tốt, giải quyết vấn đề hiệu quả, đáp ứng deadline.'),
+    (4.6, 'Minh họa rất đẹp và sáng tạo, đúng phong cách yêu cầu.');
+
+INSERT INTO freelancer_review (rating, note)
+VALUES
+    (4.9, 'Client rất rõ ràng về yêu cầu, phản hồi nhanh chóng và thanh toán đúng hẹn.'),
+    (4.8, 'Dự án thú vị, client hỗ trợ tốt trong quá trình làm việc.'),
+    (4.7, 'Client chuyên nghiệp, yêu cầu rõ ràng và thanh toán đúng hạn.'),
+    (4.6, 'Trải nghiệm hợp tác tuyệt vời, feedback xây dựng và rõ ràng.');
+
+-- Thêm dữ liệu cho bảng appointments
+INSERT INTO appointments (topic, start_time, duration, description, link, client_id, freelancer_job_id)
+VALUES
+    ('Phỏng vấn cho dự án thiết kế nhân vật game', NOW() + INTERVAL 2 DAY, 45, 'Thảo luận về phong cách thiết kế và timeline dự án', 'https://meet.example.com/game-character', 8,
+     (SELECT id FROM freelancer_job WHERE freelancer_id = 10 AND job_id = (SELECT id FROM job WHERE title = 'Thiết kế nhân vật game mobile'))),
+
+    ('Thảo luận về nội dung blog AI', NOW() + INTERVAL 3 DAY, 60, 'Phỏng vấn và thảo luận về các chủ đề blog và đối tượng độc giả', 'https://meet.example.com/blog-content', 7,
+     (SELECT id FROM freelancer_job WHERE freelancer_id = 7 AND job_id = (SELECT id FROM job WHERE title = 'Viết nội dung blog về công nghệ AI'))),
+
+    ('Trao đổi về landing page', NOW() + INTERVAL 1 DAY, 30, 'Thảo luận về các mẫu landing page và tone-and-manner', 'https://meet.example.com/landing-page', 7,
+     (SELECT id FROM freelancer_job WHERE freelancer_id = 7 AND job_id = (SELECT id FROM job WHERE title = 'Copywriting cho landing page'))),
+
+    ('Phỏng vấn biên tập sách', NOW() + INTERVAL 4 DAY, 60, 'Thảo luận về kinh nghiệm biên tập và quy trình làm việc', 'https://meet.example.com/book-editing', 7,
+     (SELECT id FROM freelancer_job WHERE freelancer_id = 2 AND job_id = (SELECT id FROM job WHERE title = 'Biên tập sách kỹ năng')));
+
+-- Thêm tin nhắn chat
+INSERT INTO chat_messages (sender_id, receiver_id, content, sent_at, is_read)
+VALUES
+-- Thu Nguyễn (client) với Hiếu Nguyễn (freelancer)
+(18, 15, 'Chào anh Hiếu, tôi đã xem profile của anh và thấy rất phù hợp với dự án blog về AI của chúng tôi.', NOW() - INTERVAL 5 DAY, true),
+(15, 18, 'Chào chị Thu, cảm ơn chị đã quan tâm. Tôi rất hứng thú với dự án này và có kinh nghiệm viết về AI.', NOW() - INTERVAL 5 DAY, true),
+(18, 15, 'Tuyệt vời! Anh có thể chia sẻ một số mẫu bài viết trước đây về chủ đề tương tự không?', NOW() - INTERVAL 4 DAY, true),
+(15, 18, 'Dạ, tôi sẽ gửi cho chị portfolio của tôi qua email. Chị có thể cho tôi biết thêm về đối tượng độc giả mục tiêu không?', NOW() - INTERVAL 4 DAY, true),
+(18, 15, 'Đối tượng của chúng tôi là các chuyên gia công nghệ và người dùng quan tâm đến AI ứng dụng trong doanh nghiệp.', NOW() - INTERVAL 3 DAY, true),
+(15, 18, 'Tôi hiểu rồi. Tôi có kinh nghiệm viết cho đối tượng này. Chúng ta có thể sắp xếp một cuộc họp để thảo luận chi tiết hơn không?', NOW() - INTERVAL 3 DAY, true),
+(18, 15, 'Được, chúng ta có thể họp vào thứ 5 tuần này lúc 10h sáng. Anh thấy thế nào?', NOW() - INTERVAL 2 DAY, true),
+(15, 18, 'Thời gian đó phù hợp với tôi. Tôi sẽ chuẩn bị một số ý tưởng cho các bài viết. Cảm ơn chị!', NOW() - INTERVAL 2 DAY, false),
+
+-- Bảo Trần (client) với Mai Lý (freelancer)
+(19, 20, 'Chào Mai Lý, tôi rất ấn tượng với portfolio thiết kế nhân vật của bạn. Đang có một dự án game RPG cần thiết kế nhân vật.', NOW() - INTERVAL 7 DAY, true),
+(20, 19, 'Chào anh Bảo, cảm ơn anh đã liên hệ. Em rất vui khi anh thích portfolio của em. Anh có thể chia sẻ thêm về phong cách game không?', NOW() - INTERVAL 7 DAY, true),
+(19, 20, 'Game của chúng tôi có phong cách anime Nhật Bản, nhưng hiện đại hơn. Chúng tôi cần 10 nhân vật với đầy đủ biểu cảm và pose.', NOW() - INTERVAL 6 DAY, true),
+(20, 19, 'Em hiểu rồi. Em có nhiều kinh nghiệm với phong cách này. Anh có concept sẵn cho các nhân vật hay em sẽ thiết kế từ đầu?', NOW() - INTERVAL 6 DAY, true),
+(19, 20, 'Chúng tôi có concept cơ bản về tính cách và vai trò, nhưng cần bạn thiết kế hình dáng và tạo hình chi tiết.', NOW() - INTERVAL 5 DAY, true),
+(20, 19, 'Vâng, em có thể làm việc từ concept đó. Anh có thể chia sẻ tài liệu qua email không? Và anh cần thời gian hoàn thành là bao lâu?', NOW() - INTERVAL 5 DAY, true),
+(19, 20, 'Tôi sẽ gửi tài liệu ngay hôm nay. Dự kiến chúng tôi cần trong vòng 6 tuần. Bạn có thể đáp ứng được không?', NOW() - INTERVAL 4 DAY, true),
+(20, 19, 'Dạ, em có thể hoàn thành trong 6 tuần. Em sẽ gửi báo giá chi tiết sau khi xem tài liệu. Cảm ơn anh đã quan tâm!', NOW() - INTERVAL 4 DAY, false),
+
+-- Hạnh Phạm (freelancer) với Bảo Trần (client)
+(16, 19, 'Chào anh Bảo, tôi là Hạnh - UI/UX Designer. Tôi thấy công ty anh đang cần người thiết kế giao diện cho game.', NOW() - INTERVAL 3 DAY, true),
+(19, 16, 'Chào Hạnh, cảm ơn vì đã liên hệ. Đúng vậy, chúng tôi đang cần một UI/UX designer cho game mobile.', NOW() - INTERVAL 3 DAY, true),
+(16, 19, 'Tôi có nhiều kinh nghiệm thiết kế UI cho game mobile. Anh có thể cho tôi biết thêm về yêu cầu cụ thể không?', NOW() - INTERVAL 2 DAY, true),
+(19, 16, 'Chúng tôi cần thiết kế UI cho game RPG, bao gồm menu chính, inventory, battle screen và các popup khác nhau.', NOW() - INTERVAL 2 DAY, true),
+(16, 19, 'Tôi hiểu rồi. Tôi đã từng làm UI cho nhiều game RPG trước đây. Tôi có thể gửi cho anh portfolio với các dự án tương tự.', NOW() - INTERVAL 1 DAY, true),
+(19, 16, 'Tuyệt vời! Hãy gửi portfolio của bạn qua email. Nếu phù hợp, chúng tôi sẽ mời bạn phỏng vấn.', NOW() - INTERVAL 1 DAY, false);
+
+-- Thêm người dùng mới
+INSERT INTO account (email, password, role, created_at, updated_at, status, lat, lng)
+VALUES
+    ('tuannv123@gmail.com', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'FREELANCER', NOW(), null, 0, 10.762622, 106.660172),
+    ('minhnq456@gmail.com', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'FREELANCER', NOW(), null, 0, 10.853954, 106.627283),
+    ('linhdt789@gmail.com', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'CLIENT', NOW(), null, 0, 16.054407, 108.202164),
+    ('phuongnt567@gmail.com', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'CLIENT', NOW(), null, 0, 21.027763, 105.834160),
+    ('hientt890@gmail.com', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'FREELANCER', NOW(), null, 0, 10.823099, 106.629662);
+
+-- Thêm thông tin người dùng
+INSERT INTO users (first_name, last_name, phone_number, province, country, title, introduction, image, account_id)
+VALUES
+    ('Tuấn', 'Nguyễn Văn', '0901234567', 'Hồ Chí Minh', 'Việt Nam', 'Full-stack Developer', 'Chuyên gia phát triển ứng dụng web với 8 năm kinh nghiệm, sử dụng MERN stack và .NET Core.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/user1.jpg', 21),
+    ('Minh', 'Nguyễn Quang', '0912345678', 'Hồ Chí Minh', 'Việt Nam', 'AI Engineer', 'Kỹ sư AI với nền tảng vững chắc về Machine Learning và Deep Learning, 5 năm kinh nghiệm.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/user2.jpg', 22),
+    ('Linh', 'Đặng Thị', '0923456789', 'Đà Nẵng', 'Việt Nam', 'Marketing Director', 'Giám đốc Marketing với hơn 10 năm kinh nghiệm trong lĩnh vực thương mại điện tử và bán lẻ.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/user3.jpg', 23),
+    ('Phương', 'Nguyễn Thanh', '0934567890', 'Hà Nội', 'Việt Nam', 'Product Manager', 'Quản lý sản phẩm với chuyên môn về các ứng dụng di động và phân tích người dùng.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/user4.jpg', 24),
+    ('Hiền', 'Trần Thị', '0945678901', 'Hồ Chí Minh', 'Việt Nam', 'UX Researcher', 'Chuyên gia nghiên cứu trải nghiệm người dùng với 6 năm kinh nghiệm, chuyên về thiết kế lấy người dùng làm trung tâm.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/user5.jpg', 25);
+
+-- Thêm freelancer
+INSERT INTO freelancer (hourly_rate, description, category_id, user_id)
+VALUES
+    (30.00, 'Full-stack Developer với 8 năm kinh nghiệm phát triển web và mobile, thành thạo MERN stack, .NET Core và microservices architecture.', 1, 21),
+    (35.00, 'AI Engineer chuyên về phát triển các giải pháp Machine Learning và Deep Learning cho nhiều lĩnh vực khác nhau từ fintech đến y tế.', 1, 22),
+    (28.00, 'UX Researcher với kinh nghiệm thiết kế tập trung vào người dùng, thành thạo các phương pháp nghiên cứu định tính và định lượng.', 2, 25);
+
+-- Thêm client
+INSERT INTO client (from_price, to_price, type_price, user_id)
+VALUES
+    (3000000, 10000000, 'VNĐ', 23),
+    (5000000, 15000000, 'VNĐ', 24);
+
+-- Thêm company
+INSERT INTO company (company_name, phone_contact, address, industry, client_id)
+VALUES
+    ('VIDA Digital', '0923456789', 'Đà Nẵng', 'E-commerce & Digital Marketing', 9),
+    ('TechFlow Solutions', '0934567890', 'Hà Nội', 'Software Development & IT Services', 10);
+
+-- Thêm CV cho freelancer
+INSERT INTO cv (title, url, status, freelancer_id)
+VALUES
+    ('Senior Full-stack Developer', 'cv-sample26.pdf', TRUE, 11),
+    ('JavaScript & React Expert', 'cv-sample27.pdf', TRUE, 11),
+    ('AI & Machine Learning Specialist', 'cv-sample28.pdf', TRUE, 12),
+    ('NLP & Computer Vision Expert', 'cv-sample29.pdf', TRUE, 12),
+    ('UX Design & Research Portfolio', 'cv-sample30.pdf', TRUE, 13),
+    ('User Research Specialist', 'cv-sample31.pdf', TRUE, 13);
+
+-- Thêm kỹ năng cho freelancer
+INSERT INTO freelancer_skill (freelancer_id, skill_id)
+VALUES
+-- Full-stack Developer (ID: 11)
+(11, 1),  -- Java
+(11, 3),  -- ReactJS
+(11, 6),  -- Node.js
+(11, 7),  -- Express.js
+(11, 14), -- C#
+(11, 15), -- .NET Core
+(11, 21), -- SQL
+(11, 25), -- Firebase
+(11, 34), -- Docker
+(11, 35), -- Kubernetes
+
+-- AI Engineer (ID: 12)
+(12, 8),  -- Python
+(12, 26), -- Data Analysis
+(12, 27), -- Data Science
+(12, 28), -- Machine Learning
+(12, 29), -- Deep Learning
+(12, 30), -- TensorFlow
+(12, 31), -- PyTorch
+(12, 32), -- AWS
+(12, 33), -- Azure
+(12, 21), -- SQL
+
+-- UX Researcher (ID: 13)
+(13, 39), -- UI/UX Design
+(13, 41), -- Figma
+(13, 42), -- Sketch
+(13, 26), -- Data Analysis
+(13, 69), -- Virtual Assistant
+(13, 70); -- Project Management
+
+-- Thêm dự án cho freelancer
+INSERT INTO projects (title, tech, description, link, image, freelancer_id)
+VALUES
+-- Full-stack Developer (ID: 11)
+('E-commerce Platform', 'React, Node.js, MongoDB, AWS', 'Nền tảng thương mại điện tử đa kênh với khả năng quản lý sản phẩm, đơn hàng và thanh toán trực tuyến.', 'https://github.com/tuannv/ecommerce-platform', 'ecommerce-platform.png', 11),
+('HR Management System', '.NET Core, SQL Server, Azure', 'Hệ thống quản lý nhân sự toàn diện với các tính năng theo dõi hiệu suất, quản lý phân quyền và tích hợp báo cáo.', 'https://github.com/tuannv/hr-management', 'hr-management.png', 11),
+
+-- AI Engineer (ID: 12)
+('Fraud Detection System', 'Python, TensorFlow, AWS SageMaker', 'Hệ thống phát hiện gian lận cho ngân hàng, sử dụng mô hình học máy với độ chính xác 97%.', 'https://github.com/minhnq/fraud-detection', 'fraud-detection.png', 12),
+('Medical Image Diagnosis', 'Python, PyTorch, Computer Vision', 'Giải pháp chẩn đoán hình ảnh y tế tự động sử dụng Deep Learning, hỗ trợ phát hiện bệnh từ X-quang.', 'https://github.com/minhnq/medical-imaging', 'medical-imaging.png', 12),
+
+-- UX Researcher (ID: 13)
+('Banking App Redesign', 'Figma, User Research, Wireframing', 'Nghiên cứu và thiết kế lại trải nghiệm người dùng cho ứng dụng ngân hàng, tăng 40% tỷ lệ chuyển đổi.', 'https://behance.net/hientt/banking-app', 'banking-app.png', 13),
+('E-learning Platform UX', 'Sketch, User Testing, Prototyping', 'Nghiên cứu và thiết kế trải nghiệm người dùng cho nền tảng học trực tuyến, tối ưu hóa quá trình học tập.', 'https://behance.net/hientt/elearning', 'elearning-platform.png', 13);
+
+-- Thêm giáo dục cho freelancer
+INSERT INTO education (start_date, end_date, description, school_id, degree_id, major_id, freelancer_id, image)
+VALUES
+    ('2011-09-01', '2015-06-30', 'Tốt nghiệp chuyên ngành Khoa học Máy tính với chứng chỉ xuất sắc về phát triển phần mềm.', 1, 2, 1, 11, null),
+    ('2013-09-01', '2017-06-30', 'Tốt nghiệp ngành Khoa học Dữ liệu và Trí tuệ Nhân tạo, đạt giải nhất cuộc thi AI Challenge.', 4, 2, 1, 12, null),
+    ('2012-09-01', '2016-06-30', 'Tốt nghiệp ngành Thiết kế Đồ họa và Truyền thông Kỹ thuật số, chuyên về UX/UI.', 15, 1, 2, 13, null);
+
+-- Thêm kinh nghiệm làm việc cho freelancer
+INSERT INTO experiences (company_name, position, start_date, end_date, description, status, freelancer_id)
+VALUES
+-- Full-stack Developer (ID: 11)
+('TechVision Inc.', 'Junior Developer', '2015-07-01', '2017-12-31', 'Phát triển các ứng dụng web sử dụng PHP, MySQL và JavaScript. Tham gia vào các dự án phát triển CMS cho khách hàng doanh nghiệp.', true, 11),
+('GlobalSoft Solutions', 'Software Engineer', '2018-01-01', '2020-06-30', 'Phát triển ứng dụng doanh nghiệp với .NET Core và Angular. Thiết kế và triển khai kiến trúc microservices cho các hệ thống quy mô lớn.', true, 11),
+('Innovate Technologies', 'Senior Full-stack Developer', '2020-07-01', '2024-12-31', 'Dẫn dắt nhóm phát triển ứng dụng web và mobile sử dụng React, Node.js và React Native. Tối ưu hóa hiệu suất và triển khai CI/CD.', true, 11),
+
+-- AI Engineer (ID: 12)
+('DataSense Analytics', 'Data Scientist', '2017-07-01', '2019-08-31', 'Phân tích dữ liệu và phát triển mô hình dự đoán cho các khách hàng tài chính và bán lẻ. Sử dụng scikit-learn và TensorFlow.', true, 12),
+('AI Solutions Co.', 'Machine Learning Engineer', '2019-09-01', '2022-12-31', 'Phát triển và triển khai các mô hình học máy cho các ứng dụng thực tế. Tối ưu hóa hiệu suất mô hình và xây dựng pipeline ML.', true, 12),
+('FutureTech Labs', 'Senior AI Engineer', '2023-01-01', '2024-12-31', 'Lãnh đạo nhóm AI nghiên cứu và phát triển các giải pháp học sâu cho các vấn đề thị giác máy tính và xử lý ngôn ngữ tự nhiên.', true, 12),
+
+-- UX Researcher (ID: 13)
+('DesignFirst Agency', 'UI/UX Designer', '2016-07-01', '2018-06-30', 'Thiết kế giao diện người dùng và trải nghiệm cho các ứng dụng web và di động. Thực hiện nghiên cứu người dùng cơ bản.', true, 13),
+('UserCentric Design', 'Senior UX Designer', '2018-07-01', '2021-12-31', 'Dẫn dắt quá trình thiết kế UX cho các dự án lớn, thực hiện nghiên cứu người dùng và phát triển user personas và hành trình người dùng.', true, 13),
+('Innovation Lab', 'UX Research Lead', '2022-01-01', '2024-12-31', 'Lãnh đạo nhóm nghiên cứu UX, xây dựng phương pháp nghiên cứu, thực hiện nghiên cứu định tính và định lượng về trải nghiệm người dùng.', true, 13);
+
+-- Thêm công việc mới
+INSERT INTO job (title, scope, hour_work, duration, job_opportunity, from_price, to_price, type_price, description, type_payment, status, created_at, updated_at, client_id, category_id, end_date)
+VALUES
+-- Client 9 (VIDA Digital - Digital Marketing)
+('Xây dựng chiến lược SEO toàn diện', 'LARGE', 60, 90, true, 20000000, 35000000, 'VNĐ', 'Cần chuyên gia SEO xây dựng chiến lược toàn diện cho trang thương mại điện tử, bao gồm nghiên cứu từ khóa, tối ưu on-page và off-page, link building và theo dõi KPI.', 'FULL', 'OPEN', NOW(), NULL, 9, 4, NOW() + INTERVAL 30 DAY),
+('Thiết kế UX/UI cho ứng dụng di động thương mại điện tử', 'MEDIUM', 40, 60, true, 15000000, 25000000, 'VNĐ', 'Tìm chuyên gia UX/UI thiết kế giao diện người dùng cho ứng dụng di động thương mại điện tử, tập trung vào tối ưu hóa trải nghiệm mua sắm và thanh toán.', 'FULL', 'OPEN', NOW(), NULL, 9, 2, NOW() + INTERVAL 21 DAY),
+('Phát triển chatbot hỗ trợ khách hàng', 'MEDIUM', 35, 50, false, 12000000, 20000000, 'VNĐ', 'Cần xây dựng chatbot thông minh tích hợp vào website và ứng dụng di động, có khả năng trả lời câu hỏi thường gặp, hỗ trợ đặt hàng, và chuyển tiếp đến nhân viên khi cần.', 'HOURLY', 'OPEN', NOW(), NULL, 9, 1, NOW() + INTERVAL 14 DAY),
+
+-- Client 10 (TechFlow Solutions - IT Services)
+('Xây dựng hệ thống quản lý dự án nội bộ', 'LARGE', 80, 120, true, 30000000, 50000000, 'VNĐ', 'Cần phát triển hệ thống quản lý dự án nội bộ toàn diện, bao gồm theo dõi tiến độ, quản lý tài nguyên, báo cáo thời gian, và tích hợp với các công cụ khác như Slack và Google Calendar.', 'FULL', 'OPEN', NOW(), NULL, 10, 1, NOW() + INTERVAL 30 DAY),
+('Phát triển hệ thống phân tích dữ liệu khách hàng', 'LARGE', 70, 90, true, 25000000, 45000000, 'VNĐ', 'Cần xây dựng hệ thống phân tích dữ liệu khách hàng sử dụng Machine Learning để dự đoán hành vi, phân khúc khách hàng, và đề xuất các chiến lược tiếp thị phù hợp.', 'FULL', 'OPEN', NOW(), NULL, 10, 7, NOW() + INTERVAL 25 DAY),
+('Kiểm thử bảo mật và đánh giá lỗ hổng', 'MEDIUM', 40, 60, false, 18000000, 30000000, 'VNĐ', 'Tìm chuyên gia bảo mật thực hiện đánh giá toàn diện về hệ thống, tìm kiếm lỗ hổng, thực hiện kiểm thử xâm nhập, và đề xuất các biện pháp khắc phục để bảo vệ dữ liệu.', 'HOURLY', 'OPEN', NOW(), NULL, 10, 1, NOW() + INTERVAL 14 DAY);
+
+-- Thêm kỹ năng cho các công việc mới
+INSERT INTO job_skill (job_id, skill_id)
+VALUES
+-- Xây dựng chiến lược SEO toàn diện
+((SELECT id FROM job WHERE title = 'Xây dựng chiến lược SEO toàn diện'), 48), -- SEO Optimization
+((SELECT id FROM job WHERE title = 'Xây dựng chiến lược SEO toàn diện'), 49), -- Copywriting
+((SELECT id FROM job WHERE title = 'Xây dựng chiến lược SEO toàn diện'), 50), -- Content Writing
+((SELECT id FROM job WHERE title = 'Xây dựng chiến lược SEO toàn diện'), 26), -- Data Analysis
+
+-- Thiết kế UX/UI cho ứng dụng di động thương mại điện tử
+((SELECT id FROM job WHERE title = 'Thiết kế UX/UI cho ứng dụng di động thương mại điện tử'), 39), -- UI/UX Design
+((SELECT id FROM job WHERE title = 'Thiết kế UX/UI cho ứng dụng di động thương mại điện tử'), 41), -- Figma
+((SELECT id FROM job WHERE title = 'Thiết kế UX/UI cho ứng dụng di động thương mại điện tử'), 42), -- Sketch
+((SELECT id FROM job WHERE title = 'Thiết kế UX/UI cho ứng dụng di động thương mại điện tử'), 40), -- Adobe Photoshop
+
+-- Phát triển chatbot hỗ trợ khách hàng
+((SELECT id FROM job WHERE title = 'Phát triển chatbot hỗ trợ khách hàng'), 6),  -- Node.js
+((SELECT id FROM job WHERE title = 'Phát triển chatbot hỗ trợ khách hàng'), 8),  -- Python
+((SELECT id FROM job WHERE title = 'Phát triển chatbot hỗ trợ khách hàng'), 28), -- Machine Learning
+((SELECT id FROM job WHERE title = 'Phát triển chatbot hỗ trợ khách hàng'), 29), -- Deep Learning
+((SELECT id FROM job WHERE title = 'Phát triển chatbot hỗ trợ khách hàng'), 25), -- Firebase
+
+-- Xây dựng hệ thống quản lý dự án nội bộ
+((SELECT id FROM job WHERE title = 'Xây dựng hệ thống quản lý dự án nội bộ'), 1),  -- Java
+((SELECT id FROM job WHERE title = 'Xây dựng hệ thống quản lý dự án nội bộ'), 2),  -- Spring Boot
+((SELECT id FROM job WHERE title = 'Xây dựng hệ thống quản lý dự án nội bộ'), 3),  -- ReactJS
+((SELECT id FROM job WHERE title = 'Xây dựng hệ thống quản lý dự án nội bộ'), 21), -- SQL
+((SELECT id FROM job WHERE title = 'Xây dựng hệ thống quản lý dự án nội bộ'), 34), -- Docker
+((SELECT id FROM job WHERE title = 'Xây dựng hệ thống quản lý dự án nội bộ'), 35), -- Kubernetes
+
+-- Phát triển hệ thống phân tích dữ liệu khách hàng
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống phân tích dữ liệu khách hàng'), 8),  -- Python
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống phân tích dữ liệu khách hàng'), 26), -- Data Analysis
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống phân tích dữ liệu khách hàng'), 27), -- Data Science
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống phân tích dữ liệu khách hàng'), 28), -- Machine Learning
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống phân tích dữ liệu khách hàng'), 30), -- TensorFlow
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống phân tích dữ liệu khách hàng'), 31), -- PyTorch
+
+-- Kiểm thử bảo mật và đánh giá lỗ hổng
+((SELECT id FROM job WHERE title = 'Kiểm thử bảo mật và đánh giá lỗ hổng'), 14), -- C#
+((SELECT id FROM job WHERE title = 'Kiểm thử bảo mật và đánh giá lỗ hổng'), 16), -- C++
+((SELECT id FROM job WHERE title = 'Kiểm thử bảo mật và đánh giá lỗ hổng'), 8),  -- Python
+((SELECT id FROM job WHERE title = 'Kiểm thử bảo mật và đánh giá lỗ hổng'), 32), -- AWS
+((SELECT id FROM job WHERE title = 'Kiểm thử bảo mật và đánh giá lỗ hổng'), 33); -- Azure
+
+-- Thêm đánh giá client và freelancer
+INSERT INTO client_review (rating, note)
+VALUES
+    (4.9, 'Freelancer có kỹ năng kỹ thuật xuất sắc, giải quyết vấn đề phức tạp rất hiệu quả.'),
+    (4.8, 'Làm việc chuyên nghiệp, giao tiếp rõ ràng và đáp ứng mọi yêu cầu kỹ thuật.'),
+    (4.7, 'Hiểu rõ yêu cầu và đề xuất giải pháp tối ưu, chủ động cập nhật tiến độ.'),
+    (4.6, 'Kỹ thuật tốt, làm việc đúng deadline, phản hồi nhanh khi có thắc mắc.'),
+    (4.5, 'Tích cực đề xuất các cải tiến, chất lượng công việc cao.');
+
+INSERT INTO freelancer_review (rating, note)
+VALUES
+    (4.9, 'Client rất rõ ràng về mục tiêu dự án, cung cấp tài liệu đầy đủ và phản hồi nhanh chóng.'),
+    (4.8, 'Giao tiếp chuyên nghiệp, yêu cầu hợp lý và thanh toán đúng hạn.'),
+    (4.7, 'Dự án thú vị, client hỗ trợ tốt và tạo điều kiện để hoàn thành công việc.'),
+    (4.6, 'Quy trình làm việc hiệu quả, feedback xây dựng và tôn trọng chuyên môn.'),
+    (4.5, 'Client chuyên nghiệp, yêu cầu rõ ràng và có tầm nhìn tốt về sản phẩm.');
+
+-- Thêm dữ liệu cho bảng freelancer_job
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date, freelancer_review_id, client_review_id)
+SELECT false, 'APPLIED', 13, 5, id, NOW() - INTERVAL 3 DAY, NULL, NULL
+FROM job WHERE title = 'Thiết kế UX/UI cho ứng dụng di động thương mại điện tử'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 5 AND job_id = job.id);
+
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date, freelancer_review_id, client_review_id)
+SELECT false, 'APPLIED', 26, 11, id, NOW() - INTERVAL 2 DAY, NULL, NULL
+FROM job WHERE title = 'Xây dựng hệ thống quản lý dự án nội bộ'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 11 AND job_id = job.id);
+
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date, freelancer_review_id, client_review_id)
+SELECT false, 'VIEWED', 27, 11, id, NOW() - INTERVAL 3 DAY, NULL, NULL
+FROM job WHERE title = 'Phát triển chatbot hỗ trợ khách hàng'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 11 AND job_id = job.id);
+
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date, freelancer_review_id, client_review_id)
+SELECT false, 'APPLIED', 28, 12, id, NOW() - INTERVAL 4 DAY, NULL, NULL
+FROM job WHERE title = 'Phát triển hệ thống phân tích dữ liệu khách hàng'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 12 AND job_id = job.id);
+
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date, freelancer_review_id, client_review_id)
+SELECT false, 'APPLIED', 29, 12, id, NOW() - INTERVAL 3 DAY, NULL, NULL
+FROM job WHERE title = 'Phát triển chatbot hỗ trợ khách hàng'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 12 AND job_id = job.id);
+
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date, freelancer_review_id, client_review_id)
+SELECT false, 'APPLIED', 30, 13, id, NOW() - INTERVAL 2 DAY, NULL, NULL
+FROM job WHERE title = 'Thiết kế UX/UI cho ứng dụng di động thương mại điện tử'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 13 AND job_id = job.id);
+
+-- Thêm dữ liệu cho bảng sold_packages
+INSERT INTO sold_packages (start_date, end_date, price, number_post, number_posted, status, voucher_packages, client)
+VALUES
+    (NOW(), DATE_ADD(NOW(), INTERVAL 14 DAY), 290000, 10, 3, true, 3, 9),
+    (NOW(), DATE_ADD(NOW(), INTERVAL 30 DAY), 390000, 10, 3, true, 4, 10),
+    (DATE_SUB(NOW(), INTERVAL 2 MONTH), DATE_SUB(NOW(), INTERVAL 1 MONTH), 290000, 10, 8, false, 3, 9),
+    (DATE_SUB(NOW(), INTERVAL 3 MONTH), DATE_SUB(NOW(), INTERVAL 2 MONTH), 90000, 5, 5, false, 2, 10);
+
+-- Thêm thông báo
+INSERT INTO notification (message, user_id, is_read, url, created_at)
+VALUES
+    ('Ứng viên mới đã ứng tuyển vào công việc "Xây dựng hệ thống quản lý dự án nội bộ"', 24, false, '/jobs/details', NOW() - INTERVAL 2 DAY),
+    ('Bạn đã được chọn cho cuộc phỏng vấn công việc "Phát triển hệ thống phân tích dữ liệu khách hàng"', 22, false, '/interview/details', NOW() - INTERVAL 1 DAY),
+    ('Gói dịch vụ của bạn sẽ hết hạn trong 3 ngày', 23, false, '/packages', NOW()),
+    ('Ứng viên mới đã ứng tuyển vào công việc "Thiết kế UX/UI cho ứng dụng di động thương mại điện tử"', 23, true, '/jobs/details', NOW() - INTERVAL 2 DAY),
+    ('Công việc mới phù hợp với kỹ năng của bạn đã được đăng tải', 21, false, '/jobs/matching', NOW() - INTERVAL 1 DAY),
+    ('Đánh giá mới từ khách hàng về dự án đã hoàn thành', 22, true, '/reviews', NOW() - INTERVAL 3 DAY),
+    ('Thanh toán cho dự án "E-commerce Platform" đã được xử lý', 21, false, '/payments', NOW()),
+    ('Cuộc phỏng vấn với "TechFlow Solutions" đã được xác nhận', 25, false, '/interview/schedule', NOW() - INTERVAL 1 DAY),
+    ('Bạn có thông báo mới từ hệ thống hỗ trợ', 24, true, '/support', NOW() - INTERVAL 2 DAY),
+    ('Cập nhật chính sách thanh toán mới', 23, false, '/policy', NOW() - INTERVAL 5 DAY);
+
+-- Thêm dữ liệu cho bảng Payment
+INSERT INTO payment (balance, created_at, updated_at, account_id)
+VALUES
+    (1500000.00, NOW() - INTERVAL 60 DAY, NOW() - INTERVAL 1 DAY, 1),
+    (2300000.00, NOW() - INTERVAL 90 DAY, NOW() - INTERVAL 2 DAY, 2),
+    (0.00, NOW() - INTERVAL 45 DAY, NOW() - INTERVAL 3 DAY, 3),
+    (5000000.00, NOW() - INTERVAL 30 DAY, NOW() - INTERVAL 1 DAY, 4),
+    (3500000.00, NOW() - INTERVAL 75 DAY, NOW() - INTERVAL 5 DAY, 5),
+    (1200000.00, NOW() - INTERVAL 60 DAY, NOW() - INTERVAL 2 DAY, 6),
+    (800000.00, NOW() - INTERVAL 45 DAY, NOW() - INTERVAL 7 DAY, 7),
+    (2100000.00, NOW() - INTERVAL 80 DAY, NOW() - INTERVAL 3 DAY, 8),
+    (0.00, NOW() - INTERVAL 65 DAY, NOW() - INTERVAL 1 DAY, 9),
+    (3000000.00, NOW() - INTERVAL 70 DAY, NOW() - INTERVAL 4 DAY, 10),
+    (2700000.00, NOW() - INTERVAL 55 DAY, NOW() - INTERVAL 2 DAY, 11),
+    (0.00, NOW() - INTERVAL 40 DAY, NOW() - INTERVAL 1 DAY, 12),
+    (1800000.00, NOW() - INTERVAL 85 DAY, NOW() - INTERVAL 6 DAY, 13),
+    (0.00, NOW() - INTERVAL 50 DAY, NOW() - INTERVAL 3 DAY, 14),
+    (4200000.00, NOW() - INTERVAL 75 DAY, NOW() - INTERVAL 2 DAY, 15),
+    (1500000.00, NOW() - INTERVAL 30 DAY, NOW() - INTERVAL 1 DAY, 16),
+    (2800000.00, NOW() - INTERVAL 60 DAY, NOW() - INTERVAL 5 DAY, 17),
+    (0.00, NOW() - INTERVAL 45 DAY, NOW() - INTERVAL 2 DAY, 18),
+    (0.00, NOW() - INTERVAL 70 DAY, NOW() - INTERVAL 3 DAY, 19),
+    (3200000.00, NOW() - INTERVAL 55 DAY, NOW() - INTERVAL 1 DAY, 20),
+    (5500000.00, NOW() - INTERVAL 40 DAY, NOW() - INTERVAL 2 DAY, 21),
+    (4800000.00, NOW() - INTERVAL 65 DAY, NOW() - INTERVAL 4 DAY, 22),
+    (0.00, NOW() - INTERVAL 50 DAY, NOW() - INTERVAL 3 DAY, 23),
+    (0.00, NOW() - INTERVAL 75 DAY, NOW() - INTERVAL 1 DAY, 24),
+    (2900000.00, NOW() - INTERVAL 35 DAY, NOW() - INTERVAL 2 DAY, 25);
+
+-- Thêm giao dịch cho client mua gói dịch vụ
+INSERT INTO transactions (money, activity, created_at, description, status, payment_id)
+VALUES
+    -- Client ID 1 (Quang Bùi - User ID 3) - Gói Vàng
+    (290000.00, 'WITHDRAW', NOW() - INTERVAL 14 DAY, 'Thanh toán gói Vàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 3)),
+
+    -- Client ID 1 (Quang Bùi) - Lịch sử gói đã hết hạn
+    (90000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 2 MONTH), 'Thanh toán gói Bạc', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 3)),
+    (290000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 1 MONTH), 'Thanh toán gói Vàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 3)),
+
+    -- Client ID 2 (Huy Đinh - User ID 5) - Gói Bạc
+    (90000.00, 'WITHDRAW', NOW() - INTERVAL 14 DAY, 'Thanh toán gói Bạc', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 5)),
+
+    -- Client ID 2 (Huy Đinh) - Lịch sử gói đã hết hạn
+    (0.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 3 MONTH), 'Thanh toán gói Thường', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 5)),
+    (90000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 2 MONTH), 'Thanh toán gói Bạc', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 5)),
+
+    -- Client ID 3 (Minh Thành - User ID 7) - Gói Kim Cương
+    (390000.00, 'WITHDRAW', NOW() - INTERVAL 30 DAY, 'Thanh toán gói Kim Cương', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 7)),
+
+    -- Client ID 3 (Minh Thành) - Lịch sử gói đã hết hạn
+    (90000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 3 MONTH), 'Thanh toán gói Bạc', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 7)),
+    (290000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 2 MONTH), 'Thanh toán gói Vàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 7)),
+
+    -- Client ID 4 (Thành Sơn - User ID 10) - Gói Bạc
+    (90000.00, 'WITHDRAW', NOW() - INTERVAL 14 DAY, 'Thanh toán gói Bạc', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 10)),
+
+    -- Client ID 4 (Thành Sơn) - Lịch sử gói đã hết hạn
+    (90000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 2 MONTH), 'Thanh toán gói Bạc', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 10)),
+    (90000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 1 MONTH), 'Thanh toán gói Bạc', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 10)),
+
+    -- Client ID 5 (Hoàng Long - User ID 12) - Gói Kim Cương
+    (390000.00, 'WITHDRAW', NOW() - INTERVAL 30 DAY, 'Thanh toán gói Kim Cương', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 12)),
+
+    -- Client ID 5 (Hoàng Long) - Lịch sử gói đã hết hạn
+    (290000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 3 MONTH), 'Thanh toán gói Vàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 12)),
+    (290000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 2 MONTH), 'Thanh toán gói Vàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 12)),
+
+    -- Client ID 6 (Minh Triết - User ID 14) - Gói Bạc
+    (90000.00, 'WITHDRAW', NOW() - INTERVAL 14 DAY, 'Thanh toán gói Bạc', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 14)),
+
+    -- Client ID 6 (Minh Triết) - Lịch sử gói đã hết hạn
+    (90000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 2 MONTH), 'Thanh toán gói Bạc', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 14)),
+    (90000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 1 MONTH), 'Thanh toán gói Bạc', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 14)),
+
+    -- Client ID 7 (Thu Nguyễn - User ID 18) - Gói Bạc
+    (90000.00, 'WITHDRAW', NOW() - INTERVAL 14 DAY, 'Thanh toán gói Bạc', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 18)),
+
+    -- Client ID 7 (Thu Nguyễn) - Lịch sử gói đã hết hạn
+    (290000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 2 MONTH), 'Thanh toán gói Vàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 18)),
+
+    -- Client ID 8 (Bảo Trần - User ID 19) - Gói Kim Cương
+    (390000.00, 'WITHDRAW', NOW() - INTERVAL 30 DAY, 'Thanh toán gói Kim Cương', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 19)),
+
+    -- Client ID 8 (Bảo Trần) - Lịch sử gói đã hết hạn
+    (90000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 3 MONTH), 'Thanh toán gói Bạc', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 19)),
+
+    -- Client ID 9 (Linh Đặng - User ID 23) - Gói Vàng
+    (290000.00, 'WITHDRAW', NOW() - INTERVAL 14 DAY, 'Thanh toán gói Vàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 23)),
+
+    -- Client ID 9 (Linh Đặng) - Lịch sử gói đã hết hạn
+    (290000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 2 MONTH), 'Thanh toán gói Vàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 23)),
+
+    -- Client ID 10 (Phương Nguyễn - User ID 24) - Gói Kim Cương
+    (390000.00, 'WITHDRAW', NOW() - INTERVAL 30 DAY, 'Thanh toán gói Kim Cương', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 24)),
+
+    -- Client ID 10 (Phương Nguyễn) - Lịch sử gói đã hết hạn
+    (90000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 3 MONTH), 'Thanh toán gói Bạc', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 24));
+
+-- Thêm giao dịch nạp tiền cho client
+INSERT INTO transactions (money, activity, created_at, description, status, payment_id)
+VALUES
+    -- Client ID 1 (Quang Bùi - User ID 3)
+    (1000000.00, 'DEPOSIT', NOW() - INTERVAL 20 DAY, 'Nạp tiền qua ngân hàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 3)),
+
+    -- Client ID 2 (Huy Đinh - User ID 5)
+    (500000.00, 'DEPOSIT', NOW() - INTERVAL 25 DAY, 'Nạp tiền qua VNPay', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 5)),
+
+    -- Client ID 3 (Minh Thành - User ID 7)
+    (1500000.00, 'DEPOSIT', NOW() - INTERVAL 35 DAY, 'Nạp tiền qua Momo', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 7)),
+
+    -- Client ID 4 (Thành Sơn - User ID 10)
+    (800000.00, 'DEPOSIT', NOW() - INTERVAL 18 DAY, 'Nạp tiền qua ngân hàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 10)),
+
+    -- Client ID 5 (Hoàng Long - User ID 12)
+    (2000000.00, 'DEPOSIT', NOW() - INTERVAL 40 DAY, 'Nạp tiền qua VNPay', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 12)),
+
+    -- Client ID 6 (Minh Triết - User ID 14)
+    (500000.00, 'DEPOSIT', NOW() - INTERVAL 20 DAY, 'Nạp tiền qua Momo', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 14)),
+
+    -- Client ID 7 (Thu Nguyễn - User ID 18)
+    (1000000.00, 'DEPOSIT', NOW() - INTERVAL 18 DAY, 'Nạp tiền qua ngân hàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 18)),
+
+    -- Client ID 8 (Bảo Trần - User ID 19)
+    (1500000.00, 'DEPOSIT', NOW() - INTERVAL 35 DAY, 'Nạp tiền qua VNPay', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 19)),
+
+    -- Client ID 9 (Linh Đặng - User ID 23)
+    (1000000.00, 'DEPOSIT', NOW() - INTERVAL 20 DAY, 'Nạp tiền qua Momo', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 23)),
+
+    -- Client ID 10 (Phương Nguyễn - User ID 24)
+    (2000000.00, 'DEPOSIT', NOW() - INTERVAL 32 DAY, 'Nạp tiền qua ngân hàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 24));
+
+-- Thêm một số giao dịch thanh toán đang chờ xử lý
+INSERT INTO transactions (money, activity, created_at, description, status, payment_id)
+VALUES
+    (290000.00, 'WITHDRAW', NOW() - INTERVAL 1 DAY, 'Đăng ký gói Vàng', 'PENDING',
+     (SELECT id FROM payment WHERE account_id = 5)),
+    (390000.00, 'WITHDRAW', NOW() - INTERVAL 2 DAY, 'Đăng ký gói Kim Cương', 'PENDING',
+     (SELECT id FROM payment WHERE account_id = 14)),
+    (500000.00, 'DEPOSIT', NOW() - INTERVAL 1 DAY, 'Nạp tiền qua VNPay', 'PENDING',
+     (SELECT id FROM payment WHERE account_id = 18));
+
+-- Thêm dữ liệu cho appointments (cuộc hẹn phỏng vấn)
+INSERT INTO appointments (topic, start_time, duration, description, link, client_id, freelancer_job_id)
+VALUES
+    ('Phỏng vấn dự án Phân tích dữ liệu khách hàng', NOW() + INTERVAL 5 DAY, 60, 'Thảo luận về yêu cầu kỹ thuật và kinh nghiệm với ML/AI', 'https://meet.example.com/data-analysis', 10,
+     (SELECT id FROM freelancer_job WHERE freelancer_id = 12 AND job_id = (SELECT id FROM job WHERE title = 'Phát triển hệ thống phân tích dữ liệu khách hàng'))),
+
+    ('Trao đổi về UX/UI cho ứng dụng thương mại điện tử', NOW() + INTERVAL 3 DAY, 45, 'Phỏng vấn và thảo luận về portfolio, phong cách thiết kế', 'https://meet.example.com/ux-ecommerce', 9,
+     (SELECT id FROM freelancer_job WHERE freelancer_id = 13 AND job_id = (SELECT id FROM job WHERE title = 'Thiết kế UX/UI cho ứng dụng di động thương mại điện tử'))),
+
+    ('Thảo luận dự án Chatbot', NOW() + INTERVAL 2 DAY, 60, 'Phỏng vấn về kinh nghiệm phát triển chatbot và công nghệ NLP', 'https://meet.example.com/chatbot', 9,
+     (SELECT id FROM freelancer_job WHERE freelancer_id = 12 AND job_id = (SELECT id FROM job WHERE title = 'Phát triển chatbot hỗ trợ khách hàng'))),
+
+    ('Phỏng vấn dự án hệ thống quản lý', NOW() + INTERVAL 4 DAY, 90, 'Thảo luận chi tiết về kinh nghiệm full-stack và microservices', 'https://meet.example.com/management-system', 10,
+     (SELECT id FROM freelancer_job WHERE freelancer_id = 11 AND job_id = (SELECT id FROM job WHERE title = 'Xây dựng hệ thống quản lý dự án nội bộ')));
+
+-- Thêm tin nhắn chat mới
+INSERT INTO chat_messages (sender_id, receiver_id, content, sent_at, is_read)
+VALUES
+-- Linh (client) với Tuấn (freelancer)
+(23, 21, 'Chào anh Tuấn, tôi đã xem qua hồ sơ của anh và rất ấn tượng với các dự án full-stack anh đã thực hiện.', NOW() - INTERVAL 5 DAY, true),
+(21, 23, 'Chào chị Linh, cảm ơn chị đã liên hệ. Tôi rất vui khi chị quan tâm đến kinh nghiệm của tôi.', NOW() - INTERVAL 5 DAY, true),
+(23, 21, 'Công ty chúng tôi đang cần một hệ thống quản lý nội dung cho website thương mại điện tử. Anh đã từng làm dự án tương tự chưa?', NOW() - INTERVAL 4 DAY, true),
+(21, 23, 'Vâng, tôi đã phát triển 3 hệ thống CMS cho các website TMĐT, sử dụng React/Node.js và cả .NET Core. Chị có yêu cầu cụ thể về công nghệ không?', NOW() - INTERVAL 4 DAY, true),
+(23, 21, 'Chúng tôi ưu tiên sử dụng MERN stack vì đội ngũ hiện tại đang quen thuộc với công nghệ này. Anh có thể gửi portfolio chi tiết hơn được không?', NOW() - INTERVAL 3 DAY, true),
+(21, 23, 'Dạ, tôi sẽ gửi ngay cho chị qua email. MERN stack là thế mạnh của tôi, tôi có thể chia sẻ cả mã nguồn demo để chị tham khảo.', NOW() - INTERVAL 3 DAY, true),
+(23, 21, 'Tuyệt vời! Chúng tôi muốn hệ thống có khả năng mở rộng cao và hiệu suất tốt. Anh có kinh nghiệm tối ưu hóa cho website có lưu lượng truy cập lớn không?', NOW() - INTERVAL 2 DAY, true),
+(21, 23, 'Có, tôi đã từng tối ưu hệ thống cho website có 50,000+ người dùng đồng thời. Tôi sử dụng các kỹ thuật như caching, lazy loading, và microservices để đảm bảo khả năng mở rộng.', NOW() - INTERVAL 2 DAY, true),
+(23, 21, 'Anh có thể tham gia vào cuộc họp với team kỹ thuật của chúng tôi vào thứ 5 tuần này không? Chúng tôi muốn thảo luận chi tiết hơn về dự án.', NOW() - INTERVAL 1 DAY, true),
+(21, 23, 'Vâng, tôi rất sẵn lòng. Thứ 5 này tôi có thể họp bất kỳ thời điểm nào từ 9h sáng đến 5h chiều. Chị có thể gửi lịch cụ thể cho tôi không?', NOW() - INTERVAL 1 DAY, false),
+
+-- Phương (client) với Minh (freelancer)
+(24, 22, 'Chào anh Minh, tôi là Phương từ TechFlow Solutions. Chúng tôi đang tìm kiếm một AI Engineer cho dự án phân tích dữ liệu khách hàng.', NOW() - INTERVAL 7 DAY, true),
+(22, 24, 'Chào chị Phương, rất vui được làm quen. Tôi đã xem qua thông tin dự án của công ty chị và rất quan tâm.', NOW() - INTERVAL 7 DAY, true),
+(24, 22, 'Dự án của chúng tôi cần xây dựng mô hình dự đoán hành vi khách hàng từ dữ liệu giao dịch lịch sử. Anh có kinh nghiệm về lĩnh vực này không?', NOW() - INTERVAL 6 DAY, true),
+(22, 24, 'Có, tôi đã từng phát triển hệ thống tương tự cho một ngân hàng lớn, sử dụng kết hợp các mô hình regression và deep learning để dự đoán khả năng churn và cross-selling.', NOW() - INTERVAL 6 DAY, true),
+(24, 22, 'Đó là kinh nghiệm rất phù hợp. Chúng tôi có khoảng 2TB dữ liệu từ 3 năm gần đây. Anh có kinh nghiệm xử lý dữ liệu lớn không?', NOW() - INTERVAL 5 DAY, true),
+(22, 24, 'Vâng, tôi thường xuyên làm việc với dữ liệu lớn sử dụng Spark và các công cụ trên AWS/Azure. Tôi có thể giúp xây dựng pipeline xử lý dữ liệu hiệu quả cho dự án này.', NOW() - INTERVAL 5 DAY, true),
+(24, 22, 'Tuyệt vời! Chúng tôi muốn hệ thống không chỉ dự đoán mà còn đưa ra các đề xuất phù hợp cho từng phân khúc khách hàng. Anh nghĩ gì về yêu cầu này?', NOW() - INTERVAL 4 DAY, true),
+(22, 24, 'Đó là yêu cầu hoàn toàn hợp lý. Tôi sẽ thiết kế hệ thống sử dụng collaborative filtering kết hợp với content-based recommendation để tạo ra đề xuất cá nhân hóa cho từng khách hàng.', NOW() - INTERVAL 4 DAY, true),
+(24, 22, 'Nghe rất hứa hẹn. Chúng tôi muốn mời anh tham gia cuộc phỏng vấn kỹ thuật vào tuần sau. Anh có thể sắp xếp được không?', NOW() - INTERVAL 3 DAY, true),
+(22, 24, 'Rất sẵn lòng. Tuần sau tôi có thể sắp xếp vào các ngày thứ 2, thứ 4 hoặc thứ 6. Chị có thể gửi email thông tin chi tiết về cuộc phỏng vấn không?', NOW() - INTERVAL 3 DAY, false);
+
+-- Thêm các bản ghi cho quản lý danh sách yêu thích (is_saved = true)
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date)
+SELECT true, NULL, NULL, 11, id, NULL
+FROM job WHERE title = 'Kiểm thử bảo mật và đánh giá lỗ hổng'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 11 AND job_id = job.id);
+
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date)
+SELECT true, NULL, NULL, 12, id, NULL
+FROM job WHERE title = 'Xây dựng chiến lược SEO toàn diện'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 12 AND job_id = job.id);
+
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date)
+SELECT true, NULL, NULL, 13, id, NULL
+FROM job WHERE title = 'Phát triển ứng dụng mobile Cross-platform'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 13 AND job_id = job.id);
+
+-- Thêm account mới
+INSERT INTO account (email, password, role, created_at, updated_at, status, lat, lng)
+VALUES
+    ('hoangvt123@gmail.com', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'FREELANCER', NOW(), null, 0, 10.780901, 106.682295),
+    ('trangnt456@gmail.com', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'FREELANCER', NOW(), null, 0, 20.991236, 105.831002),
+    ('ducnv789@gmail.com', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'CLIENT', NOW(), null, 0, 11.940418, 108.458313),
+    ('anhnt567@gmail.com', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'CLIENT', NOW(), null, 0, 16.468446, 107.584489),
+    ('hailt890@gmail.com', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'FREELANCER', NOW(), null, 0, 10.045162, 105.746857);
+
+-- Thêm thông tin user
+INSERT INTO users (first_name, last_name, phone_number, province, country, title, introduction, image, account_id)
+VALUES
+    ('Hoàng', 'Vũ Trọng', '0912345678', 'Hồ Chí Minh', 'Việt Nam', 'DevOps & Cloud Architect', 'Kiến trúc sư Cloud với 10 năm kinh nghiệm xây dựng hạ tầng quy mô lớn, chuyên AWS/GCP và Kubernetes.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/user6.jpg', 26),
+    ('Trang', 'Nguyễn Thị', '0923456789', 'Hà Nội', 'Việt Nam', 'Blockchain Developer', 'Nhà phát triển Blockchain với 5 năm kinh nghiệm xây dựng DApps, Smart Contracts và giải pháp Web3.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/user7.jpg', 27),
+    ('Đức', 'Nguyễn Văn', '0934567890', 'Đà Lạt', 'Việt Nam', 'Startup Founder', 'Nhà sáng lập startup công nghệ trong lĩnh vực du lịch, tìm kiếm đối tác phát triển sản phẩm.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/user8.jpg', 28),
+    ('Anh', 'Nguyễn Tuấn', '0945678901', 'Huế', 'Việt Nam', 'E-commerce Director', 'Giám đốc thương mại điện tử với 8 năm kinh nghiệm quản lý và phát triển các nền tảng bán lẻ trực tuyến.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/user9.jpg', 29),
+    ('Hải', 'Lê Thanh', '0956789012', 'Cần Thơ', 'Việt Nam', 'Data Engineer', 'Kỹ sư dữ liệu với chuyên môn về xây dựng data pipeline, ETL và data warehouse trên các nền tảng cloud.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/user10.jpg', 30);
+
+
+-- Thêm freelancer
+INSERT INTO freelancer (hourly_rate, description, category_id, user_id)
+VALUES
+    (40.00, 'DevOps & Cloud Architect với kinh nghiệm điều phối và tự động hóa hạ tầng CNTT cho các doanh nghiệp từ khởi nghiệp đến tập đoàn lớn. Chuyên AWS, GCP, Azure, Kubernetes, Docker, CI/CD.', 1, 26),
+    (38.00, 'Blockchain Developer với kinh nghiệm phát triển smart contracts, dapps và các giải pháp tài chính phi tập trung. Thông thạo Solidity, Web3.js, Ethereum, và các blockchain khác.', 1, 27),
+    (32.00, 'Data Engineer với chuyên môn xây dựng hệ thống xử lý dữ liệu quy mô lớn, ETL pipeline và data warehouse. Thành thạo Apache Spark, Airflow, Kafka và các công cụ dữ liệu Big Data.', 1, 30);
+
+-- Thêm client
+INSERT INTO client (from_price, to_price, type_price, user_id)
+VALUES
+    (8000000, 25000000, 'VNĐ', 28),
+    (10000000, 30000000, 'VNĐ', 29);
+
+-- Thêm company
+INSERT INTO company (company_name, phone_contact, address, industry, client_id)
+VALUES
+    ('TravelTech Innovations', '0934567890', 'Đà Lạt', 'Travel Technology & Online Booking', 11),
+    ('NextGen Commerce', '0945678901', 'Huế', 'E-commerce & Digital Retail', 12);
+-- Thêm CV mới
+INSERT INTO cv (title, url, status, freelancer_id)
+VALUES
+    ('AWS Solutions Architect', 'cv-sample32.pdf', TRUE, 14),
+    ('Kubernetes & Cloud Native Expert', 'cv-sample33.pdf', TRUE, 14),
+    ('Blockchain Development Portfolio', 'cv-sample34.pdf', TRUE, 15),
+    ('Smart Contract & DeFi Specialist', 'cv-sample35.pdf', TRUE, 15),
+    ('Data Pipeline Architecture', 'cv-sample36.pdf', TRUE, 16),
+    ('Big Data Processing Specialist', 'cv-sample37.pdf', TRUE, 16);
+-- Thêm kỹ năng
+INSERT INTO freelancer_skill (freelancer_id, skill_id)
+VALUES
+-- DevOps Engineer (ID: 14)
+(14, 32), -- AWS
+(14, 33), -- Azure
+(14, 34), -- Docker
+(14, 35), -- Kubernetes
+(14, 36), -- Jenkins
+(14, 37), -- CI/CD Pipelines
+(14, 1),  -- Java (for infrastructure as code)
+(14, 8),  -- Python (for automation)
+(14, 25), -- Firebase
+(14, 21), -- SQL
+
+-- Blockchain Developer (ID: 15)
+(15, 3),  -- ReactJS (for dApps frontend)
+(15, 6),  -- Node.js (for blockchain backend)
+(15, 8),  -- Python (for scripts and testing)
+(15, 12), -- PHP
+(15, 14), -- C# (for blockchain integration)
+(15, 16), -- C++ (for performance-critical blockchain components)
+(15, 21), -- SQL
+(15, 25), -- Firebase
+(15, 32), -- AWS (for hosting blockchain nodes)
+(15, 34), -- Docker (for blockchain development environment)
+
+-- Data Engineer (ID: 16)
+(16, 8),  -- Python
+(16, 21), -- SQL
+(16, 22), -- MySQL
+(16, 23), -- PostgreSQL
+(16, 24), -- MongoDB
+(16, 26), -- Data Analysis
+(16, 27), -- Data Science
+(16, 32), -- AWS
+(16, 33), -- Azure
+(16, 34); -- Docker
+
+-- Thêm projects
+INSERT INTO projects (title, tech, description, link, image, freelancer_id)
+VALUES
+-- DevOps Engineer (ID: 14)
+('Enterprise Cloud Migration', 'AWS, Terraform, Docker, Kubernetes', 'Dự án di chuyển hạ tầng On-premise của một tập đoàn tài chính lên AWS, giảm 40% chi phí vận hành và tăng 99.99% uptime.', 'https://github.com/hoangvt/cloud-migration', 'cloud-migration.png', 14),
+('CI/CD Pipeline Automation', 'Jenkins, GitLab CI, Docker, Kubernetes', 'Xây dựng và tối ưu hóa quy trình CI/CD cho một hệ thống microservices với 30+ services, giảm thời gian triển khai từ hàng giờ xuống còn vài phút.', 'https://github.com/hoangvt/cicd-automation', 'cicd-automation.png', 14),
+
+-- Blockchain Developer (ID: 15)
+('DeFi Lending Platform', 'Solidity, React, Web3.js, Ethereum', 'Nền tảng cho vay phi tập trung (DeFi) với các hợp đồng thông minh an toàn, hỗ trợ đa đồng tiền và lãi suất động.', 'https://github.com/trangnt/defi-lending', 'defi-lending.png', 15),
+('NFT Marketplace', 'Solidity, React, IPFS, Polygon', 'Sàn giao dịch NFT trên blockchain Polygon với phí giao dịch thấp, tích hợp ví và hỗ trợ đa định dạng media.', 'https://github.com/trangnt/nft-marketplace', 'nft-marketplace.png', 15),
+
+-- Data Engineer (ID: 16)
+('Real-time Analytics Platform', 'Apache Kafka, Spark, Airflow, AWS', 'Xây dựng hệ thống phân tích dữ liệu thời gian thực cho công ty viễn thông, xử lý hàng triệu sự kiện mỗi giây.', 'https://github.com/hailt/realtime-analytics', 'realtime-analytics.png', 16),
+('Data Lake Architecture', 'AWS S3, Glue, Athena, Redshift, Spark', 'Thiết kế và triển khai data lake cho tập đoàn bán lẻ, tích hợp dữ liệu từ nhiều nguồn và hỗ trợ phân tích nâng cao.', 'https://github.com/hailt/data-lake-architecture', 'data-lake.png', 16);
+
+-- Thêm education
+INSERT INTO education (start_date, end_date, description, school_id, degree_id, major_id, freelancer_id, image)
+VALUES
+    ('2009-09-01', '2013-06-30', 'Tốt nghiệp ngành Khoa học Máy tính với chuyên sâu về công nghệ cloud và hệ thống phân tán.', 1, 2, 1, 14, null),
+    ('2014-09-01', '2016-06-30', 'Thạc sĩ Khoa học Máy tính chuyên ngành Hệ thống phân tán và Cloud Computing.', 1, 3, 1, 14, null),
+    ('2013-09-01', '2017-06-30', 'Tốt nghiệp ngành Kỹ thuật phần mềm, nghiên cứu về các công nghệ blockchain và phát triển ứng dụng phi tập trung.', 4, 2, 1, 15, null),
+    ('2014-09-01', '2018-06-30', 'Tốt nghiệp ngành Khoa học dữ liệu, chuyên sâu về kỹ thuật xử lý dữ liệu lớn và phân tích dữ liệu.', 2, 2, 1, 16, null);
+
+-- Thêm experiences
+INSERT INTO experiences (company_name, position, start_date, end_date, description, status, freelancer_id)
+VALUES
+-- DevOps Engineer (ID: 14)
+('CloudEra Technologies', 'System Administrator', '2013-07-01', '2015-12-31', 'Quản trị hệ thống máy chủ và mạng, triển khai các giải pháp ảo hóa và bảo mật.', true, 14),
+('GlobalTech Solutions', 'Cloud Engineer', '2016-01-01', '2019-06-30', 'Thiết kế và triển khai các giải pháp cloud trên AWS và Azure, tối ưu hóa chi phí và hiệu suất.', true, 14),
+('Enterprise DevOps', 'Senior DevOps Architect', '2019-07-01', '2024-12-31', 'Thiết kế kiến trúc DevOps cho các doanh nghiệp lớn, xây dựng chiến lược tự động hóa và triển khai liên tục.', true, 14),
+
+-- Blockchain Developer (ID: 15)
+('FinTech Innovations', 'Software Developer', '2017-07-01', '2019-06-30', 'Phát triển các ứng dụng web và mobile trong lĩnh vực tài chính, tích hợp công nghệ blockchain.', true, 15),
+('Blockchain Lab', 'Blockchain Developer', '2019-07-01', '2021-12-31', 'Phát triển các smart contracts và ứng dụng phi tập trung (DApps) trên nền tảng Ethereum.', true, 15),
+('DeFi Ventures', 'Senior Blockchain Engineer', '2022-01-01', '2024-12-31', 'Thiết kế và triển khai các giải pháp DeFi và NFT, tối ưu hóa gas fee và bảo mật cho smart contracts.', true, 15),
+
+-- Data Engineer (ID: 16)
+('Data Insights Co.', 'Data Analyst', '2018-07-01', '2020-06-30', 'Phân tích dữ liệu kinh doanh, xây dựng dashboard và báo cáo phân tích.', true, 16),
+('Big Data Solutions', 'Data Engineer', '2020-07-01', '2022-12-31', 'Xây dựng và quản lý các pipeline ETL, thiết kế data warehouse và data lake.', true, 16),
+('Analytics Cloud', 'Senior Data Engineer', '2023-01-01', '2024-12-31', 'Thiết kế kiến trúc dữ liệu quy mô lớn, xây dựng các giải pháp phân tích thời gian thực và machine learning.', true, 16);
+
+-- Thêm job mới
+INSERT INTO job (title, scope, hour_work, duration, job_opportunity, from_price, to_price, type_price, description, type_payment, status, created_at, updated_at, client_id, category_id, end_date)
+VALUES
+-- Client 11 (TravelTech Innovations)
+('Xây dựng nền tảng đặt phòng trực tuyến', 'LARGE', 120, 180, true, 50000000, 80000000, 'VNĐ', 'Phát triển nền tảng đặt phòng trực tuyến toàn diện với tích hợp thanh toán, đánh giá, và hệ thống quản lý đặt chỗ. Yêu cầu kinh nghiệm với các API của nhà cung cấp dịch vụ lưu trú.', 'FULL', 'OPEN', NOW(), NULL, 11, 1, NOW() + INTERVAL 45 DAY),
+('Thiết kế ứng dụng di động du lịch', 'MEDIUM', 80, 120, true, 30000000, 50000000, 'VNĐ', 'Thiết kế và phát triển ứng dụng di động cho nền tảng du lịch, tích hợp bản đồ, gợi ý địa điểm, đặt tour và phòng. Ưu tiên người có kinh nghiệm với React Native hoặc Flutter.', 'FULL', 'OPEN', NOW(), NULL, 11, 1, NOW() + INTERVAL 30 DAY),
+('Phát triển hệ thống đề xuất thông minh cho du lịch', 'LARGE', 100, 150, true, 40000000, 70000000, 'VNĐ', 'Xây dựng hệ thống đề xuất thông minh sử dụng AI để gợi ý điểm đến, khách sạn, và tour du lịch phù hợp với sở thích và ngân sách của người dùng.', 'FULL', 'OPEN', NOW(), NULL, 11, 7, NOW() + INTERVAL 60 DAY),
+
+-- Client 12 (NextGen Commerce)
+('Phát triển hệ thống CRM cho thương mại điện tử', 'LARGE', 90, 150, true, 60000000, 100000000, 'VNĐ', 'Xây dựng hệ thống CRM toàn diện cho nền tảng thương mại điện tử, tích hợp với các kênh bán hàng, quản lý khách hàng và tự động hóa marketing.', 'FULL', 'OPEN', NOW(), NULL, 12, 1, NOW() + INTERVAL 60 DAY),
+('Tích hợp AI vào nền tảng thương mại điện tử', 'LARGE', 80, 120, true, 50000000, 80000000, 'VNĐ', 'Tích hợp các giải pháp AI vào nền tảng thương mại điện tử, bao gồm search thông minh, cá nhân hóa sản phẩm, chatbot hỗ trợ khách hàng và phân tích dữ liệu hành vi.', 'FULL', 'OPEN', NOW(), NULL, 12, 7, NOW() + INTERVAL 45 DAY),
+('Xây dựng hệ thống quản lý kho đa kênh', 'MEDIUM', 60, 90, false, 35000000, 60000000, 'VNĐ', 'Phát triển hệ thống quản lý kho thông minh, tích hợp với nhiều kênh bán hàng online và offline, tự động hóa theo dõi tồn kho, đặt hàng và dự báo nhu cầu.', 'HOURLY', 'OPEN', NOW(), NULL, 12, 1, NOW() + INTERVAL 30 DAY);
+
+-- Thêm job_skill
+INSERT INTO job_skill (job_id, skill_id)
+VALUES
+-- Xây dựng nền tảng đặt phòng trực tuyến
+((SELECT id FROM job WHERE title = 'Xây dựng nền tảng đặt phòng trực tuyến'), 1),  -- Java
+((SELECT id FROM job WHERE title = 'Xây dựng nền tảng đặt phòng trực tuyến'), 2),  -- Spring Boot
+((SELECT id FROM job WHERE title = 'Xây dựng nền tảng đặt phòng trực tuyến'), 3),  -- ReactJS
+((SELECT id FROM job WHERE title = 'Xây dựng nền tảng đặt phòng trực tuyến'), 6),  -- Node.js
+((SELECT id FROM job WHERE title = 'Xây dựng nền tảng đặt phòng trực tuyến'), 21), -- SQL
+((SELECT id FROM job WHERE title = 'Xây dựng nền tảng đặt phòng trực tuyến'), 22), -- MySQL
+((SELECT id FROM job WHERE title = 'Xây dựng nền tảng đặt phòng trực tuyến'), 32), -- AWS
+
+-- Thiết kế ứng dụng di động du lịch
+((SELECT id FROM job WHERE title = 'Thiết kế ứng dụng di động du lịch'), 19), -- Flutter
+((SELECT id FROM job WHERE title = 'Thiết kế ứng dụng di động du lịch'), 20), -- React Native
+((SELECT id FROM job WHERE title = 'Thiết kế ứng dụng di động du lịch'), 17), -- Swift
+((SELECT id FROM job WHERE title = 'Thiết kế ứng dụng di động du lịch'), 18), -- Kotlin
+((SELECT id FROM job WHERE title = 'Thiết kế ứng dụng di động du lịch'), 25), -- Firebase
+((SELECT id FROM job WHERE title = 'Thiết kế ứng dụng di động du lịch'), 39), -- UI/UX Design
+
+-- Phát triển hệ thống đề xuất thông minh cho du lịch
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống đề xuất thông minh cho du lịch'), 8),  -- Python
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống đề xuất thông minh cho du lịch'), 26), -- Data Analysis
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống đề xuất thông minh cho du lịch'), 27), -- Data Science
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống đề xuất thông minh cho du lịch'), 28), -- Machine Learning
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống đề xuất thông minh cho du lịch'), 29), -- Deep Learning
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống đề xuất thông minh cho du lịch'), 30), -- TensorFlow
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống đề xuất thông minh cho du lịch'), 32), -- AWS
+
+-- Phát triển hệ thống CRM cho thương mại điện tử
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống CRM cho thương mại điện tử'), 1),  -- Java
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống CRM cho thương mại điện tử'), 2),  -- Spring Boot
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống CRM cho thương mại điện tử'), 3),  -- ReactJS
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống CRM cho thương mại điện tử'), 21), -- SQL
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống CRM cho thương mại điện tử'), 22), -- MySQL
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống CRM cho thương mại điện tử'), 26), -- Data Analysis
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống CRM cho thương mại điện tử'), 32), -- AWS
+
+-- Tích hợp AI vào nền tảng thương mại điện tử
+((SELECT id FROM job WHERE title = 'Tích hợp AI vào nền tảng thương mại điện tử'), 8),  -- Python
+((SELECT id FROM job WHERE title = 'Tích hợp AI vào nền tảng thương mại điện tử'), 27), -- Data Science
+((SELECT id FROM job WHERE title = 'Tích hợp AI vào nền tảng thương mại điện tử'), 28), -- Machine Learning
+((SELECT id FROM job WHERE title = 'Tích hợp AI vào nền tảng thương mại điện tử'), 29), -- Deep Learning
+((SELECT id FROM job WHERE title = 'Tích hợp AI vào nền tảng thương mại điện tử'), 30), -- TensorFlow
+((SELECT id FROM job WHERE title = 'Tích hợp AI vào nền tảng thương mại điện tử'), 31), -- PyTorch
+((SELECT id FROM job WHERE title = 'Tích hợp AI vào nền tảng thương mại điện tử'), 32), -- AWS
+
+-- Xây dựng hệ thống quản lý kho đa kênh
+((SELECT id FROM job WHERE title = 'Xây dựng hệ thống quản lý kho đa kênh'), 1),  -- Java
+((SELECT id FROM job WHERE title = 'Xây dựng hệ thống quản lý kho đa kênh'), 2),  -- Spring Boot
+((SELECT id FROM job WHERE title = 'Xây dựng hệ thống quản lý kho đa kênh'), 3),  -- ReactJS
+((SELECT id FROM job WHERE title = 'Xây dựng hệ thống quản lý kho đa kênh'), 6),  -- Node.js
+((SELECT id FROM job WHERE title = 'Xây dựng hệ thống quản lý kho đa kênh'), 21), -- SQL
+((SELECT id FROM job WHERE title = 'Xây dựng hệ thống quản lý kho đa kênh'), 26), -- Data Analysis
+((SELECT id FROM job WHERE title = 'Xây dựng hệ thống quản lý kho đa kênh'), 32); -- AWS
+
+-- Thêm freelancer_job
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date)
+SELECT false, 'APPLIED', 32, 14, id, NOW() - INTERVAL 2 DAY
+FROM job WHERE title = 'Xây dựng nền tảng đặt phòng trực tuyến'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 14 AND job_id = job.id);
+
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date)
+SELECT false, 'VIEWED', 33, 14, id, NOW() - INTERVAL 3 DAY
+FROM job WHERE title = 'Tích hợp AI vào nền tảng thương mại điện tử'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 14 AND job_id = job.id);
+
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date)
+SELECT false, 'APPLIED', 34, 15, id, NOW() - INTERVAL 5 DAY
+FROM job WHERE title = 'Phát triển hệ thống CRM cho thương mại điện tử'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 15 AND job_id = job.id);
+
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date)
+SELECT false, 'APPLIED', 36, 16, id, NOW() - INTERVAL 4 DAY
+FROM job WHERE title = 'Phát triển hệ thống đề xuất thông minh cho du lịch'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 16 AND job_id = job.id);
+
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date)
+SELECT false, 'APPLIED', 37, 16, id, NOW() - INTERVAL 2 DAY
+FROM job WHERE title = 'Tích hợp AI vào nền tảng thương mại điện tử'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 16 AND job_id = job.id);
+
+-- Thêm job đã lưu (saved)
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date)
+SELECT true, NULL, NULL, 14, id, NULL
+FROM job WHERE title = 'Xây dựng hệ thống quản lý kho đa kênh'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 14 AND job_id = job.id);
+
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date)
+SELECT true, NULL, NULL, 15, id, NULL
+FROM job WHERE title = 'Thiết kế ứng dụng di động du lịch'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 15 AND job_id = job.id);
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date)
+SELECT true, NULL, NULL, 16, id, NULL
+FROM job WHERE title = 'Xây dựng hệ thống CRM cho thương mại điện tử'
+           AND NOT EXISTS (SELECT 1 FROM freelancer_job WHERE freelancer_id = 16 AND job_id = job.id AND is_saved = true);
+
+-- Gói dịch vụ cho client mới
+INSERT INTO sold_packages (start_date, end_date, price, number_post, number_posted, status, voucher_packages, client)
+VALUES
+    (NOW(), DATE_ADD(NOW(), INTERVAL 30 DAY), 390000, 10, 3, true, 4, 11),
+    (NOW(), DATE_ADD(NOW(), INTERVAL 30 DAY), 290000, 10, 3, true, 3, 12),
+    (DATE_SUB(NOW(), INTERVAL 3 MONTH), DATE_SUB(NOW(), INTERVAL 2 MONTH), 90000, 5, 5, false, 2, 11),
+    (DATE_SUB(NOW(), INTERVAL 2 MONTH), DATE_SUB(NOW(), INTERVAL 1 MONTH), 290000, 10, 8, false, 3, 12);
+
+-- Thêm client_review
+INSERT INTO client_review (rating, note)
+VALUES
+    (5.0, 'Freelancer có kiến thức chuyên môn xuất sắc về DevOps và Cloud, giải quyết các vấn đề phức tạp một cách hiệu quả. Giao tiếp rõ ràng và luôn đúng hạn.'),
+    (4.9, 'Kiến thức về Blockchain rất ấn tượng, code sạch và dễ bảo trì. Luôn đưa ra các giải pháp tối ưu và bảo mật cao.'),
+    (4.8, 'Kỹ năng xử lý dữ liệu lớn rất xuất sắc, giúp tối ưu hóa hiệu suất hệ thống. Chuyên nghiệp và đáng tin cậy.'),
+    (4.7, 'Rất hài lòng với kinh nghiệm và kỹ năng AI/ML. Khả năng phân tích dữ liệu tuyệt vời và đề xuất giải pháp hiệu quả.');
+
+-- Thêm freelancer_review
+INSERT INTO freelancer_review (rating, note)
+VALUES
+    (5.0, 'Khách hàng chuyên nghiệp, yêu cầu rõ ràng và cung cấp tài liệu đầy đủ. Phản hồi nhanh chóng và thanh toán đúng hạn.'),
+    (4.9, 'Dự án thú vị với phạm vi rõ ràng. Khách hàng thực sự hiểu về công nghệ và có tầm nhìn rõ ràng về sản phẩm.'),
+    (4.8, 'Trải nghiệm làm việc tuyệt vời. Khách hàng tôn trọng chuyên môn và luôn sẵn sàng lắng nghe đề xuất kỹ thuật.'),
+    (4.7, 'Khách hàng rất hợp tác, cung cấp phản hồi kịp thời và có quy trình làm việc hiệu quả. Mong muốn hợp tác lâu dài.');
+
+-- Thêm notification
+INSERT INTO notification (message, user_id, is_read, url, created_at)
+VALUES
+    ('Ứng viên mới đã ứng tuyển vào công việc "Xây dựng nền tảng đặt phòng trực tuyến"', 28, false, '/jobs/details', NOW() - INTERVAL 2 DAY),
+    ('Ứng viên mới đã ứng tuyển vào công việc "Phát triển hệ thống CRM cho thương mại điện tử"', 29, false, '/jobs/details', NOW() - INTERVAL 5 DAY),
+    ('Bạn đã được chọn cho cuộc phỏng vấn công việc "Tích hợp AI vào nền tảng thương mại điện tử"', 30, false, '/interview/details', NOW() - INTERVAL 1 DAY),
+    ('Gói dịch vụ của bạn sẽ hết hạn trong 5 ngày', 28, true, '/packages', NOW() - INTERVAL 3 DAY),
+    ('Công việc mới phù hợp với kỹ năng của bạn đã được đăng tải', 26, false, '/jobs/matching', NOW() - INTERVAL 2 DAY),
+    ('Bạn có 3 công việc phù hợp mới trong tuần này', 27, true, '/jobs/matching', NOW() - INTERVAL 4 DAY),
+    ('Đánh giá mới từ khách hàng về dự án "Enterprise Cloud Migration"', 26, false, '/reviews', NOW() - INTERVAL 2 DAY),
+    ('Công việc của bạn đã được duyệt thành công', 29, true, '/jobs/details', NOW() - INTERVAL 5 DAY),
+    ('Thanh toán cho gói dịch vụ Kim Cương đã được xác nhận', 28, false, '/payments', NOW() - INTERVAL 6 DAY),
+    ('Lời mời tham gia cuộc phỏng vấn từ "NextGen Commerce"', 27, false, '/interview/schedule', NOW() - INTERVAL 2 DAY);
+
+
+-- Thêm payment cho tài khoản mới
+INSERT INTO payment (balance, created_at, updated_at, account_id)
+VALUES
+    (3800000.00, NOW() - INTERVAL 60 DAY, NOW() - INTERVAL 2 DAY, 26),
+    (5200000.00, NOW() - INTERVAL 90 DAY, NOW() - INTERVAL 1 DAY, 27),
+    (0.00, NOW() - INTERVAL 45 DAY, NOW() - INTERVAL 3 DAY, 28),
+    (0.00, NOW() - INTERVAL 30 DAY, NOW() - INTERVAL 1 DAY, 29),
+    (2700000.00, NOW() - INTERVAL 75 DAY, NOW() - INTERVAL 2 DAY, 30);
+
+-- Thêm transactions
+INSERT INTO transactions (money, activity, created_at, description, status, payment_id)
+VALUES
+    -- Client ID 11 (Đức - User ID 28)
+    (2000000.00, 'DEPOSIT', NOW() - INTERVAL 50 DAY, 'Nạp tiền qua ngân hàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 28)),
+    (390000.00, 'WITHDRAW', NOW() - INTERVAL 30 DAY, 'Thanh toán gói Kim Cương', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 28)),
+    (90000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 3 MONTH), 'Thanh toán gói Bạc', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 28)),
+
+    -- Client ID 12 (Anh - User ID 29)
+    (1500000.00, 'DEPOSIT', NOW() - INTERVAL 45 DAY, 'Nạp tiền qua VNPay', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 29)),
+    (290000.00, 'WITHDRAW', NOW() - INTERVAL 30 DAY, 'Thanh toán gói Vàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 29)),
+    (290000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 2 MONTH), 'Thanh toán gói Vàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 29)),
+
+    -- Freelancer ID 14 (Hoàng - User ID 26)
+    (1200000.00, 'DEPOSIT', NOW() - INTERVAL 90 DAY, 'Thanh toán từ dự án: Enterprise Cloud Migration', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 26)),
+    (1500000.00, 'DEPOSIT', NOW() - INTERVAL 60 DAY, 'Thanh toán từ dự án: CI/CD Pipeline Automation', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 26)),
+    (1100000.00, 'DEPOSIT', NOW() - INTERVAL 30 DAY, 'Thanh toán từ dự án: AWS Deployment Optimization', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 26)),
+    (800000.00, 'WITHDRAW', NOW() - INTERVAL 20 DAY, 'Rút tiền về tài khoản ngân hàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 26)),
+
+    -- Freelancer ID 15 (Trang - User ID 27)
+    (1800000.00, 'DEPOSIT', NOW() - INTERVAL 85 DAY, 'Thanh toán từ dự án: DeFi Lending Platform', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 27)),
+    (2000000.00, 'DEPOSIT', NOW() - INTERVAL 55 DAY, 'Thanh toán từ dự án: NFT Marketplace', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 27)),
+    (1600000.00, 'DEPOSIT', NOW() - INTERVAL 25 DAY, 'Thanh toán từ dự án: Smart Contract Audit', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 27)),
+    (1000000.00, 'WITHDRAW', NOW() - INTERVAL 15 DAY, 'Rút tiền về tài khoản ngân hàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 27)),
+
+    -- Freelancer ID 16 (Hải - User ID 30)
+    (1400000.00, 'DEPOSIT', NOW() - INTERVAL 70 DAY, 'Thanh toán từ dự án: Real-time Analytics Platform', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 30)),
+    (1800000.00, 'DEPOSIT', NOW() - INTERVAL 40 DAY, 'Thanh toán từ dự án: Data Lake Architecture', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 30)),
+    (1200000.00, 'DEPOSIT', NOW() - INTERVAL 20 DAY, 'Thanh toán từ dự án: ETL Pipeline Optimization', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 30)),
+    (1700000.00, 'WITHDRAW', NOW() - INTERVAL 10 DAY, 'Rút tiền về tài khoản ngân hàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 30));
+
+-- Thêm appointments cho công việc mới
+INSERT INTO appointments (topic, start_time, duration, description, link, client_id, freelancer_job_id)
+VALUES
+    ('Phỏng vấn dự án Xây dựng nền tảng đặt phòng trực tuyến', NOW() + INTERVAL 5 DAY, 90, 'Thảo luận chi tiết về kinh nghiệm và phương pháp triển khai dự án đặt phòng online', 'https://meet.example.com/booking-platform', 11,
+     (SELECT id FROM freelancer_job WHERE freelancer_id = 14 AND job_id = (SELECT id FROM job WHERE title = 'Xây dựng nền tảng đặt phòng trực tuyến'))),
+
+    ('Thảo luận yêu cầu hệ thống CRM', NOW() + INTERVAL 3 DAY, 60, 'Phỏng vấn và thảo luận về kinh nghiệm blockchain và hợp đồng thông minh', 'https://meet.example.com/crm-system', 12,
+     (SELECT id FROM freelancer_job WHERE freelancer_id = 15 AND job_id = (SELECT id FROM job WHERE title = 'Phát triển hệ thống CRM cho thương mại điện tử'))),
+
+    ('Phỏng vấn dự án AI cho thương mại điện tử', NOW() + INTERVAL 7 DAY, 75, 'Thảo luận về kinh nghiệm AI/ML và phương pháp tích hợp vào nền tảng hiện có', 'https://meet.example.com/ai-ecommerce', 12,
+     (SELECT id FROM freelancer_job WHERE freelancer_id = 16 AND job_id = (SELECT id FROM job WHERE title = 'Tích hợp AI vào nền tảng thương mại điện tử'))),
+
+    ('Thảo luận dự án Hệ thống đề xuất du lịch thông minh', NOW() + INTERVAL 4 DAY, 60, 'Phỏng vấn và trao đổi về kinh nghiệm xây dựng hệ thống đề xuất dựa trên AI', 'https://meet.example.com/travel-recommendation', 11,
+     (SELECT id FROM freelancer_job WHERE freelancer_id = 16 AND job_id = (SELECT id FROM job WHERE title = 'Phát triển hệ thống đề xuất thông minh cho du lịch')));
+
+-- Thêm chat_messages
+INSERT INTO chat_messages (sender_id, receiver_id, content, sent_at, is_read)
+VALUES
+-- Đức (client) với Hoàng (freelancer)
+(28, 26, 'Chào anh Hoàng, tôi đã xem qua hồ sơ của anh và rất ấn tượng với kinh nghiệm DevOps và Cloud của anh.', NOW() - INTERVAL 7 DAY, true),
+(26, 28, 'Chào anh Đức, cảm ơn anh đã liên hệ. Tôi rất vui khi anh quan tâm đến kinh nghiệm của tôi.', NOW() - INTERVAL 7 DAY, true),
+(28, 26, 'Chúng tôi đang xây dựng nền tảng đặt phòng trực tuyến và cần một kiến trúc sư cloud để thiết kế hạ tầng. Anh đã từng làm dự án tương tự chưa?', NOW() - INTERVAL 6 DAY, true),
+(26, 28, 'Vâng, tôi đã từng làm việc với 2 dự án tương tự trong lĩnh vực du lịch. Tôi có kinh nghiệm xây dựng hạ tầng cloud có tính sẵn sàng cao và khả năng mở rộng tốt trên AWS và GCP.', NOW() - INTERVAL 6 DAY, true),
+(28, 26, 'Tuyệt vời! Chúng tôi đang cân nhắc giữa AWS và Azure. Anh có thể chia sẻ quan điểm về điểm mạnh của từng nền tảng cho dự án đặt phòng không?', NOW() - INTERVAL 5 DAY, true),
+(26, 28, 'Cả hai đều có ưu điểm riêng. AWS có các dịch vụ quản lý cơ sở dữ liệu và cân bằng tải rất tốt, phù hợp với các ứng dụng cần xử lý nhiều giao dịch. Azure có tích hợp tốt với hệ sinh thái Microsoft và các công cụ DevOps. Tôi nghĩ với dự án đặt phòng, AWS có thể phù hợp hơn nhờ các dịch vụ như ElastiCache, DynamoDB và API Gateway.', NOW() - INTERVAL 5 DAY, true),
+(28, 26, 'Anh có thể cho tôi biết về cách anh thiết kế hạ tầng để đảm bảo khả năng chịu tải cao trong mùa cao điểm du lịch không?', NOW() - INTERVAL 4 DAY, true),
+(26, 28, 'Tôi thường sử dụng cấu trúc multi-AZ và auto-scaling groups để đảm bảo hệ thống có thể mở rộng theo nhu cầu. Kết hợp với CDN cho content tĩnh, caching layer cho database queries và việc tối ưu hóa frontend để giảm tải cho server. Ngoài ra, tôi cũng thiết kế các hệ thống queue để xử lý các tác vụ nặng như xử lý thanh toán và gửi email.', NOW() - INTERVAL 4 DAY, true),
+(28, 26, 'Nghe rất chuyên nghiệp. Chúng tôi muốn mời anh tham gia phỏng vấn chi tiết hơn. Anh có thể tham gia cuộc họp vào thứ 5 tuần này lúc 10h sáng không?', NOW() - INTERVAL 3 DAY, true),
+(26, 28, 'Tôi sẵn sàng tham gia. Thứ 5 lúc 10h sáng là phù hợp với tôi. Anh có thể gửi cho tôi chi tiết về cuộc họp qua email không?', NOW() - INTERVAL 3 DAY, false),
+
+-- Anh (client) với Hải (freelancer)
+(29, 30, 'Chào anh Hải, tôi là Anh từ NextGen Commerce. Chúng tôi đang tìm kiếm một Data Engineer có kinh nghiệm cho dự án AI trong thương mại điện tử.', NOW() - INTERVAL 8 DAY, true),
+(30, 29, 'Chào anh Anh, rất vui được làm quen. Tôi có 6 năm kinh nghiệm với data engineering và đã từng làm việc với nhiều dự án AI/ML.', NOW() - INTERVAL 8 DAY, true),
+(29, 30, 'Dự án của chúng tôi cần xây dựng hệ thống phân tích dữ liệu khách hàng, cá nhân hóa trải nghiệm mua sắm và tối ưu hóa tìm kiếm. Anh đã từng làm các hệ thống tương tự chưa?', NOW() - INTERVAL 7 DAY, true),
+(30, 29, 'Vâng, tôi đã từng xây dựng data pipeline và data lake cho một sàn thương mại điện tử lớn, bao gồm cả hệ thống đề xuất sản phẩm và phân tích hành vi người dùng. Tôi sử dụng Apache Spark, Kafka, và các dịch vụ ML trên AWS cho dự án đó.', NOW() - INTERVAL 7 DAY, true),
+(29, 30, 'Ấn tượng! Chúng tôi có khoảng 5TB dữ liệu từ nhiều nguồn khác nhau. Anh sẽ thiết kế hệ thống xử lý dữ liệu này như thế nào?', NOW() - INTERVAL 6 DAY, true),
+(30, 29, 'Tôi sẽ thiết kế một kiến trúc theo hướng data mesh, tách biệt các domain nghiệp vụ khác nhau. Dữ liệu sẽ được thu thập thông qua Kafka, xử lý batch và streaming bằng Spark, và lưu trữ trong data lake trên S3 với các lớp: raw, processed, và consumption. Metadata sẽ được quản lý bởi AWS Glue, cho phép tìm kiếm và khai phá dữ liệu hiệu quả.', NOW() - INTERVAL 6 DAY, true),
+(29, 30, 'Còn về việc cá nhân hóa trải nghiệm người dùng, anh có kinh nghiệm với loại mô hình ML nào?', NOW() - INTERVAL 5 DAY, true),
+(30, 29, 'Tôi đã làm việc với các mô hình collaborative filtering, content-based filtering và hybrid approach. Gần đây tôi đã triển khai một hệ thống sử dụng deep learning (NCF - Neural Collaborative Filtering) kết hợp với thông tin ngữ cảnh để tạo ra các đề xuất theo thời gian thực. Hệ thống này đã cải thiện tỷ lệ chuyển đổi lên 35%.', NOW() - INTERVAL 5 DAY, true),
+(29, 30, 'Rất ấn tượng! Chúng tôi muốn mời anh tham gia cuộc phỏng vấn kỹ thuật để thảo luận chi tiết hơn. Anh có thể sắp xếp vào tuần sau được không?', NOW() - INTERVAL 4 DAY, true),
+(30, 29, 'Vâng, tôi rất sẵn lòng. Tuần sau tôi có thể sắp xếp vào các ngày thứ 3, thứ 4 hoặc thứ 6. Anh thấy ngày nào phù hợp nhất?', NOW() - INTERVAL 4 DAY, false);
+
+
+
+
+
+
+
+
+
+
+
+
+
 
