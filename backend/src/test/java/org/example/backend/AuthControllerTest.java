@@ -94,4 +94,18 @@ class AuthControllerTest {
         verify(authenticationService, times(1)).authenticate(request);
     }
 
+    @Test
+    void testAuthenticate_InvalidInput_ThrowsJOSEException() throws JOSEException {
+        AuthenticationDTORequest request = AuthenticationDTORequest.builder()
+                .email("invalid-email")
+                .password("password123")
+                .build();
+
+        when(authenticationService.authenticate(request)).thenThrow(new JOSEException("Invalid token generation"));
+
+        assertThrows(JOSEException.class, () -> authController.authenticate(request));
+
+        verify(authenticationService, times(1)).authenticate(request);
+    }
+
 }
