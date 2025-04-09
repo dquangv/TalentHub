@@ -33,3 +33,5 @@ build/
 .vscode/
 
 src/main/resources/application.properties
+backend/Dockerfile
+backend/wait-for-mysql.sh
