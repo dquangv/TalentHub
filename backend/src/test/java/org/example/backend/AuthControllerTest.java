@@ -62,4 +62,36 @@ class AuthControllerTest {
         verify(authenticationService, times(1)).authenticate(request);
     }
 
+    @Test
+    void testAuthenticate_Success() throws JOSEException {
+        AuthenticationDTORequest request = AuthenticationDTORequest.builder()
+                .email("huydqpc07859@example.com")
+                .password("1234")
+                .lat(10.0)
+                .lng(20.0)
+                .build();
+
+        AuthenticationDtoResponse serviceResponse = AuthenticationDtoResponse.builder()
+                .accessToken("mocked_access_token")
+                .userId(1L)
+                .freelancerId(null)
+                .clientId(2L)
+                .role(RoleUser.CLIENT)
+                .lat(10.0)
+                .lng(20.0)
+                .email("test@example.com")
+                .build();
+
+        when(authenticationService.authenticate(request)).thenReturn(serviceResponse);
+
+        ResponseObject<AuthenticationDtoResponse> response = authController.authenticate(request);
+
+        assertNotNull(response);
+        assertEquals("Login successful", response.getMessage());
+        assertEquals(200, response.getStatus());
+        assertEquals(serviceResponse, response.getData());
+
+        verify(authenticationService, times(1)).authenticate(request);
+    }
+
 }
