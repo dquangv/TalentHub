@@ -22,4 +22,7 @@ public interface ChatTrainingPhraseRepository extends JpaRepository<ChatTraining
 
     @Query("SELECT p FROM ChatTrainingPhrase p WHERE p.isProcessed = false ORDER BY p.frequency DESC LIMIT :limit")
     List<ChatTrainingPhrase> findTopUnprocessedPhrases(@Param("limit") int limit);
+
+    @Query(value = "SELECT * FROM chat_training_phrases WHERE intent_id = ?1 AND is_processed = true ORDER BY frequency DESC LIMIT ?2", nativeQuery = true)
+    List<ChatTrainingPhrase> findTopByIntentIdOrderByFrequencyDesc(Long intentId, int limit);
 }

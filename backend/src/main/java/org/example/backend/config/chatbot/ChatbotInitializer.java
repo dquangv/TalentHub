@@ -233,9 +233,9 @@ public class ChatbotInitializer {
             chatTrainingPhraseRepository.save(trainingPhrase);
         }
 
-        // Response with database query - Sử dụng subqueries thay vì CTE cho tương thích với MySQL 5.x
         ChatResponse response = new ChatResponse();
-        response.setResponseText("Dựa trên dữ liệu của chúng tôi, những kỹ năng đang hot nhất hiện nay là: {{GROUP_CONCAT(skill_name ORDER BY job_count DESC SEPARATOR '}}. Trong đó, {{top_skills}} đang được yêu cầu trong nhiều công việc nhất với {{(SELECT skill_name}} công việc hiện có.\n" +
+        response.setResponseText("Dựa trên dữ liệu của chúng tôi, những kỹ năng đang hot nhất hiện nay là: {{top_skills}}. Trong đó, {{top_skill}} đang được yêu cầu trong nhiều công việc nhất với {{job_count}} công việc hiện có.\n" +
+                "\n" +
                 "\n");
         response.setDisplayOrder(0);
         response.setIntent(intent);
@@ -247,6 +247,8 @@ public class ChatbotInitializer {
                         "    (SELECT s.skill_name, COUNT(js.job_id) as job_count " +
                         "     FROM skill s " +
                         "     JOIN job_skill js ON s.id = js.skill_id " +
+                        "     JOIN job j ON js.job_id = j.id " +
+                        "     WHERE j.status = 'OPEN' " +
                         "     GROUP BY s.skill_name " +
                         "     ORDER BY job_count DESC " +
                         "     LIMIT 1) AS top_single" +
@@ -255,6 +257,8 @@ public class ChatbotInitializer {
                         "    (SELECT s.skill_name, COUNT(js.job_id) as job_count " +
                         "     FROM skill s " +
                         "     JOIN job_skill js ON s.id = js.skill_id " +
+                        "     JOIN job j ON js.job_id = j.id " +
+                        "     WHERE j.status = 'OPEN' " +
                         "     GROUP BY s.skill_name " +
                         "     ORDER BY job_count DESC " +
                         "     LIMIT 1) AS top_count" +
@@ -263,10 +267,13 @@ public class ChatbotInitializer {
                         "    (SELECT s.skill_name, COUNT(js.job_id) as job_count " +
                         "     FROM skill s " +
                         "     JOIN job_skill js ON s.id = js.skill_id " +
+                        "     JOIN job j ON js.job_id = j.id " +
+                        "     WHERE j.status = 'OPEN' " +
                         "     GROUP BY s.skill_name " +
                         "     ORDER BY job_count DESC " +
                         "     LIMIT 5) AS skill_data"
         );
+
         chatResponseRepository.save(response);
     }
 
@@ -300,36 +307,12 @@ public class ChatbotInitializer {
 
         // Response with database query - Sử dụng subqueries thay vì CTE cho tương thích với MySQL 5.x
         ChatResponse response = new ChatResponse();
-        response.setResponseText("Những ngành nghề đang hot nhất trên nền tảng của chúng tôi là: {{GROUP_CONCAT(category_title ORDER BY job_count DESC SEPARATOR '}}. Đặc biệt, ngành {{top_categories}} đang dẫn đầu với {{(SELECT category_title}} công việc hiện có.");
+        response.setResponseText("Những ngành nghề đang hot nhất trên nền tảng của chúng tôi là: {{top_categories}}. Đặc biệt, ngành {{top_category}} đang dẫn đầu với {{job_count}} công việc hiện có.");
         response.setDisplayOrder(0);
         response.setIntent(intent);
         response.setRequiresDbQuery(true);
         response.setQueryTemplate(
-                "SELECT GROUP_CONCAT(category_title ORDER BY job_count DESC SEPARATOR ', ') AS top_categories, " +
-                        "(SELECT category_title FROM " +
-                        "    (SELECT c.category_title, COUNT(j.id) as job_count " +
-                        "     FROM category c " +
-                        "     JOIN job j ON c.id = j.category_id " +
-                        "     WHERE j.status = 'POSTED' " +
-                        "     GROUP BY c.category_title " +
-                        "     ORDER BY job_count DESC " +
-                        "     LIMIT 1) AS top_single) AS top_category, " +
-                        "(SELECT job_count FROM " +
-                        "    (SELECT c.category_title, COUNT(j.id) as job_count " +
-                        "     FROM category c " +
-                        "     JOIN job j ON c.id = j.category_id " +
-                        "     WHERE j.status = 'POSTED' " +
-                        "     GROUP BY c.category_title " +
-                        "     ORDER BY job_count DESC " +
-                        "     LIMIT 1) AS top_count) AS job_count " +
-                        "FROM " +
-                        "    (SELECT c.category_title, COUNT(j.id) as job_count " +
-                        "     FROM category c " +
-                        "     JOIN job j ON c.id = j.category_id " +
-                        "     WHERE j.status = 'POSTED' " +
-                        "     GROUP BY c.category_title " +
-                        "     ORDER BY job_count DESC " +
-                        "     LIMIT 5) AS cat_data;"
+                "SELECT GROUP_CONCAT(category_title ORDER BY job_count DESC SEPARATOR ', ') AS top_categories, (SELECT category_title FROM     (SELECT c.category_title, COUNT(j.id) as job_count      FROM category c      JOIN job j ON c.id = j.category_id      WHERE j.status = 'OPEN'      GROUP BY c.category_title      ORDER BY job_count DESC      LIMIT 1) AS top_single) AS top_category, (SELECT job_count FROM     (SELECT c.category_title, COUNT(j.id) as job_count      FROM category c      JOIN job j ON c.id = j.category_id      WHERE j.status = 'OPEN'      GROUP BY c.category_title      ORDER BY job_count DESC      LIMIT 1) AS top_count) AS job_count FROM     (SELECT c.category_title, COUNT(j.id) as job_count      FROM category c      JOIN job j ON c.id = j.category_id      WHERE j.status = 'OPEN'      GROUP BY c.category_title      ORDER BY job_count DESC      LIMIT 5) AS cat_data;"
         );
 
         chatResponseRepository.save(response);

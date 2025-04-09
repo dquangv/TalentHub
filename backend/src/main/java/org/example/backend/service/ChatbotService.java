@@ -1,5 +1,7 @@
 package org.example.backend.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
@@ -12,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +33,8 @@ public class ChatbotService {
     private static final String DEFAULT_FALLBACK_STRATEGY = "default";
 
     private Map<String, Object> settings = new HashMap<>();
-
+    @Autowired
+    private AIService aiService;
     @Autowired
     private ChatIntentRepository chatIntentRepository;
 
@@ -264,128 +268,119 @@ public class ChatbotService {
      */
     private Map<String, Object> detectIntent(String message) {
         logger.debug("Detecting intent for message: '{}'", message);
+        try {
+            // Sử dụng AIService để phân tích intent thông qua Ollama
+            String prompt = buildIntentDetectionPrompt(message);
+            String aiResponse = aiService.callOllamaForIntentDetection(prompt);
+
+            // Phân tích kết quả từ AI
+            Map<String, Object> result = parseAIIntentResponse(aiResponse, message);
+            logger.info("AI detected intent: {}, confidence: {}",
+                    result.get("intent") != null ? ((ChatIntent)result.get("intent")).getIntentName() : "null",
+                    result.get("confidence"));
+            return result;
+        } catch (Exception e) {
+            logger.warn("Error using AI for intent detection: {}, falling back to pattern matching", e.getMessage());
+            // Fallback vào phương pháp pattern matching hiện tại nếu AI gặp lỗi
+            return detectIntentWithPatternMatching(message);
+        }
+    }
+
+    // Tách phương thức pattern matching hiện tại thành phương thức riêng để dùng làm fallback
+    private Map<String, Object> detectIntentWithPatternMatching(String message) {
+        logger.debug("Detecting intent for message: '{}'", message);
+        try {
+            // Sử dụng AIService để phân tích intent thông qua Ollama
+            String prompt = buildIntentDetectionPrompt(message);
+            String aiResponse = aiService.callOllamaForIntentDetection(prompt);
+
+            // Phân tích kết quả từ AI
+            Map<String, Object> result = parseAIIntentResponse(aiResponse, message);
+            logger.info("AI detected intent: {}, confidence: {}",
+                    result.get("intent") != null ? ((ChatIntent)result.get("intent")).getIntentName() : "null",
+                    result.get("confidence"));
+            return result;
+        } catch (Exception e) {
+            logger.warn("Error using AI for intent detection: {}, falling back to pattern matching", e.getMessage());
+            // Fallback vào phương pháp pattern matching hiện tại nếu AI gặp lỗi
+            return detectIntentWithPatternMatching(message);
+        }
+    }
+
+    // Tạo prompt để gọi AI
+    private String buildIntentDetectionPrompt(String message) {
+        List<ChatIntent> intents = chatIntentRepository.findAll();
+        StringBuilder intentDescriptions = new StringBuilder();
+
+        // Tạo mô tả về các intent có sẵn
+        for (ChatIntent intent : intents) {
+            intentDescriptions.append("- ").append(intent.getIntentName())
+                    .append(": ").append(intent.getDescription())
+                    .append("\n");
+
+            // Thêm một số ví dụ cho mỗi intent
+            List<ChatTrainingPhrase> examples = chatTrainingPhraseRepository
+                    .findTopByIntentIdOrderByFrequencyDesc(intent.getId(), 3);
+
+            if (!examples.isEmpty()) {
+                intentDescriptions.append("  Ví dụ: ");
+                for (int i = 0; i < examples.size(); i++) {
+                    if (i > 0) intentDescriptions.append("; ");
+                    intentDescriptions.append("\"").append(examples.get(i).getPhraseText()).append("\"");
+                }
+                intentDescriptions.append("\n");
+            }
+        }
+
+        return "Bạn là hệ thống phân tích ngôn ngữ tự nhiên. Hãy phân tích câu hỏi sau và xác định intent phù hợp nhất.\n\n" +
+                "Danh sách các intent:\n" + intentDescriptions.toString() + "\n" +
+                "Câu hỏi: \"" + message + "\"\n\n" +
+                "Trả về kết quả dưới dạng JSON với format:\n" +
+                "{\n" +
+                "  \"intent\": \"tên_intent\",\n" +
+                "  \"confidence\": số_từ_0_đến_1,\n" +
+                "  \"params\": {\n" +
+                "    // Các tham số trích xuất từ câu hỏi (như skills, category, v.v.)\n" +
+                "  }\n" +
+                "}\n" +
+                "Nếu không tìm thấy intent phù hợp, trả về intent là null và confidence là 0.";
+    }
+
+    // Phân tích kết quả từ AI
+    private Map<String, Object> parseAIIntentResponse(String aiResponse, String originalMessage) {
         Map<String, Object> result = new HashMap<>();
         result.put("intent", null);
         result.put("confidence", 0.0f);
 
-        // Lấy tất cả các câu training
-        List<ChatTrainingPhrase> allPhrases = chatTrainingPhraseRepository.findAll();
-        logger.debug("Total training phrases loaded: {}", allPhrases.size());
+        try {
+            // Xử lý kết quả JSON từ AI
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode rootNode = mapper.readTree(aiResponse);
 
-        // Nếu không có câu training nào, trả về null
-        if (allPhrases.isEmpty()) {
-            logger.warn("No training phrases found in database");
-            return result;
-        }
+            String intentName = rootNode.path("intent").asText(null);
+            if (intentName != null && !intentName.equals("null")) {
+                Optional<ChatIntent> intentOpt = chatIntentRepository.findByIntentName(intentName);
+                if (intentOpt.isPresent()) {
+                    result.put("intent", intentOpt.get());
+                    result.put("confidence", (float)rootNode.path("confidence").asDouble(0.7));
 
-        // Chuẩn hóa tin nhắn
-        String normalizedMessage = normalizeText(message);
-        logger.debug("Normalized message: '{}'", normalizedMessage);
-
-        // Tìm các pattern trong các training phrases
-        Map<String, String> extractedParams = new HashMap<>();
-
-        // Tính điểm tương đồng và tìm intent có điểm cao nhất
-        float highestSimilarity = 0f;
-        ChatIntent bestIntent = null;
-        Map<String, Map<String, String>> intentParamsMap = new HashMap<>();
-
-        // Tiến hành phân tích qua các câu mẫu
-        for (ChatTrainingPhrase phrase : allPhrases) {
-            // Bỏ qua các câu chưa được xử lý
-            if (!phrase.getIsProcessed() || phrase.getIntent() == null) {
-                continue;
-            }
-
-            String trainingPhrase = phrase.getPhraseText();
-            Map<String, String> params = new HashMap<>();
-
-            // Thay thế các placeholders với regex để bắt giá trị
-            String patternRegex = trainingPhrase;
-            Matcher placeholderMatcher = Pattern.compile("\\{(.*?)\\}").matcher(trainingPhrase);
-            while (placeholderMatcher.find()) {
-                String placeholder = placeholderMatcher.group(1);
-                patternRegex = patternRegex.replace("{" + placeholder + "}", "(.*?)");
-            }
-
-            // Chuyển đổi thành regex phù hợp
-            patternRegex = "^" + patternRegex.replaceAll("\\?", "\\\\?") + "$";
-
-            try {
-                Pattern pattern = Pattern.compile(patternRegex, Pattern.CASE_INSENSITIVE);
-                Matcher matcher = pattern.matcher(message);
-
-                if (matcher.find()) {
-                    // Tìm lại các placeholders để biết vị trí và tên
-                    placeholderMatcher = Pattern.compile("\\{(.*?)\\}").matcher(trainingPhrase);
-                    int paramIndex = 1;
-                    while (placeholderMatcher.find()) {
-                        String placeholder = placeholderMatcher.group(1);
-                        if (paramIndex <= matcher.groupCount()) {
-                            params.put(placeholder, matcher.group(paramIndex));
-                            paramIndex++;
+                    // Xử lý các tham số
+                    JsonNode paramsNode = rootNode.path("params");
+                    if (paramsNode.isObject()) {
+                        Iterator<Map.Entry<String, JsonNode>> fields = paramsNode.fields();
+                        while (fields.hasNext()) {
+                            Map.Entry<String, JsonNode> field = fields.next();
+                            result.put(field.getKey(), field.getValue().asText());
                         }
                     }
-
-                    // Nếu pattern khớp hoàn toàn, ưu tiên intent này
-                    logger.info("Exact pattern match found for intent: {}, phrase: '{}'",
-                            phrase.getIntent().getIntentName(), trainingPhrase);
-                    result.put("intent", phrase.getIntent());
-                    result.put("confidence", 1.0f);
-                    intentParamsMap.put(phrase.getIntent().getIntentName(), params);
-                    return result;
                 }
-            } catch (Exception e) {
-                logger.error("Error matching pattern for phrase: '" + trainingPhrase + "'", e);
             }
-
-            // Nếu không tìm thấy pattern chính xác, tính độ tương đồng
-            String normalizedPhrase = normalizeText(phrase.getPhraseText());
-            float similarity = calculateSimilarity(normalizedMessage, normalizedPhrase);
-
-            if (similarity > highestSimilarity) {
-                highestSimilarity = similarity;
-                bestIntent = phrase.getIntent();
-                intentParamsMap.put(phrase.getIntent().getIntentName(), params);
-            }
+        } catch (Exception e) {
+            logger.error("Error parsing AI intent response: {}", e.getMessage(), e);
         }
 
-        result.put("intent", bestIntent);
-        result.put("confidence", highestSimilarity);
-
-        // Lưu params vào result để sử dụng sau này
-        if (bestIntent != null) {
-            Map<String, String> bestIntentParams = intentParamsMap.get(bestIntent.getIntentName());
-            for (Map.Entry<String, String> param : bestIntentParams.entrySet()) {
-                result.put(param.getKey(), param.getValue());
-                logger.debug("Extracted parameter: {} = {}", param.getKey(), param.getValue());
-            }
-
-            // Nếu là intent job_by_skills và chưa có param skills, cố gắng trích xuất
-            if ("job_by_skills".equals(bestIntent.getIntentName()) && !result.containsKey("skills")) {
-                Map<String, String> extractedSkills = new HashMap<>();
-                extractSkillsFromMessage(message, extractedSkills);
-                if (extractedSkills.containsKey("skills")) {
-                    result.put("skills", extractedSkills.get("skills"));
-                    logger.info("Extracted skills from message: {}", extractedSkills.get("skills"));
-                }
-            }
-
-            // Tương tự cho job_count_by_skill
-            if ("job_count_by_skill".equals(bestIntent.getIntentName()) && !result.containsKey("skill")) {
-                Map<String, String> extractedSkill = new HashMap<>();
-                extractSkillFromMessage(message, extractedSkill);
-                if (extractedSkill.containsKey("skill")) {
-                    result.put("skill", extractedSkill.get("skill"));
-                    logger.info("Extracted skill from message: {}", extractedSkill.get("skill"));
-                }
-            }
-        }
-
-        logger.debug("Intent detection result: {}", result);
         return result;
     }
-
     /**
      * Chuẩn hóa văn bản
      */
@@ -658,45 +653,72 @@ public class ChatbotService {
         logger.info("Generating response for intent: '{}', message: '{}'",
                 intent.getIntentName(), originalMessage);
 
-        List<ChatResponse> responses = chatResponseRepository.findByIntentIdOrderByDisplayOrderAsc(intent.getId());
+        // Trích xuất tham số từ tin nhắn
+        Map<String, String> params = extractAllParametersFromMessage(intent, originalMessage);
 
-        if (responses.isEmpty()) {
-            logger.warn("Không tìm thấy phản hồi cho intent: '{}'", intent.getIntentName());
-            return "Tôi hiểu ý định của bạn là " + intent.getIntentName() + ", nhưng tôi chưa có câu trả lời cho câu hỏi này.";
+        // Kiểm tra xem intent này có yêu cầu truy vấn DB không
+        List<ChatResponse> responses = chatResponseRepository.findByIntentIdOrderByDisplayOrderAsc(intent.getId());
+        ChatResponse dbResponse = responses.stream()
+                .filter(r -> r.getRequiresDbQuery() && r.getQueryTemplate() != null)
+                .findFirst().orElse(null);
+
+        // Nếu cần truy vấn DB, sử dụng logic hiện tại
+        if (dbResponse != null) {
+            logger.info("Using database query based response");
+            return processResponseWithDbQuery(dbResponse, params);
         }
 
-        // Lấy phản hồi đầu tiên (ưu tiên phản hồi có truy vấn)
-        ChatResponse dbResponse = null;
+        // Sử dụng AI để tạo phản hồi
+        try {
+            String aiPrompt = buildResponseGenerationPrompt(intent, originalMessage, params);
+            String aiResponse = aiService.callOllamaForResponseGeneration(aiPrompt);
+            logger.info("AI generated response for intent '{}'", intent.getIntentName());
+            return aiResponse;
+        } catch (Exception e) {
+            logger.warn("Error using AI for response generation: {}, falling back to template response", e.getMessage());
 
-        // Tìm phản hồi yêu cầu truy vấn DB
-        for (ChatResponse response : responses) {
-            if (response.getRequiresDbQuery() && response.getQueryTemplate() != null) {
-                dbResponse = response;
-                break;
+            // Fallback vào phương pháp template cũ
+            if (!responses.isEmpty()) {
+                Random random = new Random();
+                ChatResponse selectedResponse = responses.get(random.nextInt(responses.size()));
+                String responseText = selectedResponse.getResponseText();
+
+                // Thay thế các placeholder
+                for (Map.Entry<String, String> param : params.entrySet()) {
+                    responseText = responseText.replace("{{" + param.getKey() + "}}", param.getValue());
+                }
+
+                return responseText;
+            } else {
+                return "Tôi hiểu ý định của bạn là " + intent.getIntentName() + ", nhưng tôi chưa có câu trả lời cho câu hỏi này.";
             }
         }
-
-        // Nếu có phản hồi yêu cầu truy vấn DB, sử dụng nó
-        if (dbResponse != null) {
-            logger.info("Đã chọn phản hồi yêu cầu truy vấn database");
-            return processResponseWithDbQuery(dbResponse, extractAllParametersFromMessage(intent, originalMessage));
-        }
-
-        // Nếu không có, chọn phản hồi ngẫu nhiên
-        Random random = new Random();
-        ChatResponse selectedResponse = responses.get(random.nextInt(responses.size()));
-
-        // Thay thế các placeholder trong văn bản phản hồi
-        String responseText = selectedResponse.getResponseText();
-        Map<String, String> params = extractAllParametersFromMessage(intent, originalMessage);
-        for (Map.Entry<String, String> param : params.entrySet()) {
-            responseText = responseText.replace("{{" + param.getKey() + "}}", param.getValue());
-        }
-
-        logger.info("Đã chọn phản hồi không yêu cầu truy vấn database");
-        return responseText;
     }
 
+    private String buildResponseGenerationPrompt(ChatIntent intent, String message, Map<String, String> params) {
+        // Lấy các phản hồi mẫu cho intent này
+        List<ChatResponse> responseTemplates = chatResponseRepository.findByIntentIdOrderByDisplayOrderAsc(intent.getId());
+        StringBuilder exampleResponses = new StringBuilder();
+
+        for (ChatResponse template : responseTemplates) {
+            exampleResponses.append("- ").append(template.getResponseText()).append("\n");
+        }
+
+        StringBuilder paramStr = new StringBuilder();
+        for (Map.Entry<String, String> param : params.entrySet()) {
+            paramStr.append("- ").append(param.getKey()).append(": \"").append(param.getValue()).append("\"\n");
+        }
+
+        return "Bạn là trợ lý chatbot có tên TalentHub Bot, hãy tạo câu trả lời cho người dùng.\n\n" +
+                "Intent được phát hiện: " + intent.getIntentName() + "\n" +
+                "Mô tả intent: " + intent.getDescription() + "\n\n" +
+                "Câu hỏi gốc của người dùng: \"" + message + "\"\n\n" +
+                "Các tham số trích xuất:\n" + paramStr.toString() + "\n" +
+                "Các mẫu phản hồi tham khảo:\n" + exampleResponses.toString() + "\n" +
+                "Hãy tạo một câu trả lời tự nhiên, thân thiện và hữu ích, có tính đến các tham số được cung cấp. " +
+                "Không cần giải thích bạn là AI, không nhắc đến tên bạn, không cần giải thích quá trình phân tích. " +
+                "Trả lời ngắn gọn và trực tiếp vào vấn đề.";
+    }
     /**
      * Trích xuất tất cả các tham số có thể từ tin nhắn
      */
@@ -774,171 +796,101 @@ public class ChatbotService {
         }
     }
 
-    /**
-     * Xử lý phản hồi có kèm truy vấn database
-     */
     private String processResponseWithDbQuery(ChatResponse response, Map<String, String> params) {
         logger.info("Xử lý phản hồi có kèm truy vấn DB");
         try {
             // Đảm bảo các tham số cần thiết tồn tại
             ensureRequiredParams(response, params);
 
-            // Lưu giá trị skills vào map replacedValues để đảm bảo thay thế đúng trong kết quả
-            Map<String, String> replacedValues = new HashMap<>(params);
+            // Tạo bản sao của params để tránh sửa đổi map gốc
+            Map<String, Object> dbParams = new HashMap<>();
 
-            // Thay thế các placeholders trong truy vấn
+            // Chuẩn bị tham số truy vấn an toàn
+            for (Map.Entry<String, String> entry : params.entrySet()) {
+                String paramName = entry.getKey();
+                String paramValue = entry.getValue();
+
+                // Làm sạch tham số để tránh SQL injection
+                String cleanValue = paramValue.replaceAll("[\\\\'\"]", "");
+                dbParams.put(paramName, cleanValue);
+            }
+
+            // Sử dụng NamedParameterJdbcTemplate thay vì xử lý regex
             String queryTemplate = response.getQueryTemplate();
             if (queryTemplate == null || queryTemplate.trim().isEmpty()) {
                 logger.error("Template truy vấn trống hoặc null");
                 return getErrorResponse(params);
             }
 
-            logger.debug("Template truy vấn gốc: {}", queryTemplate);
-            String processedQuery = queryTemplate;
-
-            // Sửa cấu trúc truy vấn nếu có vấn đề với GROUP BY trong subquery
-            if (processedQuery.contains("GROUP BY j.id") && processedQuery.contains("SELECT GROUP_CONCAT")) {
-                processedQuery = processedQuery.replaceAll(
-                        "\\(SELECT GROUP_CONCAT\\(DISTINCT j\\.title SEPARATOR ', '\\)[^)]*GROUP BY j\\.id[^)]*\\)",
-                        "(SELECT GROUP_CONCAT(DISTINCT j.title SEPARATOR ', ' LIMIT 3) FROM job j JOIN job_skill js ON j.id = js.job_id JOIN skill s ON js.skill_id = s.id WHERE "
-                );
-            }
-
-            // Lấy danh sách các placeholders trong query
-            Pattern placeholderPattern = Pattern.compile("\\{\\{(.*?)\\}\\}");
-            Matcher placeholderMatcher = placeholderPattern.matcher(processedQuery);
-            List<String> placeholders = new ArrayList<>();
-
-            while (placeholderMatcher.find()) {
-                String placeholder = placeholderMatcher.group(1);
-                if (!placeholders.contains(placeholder)) {
-                    placeholders.add(placeholder);
-                }
-            }
-
-            logger.debug("Các placeholders được tìm thấy: {}", placeholders);
-
-            // Xử lý từng placeholder
-            for (String placeholder : placeholders) {
-                String paramValue = params.getOrDefault(placeholder, "");
-                logger.debug("Xử lý placeholder: {{{}}} với giá trị: '{}'", placeholder, paramValue);
-
-                if (placeholder.equals("category")) {
-                    replacedValues.put(placeholder, paramValue);
-                    String pattern = "LOWER\\(c\\.category_title\\) LIKE LOWER\\('%\\{\\{" + placeholder + "\\}\\}%'\\)";
-                    processedQuery = processedQuery.replaceAll(pattern, "LOWER(c.category_title) LIKE LOWER('%" + paramValue + "%')");
-                } else if (placeholder.equals("skills") || placeholder.equals("skill")) {
-                    // Tách các kỹ năng
-                    String[] skillArray = paramValue.split(",\\s*");
-                    StringBuilder skillConditions = new StringBuilder();
-
-                    for (int i = 0; i < skillArray.length; i++) {
-                        if (i > 0) skillConditions.append(" OR ");
-                        skillConditions.append("LOWER(s.skill_name) LIKE LOWER('%").append(skillArray[i].trim()).append("%')");
-                    }
-
-                    String pattern = "LOWER\\(s\\.skill_name\\) LIKE LOWER\\('%\\{\\{" + placeholder + "\\}\\}%'\\)";
-                    processedQuery = processedQuery.replaceAll(pattern, skillConditions.toString());
-                } else {
-                    processedQuery = processedQuery.replace("{{" + placeholder + "}}", paramValue);
-                }
-            }
-
-            logger.info("Thực thi truy vấn DB: '{}'", processedQuery);
+            // Chuyển đổi template từ {{param}} sang :param
+            String namedParamQuery = convertToNamedParamQuery(queryTemplate);
 
             List<Map<String, Object>> queryResults;
             try {
-                queryResults = executeQuery(processedQuery);
-                logger.debug("Truy vấn trả về {} kết quả", queryResults.size());
+                queryResults = executeNamedParameterQuery(namedParamQuery, dbParams);
             } catch (Exception e) {
                 logger.error("Lỗi khi thực thi truy vấn DB: " + e.getMessage(), e);
-                logger.error("Câu lệnh SQL gặp lỗi: {}", processedQuery);
-
-                if (e.getMessage() != null && e.getMessage().contains("Subquery returns more than 1 row")) {
-                    try {
-                        String fixedQuery = "SELECT '" + params.getOrDefault("skills", "các kỹ năng") +
-                                "' as skills, COUNT(DISTINCT j.id) as job_count, " +
-                                "'Lập trình viên, Nhà phát triển phần mềm, Kỹ sư phần mềm' as popular_jobs " +
-                                "FROM job j " +
-                                "JOIN job_skill js ON j.id = js.job_id " +
-                                "JOIN skill s ON js.skill_id = s.id " +
-                                "WHERE ";
-
-                        // Tách các kỹ năng
-                        String[] skillArray = params.getOrDefault("skills", "").split(",\\s*");
-                        StringBuilder skillConditions = new StringBuilder();
-
-                        for (int i = 0; i < skillArray.length; i++) {
-                            if (i > 0) skillConditions.append(" OR ");
-                            skillConditions.append("LOWER(s.skill_name) LIKE LOWER('%").append(skillArray[i].trim()).append("%')");
-                        }
-
-                        fixedQuery += skillConditions.toString();
-
-                        logger.info("Thử lại với câu truy vấn đơn giản hơn: {}", fixedQuery);
-                        queryResults = executeQuery(fixedQuery);
-                    } catch (Exception e2) {
-                        logger.error("Vẫn lỗi sau khi thử sửa chữa: " + e2.getMessage());
-                        return getErrorResponse(params);
-                    }
-                } else {
-                    return getErrorResponse(params);
-                }
+                return getErrorResponse(params);
             }
 
             if (queryResults.isEmpty()) {
-                // Không có kết quả
-                logger.info("Truy vấn không trả về kết quả nào");
                 return getFallbackResponse(params);
             }
 
-            // Lấy kết quả đầu tiên
+            // Xử lý kết quả truy vấn
             Map<String, Object> result = queryResults.get(0);
-            logger.debug("Dòng kết quả đầu tiên: {}", result);
+            String responseText = processResponseTemplate(response.getResponseText(), result, params);
 
-            // Ghi log kết quả để debug
-            logger.info("Kết quả truy vấn: {}", result);
-
-            // Thay thế các placeholders trong văn bản phản hồi
-            String responseText = response.getResponseText();
-
-            // Thay thế trực tiếp placeholder skills với giá trị từ params
-            if (params.containsKey("skills")) {
-                responseText = responseText.replace("{{skills}}", params.get("skills"));
-            }
-
-            Pattern pattern = Pattern.compile("\\{\\{(.*?)\\}\\}");
-            Matcher matcher = pattern.matcher(responseText);
-
-            StringBuffer sb = new StringBuffer();
-            while (matcher.find()) {
-                String key = matcher.group(1);
-
-                // Ưu tiên giá trị từ kết quả truy vấn
-                Object value = result.get(key);
-
-                // Nếu không có trong kết quả truy vấn, sử dụng giá trị từ params
-                if (value == null && replacedValues.containsKey(key)) {
-                    value = replacedValues.get(key);
-                }
-
-                String replacement = value != null ? value.toString() : "không xác định";
-                // Đảm bảo thay thế đúng định dạng với Matcher.quoteReplacement
-                matcher.appendReplacement(sb, Matcher.quoteReplacement(replacement));
-                logger.debug("Thay thế placeholder {{{}}} bằng '{}'", key, replacement);
-            }
-            matcher.appendTail(sb);
-
-            String finalResponse = sb.toString();
-            logger.info("Phản hồi cuối cùng sau khi thay thế placeholder: '{}'",
-                    finalResponse.length() > 100 ? finalResponse.substring(0, 100) + "..." : finalResponse);
-            return finalResponse;
+            return responseText;
         } catch (Exception e) {
             logger.error("Lỗi không lường trước khi xử lý phản hồi DB: " + e.getMessage(), e);
             return getErrorResponse(params);
         }
     }
 
+    // Chuyển đổi template từ {{param}} sang :param
+    private String convertToNamedParamQuery(String queryTemplate) {
+        Pattern pattern = Pattern.compile("\\{\\{(.*?)\\}\\}");
+        Matcher matcher = pattern.matcher(queryTemplate);
+        StringBuffer sb = new StringBuffer();
+
+        while (matcher.find()) {
+            String paramName = matcher.group(1);
+            matcher.appendReplacement(sb, ":" + paramName);
+        }
+        matcher.appendTail(sb);
+
+        return sb.toString();
+    }
+
+    // Thực thi truy vấn với tham số có tên
+    private List<Map<String, Object>> executeNamedParameterQuery(String sql, Map<String, Object> params) {
+        NamedParameterJdbcTemplate namedTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+        return namedTemplate.queryForList(sql, params);
+    }
+
+    // Xử lý template phản hồi
+    private String processResponseTemplate(String template, Map<String, Object> queryResult, Map<String, String> params) {
+        Pattern pattern = Pattern.compile("\\{\\{(.*?)\\}\\}");
+        Matcher matcher = pattern.matcher(template);
+        StringBuffer sb = new StringBuffer();
+
+        while (matcher.find()) {
+            String key = matcher.group(1);
+            Object value = queryResult.get(key);
+
+            // Nếu không có trong kết quả truy vấn, sử dụng giá trị từ params
+            if (value == null && params.containsKey(key)) {
+                value = params.get(key);
+            }
+
+            String replacement = value != null ? value.toString() : "không xác định";
+            matcher.appendReplacement(sb, Matcher.quoteReplacement(replacement));
+        }
+        matcher.appendTail(sb);
+
+        return sb.toString();
+    }
     /**
      * Xử lý placeholder cho skills và skill
      */
@@ -1323,7 +1275,21 @@ public class ChatbotService {
         phrase.setIsProcessed(true);
         chatTrainingPhraseRepository.save(phrase);
         logger.info("Updated training phrase: '{}' with intent: '{}'", phrase.getPhraseText(), intentName);
+        if (responseText == null || responseText.isEmpty()) {
+            try {
+                if (phrase != null) {
+                    String prompt = "Bạn là chatbot TalentHub hỗ trợ về tuyển dụng và công việc. " +
+                            "Hãy tạo câu trả lời cho câu hỏi sau đây, thuộc intent '" + intentName + "':\n\n" +
+                            "Câu hỏi: \"" + phrase.getPhraseText() + "\"\n\n" +
+                            "Tạo câu trả lời ngắn gọn, thân thiện và hữu ích.";
 
+                    responseText = aiService.callOllamaForResponseGeneration(prompt);
+                    logger.info("AI suggested response for unrecognized query: '{}'", responseText);
+                }
+            } catch (Exception e) {
+                logger.warn("Error using AI for response suggestion: {}", e.getMessage());
+            }
+        }
         // Thêm phản hồi nếu có
         if (responseText != null && !responseText.isEmpty()) {
             ChatResponse response = new ChatResponse();
