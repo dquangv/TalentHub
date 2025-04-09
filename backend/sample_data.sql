@@ -1,11 +1,9 @@
-create
-database job_e_commerce_platform;
+-- create
+-- database job_e_commerce_platform;
 
-use
-job_e_commerce_platform;
+use job_e_commerce_platform;
 
-INSERT INTO school (school_name)
-VALUES ('Đại học Bách Khoa TP.HCM'),
+INSERT INTO school (school_name) VALUES ('Đại học Bách Khoa TP.HCM'),
        ('Đại học Khoa học Tự nhiên TP.HCM'),
        ('Đại học Khoa học Xã hội và Nhân văn TP.HCM'),
        ('Đại học Công nghệ Thông tin TP.HCM'),
@@ -26,8 +24,7 @@ VALUES ('Đại học Bách Khoa TP.HCM'),
        ('Đại học Tôn Đức Thắng'),
        ('Đại học FPT TP.HCM');
 
-INSERT INTO major (major_name)
-VALUES ('Lập trình viên (Software Developer)'),
+INSERT INTO major (major_name) VALUES ('Lập trình viên (Software Developer)'),
        ('Thiết kế đồ họa (Graphic Design)'),
        ('Chỉnh sửa video (Video Editing)'),
        ('Marketing kỹ thuật số (Digital Marketing)'),
@@ -48,8 +45,7 @@ VALUES ('Lập trình viên (Software Developer)'),
        ('Chuyên gia an ninh mạng (Cybersecurity Specialist)'),
        ('Quay phim & Dựng phim tự do');
 
-INSERT INTO degree (degree_title)
-VALUES ('Cử nhân'),
+INSERT INTO degree (degree_title) VALUES ('Cử nhân'),
        ('Kỹ sư'),
        ('Thạc sĩ'),
        ('Tiến sĩ'),
@@ -57,8 +53,7 @@ VALUES ('Cử nhân'),
        ('Chứng chỉ');
 
 -- pass 123
-INSERT INTO account (email, password, role, created_at, updated_at, status, lat, lng)
-VALUES ('tungvtps27852@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'ADMIN', NOW(),
+INSERT INTO account (email, password, role, created_at, updated_at, status, lat, lng) VALUES ('tungvtps27852@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'ADMIN', NOW(),
         null, 0, null, null),
        ('quangvdps36680@fpt.edu.vn', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'FREELANCER',
         NOW(), null, 0, null, null),
