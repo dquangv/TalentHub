@@ -80,17 +80,20 @@ public class IntentDetectionService {
         return "Bạn là hệ thống phân tích ngôn ngữ tự nhiên. Hãy phân tích câu hỏi sau và xác định intent phù hợp nhất.\n\n" +
                 "Danh sách các intent:\n" + intentDescriptions.toString() + "\n" +
                 "Câu hỏi: \"" + message + "\"\n\n" +
+                "Đặc biệt chú ý: Nếu câu hỏi liên quan đến kỹ năng hoặc công việc, hãy trích xuất chính xác các kỹ năng được đề cập." +
+                "Ví dụ nếu câu hỏi là \"tôi có những kĩ năng java, react thì có công việc nào phù hợp\", phải trích xuất kỹ năng là [\"java\", \"react\"]." +
+                "Nếu là \"Tôi biết Python và SQL\", trích xuất [\"Python\", \"SQL\"].\n\n" +
                 "Trả về kết quả dưới dạng JSON với format:\n" +
                 "{\n" +
                 "  \"intent\": \"tên_intent\",\n" +
                 "  \"confidence\": số_từ_0_đến_1,\n" +
                 "  \"params\": {\n" +
-                "    // Các tham số trích xuất từ câu hỏi (như skills, category, v.v.)\n" +
+                "    \"skills\": [\"skill1\", \"skill2\"], // Danh sách các kỹ năng được trích xuất\n" +
+                "    // Các tham số khác nếu có\n" +
                 "  }\n" +
                 "}\n" +
                 "Nếu không tìm thấy intent phù hợp, trả về intent là null và confidence là 0.";
     }
-
     /**
      * Phân tích kết quả từ AI
      */
@@ -100,7 +103,7 @@ public class IntentDetectionService {
         result.put("confidence", 0.0f);
 
         try {
-            // Tìm phần JSON trong phản hồi của AI (có thể AI trả về một số giải thích trước)
+            // Tìm phần JSON trong phản hồi của AI
             int jsonStart = aiResponse.indexOf('{');
             int jsonEnd = aiResponse.lastIndexOf('}');
 
@@ -120,10 +123,24 @@ public class IntentDetectionService {
                         // Xử lý các tham số
                         JsonNode paramsNode = rootNode.path("params");
                         if (paramsNode.isObject()) {
+                            // Xử lý đặc biệt cho skills nếu là mảng
+                            JsonNode skillsNode = paramsNode.path("skills");
+                            if (!skillsNode.isMissingNode() && skillsNode.isArray()) {
+                                List<String> skills = new ArrayList<>();
+                                for (JsonNode skill : skillsNode) {
+                                    skills.add(skill.asText());
+                                }
+                                // Chuyển mảng skills thành chuỗi ngăn cách bởi dấu phẩy
+                                result.put("skills", String.join(", ", skills));
+                            }
+
+                            // Xử lý các tham số khác
                             Iterator<Map.Entry<String, JsonNode>> fields = paramsNode.fields();
                             while (fields.hasNext()) {
                                 Map.Entry<String, JsonNode> field = fields.next();
-                                result.put(field.getKey(), field.getValue().asText());
+                                if (!field.getKey().equals("skills") || !field.getValue().isArray()) {
+                                    result.put(field.getKey(), field.getValue().asText());
+                                }
                             }
                         }
                     }
