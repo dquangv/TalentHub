@@ -117,8 +117,7 @@ public class ChatbotInitializer {
         }
 
         ChatResponse response = new ChatResponse();
-        response.setResponseText("Với kỹ năng {{skills}}, hiện có {{job_count}} công việc phù hợp. Các công việc phổ biến nhất là: {{title SEPARATOR '}}. Bạn có thể vào mục Quản lý công việc => Công việc để có thể tìm kiếm từ khóa và xem chi tiết hơn.\n" +
-                "\n");
+        response.setResponseText("Với kỹ năng {{skills}}, hiện có {{job_count}} công việc phù hợp. Các công việc phổ biến nhất là: {{title}}. Bạn có thể vào mục Quản lý công việc => Công việc để có thể tìm kiếm từ khóa và xem chi tiết hơn.");
         response.setDisplayOrder(0);
         response.setIntent(intent);
         response.setRequiresDbQuery(true);
@@ -129,14 +128,14 @@ public class ChatbotInitializer {
                         " FROM job j " +
                         " JOIN job_skill js ON j.id = js.job_id " +
                         " JOIN skill s ON js.skill_id = s.id " +
-                        " WHERE " +
-                        " LOWER(s.skill_name) LIKE LOWER('%{{skills}}%') " +
-                        " LIMIT 3) as popular_jobs " +
+                        " WHERE LOWER(s.skill_name) LIKE LOWER('%{{skills}}%') " +
+                        " AND j.status = 'OPEN' " +
+                        " LIMIT 3) as title " +
                         "FROM job j " +
                         "JOIN job_skill js ON j.id = js.job_id " +
                         "JOIN skill s ON js.skill_id = s.id " +
-                        "WHERE " +
-                        "LOWER(s.skill_name) LIKE LOWER('%{{skills}}%')"
+                        "WHERE LOWER(s.skill_name) LIKE LOWER('%{{skills}}%') " +
+                        "AND j.status = 'OPEN'"
         );
         chatResponseRepository.save(response);
 
@@ -180,7 +179,7 @@ public class ChatbotInitializer {
 
         // Response with database query
         ChatResponse response = new ChatResponse();
-        response.setResponseText("Hiện tại có {{job_count}} công việc yêu cầu kỹ năng {{skill}}. Một số công việc tiêu biểu là: {{title SEPARATOR '}}.");
+        response.setResponseText("Hiện tại có {{job_count}} công việc yêu cầu kỹ năng {{skill}}. Một số công việc tiêu biểu là: {{sample_jobs}}.");
         response.setDisplayOrder(0);
         response.setIntent(intent);
         response.setRequiresDbQuery(true);
@@ -192,10 +191,11 @@ public class ChatbotInitializer {
                         "FROM job j " +
                         "JOIN job_skill js ON j.id = js.job_id " +
                         "JOIN skill s ON js.skill_id = s.id " +
-                        "WHERE LOWER(s.skill_name) LIKE LOWER('%{{skill}}%') " +
+                        "WHERE j.status = 'OPEN' AND LOWER(s.skill_name) LIKE LOWER('%{{skill}}%') " +
                         "GROUP BY s.skill_name " +
                         "LIMIT 1"
         );
+
         chatResponseRepository.save(response);
         ChatResponse fallbackResponse = new ChatResponse();
         fallbackResponse.setResponseText("Hiện tại tôi không tìm thấy công việc nào cho kỹ năng {{skill}} trong cơ sở dữ liệu. Tuy nhiên, đây là một kỹ năng có tiềm năng và bạn có thể thử tìm kiếm với từ khóa tương tự hoặc xem các kỹ năng đang hot nhất hiện nay.");
