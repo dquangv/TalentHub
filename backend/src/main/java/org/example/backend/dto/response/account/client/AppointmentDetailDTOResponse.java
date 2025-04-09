@@ -1,6 +1,5 @@
 package org.example.backend.dto.response.account.client;
 
-import com.google.type.DateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,4 +21,6 @@ public class AppointmentDetailDTOResponse {
     private String topic;
     private String description;
     private String link;
+    private Long jobId;
+    private String jobTitle;
 }

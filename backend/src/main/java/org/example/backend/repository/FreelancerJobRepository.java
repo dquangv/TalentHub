@@ -88,4 +88,8 @@ public interface FreelancerJobRepository extends JpaRepository<FreelancerJob, Lo
     Long countApprovedFreelancerJobsByMonth(@Param("month") int month, @Param("year") int year);
 
     boolean existsByFreelancerIdAndJobIdAndStatus(Long freelancerId, Long jobId, StatusFreelancerJob status);
+
+
+    @Query("SELECT COUNT(fj) FROM FreelancerJob fj WHERE fj.freelancer.id = :freelancerId AND fj.status = :status AND fj.clientReview IS NOT NULL")
+    Long countByFreelancerIdAndStatusAndHasClientReview(@Param("freelancerId") Long freelancerId, @Param("status") StatusFreelancerJob status);
 }
