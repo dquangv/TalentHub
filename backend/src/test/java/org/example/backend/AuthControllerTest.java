@@ -122,4 +122,12 @@ class AuthControllerTest {
         verify(authenticationService, times(1)).authenticate(request);
     }
 
+    @Test
+    void testAuthenticate_NullRequest_ValidationFailure() throws JOSEException {
+        when(authenticationService.authenticate(null)).thenThrow(new NullPointerException("Request cannot be null"));
+
+        assertThrows(NullPointerException.class, () -> authController.authenticate(null));
+
+        verify(authenticationService, times(1)).authenticate(null);
+    }
 }
