@@ -2626,7 +2626,41 @@ UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-a
 -- Cập nhật avatar cho Hải (ID: 30) - Nam
 UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man3.png' WHERE account_id = 30;
 
+-- Update image URLs for projects
+UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project1.jpg' WHERE title = 'API Payment Integration';
+UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project2.jpg' WHERE title = 'User Management System';
+UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project3.jpg' WHERE title = 'SEO Growth Campaign';
+UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project4.jpg' WHERE title = 'Facebook Ads for Fashion Brand';
+UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project5.jpg' WHERE title = 'E-Commerce Mobile App';
+UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project6.jpg' WHERE title = 'Fitness Tracker App';
+UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project7.jpg' WHERE title = 'Sales Dashboard';
+UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project8.jpg' WHERE title = 'Customer Behavior Analysis';
+UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project9.jpg' WHERE title = 'Event Highlight Video';
+UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project10.jpg' WHERE title = 'Product Commercial Video';
+UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project11.jpg' WHERE title = 'Technical Document Translation';
+UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project12.jpg' WHERE title = 'Creative Content Editing';
+UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project13.jpg' WHERE title = 'SEO Copywriting Course';
+UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project14.jpg' WHERE title = 'Digital Marketing Masterclass';
 
+-- Update more recent projects
+UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project15.jpg' WHERE title = 'E-commerce App Redesign';
+UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project16.jpg' WHERE title = 'Banking App UI Kit';
+UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project17.jpg' WHERE title = 'Microservices CI/CD Pipeline';
+UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project18.jpg' WHERE title = 'Cloud Infrastructure Automation';
+UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project19.jpg' WHERE title = 'Children Book Illustrations';
+UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project20.jpg' WHERE title = 'Game Character Designs';
+UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project21.jpg' WHERE title = 'E-commerce Platform';
+UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project22.jpg' WHERE title = 'HR Management System';
+UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project23.jpg' WHERE title = 'Fraud Detection System';
+UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project24.jpg' WHERE title = 'Medical Image Diagnosis';
+UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project25.jpg' WHERE title = 'Banking App Redesign';
+UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project26.jpg' WHERE title = 'E-learning Platform UX';
+UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project27.jpg' WHERE title = 'Enterprise Cloud Migration';
+UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project28.jpg' WHERE title = 'CI/CD Pipeline Automation';
+UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project29.jpg' WHERE title = 'DeFi Lending Platform';
+UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project30.jpg' WHERE title = 'NFT Marketplace';
+UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project31.jpg' WHERE title = 'Real-time Analytics Platform';
+UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project32.jpg' WHERE title = 'Data Lake Architecture';
 
 
 
