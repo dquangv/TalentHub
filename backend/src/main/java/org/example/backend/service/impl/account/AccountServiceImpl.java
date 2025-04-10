@@ -332,8 +332,8 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
                 .freelancerId(freelancerId)
                 .clientId(clientId)
                 .role(account.getRole())
-                .lat(account.getLat())
-                .lng(account.getLng())
+                .lat(account.getLat() != null ? account.getLat() : 0)
+                .lng(account.getLng() != null ? account.getLng() : 0)
                 .build();
     }
 

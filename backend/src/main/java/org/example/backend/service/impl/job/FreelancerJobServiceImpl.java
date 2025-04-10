@@ -28,6 +28,7 @@ import org.example.backend.service.impl.notify.NotifyService;
 import org.example.backend.service.intf.job.FreelancerJobService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -97,6 +98,7 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
 
         FreelancerJob freelancerJob = existingFreelancerJob.get();
         freelancerJob.setStatus(StatusFreelancerJob.Applied);
+        freelancerJob.setAppliedDate(LocalDateTime.now());
         CV cv = cvRepository.findById(request.getCvId()).orElse(null);
 
         freelancerJob.setCv(cv);
@@ -239,7 +241,6 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
         return results.stream()
                 .map(freelancerJob -> {
                     Appointment appointment = this.getAppointmentByFreelancerJobId(freelancerJob.getId());
-
                     return freelancerJobMapper.toResponseDto(freelancerJob, appointment == null ? -1 : appointment.getId());
                 })
                 .collect(Collectors.toList());
