@@ -1,6 +1,7 @@
--- create database job_e_commerce_platform;
+-- create
+-- database job_e_commerce_platform;
 
-use job_e_commerce_platform;
+-- use job_e_commerce_platform;
 
 INSERT INTO school (school_name) VALUES ('Đại học Bách Khoa TP.HCM'),
        ('Đại học Khoa học Tự nhiên TP.HCM'),
