@@ -12,7 +12,6 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 public class EWalletAccountDTORequest {
-
     @NotBlank(message = "E-Wallet name is required")
     private String eWalletName;
 
