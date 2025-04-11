@@ -8,5 +8,6 @@ import java.util.List;
 
 public interface EducationService extends BaseService<EducationDTORequest, EducationDTOResponse, Long> {
     EducationDTOResponse update(Long id, EducationDTORequest educationDTORequest);
+
     List<EducationDTOResponse> getByFreelancerId(Long freelancerId);
 }
