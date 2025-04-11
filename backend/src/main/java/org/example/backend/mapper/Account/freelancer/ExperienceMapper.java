@@ -17,6 +17,7 @@ public interface ExperienceMapper extends BaseMapper<Experience, ExperienceDTORe
     @Mapping(target = "freelancer", expression = "java(mapFreelancerIdToFreelancer(dto.getFreelancerId(), freelancerRepository))")
     Experience toEntity(ExperienceDTORequest dto, @Context FreelancerRepository freelancerRepository);
 
+    @Mapping(target = "id", source = "id")
     @Mapping(target = "freelancer", source = "freelancer")
     ExperienceDTOResponse toResponseDto(Experience entity);
 
