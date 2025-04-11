@@ -69,6 +69,7 @@ public class FreelancerJobController {
                 .data(freelancerJobDTOResponse)
                 .build());
     }
+
     @GetMapping("/applicants/{jobId}")
     public ResponseEntity<ResponseObject<List<ApplicantResponseDTO>>> getApplicantByJobId(@PathVariable Long jobId) {
         List<ApplicantResponseDTO> applicants = freelancerJobService.getApplicantByJobId(jobId);
@@ -78,6 +79,7 @@ public class FreelancerJobController {
                 .data(applicants)
                 .build());
     }
+
     @PostMapping("/approve")
     public ResponseEntity<ResponseObject<FreelancerJobDTOResponse>> approveApplication(
             @RequestBody FreelancerJobDTORequest request) {

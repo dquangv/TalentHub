@@ -27,6 +27,7 @@ public class FreelancerSkillController {
                 .data(skills)
                 .build());
     }
+
     @GetMapping("/freelancer/{freelancerId}")
     public ResponseEntity<ResponseObject<List<FreelancerSkillDTOResponse>>> getSkillsByFreelancerId(
             @PathVariable Long freelancerId) {
@@ -37,6 +38,7 @@ public class FreelancerSkillController {
                 .data(skills)
                 .build());
     }
+
     @PostMapping
     public ResponseEntity<ResponseObject<FreelancerSkillDTOResponse>> addSkillToFreelancer(
             @RequestBody FreelancerSkillDTORequest request) {

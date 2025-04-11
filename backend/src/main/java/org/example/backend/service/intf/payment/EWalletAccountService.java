@@ -7,8 +7,8 @@ import org.example.backend.service.BaseService;
 import java.util.Optional;
 
 public interface EWalletAccountService extends BaseService<EWalletAccountDTORequest, EWalletAccountDTOResponse, Long> {
-
     Optional<EWalletAccountDTOResponse> getByPhoneNumber(String phoneNumber);
+
     Optional<EWalletAccountDTOResponse> getByEmail(String email);
 
 }

@@ -1,4 +1,5 @@
 package org.example.backend.controller.image;
+
 import org.example.backend.service.impl.image.CloudinaryImageServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -53,7 +54,6 @@ public class ImageController {
         String imageUrl = cloudinaryImageService.getImageUrl(url);
         return ResponseEntity.ok(imageUrl);
     }
-
 
 
 }

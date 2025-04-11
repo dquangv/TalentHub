@@ -14,7 +14,10 @@ import java.math.BigDecimal;
 
 public interface PaymentService extends BaseService<PaymentDTORequest, PaymentDTOResponse, Long> {
     PaymentResDTO createVnPayPayment(BigDecimal amount) throws UnsupportedEncodingException;
+
     ResultPaymentResponseDTO handleVnPayCallback(VNPayCallbackDTORequest request);
+
     WithdrawResponseDTO handleVnPayWithCallback(BigDecimal vnpAmount, Long userId);
+
     BalanceResponseDTO getLatestBalanceInfo(Long userId);
 }

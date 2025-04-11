@@ -59,5 +59,5 @@ public class CreateJobDTORequest {
     private Long categoryId;
 
     @NotNull(message = "Skill ID cannot be null")
-    private List<Long>  skillId;
+    private List<Long> skillId;
 }

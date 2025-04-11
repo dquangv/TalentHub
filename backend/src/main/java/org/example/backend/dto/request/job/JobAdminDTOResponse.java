@@ -25,7 +25,7 @@ public class JobAdminDTOResponse {
     private Long quantity;
     private Long appliedQuantity;
     private Long cancelledQuantity;
-//    private Long inProgressQuantity;
+    //    private Long inProgressQuantity;
     private Long approvedQuantity;
     private Long rejectedQuantity;
     private Long viewedQuantity;

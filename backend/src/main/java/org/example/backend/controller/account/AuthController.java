@@ -41,6 +41,7 @@ public class AuthController {
                 .data(response)
                 .build();
     }
+
     @PostMapping("/introspect")
     public ResponseObject<IntrospectDtoResponse> introspect(@RequestBody IntrospectDTORequest accessToken) throws JOSEException, ParseException {
         IntrospectDtoResponse response = authenticationService.introspect(accessToken);
