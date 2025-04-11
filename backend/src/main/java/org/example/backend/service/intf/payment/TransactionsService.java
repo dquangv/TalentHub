@@ -9,5 +9,4 @@ import java.util.List;
 
 public interface TransactionsService extends BaseService<TransactionsDTORequest, TransactionsDTOResponse, Long> {
     List<TransactionsDTOResponse> getTransactionsByAccountId(Long accountId);
-
 }

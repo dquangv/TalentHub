@@ -17,7 +17,7 @@ public class WebSocketEventHandler {
 
     private final ChatService chatService;
 
-//    @EventListener
+    //    @EventListener
 //    public void handleWebSocketConnectListener(SessionConnectedEvent event) {
 //        StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
 //        Long userId = (Long) headerAccessor.getSessionAttributes().get("userId");

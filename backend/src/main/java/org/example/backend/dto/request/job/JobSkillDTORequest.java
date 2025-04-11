@@ -6,7 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class JobSkillDTORequest {
-
     private Long jobId;
     private Long skillId;
 }

@@ -41,6 +41,7 @@ public class FreelancerController {
                         .build()
         );
     }
+
     @PostMapping("")
     public ResponseObject<FreelancerDTOResponse> createFreelancer(@RequestBody FreelancerDTORequest freelancerDTORequest) {
         FreelancerDTOResponse freelancerDTOResponse = freelancerService.create(freelancerDTORequest);
@@ -134,6 +135,7 @@ public class FreelancerController {
                         .build()
         );
     }
+
     @PostMapping("/updateHourlyRate")
     public ResponseEntity<ResponseObject<UpdateHourlyRateDTOResponse>> updateHourlyRate(@Valid @RequestBody UpdateHourlyRateDTORequest request) {
         UpdateHourlyRateDTOResponse response = freelancerService.updateHourlyRate(request);

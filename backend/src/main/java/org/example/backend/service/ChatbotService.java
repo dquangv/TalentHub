@@ -1597,6 +1597,7 @@ public class ChatbotService {
     public Map<String, Object> getSettings() {
         return new HashMap<>(settings);
     }
+
     /**
      * Lấy danh sách các ý định để gợi ý
      */
@@ -1607,7 +1608,8 @@ public class ChatbotService {
         for (ChatIntent intent : allIntents) {
             if ("ignored_query".equals(intent.getIntentName())) {
                 continue;
-            }if ("greeting".equals(intent.getIntentName())) {
+            }
+            if ("greeting".equals(intent.getIntentName())) {
                 continue;
             }
             Map<String, Object> intentData = new HashMap<>();

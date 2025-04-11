@@ -15,16 +15,28 @@ import java.util.Optional;
 
 public interface JobService extends BaseService<JobDTORequest, JobDTOResponse, Long> {
     List<JobDTOResponse> findAllJobs(Long freelancerId);
+
     Optional<DetailJobDTOResponse> getDetailJobById(Long id);
+
     List<ApplyJobsDTOResponse> getApplyJobs(Long freeLancerId);
-   List<PostJobsDTOResponse> getPostedJobs(Long clientId);
-     List<JobAdminDTOResponse> getAllAdmin();
-     CreateJobDTOResponse createJob(CreateJobDTORequest createJobDTORequest);
+
+    List<PostJobsDTOResponse> getPostedJobs(Long clientId);
+
+    List<JobAdminDTOResponse> getAllAdmin();
+
+    CreateJobDTOResponse createJob(CreateJobDTORequest createJobDTORequest);
+
     Boolean banJob(Long id);
+
     Boolean unBanJob(Long id);
+
     JobDetailDTOResponse getJobById(Long id);
+
     JobDetailDTOResponse updateJob(Long id, JobDetailDTORequest jobDetailDTORequest);
+
     List<JobWithPackageDTOResponse> getTop6JobsByTypePriority();
+
     List<JobDTOResponse> getRecommendedJobsForFreelancer(Long freelancerId);
+
     List<FreelancerDTOResponse> getFreelancersByClientJobCategories(Long clientId);
 }

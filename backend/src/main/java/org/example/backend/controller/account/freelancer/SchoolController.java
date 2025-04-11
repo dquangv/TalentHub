@@ -27,6 +27,7 @@ public class SchoolController {
                 .data(schoolDTOResponse)
                 .build();
     }
+
     @PutMapping("/{id}")
     public ResponseObject<SchoolDTOResponse> updateSchool(
             @PathVariable Long id,
@@ -48,8 +49,6 @@ public class SchoolController {
                 .data(schoolDTOResponse)
                 .build();
     }
-
-
 
 
     @GetMapping("/{id}")

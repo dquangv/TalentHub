@@ -13,5 +13,6 @@ import java.util.Optional;
 
 public interface SoldPackageService extends BaseService<SoldPackageDTORequest, SoldPackageDTOResponse, Long> {
     Optional<CurrentPackageDTOResponse> getCurrentPackage(Long clientId);
+
     List<PackageHistoryDTOResponse> getPackageHistory(Long clientId);
 }

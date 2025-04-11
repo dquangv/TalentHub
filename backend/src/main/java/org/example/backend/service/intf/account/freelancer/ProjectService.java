@@ -8,7 +8,6 @@ import org.example.backend.service.BaseService;
 import java.util.List;
 
 public interface ProjectService extends BaseService<Project, ProjectDTOResponse, Long> {
-
     List<ProjectDTOResponse> getByFreelancerId(Long freelancerId);
 
     ProjectDTOResponse update(Long id, ProjectDTORequest projectDTORequest);

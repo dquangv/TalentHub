@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.example.backend.dto.response.job.FreelancerJobDetailDTOResponse;
+
 import java.util.List;
 
 @RestController
@@ -161,10 +162,10 @@ public class JobController {
     @DeleteMapping("/{jobId}")
     public ResponseObject<Void> delete(
             @PathVariable Long jobId
-           ) {
+    ) {
 
         Boolean status = jobService.deleteById(jobId);
-        if (status){
+        if (status) {
             return ResponseObject
                     .<Void>builder()
                     .message("Delete job successful")
@@ -213,6 +214,7 @@ public class JobController {
                 .data(jobs)
                 .build();
     }
+
     @GetMapping("/recommended/{freelancerId}")
     public ResponseObject<List<JobDTOResponse>> getRecommendedJobsForFreelancer(@PathVariable Long freelancerId) {
         List<JobDTOResponse> recommendedJobs = jobService.getRecommendedJobsForFreelancer(freelancerId);

@@ -42,8 +42,10 @@ public class BannerController {
         LocalDateTime endLocalDate;
 
         try {
-            startLocalDate = LocalDate.parse(startTime, formatter).atStartOfDay();;
-            endLocalDate = LocalDate.parse(endTime, formatter).atStartOfDay();;
+            startLocalDate = LocalDate.parse(startTime, formatter).atStartOfDay();
+            ;
+            endLocalDate = LocalDate.parse(endTime, formatter).atStartOfDay();
+            ;
         } catch (DateTimeParseException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid date format. Use yyyy-MM-dd.");
         }
@@ -84,8 +86,10 @@ public class BannerController {
         LocalDateTime endLocalDate;
 
         try {
-            startLocalDate = LocalDate.parse(startTime, formatter).atStartOfDay();;
-            endLocalDate = LocalDate.parse(endTime, formatter).atStartOfDay();;
+            startLocalDate = LocalDate.parse(startTime, formatter).atStartOfDay();
+            ;
+            endLocalDate = LocalDate.parse(endTime, formatter).atStartOfDay();
+            ;
         } catch (DateTimeParseException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid date format. Use yyyy-MM-dd.");
         }
