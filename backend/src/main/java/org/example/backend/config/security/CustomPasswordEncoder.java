@@ -1,4 +1,3 @@
-
 package org.example.backend.config.security;
 
 import org.springframework.context.annotation.Bean;
@@ -9,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CustomPasswordEncoder {
     @Bean
-    PasswordEncoder passwordEncoder(){
+    PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
