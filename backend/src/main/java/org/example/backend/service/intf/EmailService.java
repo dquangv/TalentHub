@@ -5,7 +5,8 @@ import org.example.backend.dto.response.account.freelancer.CVDTOResponse;
 import org.example.backend.enums.EmailType;
 import org.example.backend.service.BaseService;
 
-public interface EmailService{
+public interface EmailService {
     Boolean sendEmail(String to, EmailType emailType, String body);
+
     Boolean sendOtpEmail(String to);
 }
