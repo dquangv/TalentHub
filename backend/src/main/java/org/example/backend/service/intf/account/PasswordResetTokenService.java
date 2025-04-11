@@ -6,5 +6,6 @@ import org.example.backend.dto.response.account.PasswordResetTokenDTOResponse;
 
 public interface PasswordResetTokenService {
     PasswordResetTokenDTOResponse checkOtp(VerifyCodeDTORequest request);
+
     PasswordResetTokenDTOResponse resetPassword(PasswordResetTokenDTORequest passwordResetTokenDTORequest);
 }

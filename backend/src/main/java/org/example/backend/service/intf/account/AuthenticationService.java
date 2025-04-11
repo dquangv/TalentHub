@@ -11,6 +11,8 @@ import java.text.ParseException;
 
 public interface AuthenticationService {
     AuthenticationDtoResponse authenticate(AuthenticationDTORequest request) throws JOSEException;
+
     IntrospectDtoResponse introspect(IntrospectDTORequest request) throws JOSEException, ParseException;
+
     RefreshTokenDTOResponse refreshToken(String refreshToken) throws JOSEException, ParseException;
 }
