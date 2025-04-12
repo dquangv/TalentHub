@@ -21,5 +21,6 @@ public interface FreelancerService extends BaseService<FreelancerDTORequest, Fre
     public List<FreelancerAdminDTOResponse> getAllByAdmin();
 
     List<FreelancerDTOResponse> getFreelancersByCategoryId(Long categoryId);
+    List<FreelancerWithJobsDTOResponse> getFreelancersByClientId(Long clientId);
 }
 
