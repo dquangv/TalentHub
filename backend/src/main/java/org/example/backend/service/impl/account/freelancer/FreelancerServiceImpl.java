@@ -4,24 +4,20 @@ import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.account.freelancer.CreateFreelancerDTORequest;
 import org.example.backend.dto.request.account.freelancer.FreelancerDTORequest;
 import org.example.backend.dto.request.account.freelancer.UpdateHourlyRateDTORequest;
-import org.example.backend.dto.response.account.freelancer.CreateFreelancerDTOResponse;
-import org.example.backend.dto.response.account.freelancer.FreelancerAdminDTOResponse;
-import org.example.backend.dto.response.account.freelancer.FreelancerDTOResponse;
-import org.example.backend.dto.response.account.freelancer.UpdateHourlyRateDTOResponse;
+import org.example.backend.dto.response.account.freelancer.*;
 import org.example.backend.entity.child.account.freelancer.Freelancer;
 import org.example.backend.entity.child.job.Category;
 import org.example.backend.entity.child.account.User;
 import org.example.backend.exception.BadRequestException;
 import org.example.backend.mapper.Account.freelancer.CreateFreelancerMapper;
 import org.example.backend.mapper.Account.freelancer.UpdateHourlyRateMapper;
-import org.example.backend.repository.ClientReviewRepository;
-import org.example.backend.repository.FreelancerRepository;
-import org.example.backend.repository.CategoryRepository;
-import org.example.backend.repository.UserRepository;
+import org.example.backend.repository.*;
 import org.example.backend.service.intf.account.freelancer.FreelancerService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
