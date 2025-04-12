@@ -34,6 +34,7 @@ public class FreelancerServiceImpl implements FreelancerService {
     private final UserRepository userRepository;
     private final CreateFreelancerMapper createFreelancerMapper;
     private final UpdateHourlyRateMapper updateHourlyRateMapper;
+    private final FreelancerJobRepository freelancerJobRepository;
 
     @Override
     public FreelancerDTOResponse updateCategory(Long freelancerId, Long categoryId) {
