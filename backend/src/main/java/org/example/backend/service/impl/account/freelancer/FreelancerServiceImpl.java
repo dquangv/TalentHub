@@ -229,4 +229,32 @@ public class FreelancerServiceImpl implements FreelancerService {
                 ))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<FreelancerWithJobsDTOResponse> getFreelancersByClientId(Long clientId) {
+        List<Freelancer> freelancers = freelancerJobRepository.findFreelancersByClientId(clientId);
+
+        return freelancers.stream().map(freelancer -> {
+            List<Map<String, Object>> jobInfos = freelancerJobRepository.findJobInfoByFreelancerIdAndClientId(
+                    freelancer.getId(), clientId);
+
+            List<FreelancerWithJobsDTOResponse.JobInfo> jobs = jobInfos.stream()
+                    .map(info -> FreelancerWithJobsDTOResponse.JobInfo.builder()
+                            .id(((Number) info.get("id")).longValue())
+                            .title((String) info.get("title"))
+                            .status(info.get("status") != null ? info.get("status").toString() : null)
+                            .build())
+                    .collect(Collectors.toList());
+
+            Float rating = clientReviewRepository.findAverageRating(freelancer.getId());
+
+            return FreelancerWithJobsDTOResponse.builder()
+                    .userId(freelancer.getUser().getId())
+                    .fullName(freelancer.getUser().getFirstName() + " " + freelancer.getUser().getLastName())
+                    .avatar(freelancer.getUser().getImage())
+                    .rating(rating != null ? rating : 0.0f)
+                    .jobs(jobs)
+                    .build();
+        }).collect(Collectors.toList());
+    }
 }
