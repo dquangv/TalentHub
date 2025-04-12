@@ -1,6 +1,7 @@
 package org.example.backend.repository;
 
 import org.example.backend.entity.child.account.freelancer.CV;
+import org.example.backend.entity.child.account.freelancer.Freelancer;
 import org.example.backend.entity.child.job.FreelancerJob;
 import org.example.backend.entity.child.job.Job;
 import org.example.backend.enums.StatusFreelancerJob;
@@ -9,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.example.backend.enums.StatusFreelancerJob;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface FreelancerJobRepository extends JpaRepository<FreelancerJob, Long> {
