@@ -2579,19 +2579,19 @@ UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-a
 UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man6.jpg' WHERE account_id = 14;
 
 -- Cập nhật avatar cho Hiếu (ID: 15) - Nam
-UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man1.jpg' WHERE account_id = 15;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man13.jpg' WHERE account_id = 15;
 
 -- Cập nhật avatar cho Hạnh (ID: 16) - Nữ
 UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman4.jpg' WHERE account_id = 16;
 
 -- Cập nhật avatar cho Duy (ID: 17) - Nam
-UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man2.jpg' WHERE account_id = 17;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man14.jpg' WHERE account_id = 17;
 
 -- Cập nhật avatar cho Thu (ID: 18) - Nữ
 UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman5.jpg' WHERE account_id = 18;
 
 -- Cập nhật avatar cho Bảo (ID: 19) - Nam
-UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man3.png' WHERE account_id = 19;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man14.jpg' WHERE account_id = 19;
 
 -- Cập nhật avatar cho Mai (ID: 20) - Nữ
 UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman6.jpg' WHERE account_id = 20;
@@ -2618,13 +2618,13 @@ UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-a
 UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman1.jpg' WHERE account_id = 27;
 
 -- Cập nhật avatar cho Đức (ID: 28) - Nam
-UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man1.jpg' WHERE account_id = 28;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man11.jpg' WHERE account_id = 28;
 
 -- Cập nhật avatar cho Anh (ID: 29) - Nam
-UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man2.jpg' WHERE account_id = 29;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man12.jpg' WHERE account_id = 29;
 
 -- Cập nhật avatar cho Hải (ID: 30) - Nam
-UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man3.png' WHERE account_id = 30;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man14.jpg' WHERE account_id = 30;
 
 -- Update image URLs for projects
 UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project1.jpg' WHERE title = 'API Payment Integration';
