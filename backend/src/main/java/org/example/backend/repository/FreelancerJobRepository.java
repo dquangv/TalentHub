@@ -95,4 +95,20 @@ public interface FreelancerJobRepository extends JpaRepository<FreelancerJob, Lo
 
     Long countViewsByJob(Job job);
     List<FreelancerJob> findAllByJobId(Long jobId);
+
+    @Query("SELECT new map(j.id as id, j.title as title, fj.status as status) " +
+            "FROM FreelancerJob fj " +
+            "JOIN fj.job j " +
+            "WHERE fj.freelancer.id = :freelancerId " +
+            "AND j.client.id = :clientId ")
+    List<Map<String, Object>> findJobInfoByFreelancerIdAndClientId(
+            @Param("freelancerId") Long freelancerId,
+            @Param("clientId") Long clientId
+    );
+
+    @Query("SELECT DISTINCT fj.freelancer FROM FreelancerJob fj " +
+            "JOIN fj.job j " +
+            "WHERE j.client.id = :clientId " +
+            "AND j.status = org.example.backend.enums.StatusJob.OPEN")
+    List<Freelancer> findFreelancersByClientId(@Param("clientId") Long clientId);
 }
