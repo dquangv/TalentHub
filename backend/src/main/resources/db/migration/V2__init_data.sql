@@ -2662,10 +2662,849 @@ UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/stati
 UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project31.jpg' WHERE title = 'Real-time Analytics Platform';
 UPDATE projects SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project32.jpg' WHERE title = 'Data Lake Architecture';
 
+-- 1. Trước tiên cập nhật avatar không trùng lặp cho các user hiện có
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/Tung.jpg' WHERE account_id = 1;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/QuangV.jpg' WHERE account_id = 2;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/QuangB.jpg' WHERE account_id = 3;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/Tien.jpg' WHERE account_id = 4;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/Huy.jpg' WHERE account_id = 5;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man1.jpg' WHERE account_id = 6;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man2.jpg' WHERE account_id = 7;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman1.jpg' WHERE account_id = 8;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man3.png' WHERE account_id = 9;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man4.jpg' WHERE account_id = 10;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman2.jpg' WHERE account_id = 11;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man5.jpg' WHERE account_id = 12;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman3.png' WHERE account_id = 13;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man6.jpg' WHERE account_id = 14;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man13.jpg' WHERE account_id = 15;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman4.jpg' WHERE account_id = 16;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man14.jpg' WHERE account_id = 17;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman5.jpg' WHERE account_id = 18;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man9.jpg' WHERE account_id = 19;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman6.jpg' WHERE account_id = 20;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man7.jpg' WHERE account_id = 21;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man8.jpg' WHERE account_id = 22;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman7.jpg' WHERE account_id = 23;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman8.jpg' WHERE account_id = 24;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman9.jpg' WHERE account_id = 25;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man10.jpg' WHERE account_id = 26;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman10.jpg' WHERE account_id = 27;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man11.jpg' WHERE account_id = 28;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man12.jpg' WHERE account_id = 29;
+UPDATE users SET image = 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman11.jpg' WHERE account_id = 30;
 
+-- 2. Thêm 10 freelancer và 10 client mới
 
+-- Thêm tài khoản
+INSERT INTO account (email, password, role, created_at, updated_at, status, lat, lng)
+VALUES
+    -- Thêm 10 tài khoản freelancer mới
+    ('thuyptt123@gmail.com', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'FREELANCER', NOW(), null, 0, 10.823456, 106.629123),
+    ('sonnt456@gmail.com', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'FREELANCER', NOW(), null, 0, 10.752345, 106.651234),
+    ('hanglt789@gmail.com', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'FREELANCER', NOW(), null, 0, 10.789012, 106.673456),
+    ('khoipd123@gmail.com', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'FREELANCER', NOW(), null, 0, 10.812345, 106.698765),
+    ('linhtk456@gmail.com', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'FREELANCER', NOW(), null, 0, 21.023456, 105.812345),
+    ('hungnt789@gmail.com', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'FREELANCER', NOW(), null, 0, 21.056789, 105.834567),
+    ('thuyvt123@gmail.com', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'FREELANCER', NOW(), null, 0, 16.078912, 108.234567),
+    ('ducnm456@gmail.com', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'FREELANCER', NOW(), null, 0, 16.034567, 108.198765),
+    ('huongnt789@gmail.com', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'FREELANCER', NOW(), null, 0, 10.045678, 105.789012),
+    ('truongcv123@gmail.com', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'FREELANCER', NOW(), null, 0, 10.078912, 105.823456),
 
+    -- Thêm 10 tài khoản client mới
+    ('minhnt456@gmail.com', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'CLIENT', NOW(), null, 0, 10.865432, 106.712345),
+    ('anhdt789@gmail.com', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'CLIENT', NOW(), null, 0, 10.887654, 106.734567),
+    ('trangpt123@gmail.com', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'CLIENT', NOW(), null, 0, 21.076543, 105.856789),
+    ('namvt456@gmail.com', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'CLIENT', NOW(), null, 0, 21.098765, 105.878901),
+    ('phuongnt789@gmail.com', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'CLIENT', NOW(), null, 0, 16.098765, 108.256789),
+    ('longnv123@gmail.com', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'CLIENT', NOW(), null, 0, 16.123456, 108.287654),
+    ('thanhlv456@gmail.com', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'CLIENT', NOW(), null, 0, 10.123456, 105.856789),
+    ('tuanpd789@gmail.com', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'CLIENT', NOW(), null, 0, 10.156789, 105.887654),
+    ('haivt123@gmail.com', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'CLIENT', NOW(), null, 0, 11.932345, 108.442345),
+    ('hoanglt456@gmail.com', '$2a$12$1PUaXLFDOmC4Af926SCOEeCGvOWirieoYIv1Z3L7npEfXYNtF8vjm', 'CLIENT', NOW(), null, 0, 12.256789, 109.198765);
 
+-- Thêm thông tin users
+INSERT INTO users (first_name, last_name, phone_number, province, country, title, introduction, image, account_id)
+VALUES
+    -- Thêm 10 freelancer mới
+    ('Thủy', 'Phạm Thị Thanh', '0912345671', 'Hồ Chí Minh', 'Việt Nam', 'Content Strategist', 'Chuyên gia xây dựng chiến lược nội dung với 7 năm kinh nghiệm tại các công ty truyền thông lớn.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman12.jpg', 31),
+
+    ('Sơn', 'Nguyễn Thành', '0923456782', 'Hồ Chí Minh', 'Việt Nam', 'Cybersecurity Expert', 'Chuyên gia an ninh mạng với chứng chỉ CISSP, CEH và kinh nghiệm bảo vệ hệ thống cho các tổ chức tài chính.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man7.jpg', 32),
+
+    ('Hằng', 'Lê Thị', '0934567893', 'Hồ Chí Minh', 'Việt Nam', 'Financial Analyst', 'Chuyên gia phân tích tài chính với bằng CFA, chuyên về mô hình tài chính và đánh giá dự án đầu tư.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman13.jpg', 33),
+
+    ('Khôi', 'Phạm Đăng', '0945678904', 'Hồ Chí Minh', 'Việt Nam', 'Game Designer', 'Nhà thiết kế game với kinh nghiệm làm việc tại các studio game hàng đầu Việt Nam và quốc tế.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man8.jpg', 34),
+
+    ('Linh', 'Trần Kim', '0956789015', 'Hà Nội', 'Việt Nam', 'Social Media Manager', 'Chuyên gia quản lý mạng xã hội với kinh nghiệm xây dựng chiến lược và tạo nội dung viral cho nhiều thương hiệu lớn.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman10.jpg', 35),
+
+    ('Hùng', 'Nguyễn Tiến', '0967890126', 'Hà Nội', 'Việt Nam', 'WordPress Developer', 'Chuyên gia phát triển website WordPress với hơn 100 dự án thành công cho doanh nghiệp và cá nhân.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man9.jpg', 36),
+
+    ('Thủy', 'Vũ Thị', '0978901237', 'Đà Nẵng', 'Việt Nam', 'Product Manager', 'Quản lý sản phẩm với kinh nghiệm phát triển sản phẩm số từ ý tưởng đến thị trường cho nhiều startup công nghệ.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman11.jpg', 37),
+
+    ('Đức', 'Nguyễn Minh', '0989012348', 'Đà Nẵng', 'Việt Nam', 'System Administrator', 'Quản trị hệ thống với chuyên môn về Linux, Windows Server và Cloud Infrastructure trên AWS và Azure.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man10.jpg', 38),
+
+    ('Hương', 'Nguyễn Thị', '0990123459', 'Cần Thơ', 'Việt Nam', 'Translator & Interpreter', 'Biên dịch viên tiếng Anh - Việt với kinh nghiệm phiên dịch cho các hội nghị quốc tế và dự án đa ngành.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman8.jpg', 39),
+
+    ('Trường', 'Cao Văn', '0901234560', 'Cần Thơ', 'Việt Nam', 'Unity Developer', 'Lập trình viên Unity với kinh nghiệm phát triển game mobile và XR (AR/VR) cho nhiều nền tảng.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man11.jpg', 40),
+
+    -- Thêm 10 client mới
+    ('Minh', 'Nguyễn Thanh', '0912345677', 'Hồ Chí Minh', 'Việt Nam', 'CEO', 'Nhà sáng lập startup fintech, đang mở rộng các giải pháp thanh toán số cho thị trường Đông Nam Á.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man12.jpg', 41),
+
+    ('Anh', 'Đỗ Tuấn', '0923456788', 'Hồ Chí Minh', 'Việt Nam', 'CTO', 'Giám đốc công nghệ với hơn 15 năm kinh nghiệm trong ngành phần mềm và giải pháp số.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man13.jpg', 42),
+
+    ('Trang', 'Phạm Thị', '0934567899', 'Hà Nội', 'Việt Nam', 'Marketing Director', 'Giám đốc marketing với chuyên môn về chiến lược thương hiệu và marketing số cho thị trường Việt Nam.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman7.jpg', 43),
+
+    ('Nam', 'Vũ Thành', '0945678900', 'Hà Nội', 'Việt Nam', 'Product Owner', 'Product Owner với kinh nghiệm phát triển sản phẩm theo phương pháp Agile/Scrum cho nhiều ngành.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man14.jpg', 44),
+
+    ('Phương', 'Nguyễn Thị', '0956789011', 'Đà Nẵng', 'Việt Nam', 'HR Manager', 'Quản lý nhân sự với chuyên môn về phát triển tổ chức và xây dựng văn hóa doanh nghiệp công nghệ.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman1.jpg', 45),
+
+    ('Long', 'Nguyễn Văn', '0967890122', 'Đà Nẵng', 'Việt Nam', 'Business Development Manager', 'Quản lý phát triển kinh doanh với mạng lưới rộng khắp trong ngành CNTT và thương mại điện tử.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man1.jpg', 46),
+
+    ('Thanh', 'Lê Văn', '0978901233', 'Cần Thơ', 'Việt Nam', 'Project Manager', 'Quản lý dự án với chứng chỉ PMP và kinh nghiệm điều phối các dự án phần mềm quốc tế.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man2.jpg', 47),
+
+    ('Tuấn', 'Phạm Đình', '0989012344', 'Cần Thơ', 'Việt Nam', 'Creative Director', 'Giám đốc sáng tạo với chuyên môn về thiết kế thương hiệu và chiến dịch truyền thông đa kênh.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man3.png', 48),
+
+    ('Hải', 'Vũ Thanh', '0990123455', 'Đà Lạt', 'Việt Nam', 'E-commerce Manager', 'Quản lý thương mại điện tử với kinh nghiệm xây dựng và phát triển các nền tảng bán hàng trực tuyến.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man4.jpg', 49),
+
+    ('Hoàng', 'Lê Thanh', '0901234566', 'Nha Trang', 'Việt Nam', 'Digital Transformation Consultant', 'Chuyên gia tư vấn chuyển đổi số với kinh nghiệm giúp các doanh nghiệp truyền thống áp dụng công nghệ mới.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man5.jpg', 50);
+
+-- Thêm freelancer
+INSERT INTO freelancer (hourly_rate, description, category_id, user_id)
+VALUES
+    (22.00, 'Content Strategist với 7 năm kinh nghiệm xây dựng và triển khai chiến lược nội dung cho các thương hiệu lớn. Chuyên về storytelling, content marketing và SEO content.', 3, 31),
+    (35.00, 'Chuyên gia an ninh mạng với chứng chỉ CISSP và CEH, có kinh nghiệm bảo vệ hệ thống IT cho các tổ chức tài chính, phát hiện lỗ hổng và phòng chống tấn công mạng.', 1, 32),
+    (30.00, 'Chuyên gia phân tích tài chính với bằng CFA level 3, giúp doanh nghiệp xây dựng mô hình tài chính, phân tích đầu tư và lập kế hoạch tài chính dài hạn.', 7, 33),
+    (28.00, 'Game Designer với kinh nghiệm thiết kế gameplay, level design và economy balance cho game mobile và PC. Đã làm việc với Unity và Unreal Engine.', 1, 34),
+    (25.00, 'Social Media Manager với chuyên môn xây dựng chiến lược nội dung, quản lý cộng đồng và phát triển thương hiệu trên các nền tảng mạng xã hội.', 4, 35),
+    (24.00, 'WordPress Developer chuyên nghiệp với hơn 100 dự án website thành công, từ blog cá nhân đến cửa hàng thương mại điện tử và portal doanh nghiệp.', 1, 36),
+    (32.00, 'Product Manager với kinh nghiệm đưa sản phẩm từ ý tưởng đến thị trường, phát triển roadmap và làm việc với các bên liên quan để tạo ra sản phẩm thành công.', 8, 37),
+    (26.00, 'System Administrator với chuyên môn quản trị hệ thống Linux, Windows Server, Docker, Kubernetes và Cloud Infrastructure trên AWS và Azure.', 1, 38),
+    (22.00, 'Translator & Interpreter chuyên nghiệp với kinh nghiệm dịch thuật cho các lĩnh vực kỹ thuật, pháp lý, y tế và marketing. Thông thạo tiếng Anh, tiếng Việt và tiếng Pháp.', 3, 39),
+    (27.00, 'Unity Developer với 5 năm kinh nghiệm phát triển game mobile và ứng dụng thực tế ảo/thực tế tăng cường (AR/VR). Chuyên về lập trình gameplay và tối ưu hiệu suất.', 1, 40);
+
+-- Thêm client
+INSERT INTO client (from_price, to_price, type_price, user_id)
+VALUES
+    (8000000, 25000000, 'VNĐ', 41),
+    (10000000, 35000000, 'VNĐ', 42),
+    (5000000, 15000000, 'VNĐ', 43),
+    (6000000, 20000000, 'VNĐ', 44),
+    (7000000, 18000000, 'VNĐ', 45),
+    (9000000, 30000000, 'VNĐ', 46),
+    (5500000, 16000000, 'VNĐ', 47),
+    (7500000, 22000000, 'VNĐ', 48),
+    (8500000, 28000000, 'VNĐ', 49),
+    (6500000, 19000000, 'VNĐ', 50);
+
+-- Thêm công ty
+INSERT INTO company (company_name, phone_contact, address, industry, client_id)
+VALUES
+    ('FinTech Solutions', '0912345677', 'Quận 1, Hồ Chí Minh', 'Fintech & Digital Payment', 13),
+    ('TechVision Corp', '0923456788', 'Quận 7, Hồ Chí Minh', 'Software Development', 14),
+    ('BrandMax Agency', '0934567899', 'Cầu Giấy, Hà Nội', 'Digital Marketing & Branding', 15),
+    ('InnovatePro', '0945678900', 'Hai Bà Trưng, Hà Nội', 'SaaS & Product Development', 16),
+    ('TalentCore HR', '0956789011', 'Hải Châu, Đà Nẵng', 'HR Solutions & Consulting', 17),
+    ('GrowthPartners', '0967890122', 'Thanh Khê, Đà Nẵng', 'Business Consulting', 18),
+    ('ProjectSphere', '0978901233', 'Ninh Kiều, Cần Thơ', 'Project Management Services', 19),
+    ('CreativeHive', '0989012344', 'Bình Thủy, Cần Thơ', 'Creative Agency & Design Studio', 20),
+    ('E-commerce Experts', '0990123455', 'Đà Lạt', 'E-commerce Solutions', 21),
+    ('DigitalTransform Solutions', '0901234566', 'Nha Trang', 'Digital Transformation Consulting', 22);
+
+-- Thêm cv cho freelancer
+INSERT INTO cv (title, url, status, freelancer_id)
+VALUES
+    ('Content Strategy Expert', 'cv-sample38.pdf', TRUE, 17),
+    ('SEO Content Specialist', 'cv-sample39.pdf', TRUE, 17),
+    ('Cybersecurity Professional', 'cv-sample40.pdf', TRUE, 18),
+    ('Network Security Expert', 'cv-sample41.pdf', TRUE, 18),
+    ('Financial Analysis Portfolio', 'cv-sample42.pdf', TRUE, 19),
+    ('Investment Consultant', 'cv-sample43.pdf', TRUE, 19),
+    ('Game Design Portfolio', 'cv-sample44.pdf', TRUE, 20),
+    ('Unity Game Developer', 'cv-sample45.pdf', TRUE, 20),
+    ('Social Media Marketing Specialist', 'cv-sample46.pdf', TRUE, 21),
+    ('Digital Community Manager', 'cv-sample47.pdf', TRUE, 21),
+    ('WordPress Development Expert', 'cv-sample48.pdf', TRUE, 22),
+    ('Web Development Portfolio', 'cv-sample49.pdf', TRUE, 22),
+    ('Product Management Professional', 'cv-sample50.pdf', TRUE, 23),
+    ('Agile Product Development', 'cv-sample51.pdf', TRUE, 23),
+    ('System Administration Expert', 'cv-sample52.pdf', TRUE, 24),
+    ('Cloud Infrastructure Specialist', 'cv-sample53.pdf', TRUE, 24),
+    ('Professional Translator Portfolio', 'cv-sample54.pdf', TRUE, 25),
+    ('Multilingual Interpretation', 'cv-sample55.pdf', TRUE, 25),
+    ('Unity Development Portfolio', 'cv-sample56.pdf', TRUE, 26),
+    ('AR/VR Development Specialist', 'cv-sample57.pdf', TRUE, 26);
+
+-- Thêm kỹ năng cho freelancer mới
+INSERT INTO freelancer_skill (freelancer_id, skill_id)
+VALUES
+-- Content Strategist (ID: 17)
+(17, 48), -- SEO Optimization
+(17, 49), -- Copywriting
+(17, 50), -- Content Writing
+(17, 51), -- Blog Writing
+(17, 54), -- Email Marketing
+(17, 55), -- Social Media Marketing
+
+-- Cybersecurity Expert (ID: 18)
+(18, 19), -- C++
+(18, 8),  -- Python
+(18, 32), -- AWS
+(18, 33), -- Azure
+(18, 34), -- Docker
+(18, 35), -- Kubernetes
+
+-- Financial Analyst (ID: 19)
+(18, 8),  -- Python
+(18, 26), -- Data Analysis
+(18, 27), -- Data Science
+(18, 21), -- SQL
+(18, 22), -- MySQL
+(18, 74), -- Accounting
+
+-- Game Designer (ID: 20)
+(20, 13), -- C#
+(20, 8),  -- Python
+(20, 62), -- Animation
+(20, 63), -- 3D Modeling
+(20, 44), -- Blender 3D
+(20, 45), -- Maya
+
+-- Social Media Manager (ID: 21)
+(21, 49), -- Copywriting
+(21, 54), -- Email Marketing
+(21, 55), -- Social Media Marketing
+(21, 56), -- Affiliate Marketing
+(21, 57), -- Google Ads
+(21, 58), -- Facebook Ads
+
+-- WordPress Developer (ID: 22)
+(22, 12), -- PHP
+(22, 6),  -- Node.js
+(22, 3),  -- ReactJS
+(22, 21), -- SQL
+(22, 22), -- MySQL
+(22, 39), -- UI/UX Design
+
+-- Product Manager (ID: 23)
+(23, 71), -- Project Management
+(23, 72), -- Business Consulting
+(23, 73), -- Customer Support
+(23, 49), -- Copywriting
+(23, 50), -- Content Writing
+(23, 39), -- UI/UX Design
+
+-- System Administrator (ID: 24)
+(24, 32), -- AWS
+(24, 33), -- Azure
+(24, 34), -- Docker
+(24, 35), -- Kubernetes
+(24, 36), -- Jenkins
+(24, 37), -- CI/CD Pipelines
+
+-- Translator & Interpreter (ID: 25)
+(25, 76), -- English Translation
+(25, 77), -- Chinese Translation
+(25, 78), -- Japanese Translation
+(25, 81), -- French Translation
+(25, 84), -- Proofreading
+(25, 85), -- Transcription
+
+-- Unity Developer (ID: 26)
+(26, 13), -- C#
+(26, 44), -- Blender 3D
+(26, 45), -- Maya
+(26, 46), -- Cinema 4D
+(26, 62), -- Animation
+(26, 63), -- 3D Modeling
+(26, 64); -- Music Production
+
+-- Thêm dự án cho freelancer mới
+INSERT INTO projects (title, tech, description, link, image, freelancer_id)
+VALUES
+-- Content Strategist (ID: 17)
+('Chiến lược nội dung E-commerce', 'SEO Tools, Google Analytics, WordPress', 'Xây dựng chiến lược nội dung toàn diện cho website thương mại điện tử, tăng lượng truy cập tự nhiên 200% và tỷ lệ chuyển đổi 35% trong 6 tháng.', 'https://portfolio.thuyptt.com/ecommerce-content', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project33.jpg', 17),
+('Chiến dịch Content Marketing B2B', 'SEMrush, Ahrefs, HubSpot', 'Phát triển chiến dịch content marketing B2B cho công ty phần mềm, tạo ra 50 bài viết chuyên sâu, white paper và case study, dẫn đến 120 lead mới cho doanh nghiệp.', 'https://portfolio.thuyptt.com/b2b-content', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project34.jpg', 17),
+
+-- Cybersecurity Expert (ID: 18)
+('Đánh giá bảo mật hệ thống ngân hàng', 'Kali Linux, Metasploit, Nmap, Wireshark', 'Thực hiện đánh giá bảo mật toàn diện cho hệ thống IT của một ngân hàng lớn, phát hiện và khắc phục 15 lỗ hổng nghiêm trọng.', 'https://github.com/sonnt/security-assessment', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project35.jpg', 18),
+('Xây dựng SOC (Security Operations Center)', 'SIEM, Splunk, ElasticSearch, Python', 'Thiết kế và triển khai hệ thống giám sát bảo mật tập trung cho doanh nghiệp với 500+ endpoint, giúp phát hiện và phản ứng nhanh với các mối đe dọa.', 'https://github.com/sonnt/soc-implementation', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project36.jpg', 18),
+
+-- Financial Analyst (ID: 19)
+('Mô hình định giá startup công nghệ', 'Python, Excel, Power BI', 'Xây dựng mô hình định giá toàn diện cho các startup công nghệ dựa trên các chỉ số tài chính và phi tài chính, được sử dụng bởi nhiều quỹ đầu tư.', 'https://github.com/hanglt/startup-valuation', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project37.jpg', 19),
+('Phân tích ROI dự án đầu tư', 'R, Tableau, Excel', 'Phát triển framework phân tích ROI cho các dự án đầu tư công nghệ, giúp doanh nghiệp đánh giá và ưu tiên đầu tư hiệu quả.', 'https://github.com/hanglt/roi-analysis', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project38.jpg', 19),
+
+-- Game Designer (ID: 20)
+('Adventure Quest Mobile Game', 'Unity, C#, Blender', 'Thiết kế và phát triển game mobile phiêu lưu với hơn 50 level, hệ thống nhân vật và cơ chế kinh tế game cân bằng.', 'https://github.com/khoipd/adventure-quest', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project39.jpg', 20),
+('VR Historical Experience', 'Unity, C#, Oculus SDK', 'Phát triển trải nghiệm thực tế ảo tái hiện các địa điểm lịch sử Việt Nam, cho phép người dùng khám phá và học lịch sử theo cách tương tác.', 'https://github.com/khoipd/vr-history', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project40.jpg', 20),
+
+-- Social Media Manager (ID: 21)
+('Chiến dịch TikTok cho thương hiệu F&B', 'TikTok, Canva, Adobe Premiere', 'Phát triển và triển khai chiến dịch TikTok cho chuỗi nhà hàng, tạo ra 10 video viral với tổng 5 triệu lượt xem và tăng 200% lượng khách hàng mới.', 'https://portfolio.linhtk.com/tiktok-campaign', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project41.jpg', 21),
+('Xây dựng cộng đồng trên Facebook', 'Facebook Groups, Buffer, Hootsuite', 'Xây dựng và phát triển cộng đồng Facebook từ 0 lên 50,000 thành viên cho thương hiệu mỹ phẩm, tạo ra tỷ lệ tương tác cao và doanh thu từ cộng đồng.', 'https://portfolio.linhtk.com/facebook-community', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project42.jpg', 21),
+
+-- WordPress Developer (ID: 22)
+('E-learning Platform WordPress', 'WordPress, WooCommerce, LearnDash, PHP', 'Phát triển nền tảng học trực tuyến trên WordPress với tính năng bán khóa học, theo dõi tiến độ và tương tác giữa học viên và giảng viên.', 'https://github.com/hungnt/elearning-wp', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project43.jpg', 22),
+('Multi-vendor Marketplace', 'WordPress, Dokan, WooCommerce, PHP', 'Xây dựng sàn thương mại điện tử đa người bán trên WordPress, hỗ trợ nhiều người bán, hệ thống thanh toán và đánh giá người bán.', 'https://github.com/hungnt/marketplace-wp', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project44.jpg', 22),
+
+-- Product Manager (ID: 23)
+('FinTech Payment App', 'Product Management, Agile, Jira', 'Quản lý sản phẩm ứng dụng thanh toán di động từ ý tưởng đến ra mắt thị trường, đạt 100,000 người dùng trong 3 tháng đầu.', 'https://portfolio.thuyvt.com/fintech-app', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project45.jpg', 23),
+('SaaS CRM Solution', 'Product Management, UX Research, Agile', 'Dẫn dắt phát triển sản phẩm CRM dành cho doanh nghiệp vừa và nhỏ, định vị sản phẩm, xây dựng roadmap và làm việc với các team để phát triển tính năng.', 'https://portfolio.thuyvt.com/saas-crm', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project46.jpg', 23),
+
+-- System Administrator (ID: 24)
+('Multi-Cloud Migration', 'AWS, Azure, Terraform, Docker', 'Thiết kế và triển khai chiến lược di chuyển hạ tầng từ on-premise lên multi-cloud (AWS và Azure) cho doanh nghiệp lớn, đảm bảo tính liên tục của dịch vụ.', 'https://github.com/ducnm/multi-cloud', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project47.jpg', 24),
+('Kubernetes CI/CD Pipeline', 'Kubernetes, Jenkins, Helm, GitLab CI', 'Xây dựng hệ thống CI/CD tự động hóa hoàn toàn quá trình triển khai ứng dụng lên Kubernetes cluster, giảm thời gian release từ hàng ngày xuống vài phút.', 'https://github.com/ducnm/k8s-cicd', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project48.jpg', 24),
+
+-- Translator & Interpreter (ID: 25)
+('Dịch tài liệu kỹ thuật AI', 'CAT Tools, Translation Memory', 'Dịch bộ tài liệu kỹ thuật về trí tuệ nhân tạo và máy học từ tiếng Anh sang tiếng Việt, bao gồm sách và tài liệu đào tạo.', 'https://portfolio.huongnt.com/ai-translation', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project49.jpg', 25),
+('Phiên dịch hội nghị quốc tế', 'Simultaneous Interpretation, Consecutive Interpretation', 'Cung cấp dịch vụ phiên dịch song song và liên tiếp cho các hội nghị quốc tế trong lĩnh vực công nghệ, y tế và giáo dục.', 'https://portfolio.huongnt.com/conference-interpretation', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project50.jpg', 25),
+
+-- Unity Developer (ID: 26)
+('AR Shopping Experience', 'Unity, ARCore, ARKit, C#', 'Phát triển ứng dụng AR cho phép người dùng "thử" nội thất trong không gian thực tế của họ trước khi mua, tăng tỷ lệ chuyển đổi mua hàng 45%.', 'https://github.com/truongcv/ar-shopping', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project51.jpg', 26),
+('Educational VR Application', 'Unity, Oculus SDK, SteamVR, C#', 'Xây dựng ứng dụng thực tế ảo giáo dục giúp học sinh học sinh học về giải phẫu con người thông qua trải nghiệm 3D tương tác.', 'https://github.com/truongcv/vr-education', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/project/project52.jpg', 26);
+
+-- Thêm giáo dục cho freelancer mới
+INSERT INTO education (start_date, end_date, description, school_id, degree_id, major_id, freelancer_id, image)
+VALUES
+    ('2012-09-01', '2016-06-30', 'Tốt nghiệp chuyên ngành Truyền thông Kỹ thuật số với chuyên sâu về Content Strategy và Marketing.', 3, 1, 6, 17, null),
+    ('2011-09-01', '2015-06-30', 'Tốt nghiệp ngành Công nghệ Thông tin với chuyên ngành An ninh mạng, đạt chứng chỉ CEH và CISSP.', 1, 2, 1, 18, null),
+    ('2013-09-01', '2017-06-30', 'Tốt nghiệp ngành Kinh tế, chuyên ngành Tài chính - Ngân hàng, đạt chứng chỉ CFA Level 3.', 5, 1, 14, 19, null),
+    ('2014-09-01', '2018-06-30', 'Tốt nghiệp Thiết kế Đồ họa và Truyền thông Kỹ thuật số, với chuyên sâu về Game Design.', 14, 1, 2, 20, null),
+    ('2012-09-01', '2016-06-30', 'Tốt nghiệp ngành Marketing với chuyên sâu về Digital Marketing và Truyền thông Xã hội.', 11, 1, 4, 21, null),
+    ('2013-09-01', '2017-06-30', 'Tốt nghiệp ngành Công nghệ Thông tin với chuyên sâu về Phát triển Web và Ứng dụng.', 4, 2, 1, 22, null),
+    ('2010-09-01', '2014-06-30', 'Tốt nghiệp ngành Quản trị Kinh doanh với chuyên sâu về Quản lý Sản phẩm và Đổi mới Sáng tạo.', 6, 1, 14, 23, null),
+    ('2011-09-01', '2015-06-30', 'Tốt nghiệp Kỹ thuật Máy tính với chuyên sâu về Quản trị Hệ thống và Cloud Computing.', 1, 2, 1, 24, null),
+    ('2012-09-01', '2016-06-30', 'Tốt nghiệp ngành Ngôn ngữ Anh với chuyên sâu về Biên - Phiên dịch và Ngôn ngữ học Ứng dụng.', 8, 1, 7, 25, null),
+    ('2014-09-01', '2018-06-30', 'Tốt nghiệp Công nghệ Thông tin với chuyên sâu về Phát triển Game và Ứng dụng Di động.', 4, 2, 13, 26, null);
+
+-- Thêm kinh nghiệm làm việc cho freelancer mới
+INSERT INTO experiences (company_name, position, start_date, end_date, description, status, freelancer_id)
+VALUES
+-- Content Strategist (ID: 17)
+('DigiContent Agency', 'Content Writer', '2016-07-01', '2018-12-31', 'Viết nội dung cho nhiều thương hiệu trong các lĩnh vực khác nhau, từ bài viết blog đến white paper và email marketing.', true, 17),
+('Media Solutions', 'Senior Content Strategist', '2019-01-01', '2021-06-30', 'Phát triển và triển khai chiến lược nội dung cho các doanh nghiệp B2B và B2C, tối ưu hóa SEO và xây dựng content calendar.', true, 17),
+('BrandPulse', 'Head of Content', '2021-07-01', '2024-12-31', 'Lãnh đạo đội ngũ nội dung 10 người, xây dựng và triển khai chiến lược nội dung đa kênh cho các thương hiệu lớn.', true, 17),
+
+-- Cybersecurity Expert (ID: 18)
+('SecureTech', 'Security Analyst', '2015-07-01', '2018-06-30', 'Phân tích lỗ hổng bảo mật, thực hiện đánh giá rủi ro và phát triển chính sách bảo mật thông tin cho doanh nghiệp.', true, 18),
+('CyberDefense Corp', 'Penetration Tester', '2018-07-01', '2021-12-31', 'Thực hiện các bài kiểm tra xâm nhập (pentest) để đánh giá bảo mật cho website, ứng dụng và hệ thống mạng.', true, 18),
+('SecureBank', 'Cybersecurity Manager', '2022-01-01', '2024-12-31', 'Quản lý đội ngũ an ninh mạng, phát triển chiến lược bảo mật và ứng phó sự cố, triển khai các giải pháp bảo mật tiên tiến.', true, 18),
+
+-- Financial Analyst (ID: 19)
+('Investment Partners', 'Financial Analyst', '2017-07-01', '2019-06-30', 'Phân tích báo cáo tài chính, đánh giá hiệu quả đầu tư và tạo báo cáo dự báo tài chính cho các khách hàng doanh nghiệp.', true, 19),
+('CapitalGrowth', 'Senior Investment Analyst', '2019-07-01', '2022-06-30', 'Thực hiện nghiên cứu thị trường sâu rộng, xây dựng mô hình định giá và đánh giá cơ hội đầu tư cho quỹ đầu tư mạo hiểm.', true, 19),
+('FinWise Consulting', 'Financial Consultant', '2022-07-01', '2024-12-31', 'Tư vấn tài chính cho các doanh nghiệp vừa và nhỏ, phát triển mô hình tài chính và chiến lược đầu tư.', true, 19),
+
+-- Game Designer (ID: 20)
+('GameSoft Studios', 'Junior Game Designer', '2018-07-01', '2020-06-30', 'Thiết kế level game, gameplay mechanics và balanced game economy cho các game mobile casual.', true, 20),
+('MobileGames Inc.', 'Game Designer', '2020-07-01', '2022-12-31', 'Thiết kế game concept, game mechanics và user experience cho các game mobile RPG và strategy.', true, 20),
+('VR Innovation Labs', 'Senior Game Designer', '2023-01-01', '2024-12-31', 'Dẫn dắt thiết kế game cho các dự án VR/AR, từ concept đến finalization, làm việc với đội ngũ nghệ sĩ 3D và lập trình viên.', true, 20),
+
+-- Social Media Manager (ID: 21)
+('Digital Agency', 'Social Media Specialist', '2016-07-01', '2018-12-31', 'Quản lý các kênh mạng xã hội cho nhiều thương hiệu, tạo nội dung và triển khai chiến dịch quảng cáo.', true, 21),
+('BrandConnect', 'Social Media Manager', '2019-01-01', '2021-06-30', 'Phát triển chiến lược mạng xã hội, quản lý cộng đồng và thực hiện phân tích hiệu quả các chiến dịch.', true, 21),
+('Influencer Marketing Hub', 'Head of Social Media', '2021-07-01', '2024-12-31', 'Lãnh đạo đội ngũ social media, phát triển chiến lược marketing influencer và xây dựng KPIs cho các chiến dịch.', true, 21),
+
+-- WordPress Developer (ID: 22)
+('WebSolutions', 'Junior Web Developer', '2017-07-01', '2019-06-30', 'Phát triển website WordPress cho doanh nghiệp nhỏ, thiết kế giao diện và tùy chỉnh theme/plugin.', true, 22),
+('DigitalWorks', 'WordPress Developer', '2019-07-01', '2021-12-31', 'Phát triển website WordPress chuyên nghiệp cho doanh nghiệp vừa, tạo plugin tùy chỉnh và tối ưu hóa hiệu suất.', true, 22),
+('WP Experts', 'Senior WordPress Developer', '2022-01-01', '2024-12-31', 'Dẫn dắt phát triển các dự án WordPress phức tạp, bao gồm các nền tảng e-commerce, membership và LMS.', true, 22),
+
+-- Product Manager (ID: 23)
+('Tech Startup', 'Product Analyst', '2014-07-01', '2017-06-30', 'Phân tích dữ liệu người dùng, thực hiện user research và hỗ trợ phát triển roadmap sản phẩm.', true, 23),
+('SaaSify', 'Product Manager', '2017-07-01', '2020-12-31', 'Quản lý vòng đời sản phẩm SaaS từ concept đến launch, làm việc với các đội phát triển để đảm bảo chất lượng sản phẩm.', true, 23),
+('ProductLabs', 'Senior Product Manager', '2021-01-01', '2024-12-31', 'Dẫn dắt chiến lược sản phẩm, phát triển roadmap và ưu tiên tính năng dựa trên insight người dùng và mục tiêu kinh doanh.', true, 23),
+
+-- System Administrator (ID: 24)
+('IT Solutions', 'System Administrator', '2015-07-01', '2018-06-30', 'Quản trị hệ thống máy chủ Windows và Linux, triển khai và duy trì network infrastructure.', true, 24),
+('Cloud Provider', 'Cloud Engineer', '2018-07-01', '2021-06-30', 'Thiết kế và triển khai giải pháp cloud trên AWS và Azure, tự động hóa quy trình DevOps với Terraform.', true, 24),
+('Enterprise IT', 'Senior DevOps Engineer', '2021-07-01', '2024-12-31', 'Quản lý hạ tầng cloud enterprise, triển khai Kubernetes cluster và xây dựng CI/CD pipeline.', true, 24),
+
+-- Translator & Interpreter (ID: 25)
+('Global Translations', 'Translator', '2016-07-01', '2018-12-31', 'Dịch thuật tài liệu kỹ thuật, pháp lý và marketing từ tiếng Anh sang tiếng Việt và ngược lại.', true, 25),
+('Conference Services', 'Interpreter', '2019-01-01', '2021-06-30', 'Phiên dịch song song và liên tiếp tại các hội nghị, cuộc họp kinh doanh và sự kiện quốc tế.', true, 25),
+('Language Solutions', 'Senior Translator & Interpreter', '2021-07-01', '2024-12-31', 'Dịch thuật và phiên dịch cho các dự án quan trọng, đào tạo đội ngũ biên dịch viên mới và đảm bảo chất lượng dịch thuật.', true, 25),
+
+-- Unity Developer (ID: 26)
+('GameDev Studio', 'Junior Unity Developer', '2018-07-01', '2020-06-30', 'Phát triển game mobile casual với Unity, lập trình gameplay và tích hợp các dịch vụ như Firebase và AdMob.', true, 26),
+('AR Solutions', 'Unity Developer', '2020-07-01', '2022-12-31', 'Phát triển ứng dụng AR/VR cho các khách hàng doanh nghiệp trong lĩnh vực bán lẻ, giáo dục và bất động sản.', true, 26),
+('XR Technologies', 'Senior Unity Developer', '2023-01-01', '2024-12-31', 'Dẫn dắt phát triển các dự án XR (AR/VR/MR) phức tạp, tối ưu hóa hiệu suất và triển khai trên nhiều nền tảng.', true, 26);
+
+-- Thêm job mới cho các client mới
+INSERT INTO job (title, scope, hour_work, duration, job_opportunity, from_price, to_price, type_price, description, type_payment, status, created_at, updated_at, client_id, category_id, end_date)
+VALUES
+-- Client 13 (FinTech Solutions - Minh)
+('Phát triển hệ thống thanh toán trực tuyến', 'LARGE', 100, 150, true, 40000000, 70000000, 'VNĐ', 'Cần phát triển hệ thống thanh toán trực tuyến tích hợp với các ngân hàng và ví điện tử trong nước, đảm bảo bảo mật cao và trải nghiệm thanh toán mượt mà.', 'FULL', 'OPEN', NOW(), NULL, 13, 1, NOW() + INTERVAL 45 DAY),
+
+('Xây dựng backend cho ứng dụng quản lý tài chính cá nhân', 'MEDIUM', 60, 90, true, 25000000, 45000000, 'VNĐ', 'Phát triển backend cho ứng dụng quản lý tài chính cá nhân với các tính năng theo dõi chi tiêu, lập ngân sách, phân tích xu hướng và đề xuất tiết kiệm.', 'FULL', 'OPEN', NOW(), NULL, 13, 1, NOW() + INTERVAL 30 DAY),
+
+-- Client 14 (TechVision Corp - Anh)
+('Phát triển hệ thống microservices cho ứng dụng SaaS', 'LARGE', 120, 180, true, 50000000, 85000000, 'VNĐ', 'Thiết kế và phát triển kiến trúc microservices cho nền tảng SaaS mới, đảm bảo khả năng mở rộng, tính linh hoạt và hiệu suất cao.', 'FULL', 'OPEN', NOW(), NULL, 14, 1, NOW() + INTERVAL 60 DAY),
+
+-- Thêm job mới cho các client mới (tiếp)
+-- Client 14 (TechVision Corp - Anh) tiếp
+('Xây dựng data pipeline và hệ thống phân tích dữ liệu', 'LARGE', 90, 120, true, 40000000, 75000000, 'VNĐ', 'Phát triển hệ thống thu thập, xử lý và phân tích dữ liệu lớn cho nền tảng SaaS, bao gồm ETL pipeline, data warehouse và dashboard phân tích.', 'FULL', 'OPEN', NOW(), NULL, 14, 7, NOW() + INTERVAL 45 DAY),
+
+-- Client 15 (BrandMax Agency - Trang)
+('Thiết kế chiến lược marketing số toàn diện', 'MEDIUM', 50, 60, false, 20000000, 40000000, 'VNĐ', 'Cần một chuyên gia marketing số thiết kế chiến lược marketing toàn diện cho thương hiệu mới, bao gồm SEO, content marketing, social media và quảng cáo trả phí.', 'HOURLY', 'OPEN', NOW(), NULL, 15, 4, NOW() + INTERVAL 30 DAY),
+
+('Sản xuất video quảng cáo thương hiệu', 'MEDIUM', 40, 45, true, 15000000, 35000000, 'VNĐ', 'Sản xuất video quảng cáo thương hiệu chất lượng cao dài 2-3 phút, bao gồm kịch bản, quay phim, chỉnh sửa và hậu kỳ với hiệu ứng đồ họa.', 'FULL', 'OPEN', NOW(), NULL, 15, 9, NOW() + INTERVAL 30 DAY),
+
+-- Client 16 (InnovatePro - Nam)
+('Thiết kế UX/UI cho ứng dụng SaaS B2B', 'MEDIUM', 60, 75, true, 25000000, 45000000, 'VNĐ', 'Thiết kế trải nghiệm người dùng và giao diện cho ứng dụng SaaS B2B mới, tập trung vào sự đơn giản, hiệu quả và khả năng mở rộng.', 'FULL', 'OPEN', NOW(), NULL, 16, 2, NOW() + INTERVAL 45 DAY),
+
+('Phát triển MVP cho ứng dụng quản lý dự án', 'MEDIUM', 80, 90, true, 30000000, 50000000, 'VNĐ', 'Phát triển phiên bản MVP cho ứng dụng quản lý dự án, tập trung vào các tính năng cốt lõi để kiểm chứng thị trường.', 'FULL', 'OPEN', NOW(), NULL, 16, 1, NOW() + INTERVAL 30 DAY),
+
+-- Client 17 (TalentCore HR - Phương)
+('Phát triển hệ thống ATS (Applicant Tracking System)', 'LARGE', 100, 120, true, 35000000, 60000000, 'VNĐ', 'Xây dựng hệ thống theo dõi ứng viên toàn diện với các tính năng sàng lọc CV, quản lý quy trình phỏng vấn, và báo cáo hiệu quả tuyển dụng.', 'FULL', 'OPEN', NOW(), NULL, 17, 1, NOW() + INTERVAL 60 DAY),
+
+('Xây dựng chatbot HR cho tuyển dụng', 'SMALL', 30, 45, false, 12000000, 25000000, 'VNĐ', 'Phát triển chatbot tích hợp với website tuyển dụng để trả lời câu hỏi ứng viên, sàng lọc sơ bộ và lên lịch phỏng vấn tự động.', 'HOURLY', 'OPEN', NOW(), NULL, 17, 1, NOW() + INTERVAL 30 DAY),
+
+-- Client 18 (GrowthPartners - Long)
+('Phát triển dashboard phân tích kinh doanh', 'MEDIUM', 50, 60, true, 20000000, 35000000, 'VNĐ', 'Xây dựng dashboard phân tích kinh doanh tổng hợp dữ liệu từ nhiều nguồn, giúp ra quyết định dựa trên dữ liệu thời gian thực.', 'FULL', 'OPEN', NOW(), NULL, 18, 7, NOW() + INTERVAL 45 DAY),
+
+('Phát triển hệ thống CRM tùy chỉnh', 'LARGE', 80, 120, true, 30000000, 55000000, 'VNĐ', 'Xây dựng hệ thống CRM tùy chỉnh theo quy trình kinh doanh đặc thù của công ty tư vấn, với tính năng quản lý lead và cơ hội.', 'FULL', 'OPEN', NOW(), NULL, 18, 1, NOW() + INTERVAL 60 DAY),
+
+-- Client 19 (ProjectSphere - Thanh)
+('Phát triển hệ thống quản lý dự án web-based', 'LARGE', 90, 120, true, 35000000, 60000000, 'VNĐ', 'Xây dựng hệ thống quản lý dự án trên nền tảng web, hỗ trợ phương pháp Agile và Waterfall, với các tính năng Gantt chart, quản lý tài nguyên và báo cáo.', 'FULL', 'OPEN', NOW(), NULL, 19, 1, NOW() + INTERVAL 45 DAY),
+
+('Phát triển ứng dụng theo dõi thời gian làm việc', 'MEDIUM', 40, 60, false, 15000000, 30000000, 'VNĐ', 'Xây dựng ứng dụng theo dõi thời gian làm việc cho team và dự án, với tính năng time tracking, báo cáo và tích hợp với hệ thống thanh toán.', 'HOURLY', 'OPEN', NOW(), NULL, 19, 1, NOW() + INTERVAL 30 DAY),
+
+-- Client 20 (CreativeHive - Tuấn)
+('Thiết kế bộ nhận diện thương hiệu toàn diện', 'MEDIUM', 50, 60, true, 20000000, 40000000, 'VNĐ', 'Thiết kế bộ nhận diện thương hiệu đầy đủ bao gồm logo, bảng màu, typography, pattern, mockup ứng dụng và brand guidelines.', 'FULL', 'OPEN', NOW(), NULL, 20, 2, NOW() + INTERVAL 30 DAY),
+
+('Thiết kế và phát triển website portfolio sáng tạo', 'MEDIUM', 60, 75, true, 25000000, 45000000, 'VNĐ', 'Thiết kế và phát triển website portfolio sáng tạo, tương tác cao với hiệu ứng animation độc đáo và trải nghiệm người dùng ấn tượng.', 'FULL', 'OPEN', NOW(), NULL, 20, 2, NOW() + INTERVAL 45 DAY),
+
+-- Client 21 (E-commerce Experts - Hải)
+('Phát triển nền tảng thương mại điện tử multi-vendor', 'LARGE', 120, 180, true, 50000000, 90000000, 'VNĐ', 'Xây dựng nền tảng thương mại điện tử đa người bán với đầy đủ tính năng quản lý sản phẩm, đơn hàng, thanh toán và báo cáo cho cả admin và vendor.', 'FULL', 'OPEN', NOW(), NULL, 21, 1, NOW() + INTERVAL 60 DAY),
+
+('Tích hợp giải pháp thanh toán đa kênh', 'MEDIUM', 40, 60, false, 18000000, 35000000, 'VNĐ', 'Tích hợp nhiều phương thức thanh toán (thẻ, ví điện tử, QR code, trả góp) vào nền tảng thương mại điện tử hiện có.', 'HOURLY', 'OPEN', NOW(), NULL, 21, 1, NOW() + INTERVAL 30 DAY),
+
+-- Client 22 (DigitalTransform Solutions - Hoàng)
+('Phát triển chiến lược chuyển đổi số cho doanh nghiệp sản xuất', 'LARGE', 80, 100, true, 40000000, 70000000, 'VNĐ', 'Phát triển chiến lược và lộ trình chuyển đổi số toàn diện cho doanh nghiệp sản xuất, bao gồm tự động hóa quy trình, ERP và phân tích dữ liệu.', 'FULL', 'OPEN', NOW(), NULL, 22, 7, NOW() + INTERVAL 45 DAY),
+
+('Xây dựng hệ thống IoT giám sát sản xuất', 'LARGE', 90, 120, true, 45000000, 85000000, 'VNĐ', 'Phát triển hệ thống IoT giám sát quy trình sản xuất thời gian thực, bao gồm cảm biến, gateway, cloud platform và dashboard phân tích.', 'FULL', 'OPEN', NOW(), NULL, 22, 1, NOW() + INTERVAL 60 DAY);
+
+-- Thêm kỹ năng cho job mới
+INSERT INTO job_skill (job_id, skill_id)
+VALUES
+-- Client 13 - FinTech Solutions - Job 1: Phát triển hệ thống thanh toán trực tuyến
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống thanh toán trực tuyến'), 1),  -- Java
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống thanh toán trực tuyến'), 2),  -- Spring Boot
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống thanh toán trực tuyến'), 21), -- SQL
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống thanh toán trực tuyến'), 22), -- MySQL
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống thanh toán trực tuyến'), 32), -- AWS
+
+-- Client 13 - FinTech Solutions - Job 2: Xây dựng backend cho ứng dụng quản lý tài chính cá nhân
+((SELECT id FROM job WHERE title = 'Xây dựng backend cho ứng dụng quản lý tài chính cá nhân'), 6),  -- Node.js
+((SELECT id FROM job WHERE title = 'Xây dựng backend cho ứng dụng quản lý tài chính cá nhân'), 7),  -- Express.js
+((SELECT id FROM job WHERE title = 'Xây dựng backend cho ứng dụng quản lý tài chính cá nhân'), 24), -- MongoDB
+((SELECT id FROM job WHERE title = 'Xây dựng backend cho ứng dụng quản lý tài chính cá nhân'), 25), -- Firebase
+((SELECT id FROM job WHERE title = 'Xây dựng backend cho ứng dụng quản lý tài chính cá nhân'), 26), -- Data Analysis
+
+-- Client 14 - TechVision Corp - Job 1: Phát triển hệ thống microservices cho ứng dụng SaaS
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống microservices cho ứng dụng SaaS'), 1),  -- Java
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống microservices cho ứng dụng SaaS'), 2),  -- Spring Boot
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống microservices cho ứng dụng SaaS'), 34), -- Docker
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống microservices cho ứng dụng SaaS'), 35), -- Kubernetes
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống microservices cho ứng dụng SaaS'), 37), -- CI/CD Pipelines
+
+-- Client 14 - TechVision Corp - Job 2: Xây dựng data pipeline và hệ thống phân tích dữ liệu
+((SELECT id FROM job WHERE title = 'Xây dựng data pipeline và hệ thống phân tích dữ liệu'), 8),  -- Python
+((SELECT id FROM job WHERE title = 'Xây dựng data pipeline và hệ thống phân tích dữ liệu'), 26), -- Data Analysis
+((SELECT id FROM job WHERE title = 'Xây dựng data pipeline và hệ thống phân tích dữ liệu'), 27), -- Data Science
+((SELECT id FROM job WHERE title = 'Xây dựng data pipeline và hệ thống phân tích dữ liệu'), 32), -- AWS
+((SELECT id FROM job WHERE title = 'Xây dựng data pipeline và hệ thống phân tích dữ liệu'), 21), -- SQL
+
+-- Client 15 - BrandMax Agency - Job 1: Thiết kế chiến lược marketing số toàn diện
+((SELECT id FROM job WHERE title = 'Thiết kế chiến lược marketing số toàn diện'), 48), -- SEO Optimization
+((SELECT id FROM job WHERE title = 'Thiết kế chiến lược marketing số toàn diện'), 50), -- Content Writing
+((SELECT id FROM job WHERE title = 'Thiết kế chiến lược marketing số toàn diện'), 55), -- Social Media Marketing
+((SELECT id FROM job WHERE title = 'Thiết kế chiến lược marketing số toàn diện'), 57), -- Google Ads
+((SELECT id FROM job WHERE title = 'Thiết kế chiến lược marketing số toàn diện'), 58), -- Facebook Ads
+
+-- Client 15 - BrandMax Agency - Job 2: Sản xuất video quảng cáo thương hiệu
+((SELECT id FROM job WHERE title = 'Sản xuất video quảng cáo thương hiệu'), 59), -- Video Editing
+((SELECT id FROM job WHERE title = 'Sản xuất video quảng cáo thương hiệu'), 60), -- Adobe Premiere Pro
+((SELECT id FROM job WHERE title = 'Sản xuất video quảng cáo thương hiệu'), 62), -- After Effects
+((SELECT id FROM job WHERE title = 'Sản xuất video quảng cáo thương hiệu'), 63), -- Animation
+((SELECT id FROM job WHERE title = 'Sản xuất video quảng cáo thương hiệu'), 65), -- Music Production
+
+-- Client 16 - InnovatePro - Job 1: Thiết kế UX/UI cho ứng dụng SaaS B2B
+((SELECT id FROM job WHERE title = 'Thiết kế UX/UI cho ứng dụng SaaS B2B'), 39), -- UI/UX Design
+((SELECT id FROM job WHERE title = 'Thiết kế UX/UI cho ứng dụng SaaS B2B'), 41), -- Figma
+((SELECT id FROM job WHERE title = 'Thiết kế UX/UI cho ứng dụng SaaS B2B'), 42), -- Sketch
+((SELECT id FROM job WHERE title = 'Thiết kế UX/UI cho ứng dụng SaaS B2B'), 40), -- Adobe Photoshop
+((SELECT id FROM job WHERE title = 'Thiết kế UX/UI cho ứng dụng SaaS B2B'), 43), -- Adobe Illustrator
+
+-- Client 16 - InnovatePro - Job 2: Phát triển MVP cho ứng dụng quản lý dự án
+((SELECT id FROM job WHERE title = 'Phát triển MVP cho ứng dụng quản lý dự án'), 3),  -- ReactJS
+((SELECT id FROM job WHERE title = 'Phát triển MVP cho ứng dụng quản lý dự án'), 6),  -- Node.js
+((SELECT id FROM job WHERE title = 'Phát triển MVP cho ứng dụng quản lý dự án'), 7),  -- Express.js
+((SELECT id FROM job WHERE title = 'Phát triển MVP cho ứng dụng quản lý dự án'), 24), -- MongoDB
+((SELECT id FROM job WHERE title = 'Phát triển MVP cho ứng dụng quản lý dự án'), 25), -- Firebase
+
+-- Thêm kỹ năng cho các job còn lại (các client 17-22)
+-- Client 17 - TalentCore HR - Job 1: Phát triển hệ thống ATS
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống ATS (Applicant Tracking System)'), 1),  -- Java
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống ATS (Applicant Tracking System)'), 2),  -- Spring Boot
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống ATS (Applicant Tracking System)'), 3),  -- ReactJS
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống ATS (Applicant Tracking System)'), 21), -- SQL
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống ATS (Applicant Tracking System)'), 22), -- MySQL
+
+-- Client 17 - TalentCore HR - Job 2: Xây dựng chatbot HR
+((SELECT id FROM job WHERE title = 'Xây dựng chatbot HR cho tuyển dụng'), 8),  -- Python
+((SELECT id FROM job WHERE title = 'Xây dựng chatbot HR cho tuyển dụng'), 28), -- Machine Learning
+((SELECT id FROM job WHERE title = 'Xây dựng chatbot HR cho tuyển dụng'), 29), -- Deep Learning
+((SELECT id FROM job WHERE title = 'Xây dựng chatbot HR cho tuyển dụng'), 30), -- TensorFlow
+((SELECT id FROM job WHERE title = 'Xây dựng chatbot HR cho tuyển dụng'), 31), -- PyTorch
+
+-- Client 18 - GrowthPartners - Job 1: Phát triển dashboard phân tích kinh doanh
+((SELECT id FROM job WHERE title = 'Phát triển dashboard phân tích kinh doanh'), 8),  -- Python
+((SELECT id FROM job WHERE title = 'Phát triển dashboard phân tích kinh doanh'), 26), -- Data Analysis
+((SELECT id FROM job WHERE title = 'Phát triển dashboard phân tích kinh doanh'), 27), -- Data Science
+((SELECT id FROM job WHERE title = 'Phát triển dashboard phân tích kinh doanh'), 21), -- SQL
+((SELECT id FROM job WHERE title = 'Phát triển dashboard phân tích kinh doanh'), 3),  -- ReactJS
+
+-- Client 18 - GrowthPartners - Job 2: Phát triển hệ thống CRM tùy chỉnh
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống CRM tùy chỉnh'), 1),  -- Java
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống CRM tùy chỉnh'), 2),  -- Spring Boot
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống CRM tùy chỉnh'), 3),  -- ReactJS
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống CRM tùy chỉnh'), 21), -- SQL
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống CRM tùy chỉnh'), 22), -- MySQL
+
+-- Client 19 - ProjectSphere - Job 1: Phát triển hệ thống quản lý dự án web-based
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống quản lý dự án web-based'), 3),  -- ReactJS
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống quản lý dự án web-based'), 6),  -- Node.js
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống quản lý dự án web-based'), 7),  -- Express.js
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống quản lý dự án web-based'), 24), -- MongoDB
+((SELECT id FROM job WHERE title = 'Phát triển hệ thống quản lý dự án web-based'), 32), -- AWS
+
+-- Client 19 - ProjectSphere - Job 2: Phát triển ứng dụng theo dõi thời gian làm việc
+((SELECT id FROM job WHERE title = 'Phát triển ứng dụng theo dõi thời gian làm việc'), 3),  -- ReactJS
+((SELECT id FROM job WHERE title = 'Phát triển ứng dụng theo dõi thời gian làm việc'), 6),  -- Node.js
+((SELECT id FROM job WHERE title = 'Phát triển ứng dụng theo dõi thời gian làm việc'), 24), -- MongoDB
+((SELECT id FROM job WHERE title = 'Phát triển ứng dụng theo dõi thời gian làm việc'), 25), -- Firebase
+((SELECT id FROM job WHERE title = 'Phát triển ứng dụng theo dõi thời gian làm việc'), 19), -- Flutter
+
+-- Client 20 - CreativeHive - Job 1: Thiết kế bộ nhận diện thương hiệu
+((SELECT id FROM job WHERE title = 'Thiết kế bộ nhận diện thương hiệu toàn diện'), 40), -- Adobe Photoshop
+((SELECT id FROM job WHERE title = 'Thiết kế bộ nhận diện thương hiệu toàn diện'), 41), -- Adobe Illustrator
+((SELECT id FROM job WHERE title = 'Thiết kế bộ nhận diện thương hiệu toàn diện'), 42), -- Figma
+((SELECT id FROM job WHERE title = 'Thiết kế bộ nhận diện thương hiệu toàn diện'), 43), -- Sketch
+((SELECT id FROM job WHERE title = 'Thiết kế bộ nhận diện thương hiệu toàn diện'), 39), -- UI/UX Design
+
+-- Client 20 - CreativeHive - Job 2: Thiết kế và phát triển website portfolio
+((SELECT id FROM job WHERE title = 'Thiết kế và phát triển website portfolio sáng tạo'), 3),  -- ReactJS
+((SELECT id FROM job WHERE title = 'Thiết kế và phát triển website portfolio sáng tạo'), 39), -- UI/UX Design
+((SELECT id FROM job WHERE title = 'Thiết kế và phát triển website portfolio sáng tạo'), 40), -- Adobe Photoshop
+((SELECT id FROM job WHERE title = 'Thiết kế và phát triển website portfolio sáng tạo'), 42), -- Figma
+((SELECT id FROM job WHERE title = 'Thiết kế và phát triển website portfolio sáng tạo'), 62), -- Animation
+
+-- Client 21 - E-commerce Experts - Job 1: Phát triển nền tảng thương mại điện tử
+((SELECT id FROM job WHERE title = 'Phát triển nền tảng thương mại điện tử multi-vendor'), 1),  -- Java
+((SELECT id FROM job WHERE title = 'Phát triển nền tảng thương mại điện tử multi-vendor'), 2),  -- Spring Boot
+((SELECT id FROM job WHERE title = 'Phát triển nền tảng thương mại điện tử multi-vendor'), 3),  -- ReactJS
+((SELECT id FROM job WHERE title = 'Phát triển nền tảng thương mại điện tử multi-vendor'), 21), -- SQL
+((SELECT id FROM job WHERE title = 'Phát triển nền tảng thương mại điện tử multi-vendor'), 32), -- AWS
+
+-- Client 21 - E-commerce Experts - Job 2: Tích hợp giải pháp thanh toán
+((SELECT id FROM job WHERE title = 'Tích hợp giải pháp thanh toán đa kênh'), 1),  -- Java
+((SELECT id FROM job WHERE title = 'Tích hợp giải pháp thanh toán đa kênh'), 2),  -- Spring Boot
+((SELECT id FROM job WHERE title = 'Tích hợp giải pháp thanh toán đa kênh'), 6),  -- Node.js
+((SELECT id FROM job WHERE title = 'Tích hợp giải pháp thanh toán đa kênh'), 7),  -- Express.js
+((SELECT id FROM job WHERE title = 'Tích hợp giải pháp thanh toán đa kênh'), 25), -- Firebase
+
+-- Client 22 - DigitalTransform Solutions - Job 1: Phát triển chiến lược chuyển đổi số
+((SELECT id FROM job WHERE title = 'Phát triển chiến lược chuyển đổi số cho doanh nghiệp sản xuất'), 26), -- Data Analysis
+((SELECT id FROM job WHERE title = 'Phát triển chiến lược chuyển đổi số cho doanh nghiệp sản xuất'), 27), -- Data Science
+((SELECT id FROM job WHERE title = 'Phát triển chiến lược chuyển đổi số cho doanh nghiệp sản xuất'), 71), -- Project Management
+((SELECT id FROM job WHERE title = 'Phát triển chiến lược chuyển đổi số cho doanh nghiệp sản xuất'), 72), -- Business Consulting
+((SELECT id FROM job WHERE title = 'Phát triển chiến lược chuyển đổi số cho doanh nghiệp sản xuất'), 73), -- Customer Support
+
+-- Client 22 - DigitalTransform Solutions - Job 2: Xây dựng hệ thống IoT
+((SELECT id FROM job WHERE title = 'Xây dựng hệ thống IoT giám sát sản xuất'), 8),  -- Python
+((SELECT id FROM job WHERE title = 'Xây dựng hệ thống IoT giám sát sản xuất'), 16), -- C++
+((SELECT id FROM job WHERE title = 'Xây dựng hệ thống IoT giám sát sản xuất'), 26), -- Data Analysis
+((SELECT id FROM job WHERE title = 'Xây dựng hệ thống IoT giám sát sản xuất'), 32), -- AWS
+((SELECT id FROM job WHERE title = 'Xây dựng hệ thống IoT giám sát sản xuất'), 27); -- Data Science
+
+-- Thêm sold_packages (gói dịch vụ đã bán) cho client mới
+INSERT INTO sold_packages (start_date, end_date, price, number_post, number_posted, status, voucher_packages, client)
+VALUES
+    -- Gói hiện tại cho client mới
+    (NOW(), DATE_ADD(NOW(), INTERVAL 30 DAY), 390000, 10, 2, true, 4, 13),  -- Client FinTech Solutions
+    (NOW(), DATE_ADD(NOW(), INTERVAL 30 DAY), 390000, 10, 2, true, 4, 14),  -- Client TechVision Corp
+    (NOW(), DATE_ADD(NOW(), INTERVAL 14 DAY), 290000, 10, 2, true, 3, 15),  -- Client BrandMax Agency
+    (NOW(), DATE_ADD(NOW(), INTERVAL 14 DAY), 290000, 10, 2, true, 3, 16),  -- Client InnovatePro
+    (NOW(), DATE_ADD(NOW(), INTERVAL 30 DAY), 390000, 10, 2, true, 4, 17),  -- Client TalentCore HR
+    (NOW(), DATE_ADD(NOW(), INTERVAL 14 DAY), 290000, 10, 2, true, 3, 18),  -- Client GrowthPartners
+    (NOW(), DATE_ADD(NOW(), INTERVAL 14 DAY), 290000, 10, 2, true, 3, 19),  -- Client ProjectSphere
+    (NOW(), DATE_ADD(NOW(), INTERVAL 30 DAY), 390000, 10, 2, true, 4, 20),  -- Client CreativeHive
+    (NOW(), DATE_ADD(NOW(), INTERVAL 30 DAY), 390000, 10, 2, true, 4, 21),  -- Client E-commerce Experts
+    (NOW(), DATE_ADD(NOW(), INTERVAL 30 DAY), 390000, 10, 2, true, 4, 22),  -- Client DigitalTransform Solutions
+
+    -- Gói đã hết hạn cho client mới
+    (DATE_SUB(NOW(), INTERVAL 2 MONTH), DATE_SUB(NOW(), INTERVAL 1 MONTH), 290000, 10, 8, false, 3, 13),
+    (DATE_SUB(NOW(), INTERVAL 3 MONTH), DATE_SUB(NOW(), INTERVAL 2 MONTH), 90000, 5, 5, false, 2, 13),
+
+    (DATE_SUB(NOW(), INTERVAL 2 MONTH), DATE_SUB(NOW(), INTERVAL 1 MONTH), 290000, 10, 7, false, 3, 14),
+    (DATE_SUB(NOW(), INTERVAL 3 MONTH), DATE_SUB(NOW(), INTERVAL 2 MONTH), 290000, 10, 9, false, 3, 14),
+
+-- Thêm sold_packages (gói dịch vụ đã bán) cho client mới (tiếp)
+    (DATE_SUB(NOW(), INTERVAL 2 MONTH), DATE_SUB(NOW(), INTERVAL 1 MONTH), 90000, 5, 5, false, 2, 15),
+    (DATE_SUB(NOW(), INTERVAL 3 MONTH), DATE_SUB(NOW(), INTERVAL 2 MONTH), 90000, 5, 4, false, 2, 15),
+
+    (DATE_SUB(NOW(), INTERVAL 2 MONTH), DATE_SUB(NOW(), INTERVAL 1 MONTH), 290000, 10, 8, false, 3, 16),
+    (DATE_SUB(NOW(), INTERVAL 3 MONTH), DATE_SUB(NOW(), INTERVAL 2 MONTH), 90000, 5, 5, false, 2, 16),
+
+    (DATE_SUB(NOW(), INTERVAL 2 MONTH), DATE_SUB(NOW(), INTERVAL 1 MONTH), 290000, 10, 9, false, 3, 17),
+    (DATE_SUB(NOW(), INTERVAL 3 MONTH), DATE_SUB(NOW(), INTERVAL 2 MONTH), 290000, 10, 7, false, 3, 17),
+
+    (DATE_SUB(NOW(), INTERVAL 2 MONTH), DATE_SUB(NOW(), INTERVAL 1 MONTH), 90000, 5, 4, false, 2, 18),
+    (DATE_SUB(NOW(), INTERVAL 3 MONTH), DATE_SUB(NOW(), INTERVAL 2 MONTH), 90000, 5, 5, false, 2, 18),
+
+    (DATE_SUB(NOW(), INTERVAL 2 MONTH), DATE_SUB(NOW(), INTERVAL 1 MONTH), 90000, 5, 5, false, 2, 19),
+    (DATE_SUB(NOW(), INTERVAL 3 MONTH), DATE_SUB(NOW(), INTERVAL 2 MONTH), 90000, 5, 4, false, 2, 19),
+
+    (DATE_SUB(NOW(), INTERVAL 2 MONTH), DATE_SUB(NOW(), INTERVAL 1 MONTH), 290000, 10, 8, false, 3, 20),
+    (DATE_SUB(NOW(), INTERVAL 3 MONTH), DATE_SUB(NOW(), INTERVAL 2 MONTH), 290000, 10, 9, false, 3, 20),
+
+    (DATE_SUB(NOW(), INTERVAL 2 MONTH), DATE_SUB(NOW(), INTERVAL 1 MONTH), 290000, 10, 7, false, 3, 21),
+    (DATE_SUB(NOW(), INTERVAL 3 MONTH), DATE_SUB(NOW(), INTERVAL 2 MONTH), 290000, 10, 9, false, 3, 21),
+
+    (DATE_SUB(NOW(), INTERVAL 2 MONTH), DATE_SUB(NOW(), INTERVAL 1 MONTH), 290000, 10, 8, false, 3, 22),
+    (DATE_SUB(NOW(), INTERVAL 3 MONTH), DATE_SUB(NOW(), INTERVAL 2 MONTH), 390000, 10, 10, false, 4, 22);
+
+-- Thêm Payment cho tài khoản mới
+INSERT INTO payment (balance, created_at, updated_at, account_id)
+VALUES
+    -- Freelancer mới
+    (2500000.00, NOW() - INTERVAL 60 DAY, NOW() - INTERVAL 2 DAY, 31),
+    (3200000.00, NOW() - INTERVAL 75 DAY, NOW() - INTERVAL 3 DAY, 32),
+    (1800000.00, NOW() - INTERVAL 45 DAY, NOW() - INTERVAL 1 DAY, 33),
+    (2900000.00, NOW() - INTERVAL 55 DAY, NOW() - INTERVAL 2 DAY, 34),
+    (3500000.00, NOW() - INTERVAL 70 DAY, NOW() - INTERVAL 4 DAY, 35),
+    (2200000.00, NOW() - INTERVAL 50 DAY, NOW() - INTERVAL 1 DAY, 36),
+    (4000000.00, NOW() - INTERVAL 65 DAY, NOW() - INTERVAL 3 DAY, 37),
+    (3300000.00, NOW() - INTERVAL 80 DAY, NOW() - INTERVAL 5 DAY, 38),
+    (1500000.00, NOW() - INTERVAL 40 DAY, NOW() - INTERVAL 2 DAY, 39),
+    (2700000.00, NOW() - INTERVAL 35 DAY, NOW() - INTERVAL 1 DAY, 40),
+
+    -- Client mới
+    (0.00, NOW() - INTERVAL 60 DAY, NOW() - INTERVAL 2 DAY, 41),
+    (0.00, NOW() - INTERVAL 75 DAY, NOW() - INTERVAL 3 DAY, 42),
+    (0.00, NOW() - INTERVAL 45 DAY, NOW() - INTERVAL 1 DAY, 43),
+    (0.00, NOW() - INTERVAL 55 DAY, NOW() - INTERVAL 2 DAY, 44),
+    (0.00, NOW() - INTERVAL 70 DAY, NOW() - INTERVAL 4 DAY, 45),
+    (0.00, NOW() - INTERVAL 50 DAY, NOW() - INTERVAL 1 DAY, 46),
+    (0.00, NOW() - INTERVAL 65 DAY, NOW() - INTERVAL 3 DAY, 47),
+    (0.00, NOW() - INTERVAL 80 DAY, NOW() - INTERVAL 5 DAY, 48),
+    (0.00, NOW() - INTERVAL 40 DAY, NOW() - INTERVAL 2 DAY, 49),
+    (0.00, NOW() - INTERVAL 35 DAY, NOW() - INTERVAL 1 DAY, 50);
+
+-- Thêm giao dịch cho freelancer mới
+INSERT INTO transactions (money, activity, created_at, description, status, payment_id)
+VALUES
+    -- Freelancer 1 (Thủy - Content Strategist)
+    (1200000.00, 'DEPOSIT', NOW() - INTERVAL 60 DAY, 'Thanh toán từ dự án: Chiến lược nội dung E-commerce', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 31)),
+    (800000.00, 'DEPOSIT', NOW() - INTERVAL 30 DAY, 'Thanh toán từ dự án: Chiến dịch Content Marketing B2B', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 31)),
+    (500000.00, 'WITHDRAW', NOW() - INTERVAL 15 DAY, 'Rút tiền về tài khoản ngân hàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 31)),
+
+    -- Freelancer 2 (Sơn - Cybersecurity Expert)
+    (1500000.00, 'DEPOSIT', NOW() - INTERVAL 75 DAY, 'Thanh toán từ dự án: Đánh giá bảo mật hệ thống ngân hàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 32)),
+    (1800000.00, 'DEPOSIT', NOW() - INTERVAL 45 DAY, 'Thanh toán từ dự án: Xây dựng SOC', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 32)),
+    (900000.00, 'WITHDRAW', NOW() - INTERVAL 20 DAY, 'Rút tiền về tài khoản ngân hàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 32)),
+
+    -- Freelancer 3 (Hằng - Financial Analyst)
+    (1300000.00, 'DEPOSIT', NOW() - INTERVAL 45 DAY, 'Thanh toán từ dự án: Mô hình định giá startup công nghệ', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 33)),
+    (1100000.00, 'DEPOSIT', NOW() - INTERVAL 25 DAY, 'Thanh toán từ dự án: Phân tích ROI dự án đầu tư', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 33)),
+    (600000.00, 'WITHDRAW', NOW() - INTERVAL 10 DAY, 'Rút tiền về tài khoản ngân hàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 33)),
+
+    -- Freelancer 4 (Khôi - Game Designer)
+    (1600000.00, 'DEPOSIT', NOW() - INTERVAL 55 DAY, 'Thanh toán từ dự án: Adventure Quest Mobile Game', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 34)),
+    (1400000.00, 'DEPOSIT', NOW() - INTERVAL 35 DAY, 'Thanh toán từ dự án: VR Historical Experience', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 34)),
+    (800000.00, 'WITHDRAW', NOW() - INTERVAL 15 DAY, 'Rút tiền về tài khoản ngân hàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 34)),
+
+    -- Freelancer 5 (Linh - Social Media Manager)
+    (1900000.00, 'DEPOSIT', NOW() - INTERVAL 70 DAY, 'Thanh toán từ dự án: Chiến dịch TikTok cho thương hiệu F&B', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 35)),
+    (1700000.00, 'DEPOSIT', NOW() - INTERVAL 40 DAY, 'Thanh toán từ dự án: Xây dựng cộng đồng trên Facebook', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 35)),
+    (1000000.00, 'WITHDRAW', NOW() - INTERVAL 20 DAY, 'Rút tiền về tài khoản ngân hàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 35)),
+
+    -- Freelancer 6-10
+    (1200000.00, 'DEPOSIT', NOW() - INTERVAL 50 DAY, 'Thanh toán từ dự án: E-learning Platform WordPress', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 36)),
+    (1000000.00, 'DEPOSIT', NOW() - INTERVAL 30 DAY, 'Thanh toán từ dự án: Multi-vendor Marketplace', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 36)),
+
+    (2000000.00, 'DEPOSIT', NOW() - INTERVAL 65 DAY, 'Thanh toán từ dự án: FinTech Payment App', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 37)),
+    (2000000.00, 'DEPOSIT', NOW() - INTERVAL 35 DAY, 'Thanh toán từ dự án: SaaS CRM Solution', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 37)),
+
+    (1800000.00, 'DEPOSIT', NOW() - INTERVAL 80 DAY, 'Thanh toán từ dự án: Multi-Cloud Migration', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 38)),
+    (1500000.00, 'DEPOSIT', NOW() - INTERVAL 50 DAY, 'Thanh toán từ dự án: Kubernetes CI/CD Pipeline', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 38)),
+
+    (900000.00, 'DEPOSIT', NOW() - INTERVAL 40 DAY, 'Thanh toán từ dự án: Dịch tài liệu kỹ thuật AI', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 39)),
+    (700000.00, 'DEPOSIT', NOW() - INTERVAL 20 DAY, 'Thanh toán từ dự án: Phiên dịch hội nghị quốc tế', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 39)),
+
+    (1500000.00, 'DEPOSIT', NOW() - INTERVAL 35 DAY, 'Thanh toán từ dự án: AR Shopping Experience', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 40)),
+    (1300000.00, 'DEPOSIT', NOW() - INTERVAL 15 DAY, 'Thanh toán từ dự án: Educational VR Application', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 40));
+
+-- Thêm giao dịch thanh toán gói dịch vụ cho client mới
+INSERT INTO transactions (money, activity, created_at, description, status, payment_id)
+VALUES
+    -- Client 1 (FinTech Solutions - Minh)
+    (1500000.00, 'DEPOSIT', NOW() - INTERVAL 65 DAY, 'Nạp tiền vào tài khoản qua ngân hàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 41)),
+    (390000.00, 'WITHDRAW', NOW() - INTERVAL 30 DAY, 'Thanh toán gói Kim Cương', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 41)),
+    (290000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 2 MONTH), 'Thanh toán gói Vàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 41)),
+    (90000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 3 MONTH), 'Thanh toán gói Bạc', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 41)),
+
+    -- Client 2 (TechVision Corp - Anh)
+    (2000000.00, 'DEPOSIT', NOW() - INTERVAL 80 DAY, 'Nạp tiền vào tài khoản qua VNPay', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 42)),
+    (390000.00, 'WITHDRAW', NOW() - INTERVAL 30 DAY, 'Thanh toán gói Kim Cương', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 42)),
+    (290000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 2 MONTH), 'Thanh toán gói Vàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 42)),
+    (290000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 3 MONTH), 'Thanh toán gói Vàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 42)),
+
+    -- Client 3 (BrandMax Agency - Trang)
+    (1000000.00, 'DEPOSIT', NOW() - INTERVAL 50 DAY, 'Nạp tiền vào tài khoản qua Momo', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 43)),
+    (290000.00, 'WITHDRAW', NOW() - INTERVAL 14 DAY, 'Thanh toán gói Vàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 43)),
+    (90000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 2 MONTH), 'Thanh toán gói Bạc', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 43)),
+    (90000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 3 MONTH), 'Thanh toán gói Bạc', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 43)),
+
+    -- Client 4 (InnovatePro - Nam)
+    (1200000.00, 'DEPOSIT', NOW() - INTERVAL 60 DAY, 'Nạp tiền vào tài khoản qua ngân hàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 44)),
+    (290000.00, 'WITHDRAW', NOW() - INTERVAL 14 DAY, 'Thanh toán gói Vàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 44)),
+    (290000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 2 MONTH), 'Thanh toán gói Vàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 44)),
+    (90000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 3 MONTH), 'Thanh toán gói Bạc', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 44)),
+
+    -- Client 5 (TalentCore HR - Phương)
+    (1500000.00, 'DEPOSIT', NOW() - INTERVAL 75 DAY, 'Nạp tiền vào tài khoản qua VNPay', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 45)),
+    (390000.00, 'WITHDRAW', NOW() - INTERVAL 30 DAY, 'Thanh toán gói Kim Cương', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 45)),
+    (290000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 2 MONTH), 'Thanh toán gói Vàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 45)),
+    (290000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 3 MONTH), 'Thanh toán gói Vàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 45)),
+
+    -- Client 6-10
+    (1000000.00, 'DEPOSIT', NOW() - INTERVAL 55 DAY, 'Nạp tiền vào tài khoản qua Momo', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 46)),
+    (290000.00, 'WITHDRAW', NOW() - INTERVAL 14 DAY, 'Thanh toán gói Vàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 46)),
+
+    (800000.00, 'DEPOSIT', NOW() - INTERVAL 70 DAY, 'Nạp tiền vào tài khoản qua ngân hàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 47)),
+    (290000.00, 'WITHDRAW', NOW() - INTERVAL 14 DAY, 'Thanh toán gói Vàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 47)),
+
+    (1500000.00, 'DEPOSIT', NOW() - INTERVAL 85 DAY, 'Nạp tiền vào tài khoản qua VNPay', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 48)),
+    (390000.00, 'WITHDRAW', NOW() - INTERVAL 30 DAY, 'Thanh toán gói Kim Cương', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 48)),
+
+    (1200000.00, 'DEPOSIT', NOW() - INTERVAL 45 DAY, 'Nạp tiền vào tài khoản qua Momo', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 49)),
+    (390000.00, 'WITHDRAW', NOW() - INTERVAL 30 DAY, 'Thanh toán gói Kim Cương', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 49)),
+
+    (1800000.00, 'DEPOSIT', NOW() - INTERVAL 40 DAY, 'Nạp tiền vào tài khoản qua ngân hàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 50)),
+    (390000.00, 'WITHDRAW', NOW() - INTERVAL 30 DAY, 'Thanh toán gói Kim Cương', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 50));
+
+-- Freelancer ứng tuyển job
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date)
+VALUES
+    -- Content Strategist (Thủy) ứng tuyển
+    (false, 'APPLIED', 38, 17, (SELECT id FROM job WHERE title = 'Thiết kế chiến lược marketing số toàn diện'), NOW() - INTERVAL 5 DAY),
+    (false, 'VIEWED', 39, 17, (SELECT id FROM job WHERE title = 'Viết nội dung blog về công nghệ AI'), NOW() - INTERVAL 7 DAY),
+
+    -- Cybersecurity Expert (Sơn) ứng tuyển
+    (false, 'APPLIED', 40, 18, (SELECT id FROM job WHERE title = 'Kiểm thử bảo mật và đánh giá lỗ hổng'), NOW() - INTERVAL 4 DAY),
+    (false, 'APPLIED', 41, 18, (SELECT id FROM job WHERE title = 'Xây dựng hệ thống thanh toán trực tuyến'), NOW() - INTERVAL 6 DAY),
+
+    -- Financial Analyst (Hằng) ứng tuyển
+    (false, 'APPLIED', 42, 19, (SELECT id FROM job WHERE title = 'Phát triển dashboard phân tích kinh doanh'), NOW() - INTERVAL 3 DAY),
+    (false, 'VIEWED', 43, 19, (SELECT id FROM job WHERE title = 'Phát triển chiến lược chuyển đổi số cho doanh nghiệp sản xuất'), NOW() - INTERVAL 5 DAY),
+
+    -- Game Designer (Khôi) ứng tuyển
+    (false, 'APPLIED', 44, 20, (SELECT id FROM job WHERE title = 'Phát triển ứng dụng mobile Cross-platform'), NOW() - INTERVAL 4 DAY),
+    (false, 'APPLIED', 45, 20, (SELECT id FROM job WHERE title = 'Thiết kế nhân vật game mobile'), NOW() - INTERVAL 6 DAY),
+
+    -- Social Media Manager (Linh) ứng tuyển
+    (false, 'APPLIED', 46, 21, (SELECT id FROM job WHERE title = 'Thiết kế chiến lược marketing số toàn diện'), NOW() - INTERVAL 3 DAY),
+    (false, 'VIEWED', 47, 21, (SELECT id FROM job WHERE title = 'Quản lý fanpage Facebook'), NOW() - INTERVAL 5 DAY),
+
+    -- WordPress Developer (Hùng) ứng tuyển
+    (false, 'APPLIED', 48, 22, (SELECT id FROM job WHERE title = 'Phát triển MVP cho ứng dụng quản lý dự án'), NOW() - INTERVAL 4 DAY),
+    (false, 'APPLIED', 49, 22, (SELECT id FROM job WHERE title = 'Phát triển website portfolio sáng tạo'), NOW() - INTERVAL 6 DAY),
+
+    -- Product Manager (Thủy) ứng tuyển
+    (false, 'APPLIED', 50, 23, (SELECT id FROM job WHERE title = 'Phát triển chiến lược chuyển đổi số cho doanh nghiệp sản xuất'), NOW() - INTERVAL 4 DAY),
+    (false, 'VIEWED', 51, 23, (SELECT id FROM job WHERE title = 'Xây dựng backend cho ứng dụng quản lý tài chính cá nhân'), NOW() - INTERVAL 7 DAY),
+
+    -- System Administrator (Đức) ứng tuyển
+    (false, 'APPLIED', 52, 24, (SELECT id FROM job WHERE title = 'Xây dựng hệ thống microservices cho ứng dụng SaaS'), NOW() - INTERVAL 5 DAY),
+    (false, 'APPLIED', 53, 24, (SELECT id FROM job WHERE title = 'Kiểm thử bảo mật và đánh giá lỗ hổng'), NOW() - INTERVAL 7 DAY),
+
+    -- Translator & Interpreter (Hương) ứng tuyển
+    (false, 'APPLIED', 54, 25, (SELECT id FROM job WHERE title = 'Biên tập sách kỹ năng'), NOW() - INTERVAL 3 DAY),
+    (false, 'VIEWED', 55, 25, (SELECT id FROM job WHERE title = 'Viết nội dung blog về công nghệ AI'), NOW() - INTERVAL 5 DAY),
+
+    -- Unity Developer (Trường) ứng tuyển
+    (false, 'APPLIED', 56, 26, (SELECT id FROM job WHERE title = 'Phát triển ứng dụng mobile Cross-platform'), NOW() - INTERVAL 4 DAY),
+    (false, 'APPLIED', 57, 26, (SELECT id FROM job WHERE title = 'Thiết kế nhân vật game mobile'), NOW() - INTERVAL 6 DAY);
+
+-- Thêm danh sách yêu thích (is_saved = true)
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date)
+VALUES
+    (true, NULL, NULL, 17, (SELECT id FROM job WHERE title = 'Viết nội dung cho ứng dụng'), NULL),
+    (true, NULL, NULL, 18, (SELECT id FROM job WHERE title = 'Phát triển hệ thống thanh toán trực tuyến'), NULL),
+    (true, NULL, NULL, 19, (SELECT id FROM job WHERE title = 'Phát triển chiến lược chuyển đổi số cho doanh nghiệp sản xuất'), NULL),
+    (true, NULL, NULL, 20, (SELECT id FROM job WHERE title = 'Lập trình Unity game 2D'), NULL),
+    (true, NULL, NULL, 21, (SELECT id FROM job WHERE title = 'SEO Growth Campaign'), NULL),
+    (true, NULL, NULL, 22, (SELECT id FROM job WHERE title = 'Thiết kế và phát triển website portfolio sáng tạo'), NULL),
+    (true, NULL, NULL, 23, (SELECT id FROM job WHERE title = 'Phát triển hệ thống ATS (Applicant Tracking System)'), NULL),
+    (true, NULL, NULL, 24, (SELECT id FROM job WHERE title = 'Xây dựng hệ thống IoT giám sát sản xuất'), NULL),
+    (true, NULL, NULL, 25, (SELECT id FROM job WHERE title = 'Biên tập sách kỹ năng'), NULL),
+    (true, NULL, NULL, 26, (SELECT id FROM job WHERE title = 'Lập trình Unity game 2D'), NULL);
 
 
 
