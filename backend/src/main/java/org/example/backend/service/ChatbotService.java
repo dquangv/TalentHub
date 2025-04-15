@@ -684,14 +684,12 @@ public class ChatbotService {
                 return getErrorResponse(params);
             }
 
-            // Log params và query template trước khi xử lý
-            logger.info("Template gốc: {}", queryTemplate);
-            logger.info("Params: {}", params);
+            // Tạo bản sao của template để thao tác
+            String finalQuery = new String(queryTemplate);
 
-            // Xử lý đặc biệt cho kỹ năng
+            // Xử lý đặc biệt cho kỹ năng nhiều
             String skills = params.get("skills");
-            if (skills != null && !skills.isEmpty()) {
-                // Xử lý nhiều kỹ năng
+            if (skills != null && !skills.isEmpty() && queryTemplate.contains("{{skills}}")) {
                 String[] skillList = skills.split(",\\s*");
 
                 if (skillList.length > 1) {
