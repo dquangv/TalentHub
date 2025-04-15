@@ -569,7 +569,7 @@ public class ChatbotService {
 
                 return responseText;
             } else {
-                return "Tôi hiểu ý định của bạn là " + intent.getIntentName() + ", nhưng tôi chưa có câu trả lời cho câu hỏi này.";
+                return "Tôi hiểu ý định của bạn là " + intent.getIntentName() + ", nhưng tôi chưa có câu trả lời chi tiết cho câu hỏi này.";
             }
         }
     }
@@ -678,9 +678,6 @@ public class ChatbotService {
     private String processResponseWithDbQuery(ChatResponse response, Map<String, String> params) {
         logger.info("Xử lý phản hồi có kèm truy vấn DB");
         try {
-            // Đảm bảo các tham số cần thiết tồn tại
-            ensureRequiredParams(response, params);
-
             String queryTemplate = response.getQueryTemplate();
             if (queryTemplate == null || queryTemplate.trim().isEmpty()) {
                 logger.error("Template truy vấn trống hoặc null");
