@@ -550,14 +550,11 @@ public class ChatbotService {
             return processResponseWithDbQuery(dbResponse, params);
         }
 
-        // Sử dụng AI để tạo phản hồi
+        // Sử dụng ResponseGenerationService để tạo phản hồi
         try {
-            String aiPrompt = buildResponseGenerationPrompt(intent, originalMessage, params);
-            String aiResponse = aiService.callOllamaForResponseGeneration(aiPrompt);
-            logger.info("AI generated response for intent '{}'", intent.getIntentName());
-            return aiResponse;
+            return responseGenerationService.generateResponse(intent, originalMessage, params);
         } catch (Exception e) {
-            logger.warn("Error using AI for response generation: {}, falling back to template response", e.getMessage());
+            logger.warn("Error using ResponseGenerationService: {}, falling back to template", e.getMessage());
 
             // Fallback vào phương pháp template cũ
             if (!responses.isEmpty()) {
