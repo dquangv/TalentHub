@@ -797,47 +797,6 @@ public class ChatbotService {
 
         return sb.toString();
     }
-    /**
-     * Xử lý placeholder cho skills và skill
-     */
-    private String processSkillPlaceholder(String query, String placeholder, String paramValue, Map<String, String> replacedValues) {
-        logger.debug("Xử lý đặc biệt placeholder skill: {} với giá trị: {}", placeholder, paramValue);
-
-        // Lưu giá trị gốc vào map để sử dụng trong phản hồi
-        replacedValues.put(placeholder, paramValue);
-
-        // Phân tích các kỹ năng từ chuỗi đầu vào (phân tách bởi dấu phẩy)
-        String[] skills = paramValue.split(",\\s*");
-
-        // Pattern để tìm điều kiện LIKE cho placeholder này
-        String likePattern = "LOWER\\(s\\.skill_name\\) LIKE LOWER\\('%\\{\\{" + placeholder + "\\}\\}%'\\)";
-
-        // Kiểm tra xem có tồn tại pattern này trong truy vấn không
-        Pattern pattern = Pattern.compile(likePattern);
-        Matcher matcher = pattern.matcher(query);
-
-        if (matcher.find()) {
-            // Tạo các điều kiện OR cho nhiều kỹ năng
-            StringBuilder conditions = new StringBuilder();
-            for (int i = 0; i < skills.length; i++) {
-                String skill = skills[i].trim();
-                if (skill.isEmpty()) continue;
-
-                if (i > 0) conditions.append(" OR ");
-                conditions.append("LOWER(s.skill_name) LIKE LOWER('%").append(skill).append("%')");
-            }
-
-            // Thay thế điều kiện LIKE cũ bằng điều kiện mới
-            query = matcher.replaceAll(conditions.toString());
-            logger.debug("Đã thay thế điều kiện LIKE cho skills với: {}", conditions);
-        } else {
-            // Nếu không tìm thấy pattern, thực hiện thay thế thông thường
-            query = query.replace("{{" + placeholder + "}}", paramValue);
-            logger.debug("Thay thế thông thường cho placeholder {{{}}} với '{}'", placeholder, paramValue);
-        }
-
-        return query;
-    }
 
     /**
      * Tạo phản hồi lỗi khi truy vấn thất bại
@@ -950,59 +909,6 @@ public class ChatbotService {
             defaultResults.add(defaultRow);
 
             return defaultResults;
-        }
-    }
-
-    /**
-     * Thực hiện truy vấn SQL với parameters
-     */
-    private List<Map<String, Object>> executeParameterizedQuery(String sql) {
-        try {
-            // Lấy danh sách params từ sql
-            List<String> paramValues = new ArrayList<>();
-
-            // Trong trường hợp đơn giản này, chúng ta chỉ tách query theo ?
-            String[] parts = sql.split("\\?");
-
-            // Xử lý đặc biệt cho case đầu tiên khi có nhiều tham số - đơn giản hóa bằng cách thay thế
-            // Giả sử tham số đầu tiên là skills/skill được dùng cho LIKE query
-            String simplifiedSql = sql;
-            if (sql.toLowerCase().contains("skill")) {
-                if (sql.toLowerCase().contains("{{skills}}")) {
-                    simplifiedSql = sql.replace("?", "'React'"); // Mặc định sử dụng React làm ví dụ
-                } else if (sql.toLowerCase().contains("{{skill}}")) {
-                    simplifiedSql = sql.replace("?", "'React'");
-                }
-            }
-
-            return executeQuery(simplifiedSql);
-        } catch (Exception e) {
-            logger.error("Error executing parameterized query: " + e.getMessage(), e);
-
-            // Tạo một kết quả giả với dữ liệu placeholder để tránh lỗi
-            List<Map<String, Object>> fallbackResults = new ArrayList<>();
-            Map<String, Object> fallbackRow = new HashMap<>();
-
-            if (sql.toLowerCase().contains("skill")) {
-                fallbackRow.put("skills", "React");
-                fallbackRow.put("skill", "React");
-                fallbackRow.put("job_count", 15);
-                fallbackRow.put("sample_jobs", "Frontend Developer, Web Developer, UI Developer");
-                fallbackRow.put("popular_jobs", "Frontend Developer, Web Developer, UI Developer");
-            } else if (sql.toLowerCase().contains("category")) {
-                fallbackRow.put("category", "Web Development");
-                fallbackRow.put("job_count", 25);
-                fallbackRow.put("sample_jobs", "Frontend Developer, Backend Developer, Full Stack Developer");
-                fallbackRow.put("top_categories", "Web Development, Mobile Development, UI/UX Design");
-                fallbackRow.put("top_category", "Web Development");
-            } else {
-                fallbackRow.put("top_skills", "JavaScript, Python, Java, React, SQL");
-                fallbackRow.put("top_skill", "JavaScript");
-                fallbackRow.put("job_count", 30);
-            }
-
-            fallbackResults.add(fallbackRow);
-            return fallbackResults;
         }
     }
 
@@ -1544,11 +1450,11 @@ public class ChatbotService {
         // Thay thế các placeholder tùy theo loại intent
         switch (intentName) {
             case "job_by_skills":
-                return phraseText.replaceAll("\\{skills\\}", "Java, Python");
+                return phraseText.replaceAll("\\{skills\\}", "Java");
             case "job_count_by_skill":
                 return phraseText.replaceAll("\\{skill\\}", "React");
             case "job_count_by_category":
-                return phraseText.replaceAll("\\{category\\}", "Web Development");
+                return phraseText.replaceAll("\\{category\\}", "Lập trình & Phát triển phần mềm");
             default:
                 return phraseText;
         }
@@ -1591,7 +1497,7 @@ public class ChatbotService {
                 defaultQuestions.add("Bạn có thể giúp gì cho tôi?");
                 break;
             case "job_by_skills":
-                defaultQuestions.add("Tôi có kỹ năng Java, Python thì có công việc nào phù hợp không?");
+                defaultQuestions.add("Tôi có kỹ năng Java thì có công việc nào phù hợp không?");
                 defaultQuestions.add("Với kỹ năng React thì tôi có thể làm công việc gì?");
                 defaultQuestions.add("Có công việc nào cho người biết SQL không?");
                 break;
