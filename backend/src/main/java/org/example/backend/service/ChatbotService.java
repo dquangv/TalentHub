@@ -743,22 +743,32 @@ public class ChatbotService {
             return getErrorResponse(params);
         }
     }
-    private String convertToNamedParamQuery(String queryTemplate, Map<String, Object> params) {
-        String result = queryTemplate;
+    private List<Map<String, Object>> executeQueryWithTimeout(String sql, int timeoutMs) {
+        try {
+            Query query = entityManager.createNativeQuery(sql);
+            query.setHint("javax.persistence.query.timeout", timeoutMs);
 
-        for (Map.Entry<String, Object> entry : params.entrySet()) {
-            String placeholder = "{{" + entry.getKey() + "}}";
-            String value = String.valueOf(entry.getValue());
-            result = result.replace(placeholder, value);
+            List<Object[]> results = query.getResultList();
+
+            // Lấy tên cột từ SQL
+            List<String> columnNames = extractColumnNamesFromSql(sql);
+
+            // Chuyển đổi kết quả thành List<Map>
+            List<Map<String, Object>> mappedResults = new ArrayList<>();
+            for (Object[] row : results) {
+                Map<String, Object> mappedRow = new HashMap<>();
+                for (int i = 0; i < row.length; i++) {
+                    String columnName = i < columnNames.size() ? columnNames.get(i) : "column" + i;
+                    mappedRow.put(columnName, row[i]);
+                }
+                mappedResults.add(mappedRow);
+            }
+
+            return mappedResults;
+        } catch (Exception e) {
+            logger.error("Exception executing query with timeout: " + e.getMessage(), e);
+            throw e;
         }
-
-        logger.debug("Converted query: {}", result);
-        return result;
-    }
-    // Thực thi truy vấn với tham số có tên
-    private List<Map<String, Object>> executeNamedParameterQuery(String sql, Map<String, Object> params) {
-        NamedParameterJdbcTemplate namedTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
-        return namedTemplate.queryForList(sql, params);
     }
 
     // Xử lý template phản hồi
