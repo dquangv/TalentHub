@@ -711,18 +711,22 @@ public class ChatbotService {
             }
 
             // Thay thế tất cả các placeholder còn lại trong query
-            String finalQuery = queryTemplate;
             for (Map.Entry<String, String> entry : params.entrySet()) {
                 String placeholder = "{{" + entry.getKey() + "}}";
                 finalQuery = finalQuery.replace(placeholder, entry.getValue());
             }
 
-            logger.info("Query sau khi thay thế params: {}", finalQuery);
+            logger.info("Final SQL query: {}", finalQuery);
 
-            // Thực thi query
+            // Thêm timeout và giới hạn kết quả để tránh truy vấn quá lâu
+            if (!finalQuery.toLowerCase().contains("limit ")) {
+                finalQuery += " LIMIT 10";
+            }
+
+            // Thực thi query với xử lý lỗi cải tiến
             List<Map<String, Object>> queryResults;
             try {
-                queryResults = jdbcTemplate.queryForList(finalQuery);
+                queryResults = executeQueryWithTimeout(finalQuery, 5000); // 5 giây timeout
                 logger.info("Query results: {}", queryResults);
             } catch (Exception e) {
                 logger.error("Lỗi khi thực thi truy vấn DB: " + e.getMessage(), e);
