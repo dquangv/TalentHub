@@ -11,18 +11,15 @@ import java.util.Optional;
 
 @Repository
 public interface ChatTrainingPhraseRepository extends JpaRepository<ChatTrainingPhrase, Long> {
-    List<ChatTrainingPhrase> findByIsProcessedFalse();
-
     List<ChatTrainingPhrase> findByIntentId(Long intentId);
+
+    List<ChatTrainingPhrase> findByIsProcessedFalse();
 
     Optional<ChatTrainingPhrase> findByPhraseText(String phraseText);
 
-    @Query("SELECT p FROM ChatTrainingPhrase p ORDER BY p.frequency DESC")
-    List<ChatTrainingPhrase> findMostFrequentPhrases();
-
-    @Query("SELECT p FROM ChatTrainingPhrase p WHERE p.isProcessed = false ORDER BY p.frequency DESC LIMIT :limit")
+    @Query("SELECT p FROM ChatTrainingPhrase p WHERE p.isProcessed = false ORDER BY p.frequency DESC, p.createdAt DESC LIMIT :limit")
     List<ChatTrainingPhrase> findTopUnprocessedPhrases(@Param("limit") int limit);
 
-    @Query(value = "SELECT * FROM chat_training_phrases WHERE intent_id = ?1 AND is_processed = true ORDER BY frequency DESC LIMIT ?2", nativeQuery = true)
-    List<ChatTrainingPhrase> findTopByIntentIdOrderByFrequencyDesc(Long intentId, int limit);
+    @Query("SELECT p FROM ChatTrainingPhrase p WHERE p.intent.id = :intentId ORDER BY p.frequency DESC LIMIT :limit")
+    List<ChatTrainingPhrase> findTopByIntentIdOrderByFrequencyDesc(@Param("intentId") Long intentId, @Param("limit") int limit);
 }
