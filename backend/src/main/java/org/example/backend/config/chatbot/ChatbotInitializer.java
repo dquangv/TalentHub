@@ -352,7 +352,7 @@ public class ChatbotInitializer {
 
         // Response with database query
         ChatResponse response = new ChatResponse();
-        response.setResponseText("Hiện tại có {{job_count}} công việc trong danh mục {{category}}. Một số công việc tiêu biểu là: {{title SEPARATOR '}}.");
+        response.setResponseText("Hiện tại có {{job_count}} công việc trong danh mục {{category}}. Một số công việc tiêu biểu là: {{sample_jobs}}.");
         response.setDisplayOrder(0);
         response.setIntent(intent);
         response.setRequiresDbQuery(true);
