@@ -34,6 +34,9 @@ public class ChatbotService {
 
     private Map<String, Object> settings = new HashMap<>();
     @Autowired
+    private ResponseGenerationService responseGenerationService;
+
+    @Autowired
     private AIService aiService;
     @Autowired
     private ChatIntentRepository chatIntentRepository;
