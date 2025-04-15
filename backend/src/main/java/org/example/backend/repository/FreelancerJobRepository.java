@@ -1,6 +1,7 @@
 package org.example.backend.repository;
 
 import org.example.backend.entity.child.account.freelancer.CV;
+import org.example.backend.entity.child.account.freelancer.Freelancer;
 import org.example.backend.entity.child.job.FreelancerJob;
 import org.example.backend.entity.child.job.Job;
 import org.example.backend.enums.StatusFreelancerJob;
@@ -9,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.example.backend.enums.StatusFreelancerJob;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface FreelancerJobRepository extends JpaRepository<FreelancerJob, Long> {
@@ -95,4 +97,20 @@ public interface FreelancerJobRepository extends JpaRepository<FreelancerJob, Lo
 
     Long countViewsByJob(Job job);
     List<FreelancerJob> findAllByJobId(Long jobId);
+
+    @Query("SELECT new map(j.id as id, j.title as title, fj.status as status) " +
+            "FROM FreelancerJob fj " +
+            "JOIN fj.job j " +
+            "WHERE fj.freelancer.id = :freelancerId " +
+            "AND j.client.id = :clientId ")
+    List<Map<String, Object>> findJobInfoByFreelancerIdAndClientId(
+            @Param("freelancerId") Long freelancerId,
+            @Param("clientId") Long clientId
+    );
+
+    @Query("SELECT DISTINCT fj.freelancer FROM FreelancerJob fj " +
+            "JOIN fj.job j " +
+            "WHERE j.client.id = :clientId " +
+            "AND j.status = org.example.backend.enums.StatusJob.OPEN")
+    List<Freelancer> findFreelancersByClientId(@Param("clientId") Long clientId);
 }

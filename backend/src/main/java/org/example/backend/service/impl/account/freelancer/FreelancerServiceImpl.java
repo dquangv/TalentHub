@@ -4,24 +4,20 @@ import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.account.freelancer.CreateFreelancerDTORequest;
 import org.example.backend.dto.request.account.freelancer.FreelancerDTORequest;
 import org.example.backend.dto.request.account.freelancer.UpdateHourlyRateDTORequest;
-import org.example.backend.dto.response.account.freelancer.CreateFreelancerDTOResponse;
-import org.example.backend.dto.response.account.freelancer.FreelancerAdminDTOResponse;
-import org.example.backend.dto.response.account.freelancer.FreelancerDTOResponse;
-import org.example.backend.dto.response.account.freelancer.UpdateHourlyRateDTOResponse;
+import org.example.backend.dto.response.account.freelancer.*;
 import org.example.backend.entity.child.account.freelancer.Freelancer;
 import org.example.backend.entity.child.job.Category;
 import org.example.backend.entity.child.account.User;
 import org.example.backend.exception.BadRequestException;
 import org.example.backend.mapper.Account.freelancer.CreateFreelancerMapper;
 import org.example.backend.mapper.Account.freelancer.UpdateHourlyRateMapper;
-import org.example.backend.repository.ClientReviewRepository;
-import org.example.backend.repository.FreelancerRepository;
-import org.example.backend.repository.CategoryRepository;
-import org.example.backend.repository.UserRepository;
+import org.example.backend.repository.*;
 import org.example.backend.service.intf.account.freelancer.FreelancerService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -34,6 +30,7 @@ public class FreelancerServiceImpl implements FreelancerService {
     private final UserRepository userRepository;
     private final CreateFreelancerMapper createFreelancerMapper;
     private final UpdateHourlyRateMapper updateHourlyRateMapper;
+    private final FreelancerJobRepository freelancerJobRepository;
 
     @Override
     public FreelancerDTOResponse updateCategory(Long freelancerId, Long categoryId) {
@@ -227,5 +224,33 @@ public class FreelancerServiceImpl implements FreelancerService {
                                 .collect(Collectors.toList()) : List.of()
                 ))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<FreelancerWithJobsDTOResponse> getFreelancersByClientId(Long clientId) {
+        List<Freelancer> freelancers = freelancerJobRepository.findFreelancersByClientId(clientId);
+
+        return freelancers.stream().map(freelancer -> {
+            List<Map<String, Object>> jobInfos = freelancerJobRepository.findJobInfoByFreelancerIdAndClientId(
+                    freelancer.getId(), clientId);
+
+            List<FreelancerWithJobsDTOResponse.JobInfo> jobs = jobInfos.stream()
+                    .map(info -> FreelancerWithJobsDTOResponse.JobInfo.builder()
+                            .id(((Number) info.get("id")).longValue())
+                            .title((String) info.get("title"))
+                            .status(info.get("status") != null ? info.get("status").toString() : null)
+                            .build())
+                    .collect(Collectors.toList());
+
+            Float rating = clientReviewRepository.findAverageRating(freelancer.getId());
+
+            return FreelancerWithJobsDTOResponse.builder()
+                    .userId(freelancer.getUser().getId())
+                    .fullName(freelancer.getUser().getFirstName() + " " + freelancer.getUser().getLastName())
+                    .avatar(freelancer.getUser().getImage())
+                    .rating(rating != null ? rating : 0.0f)
+                    .jobs(jobs)
+                    .build();
+        }).collect(Collectors.toList());
     }
 }

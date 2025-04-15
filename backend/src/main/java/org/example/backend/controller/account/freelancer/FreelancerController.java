@@ -27,7 +27,18 @@ public class FreelancerController {
     private final FreelancerDetailService freelancerDetailService;
     private final JobServiceImpl jobServiceImpl;
 
-
+    @GetMapping("/client/{clientId}")
+    public ResponseEntity<ResponseObject<List<FreelancerWithJobsDTOResponse>>> getFreelancersByClientId(
+            @PathVariable Long clientId) {
+        List<FreelancerWithJobsDTOResponse> freelancers = freelancerService.getFreelancersByClientId(clientId);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                ResponseObject.<List<FreelancerWithJobsDTOResponse>>builder()
+                        .message("Successfully retrieved freelancers for client's open jobs")
+                        .status(HttpStatus.OK.value())
+                        .data(freelancers)
+                        .build()
+        );
+    }
     @PutMapping("/{freelancerId}/category/{categoryId}")
     public ResponseEntity<ResponseObject<FreelancerDTOResponse>> updateCategory(
             @PathVariable Long freelancerId,
