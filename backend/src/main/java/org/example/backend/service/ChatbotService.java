@@ -274,31 +274,34 @@ public class ChatbotService {
     private Map<String, Object> detectIntent(String message) {
         logger.info("Detecting intent for message: '{}'", message);
         try {
-            // Trước tiên thử phát hiện kỹ năng thủ công từ message
+            // Trích xuất tham số thủ công từ message
             Map<String, String> extractedParams = new HashMap<>();
             extractSkillsFromMessage(message, extractedParams);
+            extractSkillFromMessage(message, extractedParams);
+            extractCategoryFromMessage(message, extractedParams);
 
-            // Sử dụng AIService để phân tích intent thông qua Ollama
-            String prompt = buildIntentDetectionPrompt(message);
-            String aiResponse = aiService.callOllamaForIntentDetection(prompt);
+            // Sử dụng service để phát hiện intent
+            Map<String, Object> result = intentDetectionService.detectIntentWithAI(message);
 
-            // Phân tích kết quả từ AI
-            Map<String, Object> result = parseAIIntentResponse(aiResponse, message);
-
-            // Nếu AI không trích xuất được params nhưng ta đã trích xuất được thủ công
-            if (!result.containsKey("skills") && extractedParams.containsKey("skills")) {
-                result.put("skills", extractedParams.get("skills"));
+            // Kết hợp params đã trích xuất thủ công với params từ AI
+            for (Map.Entry<String, String> entry : extractedParams.entrySet()) {
+                if (!result.containsKey(entry.getKey())) {
+                    result.put(entry.getKey(), entry.getValue());
+                }
             }
 
-            logger.info("AI detected intent: {}, confidence: {}, skills: {}",
-                    result.get("intent") != null ? ((ChatIntent)result.get("intent")).getIntentName() : "null",
-                    result.get("confidence"),
-                    result.get("skills"));
+            logger.info("Intent detection result: {}", result);
             return result;
         } catch (Exception e) {
-            logger.warn("Error using AI for intent detection: {}, falling back to pattern matching", e.getMessage());
-            return detectIntentWithPatternMatching(message);
+            logger.warn("Error in intent detection: {}", e.getMessage(), e);
+            return fallbackEmptyResult();
         }
+    }
+    private Map<String, Object> fallbackEmptyResult() {
+        Map<String, Object> result = new HashMap<>();
+        result.put("intent", null);
+        result.put("confidence", 0.0f);
+        return result;
     }
 
     // Tách phương thức pattern matching hiện tại thành phương thức riêng để dùng làm fallback
