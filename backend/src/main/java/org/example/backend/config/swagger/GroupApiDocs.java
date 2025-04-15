@@ -109,7 +109,9 @@ public class GroupApiDocs {
                 .group("School APIs")
                 .pathsToMatch("/api/v1/schools/**")
                 .build();
-    }    @Bean
+    }
+
+    @Bean
     public GroupedOpenApi soldPackageAPis() {
         return GroupedOpenApi.builder()
                 .group("Sold Packages APIs")
@@ -148,6 +150,7 @@ public class GroupApiDocs {
                 .pathsToMatch("/api/v1/payments/**")
                 .build();
     }
+
     @Bean
     public GroupedOpenApi apiTransactions() {
         return GroupedOpenApi.builder()
@@ -226,7 +229,9 @@ public class GroupApiDocs {
                 .group("Revenues APIs")
                 .pathsToMatch("/api/v1/revenues/**")
                 .build();
-    }    @Bean
+    }
+
+    @Bean
     public GroupedOpenApi chatBot() {
         return GroupedOpenApi.builder()
                 .group("ChatBot APIs")

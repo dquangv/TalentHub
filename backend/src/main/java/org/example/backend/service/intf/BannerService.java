@@ -10,5 +10,6 @@ import java.util.List;
 
 public interface BannerService extends BaseService<BannerDTORequest, BannerDTOResponse, Long> {
     BannerDTOResponse update(Long id, BannerDTORequest bannerDTORequest);
+
     List<LogoDTOResponse> getAllLogo();
 }

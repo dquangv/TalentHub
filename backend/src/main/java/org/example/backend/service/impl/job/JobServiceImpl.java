@@ -418,9 +418,11 @@ public class JobServiceImpl implements JobService {
         for (Long categoryId : categoryIds) {
             List<FreelancerDTOResponse> freelancers = freelancerServiceImpl.getFreelancersByCategoryId(categoryId);
             result.addAll(freelancers);
+            if (result.size() >= 6) break;
         }
         return result.stream()
                 .distinct()
+                .limit(6)
                 .collect(Collectors.toList());
     }
 

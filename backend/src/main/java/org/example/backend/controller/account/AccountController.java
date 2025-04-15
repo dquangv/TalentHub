@@ -120,7 +120,7 @@ public class AccountController {
         return ResponseObject.<PasswordResetTokenDTOResponse>builder().status(HttpStatus.OK.value())
                 .message("Reset password successfully")
                 .data(passwordResetTokenService.resetPassword(passwordResetTokenDTORequest)).build()
-        ;
+                ;
     }
 
     @PostMapping("/verify-code")

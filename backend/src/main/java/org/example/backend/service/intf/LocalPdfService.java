@@ -8,11 +8,18 @@ import java.util.List;
 
 public interface LocalPdfService {
     String uploadPdf(MultipartFile file, Long freelancerId);
+
     List<String> uploadMultiplePdfs(MultipartFile[] files);
+
     void deletePdfById(Long cvId);
+
     void deletePdf(String filePath);
+
     String getPdfUrl(String filePath);
+
     byte[] downloadPdf(String filePath);
+
     List<CV> getCVsByFreelancerId(Long freelancerId);
+
     List<CVWithJobsDTO> getCVsWithJobsByFreelancerId(Long freelancerId);
 }

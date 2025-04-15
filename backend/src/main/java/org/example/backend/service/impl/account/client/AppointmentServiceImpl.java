@@ -16,6 +16,7 @@ import org.example.backend.repository.AppointmentRepository;
 import org.example.backend.repository.ClientRepository;
 import org.example.backend.repository.FreelancerJobRepository;
 import org.example.backend.repository.FreelancerRepository;
+import org.example.backend.service.impl.notify.NotifyService;
 import org.example.backend.service.intf.account.client.AppointmentService;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final FreelancerRepository freelancerRepository;
     private final FreelancerJobRepository freelancerJobRepository;
     private final ClientRepository clientRepository;
+    private final NotifyService notifyService;
 
     @Override
     public AppointmentDetailDTOResponse create(AppointmentDetailDTORequest appointmentDetailDTORequest) {
@@ -69,6 +71,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentDetailDTOResponse.setName(freelancer.getUser().getLastName() + " " + freelancer.getUser().getFirstName());
         appointmentDetailDTOResponse.setMail(user.getAccount().getEmail());
         appointmentDetailDTOResponse.setPhone(user.getPhoneNumber());
+        notifyService.sendNotification(freelancerJob.get().getFreelancer().getUser().getId(), "Bạn có lịch hẹn với khách hàng " + client.getUser().getFirstName() + " " + client.getUser().getLastName(), "freelancer/appointment");
 
         return appointmentDetailDTOResponse;
     }

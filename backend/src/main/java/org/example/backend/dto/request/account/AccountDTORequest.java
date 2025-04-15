@@ -29,16 +29,16 @@ public class AccountDTORequest {
     @NotNull(message = "Role cannot be null")
     private RoleUser role;
 
-//    @NotNull(message = "Status is required")
+    //    @NotNull(message = "Status is required")
     private StatusAccount status;
 
-//    @NotBlank(message = "First name is required")
+    //    @NotBlank(message = "First name is required")
     private String firstName;
 
-//    @NotBlank(message = "Last name is required")
+    //    @NotBlank(message = "Last name is required")
     private String lastName;
 
-//    @NotBlank(message = "Phone number is required")
+    //    @NotBlank(message = "Phone number is required")
     private String phoneNumber;
 
     private String province;

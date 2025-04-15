@@ -73,7 +73,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
                 response.sendRedirect(redirectUrl);
             } catch (JOSEException e) {
                 throw new RuntimeException("Error generating JWT token", e);
-            } catch (NullPointerException e){
+            } catch (NullPointerException e) {
                 e.printStackTrace();
                 String redirectUrl = urlUI + "/choose-role?email=" + email;
                 response.sendRedirect(redirectUrl);

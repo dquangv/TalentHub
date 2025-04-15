@@ -4,5 +4,5 @@ import org.example.backend.dto.request.account.freelancer.CVDTORequest;
 import org.example.backend.dto.response.account.freelancer.CVDTOResponse;
 import org.example.backend.service.BaseService;
 
-public interface CVService extends BaseService<CVDTORequest, CVDTOResponse,Long> {
+public interface CVService extends BaseService<CVDTORequest, CVDTOResponse, Long> {
 }

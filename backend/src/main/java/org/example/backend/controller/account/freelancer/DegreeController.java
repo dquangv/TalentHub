@@ -28,6 +28,7 @@ public class DegreeController {
                 .data(degreeDTOResponse)
                 .build();
     }
+
     @PutMapping("/{id}")
     public ResponseObject<DegreeDTOResponse> updateDegree(@PathVariable Long id, @Valid @RequestBody DegreeDTORequest degreeDTORequest) {
         DegreeDTOResponse degreeDTOResponse = degreeService.update(id, degreeDTORequest);

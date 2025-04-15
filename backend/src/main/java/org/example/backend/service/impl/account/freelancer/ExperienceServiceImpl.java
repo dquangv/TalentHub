@@ -9,6 +9,8 @@ import org.example.backend.mapper.Account.freelancer.ExperienceMapper;
 import org.example.backend.repository.ExperienceRepository;
 import org.example.backend.repository.FreelancerRepository;
 import org.example.backend.service.intf.account.freelancer.ExperienceService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ExperienceServiceImpl implements ExperienceService {
+    private static final Logger log = LoggerFactory.getLogger(ExperienceServiceImpl.class);
     private final ExperienceMapper experienceMapper;
     private final ExperienceRepository experienceRepository;
     private final FreelancerRepository freelancerRepository;
@@ -36,7 +39,7 @@ public class ExperienceServiceImpl implements ExperienceService {
             throw new BadRequestException("Position cannot be null or empty");
         }
 
-        if (experienceDTORequest.getStartDate() == null || experienceDTORequest.getEndDate() == null) {
+        if (experienceDTORequest.getStartDate() == null ) {
             throw new BadRequestException("StartDate cannot be null or empty");
         }
 
@@ -99,9 +102,14 @@ public class ExperienceServiceImpl implements ExperienceService {
         List<Experience> list = experienceRepository.findExperienceByFreelancer_Id(freelancerId);
 
         return list.stream()
-                .map(experienceMapper::toResponseDto)
+                .map(experience -> {
+                    ExperienceDTOResponse dto = experienceMapper.toResponseDto(experience);
+                    dto.setId(experience.getId());
+                    return dto;
+                })
                 .collect(Collectors.toList());
     }
+
     @Override
     public ExperienceDTOResponse update(Long id, ExperienceDTORequest experienceDTORequest) {
         if (id == null) {
@@ -121,9 +129,8 @@ public class ExperienceServiceImpl implements ExperienceService {
         if (experienceDTORequest.getStartDate() != null) {
             experience.setStartDate(experienceDTORequest.getStartDate());
         }
-        if (experienceDTORequest.getEndDate() != null) {
-            experience.setEndDate(experienceDTORequest.getEndDate());
-        }
+        experience.setEndDate(experienceDTORequest.getEndDate());
+
         if (experienceDTORequest.getDescription() != null) {
             experience.setDescription(experienceDTORequest.getDescription());
         }

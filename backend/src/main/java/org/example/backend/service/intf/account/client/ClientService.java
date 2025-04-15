@@ -9,7 +9,8 @@ import org.example.backend.service.BaseService;
 
 import java.math.BigDecimal;
 
-public interface ClientService extends BaseService<ClientDTORequest, ClientDTOResponse,Long> {
+public interface ClientService extends BaseService<ClientDTORequest, ClientDTOResponse, Long> {
     Client findById(Long clientId);
+
     UpdatePriceAndTypeDTOResponse updatePriceAndType(UpdatePriceAndTypeDTORequest updatePriceAndTypeDTORequest);
 }
