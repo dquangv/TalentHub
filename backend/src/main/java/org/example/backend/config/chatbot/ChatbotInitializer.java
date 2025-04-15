@@ -122,15 +122,18 @@ public class ChatbotInitializer {
         response.setIntent(intent);
         response.setRequiresDbQuery(true);
         response.setQueryTemplate(
-                "SELECT '{{skills}}' as skills, " +
-                        "COUNT(DISTINCT j.id) as job_count, " +
-                        "(SELECT GROUP_CONCAT(DISTINCT j.title SEPARATOR ', ') " +
-                        " FROM job j " +
-                        " JOIN job_skill js ON j.id = js.job_id " +
-                        " JOIN skill s ON js.skill_id = s.id " +
-                        " WHERE LOWER(s.skill_name) LIKE LOWER('%{{skills}}%') " +
-                        " AND j.status = 'OPEN' " +
-                        " LIMIT 3) as title " +
+                "SELECT '{{skills}}' AS skills, " +
+                        "COUNT(DISTINCT j.id) AS job_count, " +
+                        "(SELECT GROUP_CONCAT(title SEPARATOR ', ') " +
+                        " FROM ( " +
+                        "   SELECT DISTINCT j.title " +
+                        "   FROM job j " +
+                        "   JOIN job_skill js ON j.id = js.job_id " +
+                        "   JOIN skill s ON js.skill_id = s.id " +
+                        "   WHERE LOWER(s.skill_name) LIKE LOWER('%{{skills}}%') " +
+                        "     AND j.status = 'OPEN' " +
+                        "   LIMIT 3 " +
+                        " ) AS limited_titles) AS title " +
                         "FROM job j " +
                         "JOIN job_skill js ON j.id = js.job_id " +
                         "JOIN skill s ON js.skill_id = s.id " +
