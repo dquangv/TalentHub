@@ -32,13 +32,10 @@ public class IntentDetectionService {
      */
     public Map<String, Object> detectIntentWithAI(String message) {
         try {
-            // Tạo prompt cho AI
             String prompt = buildIntentDetectionPrompt(message);
 
-            // Gọi AI để phân tích
             String aiResponse = aiService.callOllamaForIntentDetection(prompt);
 
-            // Xử lý kết quả từ AI
             return parseAIResponse(aiResponse, message);
         } catch (Exception e) {
             logger.error("Error detecting intent with AI: {}", e.getMessage(), e);
