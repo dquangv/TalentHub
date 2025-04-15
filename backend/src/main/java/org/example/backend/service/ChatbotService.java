@@ -701,11 +701,10 @@ public class ChatbotService {
                     }
                     whereCondition.append(")");
 
-                    // Thay thế trong query
-                    queryTemplate = queryTemplate.replaceAll(
-                            "LOWER\\(s\\.skill_name\\) LIKE LOWER\\('%\\{\\{skills\\}\\}%'\\)",
-                            whereCondition.toString()
-                    );
+                    // Sử dụng Pattern để thay thế chính xác biểu thức LIKE
+                    Pattern pattern = Pattern.compile("LOWER\\(s\\.skill_name\\)\\s+LIKE\\s+LOWER\\('%\\{\\{skills\\}\\}%'\\)");
+                    Matcher matcher = pattern.matcher(finalQuery);
+                    finalQuery = matcher.replaceAll(Matcher.quoteReplacement(whereCondition.toString()));
 
                     logger.info("Đã thay thế điều kiện LIKE cho skills thành: {}", whereCondition);
                 }
