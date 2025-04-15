@@ -138,8 +138,9 @@ public class ChatbotInitializer {
                         "JOIN job_skill js ON j.id = js.job_id " +
                         "JOIN skill s ON js.skill_id = s.id " +
                         "WHERE LOWER(s.skill_name) LIKE LOWER('%{{skills}}%') " +
-                        "AND j.status = 'OPEN'"
+                        "  AND j.status = 'OPEN'"
         );
+
         chatResponseRepository.save(response);
 
         // Fallback response (giữ nguyên)
