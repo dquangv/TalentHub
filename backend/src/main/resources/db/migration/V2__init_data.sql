@@ -3505,8 +3505,212 @@ VALUES
     (true, NULL, NULL, 24, (SELECT id FROM job WHERE title = 'Xây dựng hệ thống IoT giám sát sản xuất'), NULL),
     (true, NULL, NULL, 25, (SELECT id FROM job WHERE title = 'Biên tập sách kỹ năng'), NULL),
     (true, NULL, NULL, 26, (SELECT id FROM job WHERE title = 'Lập trình Unity game 2D'), NULL);
+-- Cập nhật created_at cho account với giờ phút khác nhau
+UPDATE account
+SET created_at = DATE_FORMAT(
+        DATE_SUB(NOW(),
+                 INTERVAL FLOOR(30 + RAND() * 120) DAY) +
+            INTERVAL FLOOR(RAND() * 24) HOUR +
+            INTERVAL FLOOR(RAND() * 60) MINUTE,
+        '%Y-%m-%d %H:%i:%s'
+                 )
+WHERE id BETWEEN 1 AND 50;
+
+-- Cập nhật updated_at cho một số account
+UPDATE account
+SET updated_at = DATE_FORMAT(
+        DATE_SUB(NOW(),
+                 INTERVAL FLOOR(RAND() * 20) DAY) +
+            INTERVAL FLOOR(RAND() * 24) HOUR +
+            INTERVAL FLOOR(RAND() * 60) MINUTE,
+        '%Y-%m-%d %H:%i:%s'
+                 )
+WHERE id % 3 = 0;
 
 
 
+-- Cập nhật sent_at với thời gian đa dạng hơn
+UPDATE chat_messages
+SET sent_at = DATE_FORMAT(
+        DATE_SUB(NOW(),
+                 INTERVAL FLOOR(1 + RAND() * 40) DAY) +
+            INTERVAL FLOOR(RAND() * 24) HOUR +
+            INTERVAL FLOOR(RAND() * 60) MINUTE,
+        '%Y-%m-%d %H:%i:%s'
+              )
+WHERE id BETWEEN 1 AND 50;
 
+UPDATE chat_messages
+SET sent_at = DATE_FORMAT(
+        DATE_SUB(NOW(),
+                 INTERVAL FLOOR(3 + RAND() * 20) DAY) +
+            INTERVAL FLOOR(RAND() * 24) HOUR +
+            INTERVAL FLOOR(RAND() * 60) MINUTE,
+        '%Y-%m-%d %H:%i:%s'
+              )
+WHERE id BETWEEN 51 AND 100;
+
+
+-- Cập nhật applied_date cho freelancer_job
+UPDATE freelancer_job
+SET applied_date = DATE_FORMAT(
+        DATE_SUB(NOW(),
+                 INTERVAL FLOOR(1 + RAND() * 14) DAY) +
+            INTERVAL FLOOR(RAND() * 24) HOUR +
+            INTERVAL FLOOR(RAND() * 60) MINUTE,
+        '%Y-%m-%d %H:%i:%s'
+                   )
+WHERE status IN ('APPLIED', 'VIEWED');
+
+-- Cập nhật applied_date cho freelancer_job đã approved
+UPDATE freelancer_job
+SET applied_date = DATE_FORMAT(
+        DATE_SUB(NOW(),
+                 INTERVAL FLOOR(15 + RAND() * 30) DAY) +
+            INTERVAL FLOOR(RAND() * 24) HOUR +
+            INTERVAL FLOOR(RAND() * 60) MINUTE,
+        '%Y-%m-%d %H:%i:%s'
+                   )
+WHERE status = 'APPROVED';
+
+
+
+-- Cập nhật start_time cho appointments sắp tới
+UPDATE appointments
+SET start_time = DATE_FORMAT(
+        DATE_ADD(NOW(),
+                 INTERVAL FLOOR(1 + RAND() * 14) DAY) +
+            INTERVAL FLOOR(9 + RAND() * 8) HOUR +
+            INTERVAL (FLOOR(RAND() * 4) * 15) MINUTE,
+        '%Y-%m-%d %H:%i:%s'
+                 );
+
+
+-- Cập nhật start_date và end_date cho các gói hiện tại
+UPDATE sold_packages
+SET start_date = DATE_FORMAT(
+        DATE_SUB(NOW(),
+                 INTERVAL FLOOR(1 + RAND() * 12) DAY) +
+            INTERVAL FLOOR(RAND() * 24) HOUR,
+        '%Y-%m-%d %H:%i:%s'
+                 ),
+    end_date = DATE_FORMAT(
+            DATE_ADD(NOW(),
+                     INTERVAL FLOOR(10 + RAND() * 20) DAY) +
+                INTERVAL FLOOR(RAND() * 24) HOUR,
+            '%Y-%m-%d %H:%i:%s'
+               )
+WHERE status = true;
+
+-- Cập nhật start_date và end_date cho các gói đã hết hạn
+UPDATE sold_packages
+SET start_date = DATE_FORMAT(
+        DATE_SUB(NOW(),
+                 INTERVAL FLOOR(60 + RAND() * 60) DAY) +
+            INTERVAL FLOOR(RAND() * 24) HOUR,
+        '%Y-%m-%d %H:%i:%s'
+                 ),
+    end_date = DATE_FORMAT(
+            DATE_SUB(NOW(),
+                     INTERVAL FLOOR(5 + RAND() * 30) DAY) +
+                INTERVAL FLOOR(RAND() * 24) HOUR,
+            '%Y-%m-%d %H:%i:%s'
+               )
+WHERE status = false;
+
+UPDATE payment
+SET created_at = DATE_FORMAT(
+        DATE_SUB(NOW(),
+                 INTERVAL FLOOR(30 + RAND() * 120) DAY) +
+            INTERVAL FLOOR(RAND() * 24) HOUR +
+            INTERVAL FLOOR(RAND() * 60) MINUTE,
+        '%Y-%m-%d %H:%i:%s'
+                 ),
+    updated_at = DATE_FORMAT(
+            DATE_SUB(NOW(),
+                     INTERVAL FLOOR(RAND() * 10) DAY) +
+                INTERVAL FLOOR(RAND() * 24) HOUR +
+                INTERVAL FLOOR(RAND() * 60) MINUTE,
+            '%Y-%m-%d %H:%i:%s'
+                 );
+
+
+
+UPDATE transactions
+SET created_at = DATE_FORMAT(
+        DATE_SUB(NOW(),
+                 INTERVAL FLOOR(1 + RAND() * 90) DAY) +
+            INTERVAL FLOOR(RAND() * 24) HOUR +
+            INTERVAL FLOOR(RAND() * 60) MINUTE,
+        '%Y-%m-%d %H:%i:%s'
+                 )
+WHERE activity = 'DEPOSIT';
+
+UPDATE transactions
+SET created_at = DATE_FORMAT(
+        DATE_SUB(NOW(),
+                 INTERVAL FLOOR(1 + RAND() * 60) DAY) +
+            INTERVAL FLOOR(RAND() * 24) HOUR +
+            INTERVAL FLOOR(RAND() * 60) MINUTE,
+        '%Y-%m-%d %H:%i:%s'
+                 )
+WHERE activity = 'WITHDRAW';
+
+
+UPDATE notification
+SET created_at = DATE_FORMAT(
+        DATE_SUB(NOW(),
+                 INTERVAL FLOOR(RAND() * 14) DAY) +
+            INTERVAL FLOOR(RAND() * 24) HOUR +
+            INTERVAL FLOOR(RAND() * 60) MINUTE,
+        '%Y-%m-%d %H:%i:%s'
+                 )
+WHERE is_read = false;
+
+UPDATE notification
+SET created_at = DATE_FORMAT(
+        DATE_SUB(NOW(),
+                 INTERVAL FLOOR(7 + RAND() * 21) DAY) +
+            INTERVAL FLOOR(RAND() * 24) HOUR +
+            INTERVAL FLOOR(RAND() * 60) MINUTE,
+        '%Y-%m-%d %H:%i:%s'
+                 )
+WHERE is_read = true;
+
+
+-- 1. Tạo bảng tạm để lưu thông tin về gói voucher của mỗi client
+CREATE TEMPORARY TABLE client_packages AS
+SELECT c.id AS client_id,
+       CASE
+           WHEN sp.voucher_packages IN (3, 4) THEN 30 -- Gói Vàng và Kim Cương: 30 ngày
+           ELSE 7 -- Gói thường và Bạc: 7 ngày
+           END AS duration_days
+FROM client c
+         JOIN sold_packages sp ON c.id = sp.client
+WHERE sp.status = true;
+
+-- 2. Cập nhật created_at cho các job để phân bố theo thời gian
+UPDATE job j
+    JOIN client_packages cp ON j.client_id = cp.client_id
+    SET j.created_at = DATE_FORMAT(
+        DATE_SUB(NOW(),
+        INTERVAL FLOOR(RAND() * (cp.duration_days - 1)) DAY) -
+        INTERVAL FLOOR(RAND() * 12) HOUR -
+        INTERVAL FLOOR(RAND() * 60) MINUTE,
+        '%Y-%m-%d %H:%i:%s'
+        )
+WHERE j.status = 'OPEN';
+
+-- 3. Cập nhật end_date dựa trên created_at và duration của package
+UPDATE job j
+    JOIN client_packages cp ON j.client_id = cp.client_id
+    SET j.end_date = DATE_FORMAT(
+        DATE_ADD(j.created_at,
+        INTERVAL cp.duration_days DAY),
+        '%Y-%m-%d %H:%i:%s'
+        )
+WHERE j.status = 'OPEN';
+
+-- 4. Xóa bảng tạm khi đã hoàn thành
+DROP TEMPORARY TABLE IF EXISTS client_packages;
 
