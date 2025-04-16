@@ -191,8 +191,11 @@ public class AccountController {
     }
 
     @PostMapping("/choose-role")
-    public ResponseEntity<ResponseObject<AuthenticationDtoResponse>> chooseRole(@RequestParam String email, @RequestParam RoleUser role, @RequestParam double lat, @RequestParam double lng) throws JOSEException {
-        AuthenticationDtoResponse authenticationDtoResponse = accountService.updateAccountRole(email, role, lat, lng);
+    public ResponseEntity<ResponseObject<AuthenticationDtoResponse>> chooseRole(@RequestParam String email, @RequestParam RoleUser role, @RequestParam(required = false) String lat, @RequestParam(required = false) String lng) throws JOSEException {
+        Double latitude = (lat != null && !lat.isEmpty()) ? Double.parseDouble(lat) : 0.0;
+        Double longitude = (lng != null && !lng.isEmpty()) ? Double.parseDouble(lng) : 0.0;
+
+        AuthenticationDtoResponse authenticationDtoResponse = accountService.updateAccountRole(email, role, latitude, longitude);
 
         return ResponseEntity.status(HttpStatus.OK).body(ResponseObject.<AuthenticationDtoResponse>builder()
                 .message("Successfully choose role for user")
