@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.account.UserDTORequest;
 import org.example.backend.dto.response.account.UserDTOResponse;
 import org.example.backend.entity.child.account.User;
+import org.example.backend.enums.RoleUser;
+import org.example.backend.enums.StatusAccount;
 import org.example.backend.exception.NotFoundException;
 import org.example.backend.repository.UserRepository;
 import org.example.backend.service.intf.account.UserService;
@@ -18,7 +20,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    @Override
+    public List<UserDTOResponse> getAllActiveAdmins() {
+        List<User> activeAdmins = userRepository.findByAccount_RoleAndAccount_Status(
+                RoleUser.ADMIN, StatusAccount.VERIFIED);
 
+        return activeAdmins.stream()
+                .map(this::mapToUserDTOResponse)
+                .collect(Collectors.toList());
+    }
     @Override
     public UserDTOResponse create(UserDTORequest userDTORequest) {
         return null;
