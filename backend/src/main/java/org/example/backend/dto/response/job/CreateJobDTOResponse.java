@@ -15,6 +15,7 @@ import java.util.List;
 @Setter
 @Builder
 public class CreateJobDTOResponse {
+    private Long jobId;
     private String title;
     private String description;
     private String scope;
