@@ -16,7 +16,16 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-
+    @GetMapping("/admins/active")
+    public ResponseObject<List<UserDTOResponse>> getAllActiveAdmins() {
+        List<UserDTOResponse> activeAdmins = userService.getAllActiveAdmins();
+        return ResponseObject.<List<UserDTOResponse>>builder()
+                .message("All active admins retrieved successfully")
+                .status(HttpStatus.OK.value())
+                .data(activeAdmins)
+                .build();
+    }
+    
     @GetMapping("/{userId}")
     public ResponseObject<UserDTOResponse> getUserById(@PathVariable Long userId) {
         return userService.getById(userId)
