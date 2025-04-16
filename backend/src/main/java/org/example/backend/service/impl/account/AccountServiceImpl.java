@@ -280,7 +280,10 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
 
         Account newAccount = new Account();
         newAccount.setEmail(email);
-//        newAccount.setStatus(true);
+        newAccount.setLng(0.0);
+        newAccount.setLat(0.0);
+
+        //        newAccount.setStatus(true);
         accountRepository.save(newAccount);
 
         User user = new User();
