@@ -170,7 +170,7 @@ public class PaymentServiceImpl implements PaymentService {
 
 
     @Override
-    public WithdrawResponseDTO handleVnPayWithCallback(BigDecimal vnpAmount, Long userId) {
+    public WithdrawResponseDTO handleVnPayWithCallback(BigDecimal vnpAmount, Long userId,String desc) {
 
         // Lấy thông tin user
         User user = userRepository.findById(userId)
@@ -212,7 +212,7 @@ public class PaymentServiceImpl implements PaymentService {
         Transactions transaction = new Transactions();
         transaction.setActivity(ActivityType.WITHDRAW);
         transaction.setMoney(vnpAmount);
-        transaction.setDescription("Rút tiền thành công");
+        transaction.setDescription(desc);
         transaction.setStatus(TransactionStatus.SUCCESS);
         transaction.setPayment(payment);
 
@@ -224,7 +224,7 @@ public class PaymentServiceImpl implements PaymentService {
                 .amount(vnpAmount)
                 .remainingBalance(payment.getBalance())
                 .activityType(ActivityType.WITHDRAW)
-                .message("Rút tiền thành công")
+                .message(desc)
                 .transactionStatus(TransactionStatus.SUCCESS)
                 .build();
     }
