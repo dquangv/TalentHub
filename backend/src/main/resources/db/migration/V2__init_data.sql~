@@ -3249,9 +3249,455 @@ VALUES
     (DATE_SUB(NOW(), INTERVAL 2 MONTH), DATE_SUB(NOW(), INTERVAL 1 MONTH), 290000, 10, 7, false, 3, 14),
     (DATE_SUB(NOW(), INTERVAL 3 MONTH), DATE_SUB(NOW(), INTERVAL 2 MONTH), 290000, 10, 9, false, 3, 14),
 
+-- Thêm sold_packages (gói dịch vụ đã bán) cho client mới (tiếp)
+    (DATE_SUB(NOW(), INTERVAL 2 MONTH), DATE_SUB(NOW(), INTERVAL 1 MONTH), 90000, 5, 5, false, 2, 15),
+    (DATE_SUB(NOW(), INTERVAL 3 MONTH), DATE_SUB(NOW(), INTERVAL 2 MONTH), 90000, 5, 4, false, 2, 15),
+
+    (DATE_SUB(NOW(), INTERVAL 2 MONTH), DATE_SUB(NOW(), INTERVAL 1 MONTH), 290000, 10, 8, false, 3, 16),
+    (DATE_SUB(NOW(), INTERVAL 3 MONTH), DATE_SUB(NOW(), INTERVAL 2 MONTH), 90000, 5, 5, false, 2, 16),
+
+    (DATE_SUB(NOW(), INTERVAL 2 MONTH), DATE_SUB(NOW(), INTERVAL 1 MONTH), 290000, 10, 9, false, 3, 17),
+    (DATE_SUB(NOW(), INTERVAL 3 MONTH), DATE_SUB(NOW(), INTERVAL 2 MONTH), 290000, 10, 7, false, 3, 17),
+
+    (DATE_SUB(NOW(), INTERVAL 2 MONTH), DATE_SUB(NOW(), INTERVAL 1 MONTH), 90000, 5, 4, false, 2, 18),
+    (DATE_SUB(NOW(), INTERVAL 3 MONTH), DATE_SUB(NOW(), INTERVAL 2 MONTH), 90000, 5, 5, false, 2, 18),
+
+    (DATE_SUB(NOW(), INTERVAL 2 MONTH), DATE_SUB(NOW(), INTERVAL 1 MONTH), 90000, 5, 5, false, 2, 19),
+    (DATE_SUB(NOW(), INTERVAL 3 MONTH), DATE_SUB(NOW(), INTERVAL 2 MONTH), 90000, 5, 4, false, 2, 19),
+
+    (DATE_SUB(NOW(), INTERVAL 2 MONTH), DATE_SUB(NOW(), INTERVAL 1 MONTH), 290000, 10, 8, false, 3, 20),
+    (DATE_SUB(NOW(), INTERVAL 3 MONTH), DATE_SUB(NOW(), INTERVAL 2 MONTH), 290000, 10, 9, false, 3, 20),
+
+    (DATE_SUB(NOW(), INTERVAL 2 MONTH), DATE_SUB(NOW(), INTERVAL 1 MONTH), 290000, 10, 7, false, 3, 21),
+    (DATE_SUB(NOW(), INTERVAL 3 MONTH), DATE_SUB(NOW(), INTERVAL 2 MONTH), 290000, 10, 9, false, 3, 21),
+
+    (DATE_SUB(NOW(), INTERVAL 2 MONTH), DATE_SUB(NOW(), INTERVAL 1 MONTH), 290000, 10, 8, false, 3, 22),
+    (DATE_SUB(NOW(), INTERVAL 3 MONTH), DATE_SUB(NOW(), INTERVAL 2 MONTH), 390000, 10, 10, false, 4, 22);
+
+-- Thêm Payment cho tài khoản mới
+INSERT INTO payment (balance, created_at, updated_at, account_id)
+VALUES
+    -- Freelancer mới
+    (2500000.00, NOW() - INTERVAL 60 DAY, NOW() - INTERVAL 2 DAY, 31),
+    (3200000.00, NOW() - INTERVAL 75 DAY, NOW() - INTERVAL 3 DAY, 32),
+    (1800000.00, NOW() - INTERVAL 45 DAY, NOW() - INTERVAL 1 DAY, 33),
+    (2900000.00, NOW() - INTERVAL 55 DAY, NOW() - INTERVAL 2 DAY, 34),
+    (3500000.00, NOW() - INTERVAL 70 DAY, NOW() - INTERVAL 4 DAY, 35),
+    (2200000.00, NOW() - INTERVAL 50 DAY, NOW() - INTERVAL 1 DAY, 36),
+    (4000000.00, NOW() - INTERVAL 65 DAY, NOW() - INTERVAL 3 DAY, 37),
+    (3300000.00, NOW() - INTERVAL 80 DAY, NOW() - INTERVAL 5 DAY, 38),
+    (1500000.00, NOW() - INTERVAL 40 DAY, NOW() - INTERVAL 2 DAY, 39),
+    (2700000.00, NOW() - INTERVAL 35 DAY, NOW() - INTERVAL 1 DAY, 40),
+
+    -- Client mới
+    (0.00, NOW() - INTERVAL 60 DAY, NOW() - INTERVAL 2 DAY, 41),
+    (0.00, NOW() - INTERVAL 75 DAY, NOW() - INTERVAL 3 DAY, 42),
+    (0.00, NOW() - INTERVAL 45 DAY, NOW() - INTERVAL 1 DAY, 43),
+    (0.00, NOW() - INTERVAL 55 DAY, NOW() - INTERVAL 2 DAY, 44),
+    (0.00, NOW() - INTERVAL 70 DAY, NOW() - INTERVAL 4 DAY, 45),
+    (0.00, NOW() - INTERVAL 50 DAY, NOW() - INTERVAL 1 DAY, 46),
+    (0.00, NOW() - INTERVAL 65 DAY, NOW() - INTERVAL 3 DAY, 47),
+    (0.00, NOW() - INTERVAL 80 DAY, NOW() - INTERVAL 5 DAY, 48),
+    (0.00, NOW() - INTERVAL 40 DAY, NOW() - INTERVAL 2 DAY, 49),
+    (0.00, NOW() - INTERVAL 35 DAY, NOW() - INTERVAL 1 DAY, 50);
+
+-- Thêm giao dịch cho freelancer mới
+INSERT INTO transactions (money, activity, created_at, description, status, payment_id)
+VALUES
+    -- Freelancer 1 (Thủy - Content Strategist)
+    (1200000.00, 'DEPOSIT', NOW() - INTERVAL 60 DAY, 'Thanh toán từ dự án: Chiến lược nội dung E-commerce', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 31)),
+    (800000.00, 'DEPOSIT', NOW() - INTERVAL 30 DAY, 'Thanh toán từ dự án: Chiến dịch Content Marketing B2B', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 31)),
+    (500000.00, 'WITHDRAW', NOW() - INTERVAL 15 DAY, 'Rút tiền về tài khoản ngân hàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 31)),
+
+    -- Freelancer 2 (Sơn - Cybersecurity Expert)
+    (1500000.00, 'DEPOSIT', NOW() - INTERVAL 75 DAY, 'Thanh toán từ dự án: Đánh giá bảo mật hệ thống ngân hàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 32)),
+    (1800000.00, 'DEPOSIT', NOW() - INTERVAL 45 DAY, 'Thanh toán từ dự án: Xây dựng SOC', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 32)),
+    (900000.00, 'WITHDRAW', NOW() - INTERVAL 20 DAY, 'Rút tiền về tài khoản ngân hàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 32)),
+
+    -- Freelancer 3 (Hằng - Financial Analyst)
+    (1300000.00, 'DEPOSIT', NOW() - INTERVAL 45 DAY, 'Thanh toán từ dự án: Mô hình định giá startup công nghệ', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 33)),
+    (1100000.00, 'DEPOSIT', NOW() - INTERVAL 25 DAY, 'Thanh toán từ dự án: Phân tích ROI dự án đầu tư', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 33)),
+    (600000.00, 'WITHDRAW', NOW() - INTERVAL 10 DAY, 'Rút tiền về tài khoản ngân hàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 33)),
+
+    -- Freelancer 4 (Khôi - Game Designer)
+    (1600000.00, 'DEPOSIT', NOW() - INTERVAL 55 DAY, 'Thanh toán từ dự án: Adventure Quest Mobile Game', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 34)),
+    (1400000.00, 'DEPOSIT', NOW() - INTERVAL 35 DAY, 'Thanh toán từ dự án: VR Historical Experience', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 34)),
+    (800000.00, 'WITHDRAW', NOW() - INTERVAL 15 DAY, 'Rút tiền về tài khoản ngân hàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 34)),
+
+    -- Freelancer 5 (Linh - Social Media Manager)
+    (1900000.00, 'DEPOSIT', NOW() - INTERVAL 70 DAY, 'Thanh toán từ dự án: Chiến dịch TikTok cho thương hiệu F&B', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 35)),
+    (1700000.00, 'DEPOSIT', NOW() - INTERVAL 40 DAY, 'Thanh toán từ dự án: Xây dựng cộng đồng trên Facebook', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 35)),
+    (1000000.00, 'WITHDRAW', NOW() - INTERVAL 20 DAY, 'Rút tiền về tài khoản ngân hàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 35)),
+
+    -- Freelancer 6-10
+    (1200000.00, 'DEPOSIT', NOW() - INTERVAL 50 DAY, 'Thanh toán từ dự án: E-learning Platform WordPress', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 36)),
+    (1000000.00, 'DEPOSIT', NOW() - INTERVAL 30 DAY, 'Thanh toán từ dự án: Multi-vendor Marketplace', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 36)),
+
+    (2000000.00, 'DEPOSIT', NOW() - INTERVAL 65 DAY, 'Thanh toán từ dự án: FinTech Payment App', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 37)),
+    (2000000.00, 'DEPOSIT', NOW() - INTERVAL 35 DAY, 'Thanh toán từ dự án: SaaS CRM Solution', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 37)),
+
+    (1800000.00, 'DEPOSIT', NOW() - INTERVAL 80 DAY, 'Thanh toán từ dự án: Multi-Cloud Migration', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 38)),
+    (1500000.00, 'DEPOSIT', NOW() - INTERVAL 50 DAY, 'Thanh toán từ dự án: Kubernetes CI/CD Pipeline', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 38)),
+
+    (900000.00, 'DEPOSIT', NOW() - INTERVAL 40 DAY, 'Thanh toán từ dự án: Dịch tài liệu kỹ thuật AI', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 39)),
+    (700000.00, 'DEPOSIT', NOW() - INTERVAL 20 DAY, 'Thanh toán từ dự án: Phiên dịch hội nghị quốc tế', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 39)),
+
+    (1500000.00, 'DEPOSIT', NOW() - INTERVAL 35 DAY, 'Thanh toán từ dự án: AR Shopping Experience', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 40)),
+    (1300000.00, 'DEPOSIT', NOW() - INTERVAL 15 DAY, 'Thanh toán từ dự án: Educational VR Application', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 40));
+
+-- Thêm giao dịch thanh toán gói dịch vụ cho client mới
+INSERT INTO transactions (money, activity, created_at, description, status, payment_id)
+VALUES
+    -- Client 1 (FinTech Solutions - Minh)
+    (1500000.00, 'DEPOSIT', NOW() - INTERVAL 65 DAY, 'Nạp tiền vào tài khoản qua ngân hàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 41)),
+    (390000.00, 'WITHDRAW', NOW() - INTERVAL 30 DAY, 'Thanh toán gói Kim Cương', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 41)),
+    (290000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 2 MONTH), 'Thanh toán gói Vàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 41)),
+    (90000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 3 MONTH), 'Thanh toán gói Bạc', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 41)),
+
+    -- Client 2 (TechVision Corp - Anh)
+    (2000000.00, 'DEPOSIT', NOW() - INTERVAL 80 DAY, 'Nạp tiền vào tài khoản qua VNPay', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 42)),
+    (390000.00, 'WITHDRAW', NOW() - INTERVAL 30 DAY, 'Thanh toán gói Kim Cương', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 42)),
+    (290000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 2 MONTH), 'Thanh toán gói Vàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 42)),
+    (290000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 3 MONTH), 'Thanh toán gói Vàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 42)),
+
+    -- Client 3 (BrandMax Agency - Trang)
+    (1000000.00, 'DEPOSIT', NOW() - INTERVAL 50 DAY, 'Nạp tiền vào tài khoản qua Momo', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 43)),
+    (290000.00, 'WITHDRAW', NOW() - INTERVAL 14 DAY, 'Thanh toán gói Vàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 43)),
+    (90000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 2 MONTH), 'Thanh toán gói Bạc', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 43)),
+    (90000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 3 MONTH), 'Thanh toán gói Bạc', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 43)),
+
+    -- Client 4 (InnovatePro - Nam)
+    (1200000.00, 'DEPOSIT', NOW() - INTERVAL 60 DAY, 'Nạp tiền vào tài khoản qua ngân hàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 44)),
+    (290000.00, 'WITHDRAW', NOW() - INTERVAL 14 DAY, 'Thanh toán gói Vàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 44)),
+    (290000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 2 MONTH), 'Thanh toán gói Vàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 44)),
+    (90000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 3 MONTH), 'Thanh toán gói Bạc', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 44)),
+
+    -- Client 5 (TalentCore HR - Phương)
+    (1500000.00, 'DEPOSIT', NOW() - INTERVAL 75 DAY, 'Nạp tiền vào tài khoản qua VNPay', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 45)),
+    (390000.00, 'WITHDRAW', NOW() - INTERVAL 30 DAY, 'Thanh toán gói Kim Cương', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 45)),
+    (290000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 2 MONTH), 'Thanh toán gói Vàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 45)),
+    (290000.00, 'WITHDRAW', DATE_SUB(NOW(), INTERVAL 3 MONTH), 'Thanh toán gói Vàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 45)),
+
+    -- Client 6-10
+    (1000000.00, 'DEPOSIT', NOW() - INTERVAL 55 DAY, 'Nạp tiền vào tài khoản qua Momo', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 46)),
+    (290000.00, 'WITHDRAW', NOW() - INTERVAL 14 DAY, 'Thanh toán gói Vàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 46)),
+
+    (800000.00, 'DEPOSIT', NOW() - INTERVAL 70 DAY, 'Nạp tiền vào tài khoản qua ngân hàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 47)),
+    (290000.00, 'WITHDRAW', NOW() - INTERVAL 14 DAY, 'Thanh toán gói Vàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 47)),
+
+    (1500000.00, 'DEPOSIT', NOW() - INTERVAL 85 DAY, 'Nạp tiền vào tài khoản qua VNPay', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 48)),
+    (390000.00, 'WITHDRAW', NOW() - INTERVAL 30 DAY, 'Thanh toán gói Kim Cương', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 48)),
+
+    (1200000.00, 'DEPOSIT', NOW() - INTERVAL 45 DAY, 'Nạp tiền vào tài khoản qua Momo', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 49)),
+    (390000.00, 'WITHDRAW', NOW() - INTERVAL 30 DAY, 'Thanh toán gói Kim Cương', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 49)),
+
+    (1800000.00, 'DEPOSIT', NOW() - INTERVAL 40 DAY, 'Nạp tiền vào tài khoản qua ngân hàng', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 50)),
+    (390000.00, 'WITHDRAW', NOW() - INTERVAL 30 DAY, 'Thanh toán gói Kim Cương', 'SUCCESS',
+     (SELECT id FROM payment WHERE account_id = 50));
+
+-- Freelancer ứng tuyển job
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date)
+VALUES
+    -- Content Strategist (Thủy) ứng tuyển
+    (false, 'APPLIED', 38, 17, (SELECT id FROM job WHERE title = 'Thiết kế chiến lược marketing số toàn diện'), NOW() - INTERVAL 5 DAY),
+    (false, 'VIEWED', 39, 17, (SELECT id FROM job WHERE title = 'Viết nội dung blog về công nghệ AI'), NOW() - INTERVAL 7 DAY),
+
+    -- Cybersecurity Expert (Sơn) ứng tuyển
+    (false, 'APPLIED', 40, 18, (SELECT id FROM job WHERE title = 'Kiểm thử bảo mật và đánh giá lỗ hổng'), NOW() - INTERVAL 4 DAY),
+    (false, 'APPLIED', 41, 18, (SELECT id FROM job WHERE title = 'Xây dựng hệ thống thanh toán trực tuyến'), NOW() - INTERVAL 6 DAY),
+
+    -- Financial Analyst (Hằng) ứng tuyển
+    (false, 'APPLIED', 42, 19, (SELECT id FROM job WHERE title = 'Phát triển dashboard phân tích kinh doanh'), NOW() - INTERVAL 3 DAY),
+    (false, 'VIEWED', 43, 19, (SELECT id FROM job WHERE title = 'Phát triển chiến lược chuyển đổi số cho doanh nghiệp sản xuất'), NOW() - INTERVAL 5 DAY),
+
+    -- Game Designer (Khôi) ứng tuyển
+    (false, 'APPLIED', 44, 20, (SELECT id FROM job WHERE title = 'Phát triển ứng dụng mobile Cross-platform'), NOW() - INTERVAL 4 DAY),
+    (false, 'APPLIED', 45, 20, (SELECT id FROM job WHERE title = 'Thiết kế nhân vật game mobile'), NOW() - INTERVAL 6 DAY),
+
+    -- Social Media Manager (Linh) ứng tuyển
+    (false, 'APPLIED', 46, 21, (SELECT id FROM job WHERE title = 'Thiết kế chiến lược marketing số toàn diện'), NOW() - INTERVAL 3 DAY),
+    (false, 'VIEWED', 47, 21, (SELECT id FROM job WHERE title = 'Quản lý fanpage Facebook'), NOW() - INTERVAL 5 DAY),
+
+    -- WordPress Developer (Hùng) ứng tuyển
+    (false, 'APPLIED', 48, 22, (SELECT id FROM job WHERE title = 'Phát triển MVP cho ứng dụng quản lý dự án'), NOW() - INTERVAL 4 DAY),
+    (false, 'APPLIED', 49, 22, (SELECT id FROM job WHERE title = 'Phát triển website portfolio sáng tạo'), NOW() - INTERVAL 6 DAY),
+
+    -- Product Manager (Thủy) ứng tuyển
+    (false, 'APPLIED', 50, 23, (SELECT id FROM job WHERE title = 'Phát triển chiến lược chuyển đổi số cho doanh nghiệp sản xuất'), NOW() - INTERVAL 4 DAY),
+    (false, 'VIEWED', 51, 23, (SELECT id FROM job WHERE title = 'Xây dựng backend cho ứng dụng quản lý tài chính cá nhân'), NOW() - INTERVAL 7 DAY),
+
+    -- System Administrator (Đức) ứng tuyển
+    (false, 'APPLIED', 52, 24, (SELECT id FROM job WHERE title = 'Xây dựng hệ thống microservices cho ứng dụng SaaS'), NOW() - INTERVAL 5 DAY),
+    (false, 'APPLIED', 53, 24, (SELECT id FROM job WHERE title = 'Kiểm thử bảo mật và đánh giá lỗ hổng'), NOW() - INTERVAL 7 DAY),
+
+    -- Translator & Interpreter (Hương) ứng tuyển
+    (false, 'APPLIED', 54, 25, (SELECT id FROM job WHERE title = 'Biên tập sách kỹ năng'), NOW() - INTERVAL 3 DAY),
+    (false, 'VIEWED', 55, 25, (SELECT id FROM job WHERE title = 'Viết nội dung blog về công nghệ AI'), NOW() - INTERVAL 5 DAY),
+
+    -- Unity Developer (Trường) ứng tuyển
+    (false, 'APPLIED', 56, 26, (SELECT id FROM job WHERE title = 'Phát triển ứng dụng mobile Cross-platform'), NOW() - INTERVAL 4 DAY),
+    (false, 'APPLIED', 57, 26, (SELECT id FROM job WHERE title = 'Thiết kế nhân vật game mobile'), NOW() - INTERVAL 6 DAY);
+
+-- Thêm danh sách yêu thích (is_saved = true)
+INSERT INTO freelancer_job (is_saved, status, cv_id, freelancer_id, job_id, applied_date)
+VALUES
+    (true, NULL, NULL, 17, (SELECT id FROM job WHERE title = 'Viết nội dung cho ứng dụng'), NULL),
+    (true, NULL, NULL, 18, (SELECT id FROM job WHERE title = 'Phát triển hệ thống thanh toán trực tuyến'), NULL),
+    (true, NULL, NULL, 19, (SELECT id FROM job WHERE title = 'Phát triển chiến lược chuyển đổi số cho doanh nghiệp sản xuất'), NULL),
+    (true, NULL, NULL, 20, (SELECT id FROM job WHERE title = 'Lập trình Unity game 2D'), NULL),
+    (true, NULL, NULL, 21, (SELECT id FROM job WHERE title = 'SEO Growth Campaign'), NULL),
+    (true, NULL, NULL, 22, (SELECT id FROM job WHERE title = 'Thiết kế và phát triển website portfolio sáng tạo'), NULL),
+    (true, NULL, NULL, 23, (SELECT id FROM job WHERE title = 'Phát triển hệ thống ATS (Applicant Tracking System)'), NULL),
+    (true, NULL, NULL, 24, (SELECT id FROM job WHERE title = 'Xây dựng hệ thống IoT giám sát sản xuất'), NULL),
+    (true, NULL, NULL, 25, (SELECT id FROM job WHERE title = 'Biên tập sách kỹ năng'), NULL),
+    (true, NULL, NULL, 26, (SELECT id FROM job WHERE title = 'Lập trình Unity game 2D'), NULL);
+-- Cập nhật created_at cho account với giờ phút khác nhau
+UPDATE account
+SET created_at = DATE_FORMAT(
+        DATE_SUB(NOW(),
+                 INTERVAL FLOOR(30 + RAND() * 120) DAY) +
+            INTERVAL FLOOR(RAND() * 24) HOUR +
+            INTERVAL FLOOR(RAND() * 60) MINUTE,
+        '%Y-%m-%d %H:%i:%s'
+                 )
+WHERE id BETWEEN 1 AND 50;
+
+-- Cập nhật updated_at cho một số account
+UPDATE account
+SET updated_at = DATE_FORMAT(
+        DATE_SUB(NOW(),
+                 INTERVAL FLOOR(RAND() * 20) DAY) +
+            INTERVAL FLOOR(RAND() * 24) HOUR +
+            INTERVAL FLOOR(RAND() * 60) MINUTE,
+        '%Y-%m-%d %H:%i:%s'
+                 )
+WHERE id % 3 = 0;
 
 
 
+-- Cập nhật sent_at với thời gian đa dạng hơn
+UPDATE chat_messages
+SET sent_at = DATE_FORMAT(
+        DATE_SUB(NOW(),
+                 INTERVAL FLOOR(1 + RAND() * 40) DAY) +
+            INTERVAL FLOOR(RAND() * 24) HOUR +
+            INTERVAL FLOOR(RAND() * 60) MINUTE,
+        '%Y-%m-%d %H:%i:%s'
+              )
+WHERE id BETWEEN 1 AND 50;
+
+UPDATE chat_messages
+SET sent_at = DATE_FORMAT(
+        DATE_SUB(NOW(),
+                 INTERVAL FLOOR(3 + RAND() * 20) DAY) +
+            INTERVAL FLOOR(RAND() * 24) HOUR +
+            INTERVAL FLOOR(RAND() * 60) MINUTE,
+        '%Y-%m-%d %H:%i:%s'
+              )
+WHERE id BETWEEN 51 AND 100;
+
+
+-- 1. Cập nhật created_at cho các job để phân bố theo thời gian (không phải tất cả đều "vừa xong")
+UPDATE job
+SET created_at = DATE_FORMAT(
+        DATE_SUB(NOW(),
+                 INTERVAL (id % 30) DAY) - -- Dùng id để tạo phân bố thời gian
+            INTERVAL FLOOR(RAND() * 12) HOUR -
+            INTERVAL FLOOR(RAND() * 60) MINUTE,
+        '%Y-%m-%d %H:%i:%s'
+                 )
+WHERE status = 'OPEN';
+
+-- 2. Sau đó cập nhật end_date dựa trên created_at
+UPDATE job
+SET end_date = DATE_FORMAT(
+        DATE_ADD(created_at,
+                 INTERVAL 30 DAY) + -- Mặc định 30 ngày
+            INTERVAL FLOOR(RAND() * 15) DAY, -- Thêm 0-15 ngày ngẫu nhiên
+        '%Y-%m-%d %H:%i:%s'
+               )
+WHERE status = 'OPEN';
+
+
+-- Cập nhật applied_date cho freelancer_job
+UPDATE freelancer_job
+SET applied_date = DATE_FORMAT(
+        DATE_SUB(NOW(),
+                 INTERVAL FLOOR(1 + RAND() * 14) DAY) +
+            INTERVAL FLOOR(RAND() * 24) HOUR +
+            INTERVAL FLOOR(RAND() * 60) MINUTE,
+        '%Y-%m-%d %H:%i:%s'
+                   )
+WHERE status IN ('APPLIED', 'VIEWED');
+
+-- Cập nhật applied_date cho freelancer_job đã approved
+UPDATE freelancer_job
+SET applied_date = DATE_FORMAT(
+        DATE_SUB(NOW(),
+                 INTERVAL FLOOR(15 + RAND() * 30) DAY) +
+            INTERVAL FLOOR(RAND() * 24) HOUR +
+            INTERVAL FLOOR(RAND() * 60) MINUTE,
+        '%Y-%m-%d %H:%i:%s'
+                   )
+WHERE status = 'APPROVED';
+
+
+
+-- Cập nhật start_time cho appointments sắp tới
+UPDATE appointments
+SET start_time = DATE_FORMAT(
+        DATE_ADD(NOW(),
+                 INTERVAL FLOOR(1 + RAND() * 14) DAY) +
+            INTERVAL FLOOR(9 + RAND() * 8) HOUR +
+            INTERVAL (FLOOR(RAND() * 4) * 15) MINUTE,
+        '%Y-%m-%d %H:%i:%s'
+                 );
+
+
+-- Cập nhật start_date và end_date cho các gói hiện tại
+UPDATE sold_packages
+SET start_date = DATE_FORMAT(
+        DATE_SUB(NOW(),
+                 INTERVAL FLOOR(1 + RAND() * 12) DAY) +
+            INTERVAL FLOOR(RAND() * 24) HOUR,
+        '%Y-%m-%d %H:%i:%s'
+                 ),
+    end_date = DATE_FORMAT(
+            DATE_ADD(NOW(),
+                     INTERVAL FLOOR(10 + RAND() * 20) DAY) +
+                INTERVAL FLOOR(RAND() * 24) HOUR,
+            '%Y-%m-%d %H:%i:%s'
+               )
+WHERE status = true;
+
+-- Cập nhật start_date và end_date cho các gói đã hết hạn
+UPDATE sold_packages
+SET start_date = DATE_FORMAT(
+        DATE_SUB(NOW(),
+                 INTERVAL FLOOR(60 + RAND() * 60) DAY) +
+            INTERVAL FLOOR(RAND() * 24) HOUR,
+        '%Y-%m-%d %H:%i:%s'
+                 ),
+    end_date = DATE_FORMAT(
+            DATE_SUB(NOW(),
+                     INTERVAL FLOOR(5 + RAND() * 30) DAY) +
+                INTERVAL FLOOR(RAND() * 24) HOUR,
+            '%Y-%m-%d %H:%i:%s'
+               )
+WHERE status = false;
+
+UPDATE payment
+SET created_at = DATE_FORMAT(
+        DATE_SUB(NOW(),
+                 INTERVAL FLOOR(30 + RAND() * 120) DAY) +
+            INTERVAL FLOOR(RAND() * 24) HOUR +
+            INTERVAL FLOOR(RAND() * 60) MINUTE,
+        '%Y-%m-%d %H:%i:%s'
+                 ),
+    updated_at = DATE_FORMAT(
+            DATE_SUB(NOW(),
+                     INTERVAL FLOOR(RAND() * 10) DAY) +
+                INTERVAL FLOOR(RAND() * 24) HOUR +
+                INTERVAL FLOOR(RAND() * 60) MINUTE,
+            '%Y-%m-%d %H:%i:%s'
+                 );
+
+
+
+UPDATE transactions
+SET created_at = DATE_FORMAT(
+        DATE_SUB(NOW(),
+                 INTERVAL FLOOR(1 + RAND() * 90) DAY) +
+            INTERVAL FLOOR(RAND() * 24) HOUR +
+            INTERVAL FLOOR(RAND() * 60) MINUTE,
+        '%Y-%m-%d %H:%i:%s'
+                 )
+WHERE activity = 'DEPOSIT';
+
+UPDATE transactions
+SET created_at = DATE_FORMAT(
+        DATE_SUB(NOW(),
+                 INTERVAL FLOOR(1 + RAND() * 60) DAY) +
+            INTERVAL FLOOR(RAND() * 24) HOUR +
+            INTERVAL FLOOR(RAND() * 60) MINUTE,
+        '%Y-%m-%d %H:%i:%s'
+                 )
+WHERE activity = 'WITHDRAW';
+
+
+UPDATE notification
+SET created_at = DATE_FORMAT(
+        DATE_SUB(NOW(),
+                 INTERVAL FLOOR(RAND() * 14) DAY) +
+            INTERVAL FLOOR(RAND() * 24) HOUR +
+            INTERVAL FLOOR(RAND() * 60) MINUTE,
+        '%Y-%m-%d %H:%i:%s'
+                 )
+WHERE is_read = false;
+
+UPDATE notification
+SET created_at = DATE_FORMAT(
+        DATE_SUB(NOW(),
+                 INTERVAL FLOOR(7 + RAND() * 21) DAY) +
+            INTERVAL FLOOR(RAND() * 24) HOUR +
+            INTERVAL FLOOR(RAND() * 60) MINUTE,
+        '%Y-%m-%d %H:%i:%s'
+                 )
+WHERE is_read = true;
 
 
 

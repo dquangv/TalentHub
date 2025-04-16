@@ -62,7 +62,8 @@ public class Job extends AbstractEntity<Long> {
     @Column(name = "type_price")
     private String typePrice;
 
-    @Column(name = "description")
+    @Lob
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     @Enumerated(EnumType.STRING) // Sử dụng kiểu chuỗi cho enum

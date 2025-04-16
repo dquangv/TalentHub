@@ -20,7 +20,7 @@ public interface CreateJobMapper extends BaseMapper<Job, CreateJobDTORequest, Cr
     @Mapping(target = "jobSkills", expression = "java(mapJobSkills(request.getSkillId()))")
     @Mapping(source = "statusJob", target = "status")
     Job toEntity(CreateJobDTORequest request);
-
+    @Mapping(source = "id", target = "jobId")
     @Mapping(source = "client.id", target = "clientId")
     @Mapping(source = "category.id", target = "categoryId")
     @Mapping(target = "skillId", expression = "java(mapSkillIds(job.getJobSkills()))")
