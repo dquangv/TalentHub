@@ -236,7 +236,9 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
 
     @Override
     public List<ApplicantResponseDTO> getApplicantByJobId(Long jobId) {
-        List<FreelancerJob> results = freelancerJobRepository.getApplicantByJobId(jobId);
+        List<FreelancerJob> results = freelancerJobRepository.getApplicantByJobId(jobId).stream().filter(
+                freelancerJob -> freelancerJob.getStatus() != null && !freelancerJob.getStatus().equals(StatusFreelancerJob.Viewed)
+        ).toList();
 
         return results.stream()
                 .map(freelancerJob -> {
