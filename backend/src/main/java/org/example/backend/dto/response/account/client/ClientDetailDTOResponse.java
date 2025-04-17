@@ -18,6 +18,7 @@ public class ClientDetailDTOResponse {
     private Double toPrice;
     private Integer jobsCount;
 
+    private Long userId;
     private String firstName;
     private String lastName;
     private String province;
