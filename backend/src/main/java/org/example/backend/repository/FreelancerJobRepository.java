@@ -128,4 +128,7 @@ public interface FreelancerJobRepository extends JpaRepository<FreelancerJob, Lo
             "WHERE j.client.id = :clientId " +
             "AND j.status = org.example.backend.enums.StatusJob.OPEN")
     List<Freelancer> findFreelancersByClientId(@Param("clientId") Long clientId);
+
+
+    FreelancerJob findByClientReviewId(Long clientReviewId);
 }
