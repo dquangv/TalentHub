@@ -186,7 +186,7 @@ public class ClientServiceImpl implements ClientService {
         );
     }
     private List<ClientReview> getClientReviews(Long clientId) {
-        return clientReviewRepository.findAll();
+        return clientReviewRepository.findByClientId(clientId);
     }
     private String getReviewerName(Long reviewId) {
         FreelancerJob job = freelancerJobRepository.findByClientReviewId(reviewId);
