@@ -1,6 +1,9 @@
 package org.example.backend.repository;
 
+import org.example.backend.dto.response.account.client.ActiveClientDTOResponse;
+import org.example.backend.dto.response.account.client.ClientDetailDTOResponse;
 import org.example.backend.entity.child.account.client.Client;
+import org.example.backend.enums.StatusAccount;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -9,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Optional;
 
 public interface ClientRepository extends JpaRepository<Client, Long> {
@@ -26,4 +30,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
                      @Param("toPrice")  Double toPrice,
                      @Param("typePrice") String typePrice
                      );
+
+    List<Client> findByUser_Account_Status(StatusAccount status);
+
 }
