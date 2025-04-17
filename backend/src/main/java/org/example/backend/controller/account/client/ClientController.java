@@ -4,8 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.ResponseObject;
 import org.example.backend.dto.request.account.client.ClientDTORequest;
 import org.example.backend.dto.request.account.client.UpdatePriceAndTypeDTORequest;
-import org.example.backend.dto.response.account.client.ClientDTOResponse;
-import org.example.backend.dto.response.account.client.UpdatePriceAndTypeDTOResponse;
+import org.example.backend.dto.response.account.client.*;
 import org.example.backend.service.intf.account.client.ClientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -76,6 +75,38 @@ public class ClientController {
                 .message("Client price and type updated successfully")
                 .status(HttpStatus.OK.value())
                 .data(response)
+                .build();
+    }
+
+
+    @GetMapping("/{clientId}/companies")
+    public ResponseObject<List<CompanyDTOResponse>> getCompaniesByClientId(@PathVariable Long clientId) {
+        List<CompanyDTOResponse> companies = clientService.getCompaniesByClientId(clientId);
+        return ResponseObject.<List<CompanyDTOResponse>>builder()
+                .message("Companies for client " + clientId + " retrieved successfully")
+                .status(HttpStatus.OK.value())
+                .data(companies)
+                .build();
+    }
+
+
+    @GetMapping("/active")
+    public ResponseObject<List<ActiveClientDTOResponse>> getAllActiveClients() {
+        List<ActiveClientDTOResponse> activeClients = clientService.getAllActiveClients();
+        return ResponseObject.<List<ActiveClientDTOResponse>>builder()
+                .message("Active clients retrieved successfully")
+                .status(HttpStatus.OK.value())
+                .data(activeClients)
+                .build();
+    }
+
+    @GetMapping("/{clientId}/detail")
+    public ResponseObject<ClientDetailDTOResponse> getClientDetail(@PathVariable Long clientId) {
+        ClientDetailDTOResponse clientDetail = clientService.getClientDetail(clientId);
+        return ResponseObject.<ClientDetailDTOResponse>builder()
+                .message("Client detail retrieved successfully")
+                .status(HttpStatus.OK.value())
+                .data(clientDetail)
                 .build();
     }
 }
