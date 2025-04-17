@@ -6,15 +6,12 @@ import org.example.backend.dto.response.account.client.CompanyDTOResponse;
 import org.example.backend.dto.response.job.ClientReviewDTOResponse;
 import org.example.backend.entity.child.account.client.Client;
 import org.example.backend.entity.child.account.client.ClientReview;
-import org.example.backend.entity.child.account.client.Company;
-import org.example.backend.entity.child.job.FreelancerJob;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
 import java.util.List;
 import java.util.OptionalDouble;
-import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface ActiveClientMapper {
@@ -60,6 +57,7 @@ public interface ActiveClientMapper {
     @Mapping(target = "companies", source = "companies")
 
     @Mapping(target = "reviews", source = "reviewDTOs")
+    @Mapping(target = "userId", source = "client.user.id")
     ClientDetailDTOResponse toClientDetailResponse(Client client, List<ClientReview> clientReviews,
                                                    List<CompanyDTOResponse> companies, List<ClientReviewDTOResponse> reviewDTOs);
 
