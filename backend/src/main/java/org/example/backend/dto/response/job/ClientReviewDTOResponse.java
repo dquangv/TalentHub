@@ -10,7 +10,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClientReviewDTOResponse {
-    private long id;
+    private Long id;
     private Float rating;
     private String note;
+    private String reviewerName;
 }
