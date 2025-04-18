@@ -170,7 +170,7 @@ public class PaymentServiceImpl implements PaymentService {
 
 
     @Override
-    public WithdrawResponseDTO handleVnPayWithCallback(BigDecimal vnpAmount, Long userId,String desc) {
+    public WithdrawResponseDTO handleVnPayWithCallback(BigDecimal vnpAmount, Long userId, String desc) {
 
         // Lấy thông tin user
         User user = userRepository.findById(userId)
@@ -190,7 +190,7 @@ public class PaymentServiceImpl implements PaymentService {
                     .amount(vnpAmount)
                     .remainingBalance(balance == null ? BigDecimal.ZERO : balance)
                     .activityType(ActivityType.WITHDRAW)
-                    .message(balance == null ? "❌ Bạn chưa nạp tiền lần đầu. Vui lòng nạp tiền trước khi thực hiện giao dịch!" : "❌ Số dư không đủ để thực hiện giao dịch rút tiền!")
+                    .message(balance == null ? "❌ Bạn chưa nạp tiền lần đầu. Vui lòng nạp tiền trước khi thực hiện giao dịch!" : "❌ Số dư không đủ để đăng ký gói mới!")
                     .transactionStatus(TransactionStatus.FAILED)
                     .build();
         }
