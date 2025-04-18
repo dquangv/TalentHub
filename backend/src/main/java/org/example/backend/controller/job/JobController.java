@@ -117,7 +117,7 @@ public class JobController {
         return ResponseObject
                 .<List<ApplyJobsDTOResponse>>builder()
                 .message(closedJob ? "Close job successfully" : "Failed when close job")
-                .status(HttpStatus.OK.value())
+                .status(closedJob ? HttpStatus.OK.value() : HttpStatus.BAD_REQUEST.value())
                 .build();
     }
 
