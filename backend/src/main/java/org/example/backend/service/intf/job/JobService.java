@@ -39,4 +39,6 @@ public interface JobService extends BaseService<JobDTORequest, JobDTOResponse, L
     List<JobDTOResponse> getRecommendedJobsForFreelancer(Long freelancerId);
 
     List<FreelancerDTOResponse> getFreelancersByClientJobCategories(Long clientId);
+
+    boolean closeJob(Long id);
 }
