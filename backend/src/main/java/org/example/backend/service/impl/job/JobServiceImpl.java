@@ -426,4 +426,15 @@ public class JobServiceImpl implements JobService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public boolean closeJob(Long id){
+        Optional<Job> job = jobRepository.findById(id);
+        if (job.isPresent()) {
+            job.get().setStatus(StatusJob.CLOSED);
+            jobRepository.save(job.get());
+            return true;
+        }
+        return false;
+    }
+
 }
