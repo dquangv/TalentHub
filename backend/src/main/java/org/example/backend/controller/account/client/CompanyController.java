@@ -28,6 +28,22 @@ public class CompanyController {
                 .build();
     }
 
+    @PutMapping("/{id}")
+    public ResponseObject<CompanyDTOResponse> updateCompany(
+            @PathVariable Long id,
+            @Valid @RequestBody CompanyDTORequest companyDTORequest) {
+        return companyService.update(id, companyDTORequest)
+                .map(company -> ResponseObject.<CompanyDTOResponse>builder()
+                        .message("Company updated successfully")
+                        .status(HttpStatus.OK.value())
+                        .data(company)
+                        .build())
+                .orElse(ResponseObject.<CompanyDTOResponse>builder()
+                        .message("Company not found")
+                        .status(HttpStatus.NOT_FOUND.value())
+                        .build());
+    }
+
     @GetMapping("/{id}")
     public ResponseObject<CompanyDTOResponse> getCompanyById(@PathVariable Long id) {
         return companyService.getById(id)

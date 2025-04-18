@@ -22,6 +22,35 @@ public class CompanyServiceImpl implements CompanyService {
     private final ClientRepository clientRepository;
 
     @Override
+    public Optional<CompanyDTOResponse> update(Long id, CompanyDTORequest companyDTORequest) {
+        Optional<Company> companyOptional = companyRepository.findById(id);
+
+        if (companyOptional.isPresent()) {
+            Company company = companyOptional.get();
+            company.setCompanyName(companyDTORequest.getCompanyName());
+            company.setAddress(companyDTORequest.getAddress());
+            company.setPhoneContact(companyDTORequest.getPhoneContact());
+            company.setIndustry(companyDTORequest.getIndustry());
+            if (companyDTORequest.getClientId() != null) {
+                Optional<Client> clientOptional = clientRepository.findById(companyDTORequest.getClientId());
+                clientOptional.ifPresent(company::setClient);
+            }
+
+            Company updatedCompany = companyRepository.save(company);
+
+            return Optional.of(new CompanyDTOResponse(
+                    updatedCompany.getId(),
+                    updatedCompany.getCompanyName(),
+                    updatedCompany.getAddress(),
+                    updatedCompany.getPhoneContact(),
+                    updatedCompany.getIndustry(),
+                    updatedCompany.getClient() != null ? updatedCompany.getClient().getId() : null
+            ));
+        }
+
+        return Optional.empty();
+    }
+    @Override
     public CompanyDTOResponse create(CompanyDTORequest companyDTORequest) {
         Company company = new Company();
         company.setCompanyName(companyDTORequest.getCompanyName());
