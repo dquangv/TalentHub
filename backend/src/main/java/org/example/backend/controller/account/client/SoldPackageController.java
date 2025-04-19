@@ -36,7 +36,6 @@ public class SoldPackageController {
     @GetMapping("/current/{clientId}")
     public ResponseEntity<ResponseObject<CurrentPackageDTOResponse>> getCurrentPackage(@PathVariable Long clientId) {
         Optional<CurrentPackageDTOResponse> currentPackage = soldPackageService.getCurrentPackage(clientId);
-
         if (currentPackage.isPresent()) {
             return ResponseEntity.ok(ResponseObject.<CurrentPackageDTOResponse>builder()
                     .message("Current package retrieved successfully")

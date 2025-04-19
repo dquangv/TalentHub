@@ -238,9 +238,10 @@ public class PaymentServiceImpl implements PaymentService {
         Account account = accountRepository.findById(user.getAccount().getId())
                 .orElseThrow(() -> new RuntimeException("❌ Account không tồn tại!"));
 
+        // Fixed: Return 0 balance instead of throwing an exception when payment is not found
         BigDecimal balance = paymentRepository.findByAccountId(account.getId())
                 .map(Payment::getBalance)
-                .orElseThrow(() -> new IllegalArgumentException("Payment not found"));
+                .orElse(BigDecimal.ZERO); // Return 0 instead of throwing exception
 
         // Lấy dữ liệu giao dịch mới nhất
         List<PaymentSummaryDTO> payments = paymentRepository.getLatestPaymentInfo(account.getId());
@@ -255,8 +256,7 @@ public class PaymentServiceImpl implements PaymentService {
         BigDecimal totalDepositToday = BigDecimal.ZERO;
         BigDecimal totalWithdrawToday = BigDecimal.ZERO;
 
-
-        // Duyệt danh sách giao dịc
+        // Duyệt danh sách giao dịch
         for (PaymentSummaryDTO payment : payments) {
             if (payment.getActivity() == ActivityType.DEPOSIT) {
                 latestDeposit = totalDepositToday.add(payment.getTotalAmount());
