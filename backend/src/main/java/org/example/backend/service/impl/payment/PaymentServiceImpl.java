@@ -1,5 +1,6 @@
 
 package org.example.backend.service.impl.payment;
+import org.springframework.data.domain.Pageable;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,8 @@ import org.example.backend.repository.PaymentRepository;
 import org.example.backend.repository.TransactionRepository;
 import org.example.backend.repository.UserRepository;
 import org.example.backend.service.intf.payment.PaymentService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -244,7 +247,11 @@ public class PaymentServiceImpl implements PaymentService {
                 .orElse(BigDecimal.ZERO); // Return 0 instead of throwing exception
 
         // Lấy dữ liệu giao dịch mới nhất
-        List<PaymentSummaryDTO> payments = paymentRepository.getLatestPaymentInfo(account.getId());
+//        List<PaymentSummaryDTO> payments = paymentRepository.getLatestPaymentInfo(account.getId());
+        Pageable limitOne = PageRequest.of(0, 1);
+
+        List<PaymentSummaryDTO> payments = paymentRepository.findLatestDeposit(account.getId(), limitOne);
+        List<PaymentSummaryDTO> payments2 = paymentRepository.findLatestWithdraw(account.getId(), limitOne);
 
         // Biến để lưu giá trị cần thiết
         BigDecimal latestDeposit = BigDecimal.ZERO;
@@ -258,15 +265,20 @@ public class PaymentServiceImpl implements PaymentService {
 
         // Duyệt danh sách giao dịch
         for (PaymentSummaryDTO payment : payments) {
-            if (payment.getActivity() == ActivityType.DEPOSIT) {
+//            if (payment.getActivity() == ActivityType.DEPOSIT) {
                 latestDeposit = totalDepositToday.add(payment.getTotalAmount());
                 latestDepositDate = payment.getLatestTransactionDate();
-            } else if (payment.getActivity() == ActivityType.WITHDRAW) {
-                todaySpending = totalWithdrawToday.add(payment.getTotalAmount());
-                latestSpendingDate = payment.getLatestTransactionDate();
-            }
-            oldestTransactionDate = payment.getOldestTransactionDate();
+//            } else if (payment.getActivity() == ActivityType.WITHDRAW) {
+
+//            }
+//            oldestTransactionDate = payment.getOldestTransactionDate();
         }
+        for (PaymentSummaryDTO payment2 : payments2) {
+            todaySpending = totalWithdrawToday.add(payment2.getTotalAmount());
+            latestSpendingDate = payment2.getLatestTransactionDate();
+        }
+
+        oldestTransactionDate = paymentRepository.getCreatedAtById(account.getId());
 
         // Trả về DTO chứa thông tin tài khoản
         return BalanceResponseDTO.builder()
