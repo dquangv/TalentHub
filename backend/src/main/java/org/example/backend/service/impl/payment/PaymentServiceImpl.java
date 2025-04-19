@@ -130,7 +130,7 @@ public class PaymentServiceImpl implements PaymentService {
 
          Transactions transaction = new Transactions();
          transaction.setActivity(ActivityType.DEPOSIT);
-         transaction.setDescription("Nộp tiền thành công");
+         transaction.setDescription("Nạp tiền thành công");
          transaction.setMoney(amount);
          transaction.setStatus(TransactionStatus.SUCCESS);
          transaction.setPayment(savePayment);
