@@ -291,7 +291,14 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
         }
 
         freelancerJob.setStatus(StatusFreelancerJob.Rejected);
+
         FreelancerJob updatedFreelancerJob = freelancerJobRepository.save(freelancerJob);
+
+        notifyService.sendNotification(
+                updatedFreelancerJob.getFreelancer().getUser().getId(),
+                "Rất tiếc, bạn chưa được chọn cho công việc '" + updatedFreelancerJob.getJob().getTitle() + "'. Đừng nản lòng, hãy tiếp tục khám phá các cơ hội khác phù hợp với bạn!",
+                "jobs"
+        );
 
         return new FreelancerJobDTOResponse(
                 updatedFreelancerJob.getId(),
