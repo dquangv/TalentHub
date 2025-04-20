@@ -63,8 +63,11 @@ public class PaymentController {
     @PostMapping("/vnpay-with-callback")
     public ResponseEntity<ResponseObject<WithdrawResponseDTO>> vnpayWithCallback(
             @RequestParam("vnp_Amount") BigDecimal vnpAmount,
-            @RequestParam("userId") Long userId) throws UnsupportedEncodingException {
-        WithdrawResponseDTO withdrawResponse = paymentService.handleVnPayWithCallback(vnpAmount, userId);
+            @RequestParam("userId") Long userId,
+            @RequestParam("desc") String desc
+
+    ) throws UnsupportedEncodingException {
+        WithdrawResponseDTO withdrawResponse = paymentService.handleVnPayWithCallback(vnpAmount, userId,desc);
         return ResponseEntity.ok(
                 ResponseObject.<WithdrawResponseDTO>builder()
                         .message("Rút tiền thành công!")

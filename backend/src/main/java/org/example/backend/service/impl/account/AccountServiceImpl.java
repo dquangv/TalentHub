@@ -19,6 +19,7 @@ import org.example.backend.enums.EmailType;
 import org.example.backend.enums.RoleUser;
 import org.example.backend.enums.StatusAccount;
 import org.example.backend.enums.TypePackage;
+import org.example.backend.exception.AuthenticationException;
 import org.example.backend.exception.NotFoundException;
 import org.example.backend.mapper.Account.AccountMapper;
 import org.example.backend.mapper.Account.AdminAccountMapper;
@@ -137,7 +138,6 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
 
                     SoldPackage soldPackage = new SoldPackage();
                     soldPackage.setStartDate(LocalDateTime.now());
-                    soldPackage.setEndDate(LocalDateTime.now().plusDays(voucherPackage.getDuration()));
                     soldPackage.setNumberPost(voucherPackage.getNumberPost());
                     soldPackage.setNumberPosted(Long.valueOf(0));
                     soldPackage.setVoucherPackage(voucherPackage);
@@ -156,12 +156,14 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
         emailService.sendEmail(accountRequestDTO.getEmail(), EmailType.REGISTER_SUCCESS, "Account is registered");
         return accountMapper.toResponseDto(savedAccount);
     }
+
     private final AuthenticationService authenticationService;
+
     @Transactional
     @Override
     public AuthenticationDtoResponse register(AccountDTORequest accountRequestDTO) {
         if (accountRepository.existsByEmail(accountRequestDTO.getEmail())) {
-            throw new IllegalArgumentException("Account with email "
+            throw new AuthenticationException("Account with email "
                     + accountRequestDTO.getEmail() + " already exists");
         }
 
@@ -180,16 +182,17 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
 
         User user = new User();
 
-//        user.setFirstName(accountRequestDTO.getFirstName());
-//        user.setLastName(accountRequestDTO.getLastName());
-//        user.setPhoneNumber(accountRequestDTO.getPhoneNumber());
-//        user.setAddress(accountRequestDTO.getAddress());
-//        user.setTitle(accountRequestDTO.getTitle());
-//        user.setIntroduction(accountRequestDTO.getIntroduction());
+        user.setFirstName(accountRequestDTO.getFirstName());
+        user.setLastName(accountRequestDTO.getLastName());
+        user.setPhoneNumber(accountRequestDTO.getPhoneNumber());
+        user.setCountry(accountRequestDTO.getCountry());
+        user.setProvince(accountRequestDTO.getProvince());
+        user.setTitle(accountRequestDTO.getTitle());
+        user.setIntroduction(accountRequestDTO.getIntroduction());
 
         user.setAccount(savedAccount);
 
-//        account.setUser(user);
+        account.setUser(user);
 
         accountRepository.save(account);
         userRepository.save(user);
@@ -207,10 +210,24 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
                     Client client = new Client();
                     client.setUser(user);
                     clientRepository.save(client);
+
+                    VoucherPackage voucherPackage = voucherPackageRepository.findTopByTypePackageOrderByIdDesc(TypePackage.NORMAL);
+
+                    SoldPackage soldPackage = new SoldPackage();
+                    soldPackage.setStartDate(LocalDateTime.now());
+                    soldPackage.setNumberPost(voucherPackage.getNumberPost());
+                    soldPackage.setNumberPosted(Long.valueOf(0));
+                    soldPackage.setVoucherPackage(voucherPackage);
+                    soldPackage.setPrice(voucherPackage.getPrice());
+                    soldPackage.setVoucherPackage(voucherPackage);
+                    soldPackage.setClient(client);
+                    soldPackage.setStatus(true);
+
+                    soldPackageRepository.save(soldPackage);
                 }
             }
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException("Invalid role: " + accountRequestDTO.getRole());
+            throw new AuthenticationException("Invalid role: " + accountRequestDTO.getRole());
         }
 
         emailService.sendEmail(accountRequestDTO.getEmail(), EmailType.REGISTER_SUCCESS, "Account is registered");
@@ -242,7 +259,9 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
         }
         return accountMapper.toResponseDtoList(accounts);
     }
+
     private final AdminAccountMapper adminAccountMapper;
+
     @Override
     public List<AdminAccountDTOResponse> getAllByAdmin() {
         List<Account> accounts = accountRepository.findAll();
@@ -280,7 +299,10 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
 
         Account newAccount = new Account();
         newAccount.setEmail(email);
-//        newAccount.setStatus(true);
+        newAccount.setLng(0.0);
+        newAccount.setLat(0.0);
+
+        //        newAccount.setStatus(true);
         accountRepository.save(newAccount);
 
         User user = new User();
@@ -367,6 +389,20 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
 
                     account.get().setStatus(StatusAccount.UNVERIFIED);
                     accountRepository.save(account.get());
+
+                    VoucherPackage voucherPackage = voucherPackageRepository.findTopByTypePackageOrderByIdDesc(TypePackage.NORMAL);
+
+                    SoldPackage soldPackage = new SoldPackage();
+                    soldPackage.setStartDate(LocalDateTime.now());
+                    soldPackage.setNumberPost(voucherPackage.getNumberPost());
+                    soldPackage.setNumberPosted(Long.valueOf(0));
+                    soldPackage.setVoucherPackage(voucherPackage);
+                    soldPackage.setPrice(voucherPackage.getPrice());
+                    soldPackage.setVoucherPackage(voucherPackage);
+                    soldPackage.setClient(client);
+                    soldPackage.setStatus(true);
+
+                    soldPackageRepository.save(soldPackage);
                 }
             }
         } catch (IllegalArgumentException e) {

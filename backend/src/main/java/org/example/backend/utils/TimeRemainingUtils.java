@@ -62,10 +62,10 @@ public class TimeRemainingUtils {
             return diffHours + " giờ trước";
         } else if (diffDays < 7) {
             return diffDays + " ngày trước";
-        } else if (diffWeeks < 4) {
+        } else if (diffDays < 30) {
             return diffWeeks + " tuần trước";
         } else if (diffMonths < 12) {
-            return diffMonths + " tháng trước";
+            return (diffMonths > 0 ? diffMonths : 1) + " tháng trước";
         } else {
             return diffYears + " năm trước";
         }

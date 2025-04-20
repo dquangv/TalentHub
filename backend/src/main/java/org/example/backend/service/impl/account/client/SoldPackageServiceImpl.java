@@ -88,13 +88,15 @@ public class SoldPackageServiceImpl implements SoldPackageService {
         if (currentPackage == null) {
             return Optional.empty();
         }
+
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime endDate = currentPackage.getEndDate();
 
         long remainingHours = 0;
         String remainingFormatted = "Đã hết hạn";
 
-        if (endDate.isAfter(now)) {
+        // Fix: Add null check before using endDate.isAfter(now)
+        if (endDate != null && endDate.isAfter(now)) {
             remainingHours = java.time.Duration.between(now, endDate).toHours();
             long days = remainingHours / 24;
             long hours = remainingHours % 24;
@@ -105,6 +107,7 @@ public class SoldPackageServiceImpl implements SoldPackageService {
                 remainingFormatted = hours + " giờ";
             }
         }
+
         Long postsRemaining = currentPackage.getNumberPost() - currentPackage.getNumberPosted();
         if (postsRemaining < 0) postsRemaining = 0L;
 

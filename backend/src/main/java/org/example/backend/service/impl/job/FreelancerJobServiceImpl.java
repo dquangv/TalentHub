@@ -55,7 +55,6 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
     private final FreelancerReviewRepository freelancerReviewRepository;
     private final CVRepository cvRepository;
     private final NotifyService notifyService;
-
     @Override
     public FreelancerJobDTOResponse create(FreelancerJobDTORequest freelancerJobDTORequest) {
         return null;
@@ -236,7 +235,9 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
 
     @Override
     public List<ApplicantResponseDTO> getApplicantByJobId(Long jobId) {
-        List<FreelancerJob> results = freelancerJobRepository.getApplicantByJobId(jobId);
+        List<FreelancerJob> results = freelancerJobRepository.getApplicantByJobId(jobId).stream().filter(
+                freelancerJob -> freelancerJob.getStatus() != null && !freelancerJob.getStatus().equals(StatusFreelancerJob.Viewed)
+        ).toList();
 
         return results.stream()
                 .map(freelancerJob -> {
@@ -263,7 +264,7 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
 
         freelancerJob.setStatus(StatusFreelancerJob.Approved);
         FreelancerJob updatedFreelancerJob = freelancerJobRepository.save(freelancerJob);
-
+        notifyService.sendNotification(updatedFreelancerJob.getFreelancer().getUser().getId(), "Bạn đã được chấp thuận trong công việc " + updatedFreelancerJob.getJob().getTitle(), "jobs/"+updatedFreelancerJob.getJob().getId());
         return new FreelancerJobDTOResponse(
                 updatedFreelancerJob.getId(),
                 updatedFreelancerJob.getIsSaved(),
@@ -289,7 +290,7 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
             throw new BadRequestException("Can only reject applications with Applied status");
         }
 
-        freelancerJob.setStatus(StatusFreelancerJob.Cancelled);
+        freelancerJob.setStatus(StatusFreelancerJob.Rejected);
         FreelancerJob updatedFreelancerJob = freelancerJobRepository.save(freelancerJob);
 
         return new FreelancerJobDTOResponse(
