@@ -55,7 +55,6 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
     private final FreelancerReviewRepository freelancerReviewRepository;
     private final CVRepository cvRepository;
     private final NotifyService notifyService;
-
     @Override
     public FreelancerJobDTOResponse create(FreelancerJobDTORequest freelancerJobDTORequest) {
         return null;
@@ -265,7 +264,6 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
 
         freelancerJob.setStatus(StatusFreelancerJob.Approved);
         FreelancerJob updatedFreelancerJob = freelancerJobRepository.save(freelancerJob);
-
         return new FreelancerJobDTOResponse(
                 updatedFreelancerJob.getId(),
                 updatedFreelancerJob.getIsSaved(),
@@ -291,7 +289,7 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
             throw new BadRequestException("Can only reject applications with Applied status");
         }
 
-        freelancerJob.setStatus(StatusFreelancerJob.Cancelled);
+        freelancerJob.setStatus(StatusFreelancerJob.Rejected);
         FreelancerJob updatedFreelancerJob = freelancerJobRepository.save(freelancerJob);
 
         return new FreelancerJobDTOResponse(
