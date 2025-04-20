@@ -19,6 +19,7 @@ import org.example.backend.enums.EmailType;
 import org.example.backend.enums.RoleUser;
 import org.example.backend.enums.StatusAccount;
 import org.example.backend.enums.TypePackage;
+import org.example.backend.exception.AuthenticationException;
 import org.example.backend.exception.NotFoundException;
 import org.example.backend.mapper.Account.AccountMapper;
 import org.example.backend.mapper.Account.AdminAccountMapper;
@@ -162,7 +163,7 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
     @Override
     public AuthenticationDtoResponse register(AccountDTORequest accountRequestDTO) {
         if (accountRepository.existsByEmail(accountRequestDTO.getEmail())) {
-            throw new IllegalArgumentException("Account with email "
+            throw new AuthenticationException("Account with email "
                     + accountRequestDTO.getEmail() + " already exists");
         }
 
@@ -226,7 +227,7 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
                 }
             }
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException("Invalid role: " + accountRequestDTO.getRole());
+            throw new AuthenticationException("Invalid role: " + accountRequestDTO.getRole());
         }
 
         emailService.sendEmail(accountRequestDTO.getEmail(), EmailType.REGISTER_SUCCESS, "Account is registered");
