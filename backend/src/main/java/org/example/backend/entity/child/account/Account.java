@@ -57,9 +57,9 @@ public class Account extends AbstractEntity<Long> {
     private Double lat;
     @Column(name = "lng")
     private Double lng;
-    /*@OneToOne
+    @OneToOne
     @JoinColumn(name = "user_id")
-    private User user;*/
+    private User user;
 
 
 

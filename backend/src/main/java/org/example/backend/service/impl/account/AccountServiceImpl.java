@@ -19,6 +19,7 @@ import org.example.backend.enums.EmailType;
 import org.example.backend.enums.RoleUser;
 import org.example.backend.enums.StatusAccount;
 import org.example.backend.enums.TypePackage;
+import org.example.backend.exception.AuthenticationException;
 import org.example.backend.exception.NotFoundException;
 import org.example.backend.mapper.Account.AccountMapper;
 import org.example.backend.mapper.Account.AdminAccountMapper;
@@ -162,7 +163,7 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
     @Override
     public AuthenticationDtoResponse register(AccountDTORequest accountRequestDTO) {
         if (accountRepository.existsByEmail(accountRequestDTO.getEmail())) {
-            throw new IllegalArgumentException("Account with email "
+            throw new AuthenticationException("Account with email "
                     + accountRequestDTO.getEmail() + " already exists");
         }
 
@@ -181,16 +182,17 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
 
         User user = new User();
 
-//        user.setFirstName(accountRequestDTO.getFirstName());
-//        user.setLastName(accountRequestDTO.getLastName());
-//        user.setPhoneNumber(accountRequestDTO.getPhoneNumber());
-//        user.setAddress(accountRequestDTO.getAddress());
-//        user.setTitle(accountRequestDTO.getTitle());
-//        user.setIntroduction(accountRequestDTO.getIntroduction());
+        user.setFirstName(accountRequestDTO.getFirstName());
+        user.setLastName(accountRequestDTO.getLastName());
+        user.setPhoneNumber(accountRequestDTO.getPhoneNumber());
+        user.setCountry(accountRequestDTO.getCountry());
+        user.setProvince(accountRequestDTO.getProvince());
+        user.setTitle(accountRequestDTO.getTitle());
+        user.setIntroduction(accountRequestDTO.getIntroduction());
 
         user.setAccount(savedAccount);
 
-//        account.setUser(user);
+        account.setUser(user);
 
         accountRepository.save(account);
         userRepository.save(user);
@@ -225,7 +227,7 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
                 }
             }
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException("Invalid role: " + accountRequestDTO.getRole());
+            throw new AuthenticationException("Invalid role: " + accountRequestDTO.getRole());
         }
 
         emailService.sendEmail(accountRequestDTO.getEmail(), EmailType.REGISTER_SUCCESS, "Account is registered");
