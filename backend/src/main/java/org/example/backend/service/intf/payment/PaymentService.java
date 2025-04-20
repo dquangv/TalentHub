@@ -17,7 +17,7 @@ public interface PaymentService extends BaseService<PaymentDTORequest, PaymentDT
 
     ResultPaymentResponseDTO handleVnPayCallback(VNPayCallbackDTORequest request);
 
-    WithdrawResponseDTO handleVnPayWithCallback(BigDecimal vnpAmount, Long userId);
+    WithdrawResponseDTO handleVnPayWithCallback(BigDecimal vnpAmount, Long userId,String desc);
 
     BalanceResponseDTO getLatestBalanceInfo(Long userId);
 }

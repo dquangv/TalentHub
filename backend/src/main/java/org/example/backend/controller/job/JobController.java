@@ -111,6 +111,16 @@ public class JobController {
                 .build();
     }
 
+    @GetMapping("/close-job/{jobId}")
+    public ResponseObject<List<ApplyJobsDTOResponse>> closeJob(@PathVariable Long jobId) {
+        boolean closedJob = jobService.closeJob(jobId);
+        return ResponseObject
+                .<List<ApplyJobsDTOResponse>>builder()
+                .message(closedJob ? "Close job successfully" : "Failed when close job")
+                .status(closedJob ? HttpStatus.OK.value() : HttpStatus.BAD_REQUEST.value())
+                .build();
+    }
+
     @GetMapping("/PostedJobs/{clientId}")
     public ResponseObject<List<PostJobsDTOResponse>> getPostedJobs(@PathVariable Long clientId) {
         List<PostJobsDTOResponse> response = jobService.getPostedJobs(clientId);

@@ -291,7 +291,7 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
             throw new BadRequestException("Can only reject applications with Applied status");
         }
 
-        freelancerJob.setStatus(StatusFreelancerJob.Cancelled);
+        freelancerJob.setStatus(StatusFreelancerJob.Rejected);
         FreelancerJob updatedFreelancerJob = freelancerJobRepository.save(freelancerJob);
 
         return new FreelancerJobDTOResponse(

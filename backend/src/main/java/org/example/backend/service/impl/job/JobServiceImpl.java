@@ -283,15 +283,20 @@ public class JobServiceImpl implements JobService {
     public Optional<DetailJobDTOResponse> getDetailJobById(Long id) {
         try {
             Optional<Job> jobOpt = jobRepository.getDetailJobById(id);
+            
             if (jobOpt.isPresent()) {
                 Job job = jobOpt.get();
                 List<FreelancerJob> appliedQuantity = freelancerJobRepository.findByJobId(job.getId()).stream().filter(item -> item.getStatus() != null && item.getStatus().equals(StatusFreelancerJob.Applied)).toList();
 
                 DetailJobDTOResponse dto = detailJobMapper.toResponseDto(job);
                 dto.setTotalApplicants(Long.valueOf(appliedQuantity.size()));
-                Company company = companyRepository.getCompanyByClientId(job.getClient().getId())
+                /*Company company = companyRepository.getCompanyByClientId(job.getClient().getId())
                         .orElseThrow(() -> new RuntimeException("Company not found for client ID: " + job.getClient().getId()));
-                dto.setCompanyName(company.getCompanyName());
+                dto.setCompanyName(company.getCompanyName());*/
+
+                // company null allowed
+                companyRepository.getCompanyByClientId(job.getClient().getId())
+                        .ifPresent(company -> dto.setCompanyName(company.getCompanyName()));
 
                 Long totalApplicants = freelancerJobRepository.countByJobAndStatus(job, StatusFreelancerJob.Applied);
                 dto.setTotalApplicants(totalApplicants);
@@ -310,7 +315,7 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public List<ApplyJobsDTOResponse> getApplyJobs(Long freeLancerId) {
-        List<FreelancerJob> freelancerJobs = freelancerJobRepository.getApplyJobs(freeLancerId, StatusFreelancerJob.Applied);
+        List<FreelancerJob> freelancerJobs = freelancerJobRepository.findFreelancerJobsByStatusAndFreelancerId(freeLancerId, StatusFreelancerJob.Applied, StatusFreelancerJob.Approved);
         try {
             return freelancerJobs.stream()
                     .map(freelancerJob -> {
@@ -424,6 +429,17 @@ public class JobServiceImpl implements JobService {
                 .distinct()
                 .limit(6)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean closeJob(Long id){
+        Optional<Job> job = jobRepository.findById(id);
+        if (job.isPresent()) {
+            job.get().setStatus(StatusJob.CLOSED);
+            jobRepository.save(job.get());
+            return true;
+        }
+        return false;
     }
 
 }

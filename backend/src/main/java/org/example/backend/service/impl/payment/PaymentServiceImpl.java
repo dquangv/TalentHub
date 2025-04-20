@@ -1,5 +1,6 @@
 
 package org.example.backend.service.impl.payment;
+import org.springframework.data.domain.Pageable;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,8 @@ import org.example.backend.repository.PaymentRepository;
 import org.example.backend.repository.TransactionRepository;
 import org.example.backend.repository.UserRepository;
 import org.example.backend.service.intf.payment.PaymentService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -130,7 +133,7 @@ public class PaymentServiceImpl implements PaymentService {
 
          Transactions transaction = new Transactions();
          transaction.setActivity(ActivityType.DEPOSIT);
-         transaction.setDescription("Nộp tiền thành công");
+         transaction.setDescription("Nạp tiền thành công");
          transaction.setMoney(amount);
          transaction.setStatus(TransactionStatus.SUCCESS);
          transaction.setPayment(savePayment);
@@ -170,7 +173,7 @@ public class PaymentServiceImpl implements PaymentService {
 
 
     @Override
-    public WithdrawResponseDTO handleVnPayWithCallback(BigDecimal vnpAmount, Long userId) {
+    public WithdrawResponseDTO handleVnPayWithCallback(BigDecimal vnpAmount, Long userId, String desc) {
 
         // Lấy thông tin user
         User user = userRepository.findById(userId)
@@ -190,7 +193,7 @@ public class PaymentServiceImpl implements PaymentService {
                     .amount(vnpAmount)
                     .remainingBalance(balance == null ? BigDecimal.ZERO : balance)
                     .activityType(ActivityType.WITHDRAW)
-                    .message(balance == null ? "❌ Bạn chưa nạp tiền lần đầu. Vui lòng nạp tiền trước khi thực hiện giao dịch!" : "❌ Số dư không đủ để thực hiện giao dịch rút tiền!")
+                    .message(balance == null ? "❌ Bạn chưa nạp tiền lần đầu. Vui lòng nạp tiền trước khi thực hiện giao dịch!" : "❌ Số dư không đủ để đăng ký gói mới!")
                     .transactionStatus(TransactionStatus.FAILED)
                     .build();
         }
@@ -212,7 +215,7 @@ public class PaymentServiceImpl implements PaymentService {
         Transactions transaction = new Transactions();
         transaction.setActivity(ActivityType.WITHDRAW);
         transaction.setMoney(vnpAmount);
-        transaction.setDescription("Rút tiền thành công");
+        transaction.setDescription(desc);
         transaction.setStatus(TransactionStatus.SUCCESS);
         transaction.setPayment(payment);
 
@@ -224,7 +227,7 @@ public class PaymentServiceImpl implements PaymentService {
                 .amount(vnpAmount)
                 .remainingBalance(payment.getBalance())
                 .activityType(ActivityType.WITHDRAW)
-                .message("Rút tiền thành công")
+                .message(desc)
                 .transactionStatus(TransactionStatus.SUCCESS)
                 .build();
     }
@@ -238,12 +241,17 @@ public class PaymentServiceImpl implements PaymentService {
         Account account = accountRepository.findById(user.getAccount().getId())
                 .orElseThrow(() -> new RuntimeException("❌ Account không tồn tại!"));
 
+        // Fixed: Return 0 balance instead of throwing an exception when payment is not found
         BigDecimal balance = paymentRepository.findByAccountId(account.getId())
                 .map(Payment::getBalance)
-                .orElseThrow(() -> new IllegalArgumentException("Payment not found"));
+                .orElse(BigDecimal.ZERO); // Return 0 instead of throwing exception
 
         // Lấy dữ liệu giao dịch mới nhất
-        List<PaymentSummaryDTO> payments = paymentRepository.getLatestPaymentInfo(account.getId());
+//        List<PaymentSummaryDTO> payments = paymentRepository.getLatestPaymentInfo(account.getId());
+        Pageable limitOne = PageRequest.of(0, 1);
+
+        List<PaymentSummaryDTO> payments = paymentRepository.findLatestDeposit(account.getId(), limitOne);
+        List<PaymentSummaryDTO> payments2 = paymentRepository.findLatestWithdraw(account.getId(), limitOne);
 
         // Biến để lưu giá trị cần thiết
         BigDecimal latestDeposit = BigDecimal.ZERO;
@@ -255,18 +263,22 @@ public class PaymentServiceImpl implements PaymentService {
         BigDecimal totalDepositToday = BigDecimal.ZERO;
         BigDecimal totalWithdrawToday = BigDecimal.ZERO;
 
-
-        // Duyệt danh sách giao dịc
+        // Duyệt danh sách giao dịch
         for (PaymentSummaryDTO payment : payments) {
-            if (payment.getActivity() == ActivityType.DEPOSIT) {
+//            if (payment.getActivity() == ActivityType.DEPOSIT) {
                 latestDeposit = totalDepositToday.add(payment.getTotalAmount());
                 latestDepositDate = payment.getLatestTransactionDate();
-            } else if (payment.getActivity() == ActivityType.WITHDRAW) {
-                todaySpending = totalWithdrawToday.add(payment.getTotalAmount());
-                latestSpendingDate = payment.getLatestTransactionDate();
-            }
-            oldestTransactionDate = payment.getOldestTransactionDate();
+//            } else if (payment.getActivity() == ActivityType.WITHDRAW) {
+
+//            }
+//            oldestTransactionDate = payment.getOldestTransactionDate();
         }
+        for (PaymentSummaryDTO payment2 : payments2) {
+            todaySpending = totalWithdrawToday.add(payment2.getTotalAmount());
+            latestSpendingDate = payment2.getLatestTransactionDate();
+        }
+
+        oldestTransactionDate = paymentRepository.getCreatedAtById(account.getId());
 
         // Trả về DTO chứa thông tin tài khoản
         return BalanceResponseDTO.builder()
