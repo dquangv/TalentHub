@@ -55,7 +55,6 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
     private final FreelancerReviewRepository freelancerReviewRepository;
     private final CVRepository cvRepository;
     private final NotifyService notifyService;
-
     @Override
     public FreelancerJobDTOResponse create(FreelancerJobDTORequest freelancerJobDTORequest) {
         return null;
@@ -265,7 +264,7 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
 
         freelancerJob.setStatus(StatusFreelancerJob.Approved);
         FreelancerJob updatedFreelancerJob = freelancerJobRepository.save(freelancerJob);
-
+        notifyService.sendNotification(updatedFreelancerJob.getFreelancer().getUser().getId(), "Bạn đã được chấp thuận trong công việc " + updatedFreelancerJob.getJob().getTitle(), "jobs/"+updatedFreelancerJob.getJob().getId());
         return new FreelancerJobDTOResponse(
                 updatedFreelancerJob.getId(),
                 updatedFreelancerJob.getIsSaved(),
@@ -292,7 +291,14 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
         }
 
         freelancerJob.setStatus(StatusFreelancerJob.Rejected);
+
         FreelancerJob updatedFreelancerJob = freelancerJobRepository.save(freelancerJob);
+
+        notifyService.sendNotification(
+                updatedFreelancerJob.getFreelancer().getUser().getId(),
+                "Rất tiếc, bạn chưa được chọn cho công việc '" + updatedFreelancerJob.getJob().getTitle() + "'. Đừng nản lòng, hãy tiếp tục khám phá các cơ hội khác phù hợp với bạn!",
+                "jobs"
+        );
 
         return new FreelancerJobDTOResponse(
                 updatedFreelancerJob.getId(),
