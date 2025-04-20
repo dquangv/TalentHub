@@ -264,6 +264,7 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
 
         freelancerJob.setStatus(StatusFreelancerJob.Approved);
         FreelancerJob updatedFreelancerJob = freelancerJobRepository.save(freelancerJob);
+        notifyService.sendNotification(updatedFreelancerJob.getFreelancer().getUser().getId(), "Bạn đã được chấp thuận trong công việc " + updatedFreelancerJob.getJob().getTitle(), "jobs/"+updatedFreelancerJob.getJob().getId());
         return new FreelancerJobDTOResponse(
                 updatedFreelancerJob.getId(),
                 updatedFreelancerJob.getIsSaved(),
