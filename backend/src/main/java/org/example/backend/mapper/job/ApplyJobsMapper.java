@@ -26,7 +26,7 @@ public interface ApplyJobsMapper extends BaseMapper<FreelancerJob, ApplyJobsDTOR
     @Mapping(expression = "java(mapSkillNames(freelancerJob))", target = "skillNames")
     @Mapping(source = "id", target="freelancerJobId")
     @Mapping(source = "job.endDate", target = "endDate")
-    @Mapping(source = "appliedDate", target = "createdAt")
+    @Mapping(source = "appliedDate", target = "applyDate")
     @Mapping(target = "createdTimeFormatted", expression = "java(TimeRemainingUtils.getRelativeTimeFormatted(convertToDateViaInstant(freelancerJob.getAppliedDate())))")
     @Mapping(target = "remainingTimeInHours", expression = "java(TimeRemainingUtils.calculateRemainingTimeInHours(freelancerJob.getJob().getEndDate()))")
     @Mapping(target = "remainingTimeFormatted", expression = "java(TimeRemainingUtils.getFormattedTimeRemaining(freelancerJob.getJob().getEndDate()))")
