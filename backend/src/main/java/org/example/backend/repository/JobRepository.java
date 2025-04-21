@@ -1,60 +1,64 @@
-    package org.example.backend.repository;
+package org.example.backend.repository;
 
-    import org.example.backend.dto.response.job.JobDTOResponse;
-    import org.example.backend.entity.child.job.Category;
-    import org.example.backend.entity.child.job.Job;
-    import org.springframework.data.jpa.repository.JpaRepository;
-    import org.springframework.data.jpa.repository.Query;
-    import org.springframework.data.repository.query.Param;
-    import org.example.backend.enums.StatusJob;
+import org.example.backend.dto.response.job.JobDTOResponse;
+import org.example.backend.entity.child.job.Category;
+import org.example.backend.entity.child.job.Job;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.example.backend.enums.StatusJob;
 
-    import java.util.Date;
-    import java.util.List;
-    import java.util.Optional;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
-    public interface JobRepository extends JpaRepository<Job, Long> {
-        List<Job> findByCategory(Category category);
-        public Long countByCategoryId(Long categoryId);
-        @Query("SELECT j FROM Job j " +
-                "LEFT JOIN FETCH j.client c " +
-                "LEFT JOIN FETCH c.user " +
-                "LEFT JOIN FETCH j.category " +
-                "LEFT JOIN FETCH j.jobSkills js " +
-                "LEFT JOIN FETCH js.skill " +
-                "WHERE j.id = :id")
-        Optional<Job> getDetailJobById(@Param("id") Long id);
+public interface JobRepository extends JpaRepository<Job, Long> {
+    List<Job> findByCategory(Category category);
 
+    public Long countByCategoryId(Long categoryId);
 
-        @Query("SELECT j FROM Job j " +
-                "LEFT JOIN FETCH j.client c " +
-                "WHERE c.id = :clientId")
-        List<Job> getPostedJobs(@Param("clientId") Long clientId);
-        long countByStatus(StatusJob status);
-
-        List<Job> findByStatus(StatusJob status);
-
-        List<Job> findByEndDateLessThanEqualAndStatusNot(Date endDate, StatusJob status);
-        @Query("SELECT j FROM Job j ORDER BY j.createdAt DESC")
-        List<Job> findAllByOrderByCreatedAtDesc();
-
-        @Query("SELECT j FROM Job j " +
-                "WHERE j.client.id = :clientId " +
-                "ORDER BY j.createdAt DESC")
-        List<Job> findByClientIdOrderByCreatedAtDesc(Long clientId);
-
-        @Query("SELECT COUNT(j) FROM Job j WHERE j.status = 'OPEN' AND MONTH(j.createdAt) = :month AND YEAR(j.createdAt) = :year")
-        Long countOpenJobsByMonth(@Param("month") int month, @Param("year") int year);
+    @Query("SELECT j FROM Job j " +
+            "LEFT JOIN FETCH j.client c " +
+            "LEFT JOIN FETCH c.user " +
+            "LEFT JOIN FETCH j.category " +
+            "LEFT JOIN FETCH j.jobSkills js " +
+            "LEFT JOIN FETCH js.skill " +
+            "WHERE j.id = :id")
+    Optional<Job> getDetailJobById(@Param("id") Long id);
 
 
-        @Query("SELECT DISTINCT j FROM Job j " +
-                "LEFT JOIN j.category c " +
-                "WHERE j.status = 'OPEN' AND " +
-                "(:categoryId IS NOT NULL AND c.id = :categoryId) " +
-                "ORDER BY j.createdAt DESC")
-        List<Job> findRecommendedJobsForFreelancer(
-                @Param("categoryId") Long categoryId
-        );
+    @Query("SELECT j FROM Job j " +
+            "LEFT JOIN FETCH j.client c " +
+            "WHERE c.id = :clientId")
+    List<Job> getPostedJobs(@Param("clientId") Long clientId);
 
-        List<Job> findByClientId(Long clientId);
+    //        long countByStatus(StatusJob status);
+    long countByStatusNot(StatusJob status);
 
-    }
+    List<Job> findByStatus(StatusJob status);
+
+    List<Job> findByEndDateLessThanEqualAndStatusNot(Date endDate, StatusJob status);
+
+    @Query("SELECT j FROM Job j ORDER BY j.createdAt DESC")
+    List<Job> findAllByOrderByCreatedAtDesc();
+
+    @Query("SELECT j FROM Job j " +
+            "WHERE j.client.id = :clientId " +
+            "ORDER BY j.createdAt DESC")
+    List<Job> findByClientIdOrderByCreatedAtDesc(Long clientId);
+
+    @Query("SELECT COUNT(j) FROM Job j WHERE j.status != :status AND MONTH(j.createdAt) = :month AND YEAR(j.createdAt) = :year")
+    Long countNonDraftJobsByMonth(@Param("month") int month, @Param("year") int year, @Param("status") StatusJob status);
+
+    @Query("SELECT DISTINCT j FROM Job j " +
+            "LEFT JOIN j.category c " +
+            "WHERE j.status = 'OPEN' AND " +
+            "(:categoryId IS NOT NULL AND c.id = :categoryId) " +
+            "ORDER BY j.createdAt DESC")
+    List<Job> findRecommendedJobsForFreelancer(
+            @Param("categoryId") Long categoryId
+    );
+
+    List<Job> findByClientId(Long clientId);
+
+}
