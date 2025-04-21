@@ -40,7 +40,7 @@ public class RevenueController {
                 .build());
     }
 
-    @GetMapping("/week")
+    /*@GetMapping("/week")
     public ResponseEntity<ResponseObject<List<RevenueDTOResponse>>> getRevenueByWeek(
             @RequestParam int year,
             @RequestParam int month) {
@@ -51,9 +51,9 @@ public class RevenueController {
                 .status(200)
                 .data(revenue)
                 .build());
-    }
+    }*/
 
-    /*@GetMapping("/year")
+    @GetMapping("/year")
     public ResponseEntity<ResponseObject<List<RevenueDTOResponse>>> getRevenueByYear() {
         List<RevenueDTOResponse> revenues = revenueService.getRevenueByYear();
 
@@ -62,7 +62,7 @@ public class RevenueController {
                 .status(HttpStatus.OK.value())
                 .data(revenues)
                 .build());
-    }*/
+    }
 
     @GetMapping("/banner/month/{year}")
     public ResponseEntity<ResponseObject<List<RevenueDTOResponse>>> getRevenueBannerByMonth(@PathVariable int year) {
@@ -86,7 +86,7 @@ public class RevenueController {
                 .build());
     }
 
-    /*@GetMapping("/banner/year")
+    @GetMapping("/banner/year")
     public ResponseEntity<ResponseObject<List<RevenueDTOResponse>>> getRevenueBannerByYear() {
         List<RevenueDTOResponse> revenues = revenueService.getRevenueBannerByYear();
 
@@ -95,9 +95,9 @@ public class RevenueController {
                 .status(HttpStatus.OK.value())
                 .data(revenues)
                 .build());
-    }*/
+    }
 
-    @GetMapping("/banner/week")
+    /*@GetMapping("/banner/week")
     public ResponseEntity<ResponseObject<List<RevenueDTOResponse>>> getRevenueBannerByWeek(
             @RequestParam int year,
             @RequestParam int month) {
@@ -108,7 +108,7 @@ public class RevenueController {
                 .status(200)
                 .data(revenue)
                 .build());
-    }
+    }*/
 
     @GetMapping("/growth-rate")
     public ResponseEntity<Map<String, Object>> getGrowthRate() {

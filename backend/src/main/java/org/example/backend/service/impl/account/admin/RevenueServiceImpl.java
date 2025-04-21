@@ -9,7 +9,10 @@ import org.example.backend.service.intf.account.AccountService;
 import org.example.backend.service.intf.account.admin.RevenueService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.time.temporal.WeekFields;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -186,12 +189,30 @@ public class RevenueServiceImpl implements RevenueService {
         }
     }
 
+    /*@Override
+    public List<RevenueDTOResponse> getRevenueByWeek(int year, int month) {
+        List<Object[]> results = revenueRepository.getRevenueByWeek(year, month);
+        return buildWeeklyRevenue(results, year, month);
+    }
+
     @Override
     public List<RevenueDTOResponse> getRevenueBannerByWeek(int year, int month) {
         List<Object[]> results = revenueRepository.getRevenueBannerByWeek(year, month);
+        return buildWeeklyRevenue(results, year, month);
+    }*/
+
+
+    private List<RevenueDTOResponse> buildWeeklyRevenue(List<Object[]> results, int year, int month) {
+        // Tính số tuần trong tháng
+        YearMonth yearMonth = YearMonth.of(year, month);
+        LocalDate firstDay = yearMonth.atDay(1);
+        LocalDate lastDay = yearMonth.atEndOfMonth();
+
+        int firstWeek = firstDay.get(WeekFields.ISO.weekOfMonth());
+        int lastWeek = lastDay.get(WeekFields.ISO.weekOfMonth());
 
         Map<Integer, Double> revenueMap = new HashMap<>();
-        for (int week = 1; week <= 4; week++) {
+        for (int week = firstWeek; week <= lastWeek; week++) {
             revenueMap.put(week, 0.0);
         }
 
@@ -202,29 +223,11 @@ public class RevenueServiceImpl implements RevenueService {
         }
 
         return revenueMap.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey())
                 .map(entry -> new RevenueDTOResponse(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public List<RevenueDTOResponse> getRevenueByWeek(int year, int month) {
-        List<Object[]> results = revenueRepository.getRevenueByWeek(year, month);
-
-        Map<Integer, Double> revenueMap = new HashMap<>();
-        for (int week = 1; week <= 4; week++) {
-            revenueMap.put(week, 0.0);
-        }
-
-        for (Object[] row : results) {
-            Integer week = ((Number) row[0]).intValue();
-            Double totalRevenue = row[1] != null ? ((Number) row[1]).doubleValue() : 0.0;
-            revenueMap.put(week, totalRevenue);
-        }
-
-        return revenueMap.entrySet().stream()
-                .map(entry -> new RevenueDTOResponse(entry.getKey(), entry.getValue()))
-                .collect(Collectors.toList());
-    }
 
     private Double calculateGrowthRate(Long current, Long previous) {
         if (previous == 0) {
