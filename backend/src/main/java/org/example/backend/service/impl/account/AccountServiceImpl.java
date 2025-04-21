@@ -87,8 +87,8 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
     @Override
     public AccountDTOResponse create(AccountDTORequest accountRequestDTO) {
         if (accountRepository.existsByEmail(accountRequestDTO.getEmail())) {
-            throw new IllegalArgumentException("Account with email "
-                    + accountRequestDTO.getEmail() + " already exists");
+            throw new IllegalArgumentException("Email "
+                    + accountRequestDTO.getEmail() + "đã tồn tại");
         }
 
         Account account = accountMapper.toEntity(accountRequestDTO);
@@ -163,8 +163,8 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
     @Override
     public AuthenticationDtoResponse register(AccountDTORequest accountRequestDTO) {
         if (accountRepository.existsByEmail(accountRequestDTO.getEmail())) {
-            throw new AuthenticationException("Account with email "
-                    + accountRequestDTO.getEmail() + " already exists");
+            throw new AuthenticationException("Email "
+                    + accountRequestDTO.getEmail() + " đã được đăng ký");
         }
 
         Account account = accountMapper.toEntity(accountRequestDTO);
