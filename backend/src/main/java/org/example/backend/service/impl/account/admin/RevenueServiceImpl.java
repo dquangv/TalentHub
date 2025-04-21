@@ -3,6 +3,7 @@ package org.example.backend.service.impl.account.admin;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.response.account.admin.RevenueDTOResponse;
 import org.example.backend.enums.RoleUser;
+import org.example.backend.enums.StatusJob;
 import org.example.backend.repository.*;
 import org.example.backend.service.intf.account.AccountService;
 import org.example.backend.service.intf.account.admin.RevenueService;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -141,21 +143,21 @@ public class RevenueServiceImpl implements RevenueService {
             // Đếm số freelancer và client trong tháng hiện tại
             Long currentFreelancers = accountRepository.countAccountsByRoleAndMonth(currentYear, currentMonth, RoleUser.FREELANCER);
             Long currentClients = accountRepository.countAccountsByRoleAndMonth(currentYear, currentMonth, RoleUser.CLIENT);
-            Long currentJobs = jobRepository.countOpenJobsByMonth(currentMonth, currentYear);
+            Long currentJobs = jobRepository.countNonDraftJobsByMonth(currentMonth, currentYear, StatusJob.DRAFT);
             Long currentApprovedJobs = freelancerJobRepository.countApprovedFreelancerJobsByMonth(currentMonth, currentYear);
             Long currentAccounts = currentClients + currentFreelancers;
-            Long currentSoldPackageRevenue = soldPackageRepository.countSumSoldPackageRevenue(currentYear, currentMonth);
-            Long currentBannerRevenue = bannerRepository.countSumSoldPackageRevenue(currentYear, currentMonth);
+            Long currentSoldPackageRevenue = Optional.ofNullable(soldPackageRepository.countSumSoldPackageRevenue(currentYear, currentMonth)).orElse(0L);
+            Long currentBannerRevenue = Optional.ofNullable(bannerRepository.countSumBannerRevenue(currentYear, currentMonth)).orElse(0L);
             Long currentRevenue = currentBannerRevenue + currentSoldPackageRevenue;
 
             // Đếm số freelancer và client trong tháng trước
             Long previousFreelancers = accountRepository.countAccountsByRoleAndMonth(previousYear, previousMonth, RoleUser.FREELANCER);
             Long previousClients = accountRepository.countAccountsByRoleAndMonth(previousYear, previousMonth, RoleUser.CLIENT);
-            Long previousJobs = jobRepository.countOpenJobsByMonth(previousMonth, previousYear);
+            Long previousJobs = jobRepository.countNonDraftJobsByMonth(previousMonth, previousYear, StatusJob.DRAFT);
             Long previousApprovedJobs = freelancerJobRepository.countApprovedFreelancerJobsByMonth(previousMonth, previousYear);
             Long previousAccounts = previousClients + previousFreelancers;
-            Long previousSoldPackageRevenue = soldPackageRepository.countSumSoldPackageRevenue(previousYear, previousMonth);
-            Long previousBannerRevenue = bannerRepository.countSumSoldPackageRevenue(previousYear, previousMonth);
+            Long previousSoldPackageRevenue = Optional.ofNullable(soldPackageRepository.countSumSoldPackageRevenue(previousYear, previousMonth)).orElse(0L);
+            Long previousBannerRevenue = Optional.ofNullable(bannerRepository.countSumBannerRevenue(previousYear, previousMonth)).orElse(0L);
             Long previousRevenue = previousBannerRevenue + previousSoldPackageRevenue;
 
             // Tính phần trăm thay đổi
@@ -228,6 +230,7 @@ public class RevenueServiceImpl implements RevenueService {
         if (previous == 0) {
             return current > 0 ? 100.0 : 0.0;
         }
+
         return ((double) (current - previous) / previous) * 100;
     }
 }
