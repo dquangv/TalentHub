@@ -28,8 +28,8 @@ public class VoucherPackageController {
                 .build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseObject<VoucherPackageDTOResponse> update(@PathVariable Long id, @RequestBody VoucherPackageDTORequest request) {
+    @PutMapping()
+    public ResponseObject<VoucherPackageDTOResponse> update(@RequestBody VoucherPackageDTORequest request) {
         VoucherPackageDTOResponse response = voucherPackageService.update(request.getTypePackage(), request);
         return ResponseObject.<VoucherPackageDTOResponse>builder()
                 .message("Voucher package updated successfully")
