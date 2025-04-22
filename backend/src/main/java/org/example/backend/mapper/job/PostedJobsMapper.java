@@ -3,6 +3,7 @@ package org.example.backend.mapper.job;
 import org.example.backend.dto.request.job.PostJobsDTORequest;
 import org.example.backend.dto.response.job.PostJobsDTOResponse;
 import org.example.backend.entity.child.job.Job;
+import org.example.backend.enums.StatusFreelancerJob;
 import org.example.backend.mapper.BaseMapper;
 import org.example.backend.utils.TimeRemainingUtils;
 import org.mapstruct.Mapper;
@@ -21,6 +22,9 @@ public interface PostedJobsMapper extends BaseMapper<Job, PostJobsDTORequest, Po
     PostJobsDTOResponse toResponseDto(Job job);
 
     default Long countApplicants(Job job) {
-        return job.getFreelancerJobs() != null ? (long) job.getFreelancerJobs().size() : 0L;
+        return job.getFreelancerJobs().stream()
+                .filter(freelancerJob -> freelancerJob.getStatus() != StatusFreelancerJob.Viewed)
+                .count();
     }
+
 }
