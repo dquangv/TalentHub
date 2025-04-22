@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum StatusAccount {
     VERIFIED("Xác thực"),
     UNVERIFIED("Chưa xác thực"),
-    BANNED("Cấm");
+    BANNED("Khóa");
 
     private final String displayName;
 
