@@ -65,7 +65,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new AuthenticationException("Mật khẩu không đúng.");
         }
         if(account.getStatus().equals(StatusAccount.BANNED)){
-            throw new AuthenticationException("Tài khoản đã bị cấm.");
+            throw new AuthenticationException("Tài khoản đã bị khóa.");
         }
         User user = userRepository.findById(account.getId())
                 .orElseThrow(() -> new AuthenticationException("Không tìm thấy người dùng với id: " + account.getId()));
