@@ -20,7 +20,7 @@ public interface RevenueService {
 
     Map<String, Object> getGrowthRates();
 
-    List<RevenueDTOResponse> getRevenueBannerByWeek(int year, int month);
+    /*List<RevenueDTOResponse> getRevenueBannerByWeek(int year, int month);
 
-    List<RevenueDTOResponse> getRevenueByWeek(int year, int month);
+    List<RevenueDTOResponse> getRevenueByWeek(int year, int month);*/
 }

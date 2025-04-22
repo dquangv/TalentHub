@@ -15,6 +15,6 @@ public interface BannerRepository extends JpaRepository<Banner, Long> {
                 WHERE FUNCTION('YEAR', b.createdAt) = :year 
                 AND FUNCTION('MONTH', b.createdAt) = :month
             """)
-    Long countSumSoldPackageRevenue(@Param("year") int year, @Param("month") int month);
+    Long countSumBannerRevenue(@Param("year") int year, @Param("month") int month);
 
 }
