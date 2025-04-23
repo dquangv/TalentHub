@@ -1191,10 +1191,10 @@ VALUES ('Phỏng vấn công việc: Phát triển Website thương mại điệ
         'Phỏng vấn về kỹ năng chỉnh sửa ảnh.', 'https://meet.example.com/6-1', 6, 11);
 
 INSERT INTO voucher_packages (name, price, duration, number_post, type_package, status, created_at, updated_at, account)
-VALUES ('Gói thường', 0, 7, 1, 0, true, NOW(), NULL, 1),
-       ('Gói bạc', 90000, 14, 5, 1, true, NOW(), NULL, 1),
-       ('Gói vàng', 290000, 14, 10, 2, true, NOW(), NULL, 1),
-       ('Gói kim cương', 390000, 30, 10, 3, true, NOW(), NULL, 1);
+VALUES ('Gói thường', 0, 7, 1, 'NORMAL', true, NOW(), NULL, 1),
+       ('Gói bạc', 90000, 14, 5, 'SILVER', true, NOW(), NULL, 1),
+       ('Gói vàng', 290000, 14, 10, 'GOLD', true, NOW(), NULL, 1),
+       ('Gói kim cương', 390000, 30, 10, 'DIAMOND', true, NOW(), NULL, 1);
 
 INSERT INTO sold_packages (start_date, end_date, price, number_post, number_posted, status, voucher_packages, client)
 VALUES (NOW(), DATE_ADD(NOW(), INTERVAL 14 DAY), 200000, 10, 3, true, 3, 1),

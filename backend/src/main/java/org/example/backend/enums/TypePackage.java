@@ -1,16 +1,18 @@
 package org.example.backend.enums;
 
 public enum TypePackage {
-    NORMAL("Gói thường"),
-    SILVER("Gói bạc"),
-    GOLD("Gói vàng"),
-    DIAMOND("Gói kim cương");
+    NORMAL("Gói thường", 1),
+    SILVER("Gói bạc", 2),
+    GOLD("Gói vàng", 3),
+    DIAMOND("Gói kim cương", 4);
 
     private final String displayName;
+    private final int order;
 
     // Constructor với displayName
-    TypePackage(String displayName) {
+    TypePackage(String displayName, int order) {
         this.displayName = displayName;
+        this.order = order;
     }
 
     // Getter cho displayName
@@ -25,5 +27,9 @@ public enum TypePackage {
             }
         }
         throw new IllegalArgumentException("Unknown payment type: " + paymentType);
+    }
+
+    public int getOrder() {
+        return order;
     }
 }

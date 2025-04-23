@@ -23,6 +23,28 @@ public interface VoucherPackageRepository extends JpaRepository<VoucherPackage, 
             "(SELECT MAX(v2.createdAt) FROM VoucherPackage v2 WHERE v2.typePackage = v.typePackage)")
     List<VoucherPackage> findLatestVoucherPackagesByType();
 
+
+    @Query("""
+    SELECT v FROM VoucherPackage v 
+    WHERE v.createdAt = (
+        SELECT MAX(v2.createdAt) 
+        FROM VoucherPackage v2 
+        WHERE v2.typePackage = v.typePackage
+    )
+    ORDER BY 
+        CASE v.typePackage
+            WHEN org.example.backend.enums.TypePackage.NORMAL THEN 1
+            WHEN org.example.backend.enums.TypePackage.SILVER THEN 2
+            WHEN org.example.backend.enums.TypePackage.GOLD THEN 3
+            WHEN org.example.backend.enums.TypePackage.DIAMOND THEN 4
+            ELSE 5
+        END
+""")
+    List<VoucherPackage> findLatestVoucherPackagesByTypeOrdered();
+
+
+
+
     @Query("SELECT sp FROM SoldPackage sp " +
             "WHERE sp.voucherPackage.typePackage = :type " +
             "AND sp.status = true " +
