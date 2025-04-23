@@ -136,6 +136,15 @@ public class VoucherPackageServiceImpl implements VoucherPackageService {
     }
 
     @Override
+    public List<VoucherPackageDTOResponse> findLatestVoucherPackagesByTypeOrdered() {
+        List<VoucherPackage> voucherPackages = voucherPackageRepository.findLatestVoucherPackagesByTypeOrdered();
+
+        return voucherPackages.stream()
+                .map(voucherPackageMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<VoucherPackageDTOResponse> findLatestVoucherPackagesByTypeByClientId(Long clientId) {
         List<VoucherPackage> voucherPackages = voucherPackageRepository.findLatestVoucherPackagesByType();
 
