@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.backend.enums.RoleUser;
+import org.example.backend.enums.StatusAccount;
 
 @Data
 @Builder
@@ -21,4 +22,5 @@ public class UserDTOResponse {
     private String introduction;
     private String image;
     private RoleUser role;
+    private StatusAccount status;
 }
