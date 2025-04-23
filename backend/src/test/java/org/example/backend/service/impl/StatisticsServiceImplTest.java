@@ -44,7 +44,7 @@ class StatisticsServiceImplTest {
         // Setup default mock responses
         when(clientRepository.count()).thenReturn(10L);
         when(freelancerRepository.count()).thenReturn(20L);
-        when(jobRepository.countByStatus(StatusJob.OPEN)).thenReturn(15L);
+        when(jobRepository.countByStatusNot(StatusJob.DRAFT)).thenReturn(15L);
         when(freelancerJobRepository.countByStatus(StatusFreelancerJob.Approved)).thenReturn(8L);
         when(soldPackageRepository.getTotalSoldPackageRevenue()).thenReturn(1000.0);
         when(bannerRepository.getTotalBannerRevenue()).thenReturn(500.0);
@@ -69,7 +69,7 @@ class StatisticsServiceImplTest {
         // Verify interactions
         verify(clientRepository).count();
         verify(freelancerRepository).count();
-        verify(jobRepository).countByStatus(StatusJob.OPEN);
+        verify(jobRepository).countByStatusNot(StatusJob.DRAFT);
         verify(freelancerJobRepository).countByStatus(StatusFreelancerJob.Approved);
         verify(soldPackageRepository).getTotalSoldPackageRevenue();
         verify(bannerRepository).getTotalBannerRevenue();
@@ -100,7 +100,7 @@ class StatisticsServiceImplTest {
         // Arrange
         when(clientRepository.count()).thenReturn(0L);
         when(freelancerRepository.count()).thenReturn(0L);
-        when(jobRepository.countByStatus(StatusJob.OPEN)).thenReturn(0L);
+        when(jobRepository.countByStatusNot(StatusJob.DRAFT)).thenReturn(0L);
         when(freelancerJobRepository.countByStatus(StatusFreelancerJob.Approved)).thenReturn(0L);
         when(soldPackageRepository.getTotalSoldPackageRevenue()).thenReturn(0.0);
         when(bannerRepository.getTotalBannerRevenue()).thenReturn(0.0);
@@ -122,7 +122,7 @@ class StatisticsServiceImplTest {
         // Verify interactions
         verify(clientRepository).count();
         verify(freelancerRepository).count();
-        verify(jobRepository).countByStatus(StatusJob.OPEN);
+        verify(jobRepository).countByStatusNot(StatusJob.DRAFT);
         verify(freelancerJobRepository).countByStatus(StatusFreelancerJob.Approved);
         verify(soldPackageRepository).getTotalSoldPackageRevenue();
         verify(bannerRepository).getTotalBannerRevenue();

@@ -3,15 +3,20 @@ package org.example.backend.service.impl.account.admin;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.response.account.admin.RevenueDTOResponse;
 import org.example.backend.enums.RoleUser;
+import org.example.backend.enums.StatusJob;
 import org.example.backend.repository.*;
 import org.example.backend.service.intf.account.AccountService;
 import org.example.backend.service.intf.account.admin.RevenueService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.time.temporal.WeekFields;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -141,21 +146,21 @@ public class RevenueServiceImpl implements RevenueService {
             // Đếm số freelancer và client trong tháng hiện tại
             Long currentFreelancers = accountRepository.countAccountsByRoleAndMonth(currentYear, currentMonth, RoleUser.FREELANCER);
             Long currentClients = accountRepository.countAccountsByRoleAndMonth(currentYear, currentMonth, RoleUser.CLIENT);
-            Long currentJobs = jobRepository.countOpenJobsByMonth(currentMonth, currentYear);
+            Long currentJobs = jobRepository.countNonDraftJobsByMonth(currentMonth, currentYear, StatusJob.DRAFT);
             Long currentApprovedJobs = freelancerJobRepository.countApprovedFreelancerJobsByMonth(currentMonth, currentYear);
             Long currentAccounts = currentClients + currentFreelancers;
-            Long currentSoldPackageRevenue = soldPackageRepository.countSumSoldPackageRevenue(currentYear, currentMonth);
-            Long currentBannerRevenue = bannerRepository.countSumSoldPackageRevenue(currentYear, currentMonth);
+            Long currentSoldPackageRevenue = Optional.ofNullable(soldPackageRepository.countSumSoldPackageRevenue(currentYear, currentMonth)).orElse(0L);
+            Long currentBannerRevenue = Optional.ofNullable(bannerRepository.countSumBannerRevenue(currentYear, currentMonth)).orElse(0L);
             Long currentRevenue = currentBannerRevenue + currentSoldPackageRevenue;
 
             // Đếm số freelancer và client trong tháng trước
             Long previousFreelancers = accountRepository.countAccountsByRoleAndMonth(previousYear, previousMonth, RoleUser.FREELANCER);
             Long previousClients = accountRepository.countAccountsByRoleAndMonth(previousYear, previousMonth, RoleUser.CLIENT);
-            Long previousJobs = jobRepository.countOpenJobsByMonth(previousMonth, previousYear);
+            Long previousJobs = jobRepository.countNonDraftJobsByMonth(previousMonth, previousYear, StatusJob.DRAFT);
             Long previousApprovedJobs = freelancerJobRepository.countApprovedFreelancerJobsByMonth(previousMonth, previousYear);
             Long previousAccounts = previousClients + previousFreelancers;
-            Long previousSoldPackageRevenue = soldPackageRepository.countSumSoldPackageRevenue(previousYear, previousMonth);
-            Long previousBannerRevenue = bannerRepository.countSumSoldPackageRevenue(previousYear, previousMonth);
+            Long previousSoldPackageRevenue = Optional.ofNullable(soldPackageRepository.countSumSoldPackageRevenue(previousYear, previousMonth)).orElse(0L);
+            Long previousBannerRevenue = Optional.ofNullable(bannerRepository.countSumBannerRevenue(previousYear, previousMonth)).orElse(0L);
             Long previousRevenue = previousBannerRevenue + previousSoldPackageRevenue;
 
             // Tính phần trăm thay đổi
@@ -184,12 +189,30 @@ public class RevenueServiceImpl implements RevenueService {
         }
     }
 
+    /*@Override
+    public List<RevenueDTOResponse> getRevenueByWeek(int year, int month) {
+        List<Object[]> results = revenueRepository.getRevenueByWeek(year, month);
+        return buildWeeklyRevenue(results, year, month);
+    }
+
     @Override
     public List<RevenueDTOResponse> getRevenueBannerByWeek(int year, int month) {
         List<Object[]> results = revenueRepository.getRevenueBannerByWeek(year, month);
+        return buildWeeklyRevenue(results, year, month);
+    }*/
+
+
+    private List<RevenueDTOResponse> buildWeeklyRevenue(List<Object[]> results, int year, int month) {
+        // Tính số tuần trong tháng
+        YearMonth yearMonth = YearMonth.of(year, month);
+        LocalDate firstDay = yearMonth.atDay(1);
+        LocalDate lastDay = yearMonth.atEndOfMonth();
+
+        int firstWeek = firstDay.get(WeekFields.ISO.weekOfMonth());
+        int lastWeek = lastDay.get(WeekFields.ISO.weekOfMonth());
 
         Map<Integer, Double> revenueMap = new HashMap<>();
-        for (int week = 1; week <= 4; week++) {
+        for (int week = firstWeek; week <= lastWeek; week++) {
             revenueMap.put(week, 0.0);
         }
 
@@ -200,34 +223,17 @@ public class RevenueServiceImpl implements RevenueService {
         }
 
         return revenueMap.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey())
                 .map(entry -> new RevenueDTOResponse(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public List<RevenueDTOResponse> getRevenueByWeek(int year, int month) {
-        List<Object[]> results = revenueRepository.getRevenueByWeek(year, month);
-
-        Map<Integer, Double> revenueMap = new HashMap<>();
-        for (int week = 1; week <= 4; week++) {
-            revenueMap.put(week, 0.0);
-        }
-
-        for (Object[] row : results) {
-            Integer week = ((Number) row[0]).intValue();
-            Double totalRevenue = row[1] != null ? ((Number) row[1]).doubleValue() : 0.0;
-            revenueMap.put(week, totalRevenue);
-        }
-
-        return revenueMap.entrySet().stream()
-                .map(entry -> new RevenueDTOResponse(entry.getKey(), entry.getValue()))
-                .collect(Collectors.toList());
-    }
 
     private Double calculateGrowthRate(Long current, Long previous) {
         if (previous == 0) {
             return current > 0 ? 100.0 : 0.0;
         }
+
         return ((double) (current - previous) / previous) * 100;
     }
 }

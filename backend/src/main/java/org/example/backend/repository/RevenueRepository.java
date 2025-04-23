@@ -53,7 +53,7 @@ public interface RevenueRepository extends JpaRepository<SoldPackage, Long> {
             "ORDER BY YEAR(b.startTime) DESC")
     List<Object[]> getRevenueBannerByYear();
 
-    @Query("""
+   /* @Query("""
                 SELECT FUNCTION('WEEK', b.startTime) AS week, SUM(b.price)
                 FROM Banner b 
                 WHERE YEAR(b.startTime) = :year AND MONTH(b.startTime) = :month
@@ -69,6 +69,6 @@ public interface RevenueRepository extends JpaRepository<SoldPackage, Long> {
                 GROUP BY FUNCTION('WEEK', s.startDate)
                 ORDER BY FUNCTION('WEEK', s.startDate) ASC
             """)
-    List<Object[]> getRevenueByWeek(@Param("year") int year, @Param("month") int month);
+    List<Object[]> getRevenueByWeek(@Param("year") int year, @Param("month") int month);*/
 
 }
