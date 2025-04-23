@@ -146,7 +146,7 @@ public class VoucherPackageServiceImpl implements VoucherPackageService {
 
     @Override
     public List<VoucherPackageDTOResponse> findLatestVoucherPackagesByTypeByClientId(Long clientId) {
-        List<VoucherPackage> voucherPackages = voucherPackageRepository.findLatestVoucherPackagesByType();
+        List<VoucherPackage> voucherPackages = voucherPackageRepository.findLatestVoucherPackagesByTypeOrdered();
 
         SoldPackage soldPackage = soldPackageRepository.findTopByClientIdAndStatusOrderByStartDateDesc(clientId, true);
         TypePackage clientTypePackage = (soldPackage != null) ? soldPackage.getVoucherPackage().getTypePackage() : null;
