@@ -53,7 +53,7 @@ public class EmailServiceImpl implements EmailService {
         PasswordResetToken passwordResetToken = new PasswordResetToken();
         passwordResetToken.setOtp(otp);
         passwordResetToken.setEmail(to);
-        passwordResetToken.setExpiryDate(LocalDateTime.now().plusHours(1));
+        passwordResetToken.setExpiryDate(LocalDateTime.now().plusMinutes(1));
         passwordResetTokenRepository.save(passwordResetToken);
         return sendEmail(to, EmailType.OTP, otp);
     }
@@ -70,6 +70,8 @@ public class EmailServiceImpl implements EmailService {
                 return "Update on Your Freelancer Application - Talent Hub";
             case PASSWORD_RESET:
                 return "Password Reset Request - Talent Hub 🔐";
+            case COMPANY_VERIFICATION_REQUEST:
+                return "Yêu cầu xác thực thông tin - Talent Hub 🏢";
             default:
                 return "Talent Hub Notification";
         }
@@ -152,6 +154,25 @@ public class EmailServiceImpl implements EmailService {
                     """.formatted(to, body); // body here is the OTP
                 break;
             // Handle other cases (like REGISTER_SUCCESS, PASSWORD_RESET, etc.) here
+            case COMPANY_VERIFICATION_REQUEST:
+                mainContent = """
+                    <h2 style="color: #4F46E5; margin-bottom: 20px;">Yêu cầu xác thực thông tin công ty</h2>
+                    <p>Xin chào %s,</p>
+                    <p>Bạn đã đăng ký tài khoản với tư cách là nhà tuyển dụng trên nền tảng Talent Hub.</p>
+                    <p>Để chúng tôi có thể xác thực tài khoản (nếu bạn là đại diện của một doanh nghiệp), vui lòng phản hồi email này và cung cấp các thông tin sau:</p>
+                    <ul>
+                        <li><strong>Tên công ty</strong></li>
+                        <li><strong>Mã số thuế</strong></li>
+                        <li><strong>Số ĐKKD</strong> (nếu khác mã số thuế)</li>
+                        <li><strong>Số điện thoại liên hệ</strong></li>
+                        <li><strong>Địa chỉ công ty</strong></li>
+                        <li><strong>Website (nếu có)</strong></li>
+                    </ul>
+                    <p>Thông tin này sẽ được bảo mật và chỉ sử dụng nhằm mục đích xác minh doanh nghiệp.</p>
+                    <p>Cảm ơn bạn đã đồng hành cùng Talent Hub! 🌟</p>
+                    """.formatted(to);
+                break;
+
             default:
                 mainContent = "<p>Notification email</p>";
         }
