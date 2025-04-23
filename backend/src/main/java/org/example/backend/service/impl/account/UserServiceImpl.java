@@ -3,10 +3,12 @@ package org.example.backend.service.impl.account;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.account.UserDTORequest;
 import org.example.backend.dto.response.account.UserDTOResponse;
+import org.example.backend.entity.child.account.Account;
 import org.example.backend.entity.child.account.User;
 import org.example.backend.enums.RoleUser;
 import org.example.backend.enums.StatusAccount;
 import org.example.backend.exception.NotFoundException;
+import org.example.backend.repository.AccountRepository;
 import org.example.backend.repository.UserRepository;
 import org.example.backend.service.intf.account.UserService;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final AccountRepository accountRepository;
+
     @Override
     public List<UserDTOResponse> getAllActiveAdmins() {
         List<User> activeAdmins = userRepository.findByAccount_RoleAndAccount_Status(
@@ -97,6 +101,8 @@ public class UserServiceImpl implements UserService {
     }
 
     private UserDTOResponse mapToUserDTOResponse(User user) {
+        Account account = accountRepository.findById(user.getAccount().getId()).get();
+
         return UserDTOResponse.builder()
                 .id(user.getId())
                 .firstName(user.getFirstName())
@@ -108,6 +114,7 @@ public class UserServiceImpl implements UserService {
                 .introduction(user.getIntroduction())
                 .image(user.getImage())
                 .role(user.getAccount() != null ? user.getAccount().getRole() : null)
+                .status(account.getStatus())
                 .build();
     }
 
