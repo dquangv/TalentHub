@@ -33,6 +33,8 @@ public interface AccountService extends BaseService<AccountDTORequest, AccountDT
 
     Boolean unBanAccount(String email);
 
+    Boolean activeAccount(String email);
+
     List<LocationDTOResponse> getLocations();
 
     boolean changePassword(String email, String currentPassword, String newPassword);

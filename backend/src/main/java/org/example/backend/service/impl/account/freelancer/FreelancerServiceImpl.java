@@ -5,9 +5,11 @@ import org.example.backend.dto.request.account.freelancer.CreateFreelancerDTOReq
 import org.example.backend.dto.request.account.freelancer.FreelancerDTORequest;
 import org.example.backend.dto.request.account.freelancer.UpdateHourlyRateDTORequest;
 import org.example.backend.dto.response.account.freelancer.*;
+import org.example.backend.entity.child.account.Account;
 import org.example.backend.entity.child.account.freelancer.Freelancer;
 import org.example.backend.entity.child.job.Category;
 import org.example.backend.entity.child.account.User;
+import org.example.backend.enums.StatusAccount;
 import org.example.backend.exception.BadRequestException;
 import org.example.backend.mapper.Account.freelancer.CreateFreelancerMapper;
 import org.example.backend.mapper.Account.freelancer.UpdateHourlyRateMapper;
@@ -60,6 +62,7 @@ public class FreelancerServiceImpl implements FreelancerService {
                         .collect(Collectors.toList()) : List.of()
         );
     }
+
     @Override
     public FreelancerDTOResponse create(FreelancerDTORequest freelancerDTORequest) {
         Category category = categoryRepository.findById(freelancerDTORequest.getCategoryId())
@@ -205,7 +208,7 @@ public class FreelancerServiceImpl implements FreelancerService {
 
     @Override
     public List<FreelancerDTOResponse> getFreelancersByCategoryId(Long categoryId) {
-        List<Freelancer> freelancers = freelancerRepository.findByCategoryId(categoryId);
+        List<Freelancer> freelancers = freelancerRepository.findActiveFreelancersByCategoryId(categoryId, StatusAccount.BANNED);
         return freelancers.stream()
                 .map(f -> new FreelancerDTOResponse(
                         f.getId(),
@@ -252,5 +255,15 @@ public class FreelancerServiceImpl implements FreelancerService {
                     .jobs(jobs)
                     .build();
         }).collect(Collectors.toList());
+    }
+
+    public boolean checkValidFreelancer(Long freelancerId) {
+        Freelancer freelancer = freelancerRepository.findById(freelancerId).get();
+        User user = freelancer.getUser();
+        Account account = user.getAccount();
+
+        if (account.getStatus().equals(StatusAccount.BANNED)) return false;
+
+        return true;
     }
 }

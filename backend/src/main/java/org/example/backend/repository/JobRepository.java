@@ -3,6 +3,7 @@ package org.example.backend.repository;
 import org.example.backend.dto.response.job.JobDTOResponse;
 import org.example.backend.entity.child.job.Category;
 import org.example.backend.entity.child.job.Job;
+import org.example.backend.enums.StatusAccount;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -37,15 +38,30 @@ public interface JobRepository extends JpaRepository<Job, Long> {
 
     List<Job> findByStatus(StatusJob status);
 
+    @Query("SELECT j FROM Job j " +
+            "WHERE j.status = :status " +
+            "AND j.client.user.account.status <> :bannedStatus")
+    List<Job> findOpenJobsWithNonBannedClients(@Param("status") StatusJob status,
+                                               @Param("bannedStatus") StatusAccount bannedStatus);
+
+
     List<Job> findByEndDateLessThanEqualAndStatusNot(Date endDate, StatusJob status);
 
     @Query("SELECT j FROM Job j ORDER BY j.createdAt DESC")
     List<Job> findAllByOrderByCreatedAtDesc();
 
-    @Query("SELECT j FROM Job j " +
+    /*@Query("SELECT j FROM Job j " +
             "WHERE j.client.id = :clientId " +
             "ORDER BY j.createdAt DESC")
-    List<Job> findByClientIdOrderByCreatedAtDesc(Long clientId);
+    List<Job> findByClientIdOrderByCreatedAtDesc(Long clientId);*/
+
+    @Query("SELECT j FROM Job j " +
+            "WHERE j.client.id = :clientId " +
+            "AND j.client.user.account.status <> :bannedStatus " +
+            "ORDER BY j.createdAt DESC")
+    List<Job> findByClientIdAndStatusNotBannedOrderByCreatedAtDesc(@Param("clientId") Long clientId,
+                                                                   @Param("bannedStatus") StatusAccount bannedStatus);
+
 
     @Query("SELECT COUNT(j) FROM Job j WHERE j.status != :status AND MONTH(j.createdAt) = :month AND YEAR(j.createdAt) = :year")
     Long countNonDraftJobsByMonth(@Param("month") int month, @Param("year") int year, @Param("status") StatusJob status);
@@ -54,10 +70,9 @@ public interface JobRepository extends JpaRepository<Job, Long> {
             "LEFT JOIN j.category c " +
             "WHERE j.status = 'OPEN' AND " +
             "(:categoryId IS NOT NULL AND c.id = :categoryId) " +
+            "AND j.client.user.account.status <> :bannedStatus " +
             "ORDER BY j.createdAt DESC")
-    List<Job> findRecommendedJobsForFreelancer(
-            @Param("categoryId") Long categoryId
-    );
+    List<Job> findRecommendedJobsForFreelancer(@Param("categoryId") Long categoryId, @Param("bannedStatus") StatusAccount bannedStatus);
 
     List<Job> findByClientId(Long clientId);
 
