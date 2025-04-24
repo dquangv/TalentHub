@@ -94,10 +94,10 @@ public class AccountController {
         Boolean response = accountService.activeAccount(email);
         return ResponseObject
                 .<StatusAccountDTOResponse>builder()
-                .message("UnBan account")
+                .message("Verify account")
                 .status(HttpStatus.OK.value())
                 .data(StatusAccountDTOResponse.builder()
-                        .status(response ? "Unban account successful" : "Unban account failed")
+                        .status(response ? "Verify account successful" : "Verify account failed")
                         .build())
                 .build();
     }
