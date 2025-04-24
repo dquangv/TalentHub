@@ -143,6 +143,15 @@ public class JobController {
                 .build();
     }
 
+    @PostMapping("/notify_by_email")
+    public ResponseObject<Void> notifyByEmail(@RequestParam Long jobId) {
+        jobService.notifyByJobId(jobId);
+        return ResponseObject.<Void>builder()
+                .message("Notifications sent successfully")
+                .status(HttpStatus.OK.value())
+                .build();
+    }
+
     @PostMapping("/getByID/{jobId}")
     public ResponseObject<JobDetailDTOResponse> getById(@PathVariable Long jobId) {
         JobDetailDTOResponse jobDetailDTOResponse = jobService.getJobById(jobId);

@@ -14,6 +14,7 @@ import org.example.backend.entity.child.account.client.Client;
 import org.example.backend.entity.child.account.client.Company;
 import org.example.backend.entity.child.account.client.SoldPackage;
 import org.example.backend.entity.child.account.freelancer.Freelancer;
+import org.example.backend.entity.child.account.freelancer.FreelancerSkill;
 import org.example.backend.entity.child.job.*;
 import org.example.backend.enums.*;
 import org.example.backend.exception.BadRequestException;
@@ -22,7 +23,9 @@ import org.example.backend.mapper.job.*;
 import org.example.backend.repository.*;
 import org.example.backend.service.impl.account.client.ClientServiceImpl;
 import org.example.backend.service.impl.account.freelancer.FreelancerServiceImpl;
+import org.example.backend.service.intf.EmailService;
 import org.example.backend.service.intf.job.JobService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -127,7 +130,10 @@ public class JobServiceImpl implements JobService {
         }
         return false;
     }
-
+    private final FreelancerSkillRepository freelancerSkillRepository;
+    private final EmailService emailService;
+    @Value("${ui.url}")
+    private String urlUI;
     @Override
     public Boolean unBanJob(Long id) {
         Optional<Job> job = jobRepository.findById(id);
@@ -195,6 +201,43 @@ public class JobServiceImpl implements JobService {
 
         return createJobMapper.toResponseDto(job);
     }
+
+    @Override
+    public void notifyByJobId(Long jobId) {
+        Job job = jobRepository.findById(jobId)
+                .orElseThrow(() -> new BadRequestException("Job not found"));
+
+        List<Long> skillIds = jobSkillRepository.findByJobId(jobId).stream()
+                .map(jobSkill -> jobSkill.getSkill().getId())
+                .collect(Collectors.toList());
+
+        List<String> skillNames = skillRepository.findAllById(skillIds).stream()
+                .map(Skill::getSkillName)
+                .collect(Collectors.toList());
+
+        String jobUrl = urlUI + "/jobs/" + jobId;
+        String emailBody = """
+            Một công việc mới có tiêu đề "%s" phù hợp với kỹ năng của bạn.
+            <a href="%s" style="display: inline-block; padding: 12px 24px; background: #4F46E5; color: white; text-decoration: none; border-radius: 6px; margin: 20px 0; font-weight: bold;">Xem Công Việc</a>
+            """.formatted(job.getTitle(), jobUrl);
+
+        List<FreelancerSkill> matchingFreelancerSkills = freelancerSkillRepository.findBySkill_SkillNameIn(skillNames);
+        Set<String> uniqueEmails = new HashSet<>();
+
+        matchingFreelancerSkills.forEach(freelancerSkill -> {
+            Freelancer freelancer = freelancerSkill.getFreelancer();
+            if (freelancer != null && freelancer.getUser() != null && freelancer.getUser().getAccount() != null) {
+                String freelancerEmail = freelancer.getUser().getAccount().getEmail();
+                uniqueEmails.add(freelancerEmail);
+            }
+        });
+
+        uniqueEmails.forEach(email -> {
+            emailService.sendEmail(email, EmailType.JOB_NOTIFICATION, emailBody);
+        });
+    }
+
+
 
     @Override
     public JobDTOResponse create(JobDTORequest jobDTORequest) {
