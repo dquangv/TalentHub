@@ -127,7 +127,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public List<ActiveClientDTOResponse> getAllActiveClients() {
-        List<Client> activeClients = clientRepository.findByUser_Account_Status(StatusAccount.VERIFIED);
+        List<Client> activeClients = clientRepository.findByUser_Account_StatusNot(StatusAccount.BANNED);
 
         List<ActiveClientDTOResponse> response = new ArrayList<>();
 
@@ -161,7 +161,9 @@ public class ClientServiceImpl implements ClientService {
     public ClientDetailDTOResponse getClientDetail(Long clientId) {
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new NotFoundException("Client not found with id: " + clientId));
+
         List<ClientReview> reviews = getClientReviews(clientId);
+
         List<Company> companies = companyRepository.findByClientId(clientId);
         List<CompanyDTOResponse> companyDTOs = companies.stream()
                 .map(company -> new CompanyDTOResponse(
@@ -173,11 +175,34 @@ public class ClientServiceImpl implements ClientService {
                         company.getClient() != null ? company.getClient().getId() : null
                 ))
                 .collect(Collectors.toList());
+
         List<ClientReviewDTOResponse> reviewDTOs = new ArrayList<>();
+
         for (ClientReview review : reviews) {
-            String reviewerName = getReviewerName(review.getId());
-            reviewDTOs.add(activeClientMapper.toClientReviewResponse(review, reviewerName));
+            FreelancerJob freelancerJob = freelancerJobRepository.findByClientReviewId(review.getId());
+            if (freelancerJob != null) {
+                String reviewerName = getReviewerName(review.getId());
+                String projectTitle = freelancerJob.getJob() != null ? freelancerJob.getJob().getTitle() : "Unknown Project";
+                String freelancerAvatar = null;
+                if (freelancerJob.getFreelancer() != null &&
+                        freelancerJob.getFreelancer().getUser() != null) {
+                    freelancerAvatar = freelancerJob.getFreelancer().getUser().getImage();
+                }
+                ClientReviewDTOResponse reviewDTO = activeClientMapper.toClientReviewResponseWithProjectDetails(
+                        review,
+                        reviewerName,
+                        projectTitle,
+                        freelancerJob,
+                        freelancerAvatar
+                );
+
+                reviewDTOs.add(reviewDTO);
+            } else {
+                String reviewerName = "Unknown Reviewer";
+                reviewDTOs.add(activeClientMapper.toClientReviewResponse(review, reviewerName));
+            }
         }
+
         return activeClientMapper.toClientDetailResponse(
                 client,
                 reviews,
