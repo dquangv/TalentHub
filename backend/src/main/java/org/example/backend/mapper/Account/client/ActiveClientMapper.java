@@ -6,6 +6,7 @@ import org.example.backend.dto.response.account.client.CompanyDTOResponse;
 import org.example.backend.dto.response.job.ClientReviewDTOResponse;
 import org.example.backend.entity.child.account.client.Client;
 import org.example.backend.entity.child.account.client.ClientReview;
+import org.example.backend.entity.child.job.FreelancerJob;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -20,8 +21,6 @@ public interface ActiveClientMapper {
     @Mapping(target = "fromPrice", source = "client.fromPrice")
     @Mapping(target = "toPrice", source = "client.toPrice")
     @Mapping(target = "jobsCount", expression = "java(client.getJobs() != null ? client.getJobs().size() : 0)")
-
-    // User mappings
     @Mapping(target = "firstName", source = "client.user.firstName")
     @Mapping(target = "lastName", source = "client.user.lastName")
     @Mapping(target = "province", source = "client.user.province")
@@ -29,19 +28,16 @@ public interface ActiveClientMapper {
     @Mapping(target = "title", source = "client.user.title")
     @Mapping(target = "introduction", source = "client.user.introduction")
     @Mapping(target = "image", source = "client.user.image")
-
     @Mapping(target = "email", source = "client.user.account.email")
-
-    @Mapping(target = "averageRating", source = "clientReviews", qualifiedByName = "calculateAverageRating")
-
-    @Mapping(target = "companies", source = "companies")
-    ActiveClientDTOResponse toActiveClientResponse(Client client, List<ClientReview> clientReviews, List<CompanyDTOResponse> companies);
+    @Mapping(target = "averageRating", expression = "java(calculateAverageRating(reviews))")
+    @Mapping(target = "companies", source = "companyDTOs")
+    ActiveClientDTOResponse toActiveClientResponse(Client client, List<ClientReview> reviews, List<CompanyDTOResponse> companyDTOs);
 
     @Mapping(target = "clientId", source = "client.id")
     @Mapping(target = "fromPrice", source = "client.fromPrice")
     @Mapping(target = "toPrice", source = "client.toPrice")
     @Mapping(target = "jobsCount", expression = "java(client.getJobs() != null ? client.getJobs().size() : 0)")
-
+    @Mapping(target = "userId", source = "client.user.id")
     @Mapping(target = "firstName", source = "client.user.firstName")
     @Mapping(target = "lastName", source = "client.user.lastName")
     @Mapping(target = "province", source = "client.user.province")
@@ -49,17 +45,39 @@ public interface ActiveClientMapper {
     @Mapping(target = "title", source = "client.user.title")
     @Mapping(target = "introduction", source = "client.user.introduction")
     @Mapping(target = "image", source = "client.user.image")
-
     @Mapping(target = "email", source = "client.user.account.email")
-
-    @Mapping(target = "averageRating", source = "clientReviews", qualifiedByName = "calculateAverageRating")
-
-    @Mapping(target = "companies", source = "companies")
-
+    @Mapping(target = "averageRating", expression = "java(calculateAverageRating(reviews))")
+    @Mapping(target = "companies", source = "companyDTOs")
     @Mapping(target = "reviews", source = "reviewDTOs")
-    @Mapping(target = "userId", source = "client.user.id")
-    ClientDetailDTOResponse toClientDetailResponse(Client client, List<ClientReview> clientReviews,
-                                                   List<CompanyDTOResponse> companies, List<ClientReviewDTOResponse> reviewDTOs);
+    ClientDetailDTOResponse toClientDetailResponse(Client client, List<ClientReview> reviews,
+                                                   List<CompanyDTOResponse> companyDTOs,
+                                                   List<ClientReviewDTOResponse> reviewDTOs);
+
+    @Mapping(target = "id", source = "review.id")
+    @Mapping(target = "rating", source = "review.rating")
+    @Mapping(target = "note", source = "review.note")
+    @Mapping(target = "reviewerName", source = "reviewerName")
+    ClientReviewDTOResponse toClientReviewResponse(ClientReview review, String reviewerName);
+
+    default ClientReviewDTOResponse toClientReviewResponseWithProjectDetails(
+            ClientReview review,
+            String reviewerName,
+            String projectTitle,
+            FreelancerJob freelancerJob,
+            String freelancerAvatar) {
+
+        return ClientReviewDTOResponse.builder()
+                .id(review.getId())
+                .rating(review.getRating())
+                .note(review.getNote())
+                .reviewerName(reviewerName)
+                .projectTitle(projectTitle)
+                .projectStartDate(freelancerJob.getAppliedDate())
+                .projectDuration(freelancerJob.getJob().getDuration())
+                .projectBudget(freelancerJob.getJob().getFromPrice())
+                .freelancerAvatar(freelancerAvatar)
+                .build();
+    }
 
     @Named("calculateAverageRating")
     default Float calculateAverageRating(List<ClientReview> reviews) {
@@ -68,17 +86,10 @@ public interface ActiveClientMapper {
         }
 
         OptionalDouble average = reviews.stream()
-                .map(ClientReview::getRating)
-                .filter(rating -> rating != null)
-                .mapToDouble(Float::doubleValue)
+                .filter(review -> review.getRating() != null)
+                .mapToDouble(review -> review.getRating())
                 .average();
 
-        return average.isPresent() ? (float) ((float) Math.round(average.getAsDouble() * 100.0) / 100.0) : 0.0f;
+        return average.isPresent() ? (float) average.getAsDouble() : 0.0f;
     }
-
-    @Mapping(target = "id", source = "review.id")
-    @Mapping(target = "rating", source = "review.rating")
-    @Mapping(target = "note", source = "review.note")
-    @Mapping(target = "reviewerName", source = "reviewerName")
-    ClientReviewDTOResponse toClientReviewResponse(ClientReview review, String reviewerName);
 }
