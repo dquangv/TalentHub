@@ -53,7 +53,7 @@ public class EmailServiceImpl implements EmailService {
         PasswordResetToken passwordResetToken = new PasswordResetToken();
         passwordResetToken.setOtp(otp);
         passwordResetToken.setEmail(to);
-        passwordResetToken.setExpiryDate(LocalDateTime.now().plusHours(1));
+        passwordResetToken.setExpiryDate(LocalDateTime.now().plusMinutes(1));
         passwordResetTokenRepository.save(passwordResetToken);
         return sendEmail(to, EmailType.OTP, otp);
     }
@@ -70,6 +70,10 @@ public class EmailServiceImpl implements EmailService {
                 return "Update on Your Freelancer Application - Talent Hub";
             case PASSWORD_RESET:
                 return "Password Reset Request - Talent Hub 🔐";
+            case COMPANY_VERIFICATION_REQUEST:
+                return "Yêu cầu xác thực thông tin - Talent Hub 🏢";
+            case JOB_NOTIFICATION:
+                return "Cơ Hội Công Việc Mới Phù Hợp Với Kỹ Năng Của Bạn - Talent Hub 🌟";
             default:
                 return "Talent Hub Notification";
         }
@@ -149,9 +153,35 @@ public class EmailServiceImpl implements EmailService {
                     <h3 style="color: #4F46E5; font-size: 32px; text-align: center;">%s</h3>
                     <p>Please use this code to complete your action.</p>
                     <p>This OTP is valid for 5 minutes.</p>
-                    """.formatted(to, body); // body here is the OTP
+                    """.formatted(to, body);
                 break;
-            // Handle other cases (like REGISTER_SUCCESS, PASSWORD_RESET, etc.) here
+            case COMPANY_VERIFICATION_REQUEST:
+                mainContent = """
+                    <h2 style="color: #4F46E5; margin-bottom: 20px;">Yêu cầu xác thực thông tin công ty</h2>
+                    <p>Xin chào %s,</p>
+                    <p>Bạn đã đăng ký tài khoản với tư cách là nhà tuyển dụng trên nền tảng Talent Hub.</p>
+                    <p>Để chúng tôi có thể xác thực tài khoản (nếu bạn là đại diện của một doanh nghiệp), vui lòng phản hồi email này và cung cấp các thông tin sau:</p>
+                    <ul>
+                        <li><strong>Tên công ty</strong></li>
+                        <li><strong>Mã số thuế</strong></li>
+                        <li><strong>Số ĐKKD</strong> (nếu khác mã số thuế)</li>
+                        <li><strong>Số điện thoại liên hệ</strong></li>
+                        <li><strong>Đ địa chỉ công ty</strong></li>
+                        <li><strong>Website (nếu có)</strong></li>
+                    </ul>
+                    <p>Thông tin này sẽ được bảo mật và chỉ sử dụng nhằm mục đích xác minh doanh nghiệp.</p>
+                    <p>Cảm ơn bạn đã đồng hành cùng Talent Hub! 🌟</p>
+                    """.formatted(to);
+                break;
+            case JOB_NOTIFICATION:
+                mainContent = """
+                <h2 style="color: #4F46E5; margin-bottom: 20px;">Cơ Hội Công Việc Mới</h2>
+                <p>Xin chào %s,</p>
+                <p>%s</p>
+                <p>Truy cập Talent Hub để xem chi tiết công việc và ứng tuyển!</p>
+                <p>Đừng bỏ lỡ cơ hội thể hiện kỹ năng của bạn!</p>
+                """.formatted(to, body);
+                break;
             default:
                 mainContent = "<p>Notification email</p>";
         }

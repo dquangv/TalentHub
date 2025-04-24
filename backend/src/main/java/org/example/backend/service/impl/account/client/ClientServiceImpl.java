@@ -5,6 +5,7 @@ import org.example.backend.dto.request.account.client.ClientDTORequest;
 import org.example.backend.dto.request.account.client.UpdatePriceAndTypeDTORequest;
 import org.example.backend.dto.response.account.client.*;
 import org.example.backend.dto.response.job.ClientReviewDTOResponse;
+import org.example.backend.entity.child.account.Account;
 import org.example.backend.entity.child.account.client.Client;
 import org.example.backend.entity.child.account.User;
 import org.example.backend.entity.child.account.client.ClientReview;
@@ -185,9 +186,11 @@ public class ClientServiceImpl implements ClientService {
                 reviewDTOs
         );
     }
+
     private List<ClientReview> getClientReviews(Long clientId) {
         return clientReviewRepository.findByClientId(clientId);
     }
+
     private String getReviewerName(Long reviewId) {
         FreelancerJob job = freelancerJobRepository.findByClientReviewId(reviewId);
         if (job != null && job.getFreelancer() != null && job.getFreelancer().getUser() != null) {
@@ -195,5 +198,17 @@ public class ClientServiceImpl implements ClientService {
             return user.getFirstName() + " " + user.getLastName();
         }
         return "Unknown Reviewer";
+    }
+
+    public boolean checkValidClient(Long id) {
+        Client client = clientRepository.findById(id).get();
+        User user = client.getUser();
+        Account account = user.getAccount();
+
+        if (account.getStatus().equals(StatusAccount.BANNED)) {
+            return false;
+        }
+
+        return true;
     }
 }
