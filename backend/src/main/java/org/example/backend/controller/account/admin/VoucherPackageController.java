@@ -101,7 +101,7 @@ public class VoucherPackageController {
 
     @GetMapping("/all-voucher")
     public ResponseEntity<ResponseObject<List<VoucherPackageDTOResponse>>> getAllVoucher() {
-        List<VoucherPackageDTOResponse> response = voucherPackageService.findLatestVoucherPackagesByType();
+        List<VoucherPackageDTOResponse> response = voucherPackageService.findLatestVoucherPackagesByTypeOrdered();
 
         return ResponseEntity.status(200).body(ResponseObject.<List<VoucherPackageDTOResponse>>builder()
                 .message("Get all voucher successfully")

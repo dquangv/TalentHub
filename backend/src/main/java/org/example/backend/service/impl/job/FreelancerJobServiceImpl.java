@@ -199,6 +199,7 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
 
         FreelancerJob freelancerJob = freelancerJobRepository.findById(freelancerJobId).get();
         freelancerJob.setClientReview(review);
+        notifyService.sendNotification(freelancerJob.getFreelancer().getUser().getId(), "Có 1 khách hàng mới đánh giá bạn", "freelancers/"+freelancerJob.getFreelancer().getId()+"?is_review=true" );
         freelancerJobRepository.save(freelancerJob);
 
         return clientReviewMapper.toResponseDto(review);

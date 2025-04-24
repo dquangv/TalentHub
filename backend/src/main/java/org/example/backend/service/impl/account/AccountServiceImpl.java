@@ -76,6 +76,7 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
                 return true;
             }
         }
+
         return false;
     }
 
@@ -83,6 +84,7 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
     public Boolean checkEmail(String email) {
         return accountRepository.existsByEmail(email);
     }
+
     @Transactional
     @Override
     public AccountDTOResponse create(AccountDTORequest accountRequestDTO) {
@@ -128,6 +130,8 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
                     Freelancer freelancer = new Freelancer();
                     freelancer.setUser(user);
                     freelancerRepository.save(freelancer);
+
+                    emailService.sendEmail(accountRequestDTO.getEmail(), EmailType.REGISTER_SUCCESS, "Account is registered");
                 }
                 case CLIENT -> {
                     Client client = new Client();
@@ -147,13 +151,14 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
                     soldPackage.setStatus(true);
 
                     soldPackageRepository.save(soldPackage);
+
+                    emailService.sendEmail(accountRequestDTO.getEmail(), EmailType.COMPANY_VERIFICATION_REQUEST, "");
                 }
             }
         } catch (IllegalArgumentException e) {
             throw new RuntimeException("Invalid role: " + accountRequestDTO.getRole());
         }
 
-        emailService.sendEmail(accountRequestDTO.getEmail(), EmailType.REGISTER_SUCCESS, "Account is registered");
         return accountMapper.toResponseDto(savedAccount);
     }
 
@@ -205,6 +210,8 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
                     Freelancer freelancer = new Freelancer();
                     freelancer.setUser(user);
                     freelancerRepository.save(freelancer);
+
+                    emailService.sendEmail(accountRequestDTO.getEmail(), EmailType.REGISTER_SUCCESS, "Account is registered");
                 }
                 case CLIENT -> {
                     Client client = new Client();
@@ -224,13 +231,14 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
                     soldPackage.setStatus(true);
 
                     soldPackageRepository.save(soldPackage);
+
+                    emailService.sendEmail(accountRequestDTO.getEmail(), EmailType.COMPANY_VERIFICATION_REQUEST, "");
                 }
             }
         } catch (IllegalArgumentException e) {
             throw new AuthenticationException("Invalid role: " + accountRequestDTO.getRole());
         }
 
-        emailService.sendEmail(accountRequestDTO.getEmail(), EmailType.REGISTER_SUCCESS, "Account is registered");
         try {
             return authenticationService.authenticate(AuthenticationDTORequest.builder().email(account.getEmail())
                     .lat(account.getLat())
@@ -380,6 +388,8 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
 
                     account.get().setStatus(StatusAccount.VERIFIED);
                     accountRepository.save(account.get());
+
+                    emailService.sendEmail(email, EmailType.REGISTER_SUCCESS, "Account is registered");
                 }
                 case CLIENT -> {
                     Client client = new Client();
@@ -403,6 +413,9 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
                     soldPackage.setStatus(true);
 
                     soldPackageRepository.save(soldPackage);
+
+                    emailService.sendEmail(email, EmailType.COMPANY_VERIFICATION_REQUEST, "");
+                    System.out.println(email);
                 }
             }
         } catch (IllegalArgumentException e) {
@@ -459,6 +472,19 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
 
         return false;
     }
+
+    @Override
+    public Boolean activeAccount(String email) {
+        Optional<Account> account = accountRepository.findByEmail(email);
+        if (account.isPresent()) {
+            Account foundAccount = account.get();
+            foundAccount.setStatus(StatusAccount.VERIFIED);
+            accountRepository.save(foundAccount);
+            return true;
+        }
+        return false;
+    }
+
 
     private final LocationMapper locationMapper;
 

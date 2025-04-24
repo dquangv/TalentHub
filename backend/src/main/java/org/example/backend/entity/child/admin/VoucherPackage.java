@@ -34,6 +34,7 @@ public class VoucherPackage extends AbstractEntity<Long> {
     private Long NumberPost;
 
     @Column(name = "type_package")
+    @Enumerated(EnumType.STRING)
     private TypePackage typePackage;
 
     @Column(name = "status")

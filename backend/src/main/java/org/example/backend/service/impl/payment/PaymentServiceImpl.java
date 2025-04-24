@@ -248,10 +248,9 @@ public class PaymentServiceImpl implements PaymentService {
 
         // Lấy dữ liệu giao dịch mới nhất
 //        List<PaymentSummaryDTO> payments = paymentRepository.getLatestPaymentInfo(account.getId());
-        Pageable limitOne = PageRequest.of(0, 1);
 
-        List<PaymentSummaryDTO> payments = paymentRepository.findLatestDeposit(account.getId(), limitOne);
-        List<PaymentSummaryDTO> payments2 = paymentRepository.findLatestWithdraw(account.getId(), limitOne);
+        List<PaymentSummaryDTO> payments = paymentRepository.findLatestDeposit(account.getId());
+        List<PaymentSummaryDTO> payments2 = paymentRepository.findLatestWithdraw(account.getId());
 
         // Biến để lưu giá trị cần thiết
         BigDecimal latestDeposit = BigDecimal.ZERO;
@@ -264,14 +263,19 @@ public class PaymentServiceImpl implements PaymentService {
         BigDecimal totalWithdrawToday = BigDecimal.ZERO;
 
         // Duyệt danh sách giao dịch
-        for (PaymentSummaryDTO payment : payments) {
+//        for (PaymentSummaryDTO payment : payments) {
 //            if (payment.getActivity() == ActivityType.DEPOSIT) {
-                latestDeposit = totalDepositToday.add(payment.getTotalAmount());
-                latestDepositDate = payment.getLatestTransactionDate();
+//                latestDeposit = totalDepositToday.add(payment.getTotalAmount());
+//                latestDepositDate = payment.getLatestTransactionDate();
 //            } else if (payment.getActivity() == ActivityType.WITHDRAW) {
 
 //            }
 //            oldestTransactionDate = payment.getOldestTransactionDate();
+//        }
+
+        for (PaymentSummaryDTO payment : payments) {
+            latestDeposit = totalDepositToday.add(payment.getTotalAmount());
+            latestDepositDate = payment.getLatestTransactionDate();
         }
         for (PaymentSummaryDTO payment2 : payments2) {
             todaySpending = totalWithdrawToday.add(payment2.getTotalAmount());
