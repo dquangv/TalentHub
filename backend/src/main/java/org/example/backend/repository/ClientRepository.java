@@ -31,6 +31,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
                      @Param("typePrice") String typePrice
                      );
 
-    List<Client> findByUser_Account_Status(StatusAccount status);
+    List<Client> findByUser_Account_StatusNot(StatusAccount status);
+
 
 }
