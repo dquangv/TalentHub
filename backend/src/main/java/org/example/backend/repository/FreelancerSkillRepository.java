@@ -13,4 +13,5 @@ public interface FreelancerSkillRepository extends JpaRepository<FreelancerSkill
     Optional<FreelancerSkill> findByFreelancer_IdAndSkill_Id(Long freelancerId, Long skillId);
     void deleteByFreelancer_IdAndSkill_Id(Long freelancerId, Long skillId);
     Long countBySkillId(Long skillId);
+    List<FreelancerSkill> findBySkill_SkillNameIn(List<String> skillNames);
 }
