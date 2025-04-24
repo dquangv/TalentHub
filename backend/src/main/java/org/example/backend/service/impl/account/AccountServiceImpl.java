@@ -473,6 +473,19 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
         return false;
     }
 
+    @Override
+    public Boolean activeAccount(String email) {
+        Optional<Account> account = accountRepository.findByEmail(email);
+        if (account.isPresent()) {
+            Account foundAccount = account.get();
+            foundAccount.setStatus(StatusAccount.VERIFIED);
+            accountRepository.save(foundAccount);
+            return true;
+        }
+        return false;
+    }
+
+
     private final LocationMapper locationMapper;
 
     @Override
