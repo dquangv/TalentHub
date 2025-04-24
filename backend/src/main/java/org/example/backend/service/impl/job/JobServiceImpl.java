@@ -15,14 +15,12 @@ import org.example.backend.entity.child.account.client.Company;
 import org.example.backend.entity.child.account.client.SoldPackage;
 import org.example.backend.entity.child.account.freelancer.Freelancer;
 import org.example.backend.entity.child.job.*;
-import org.example.backend.enums.ScopeJob;
-import org.example.backend.enums.StatusFreelancerJob;
-import org.example.backend.enums.StatusJob;
-import org.example.backend.enums.TypePackage;
+import org.example.backend.enums.*;
 import org.example.backend.exception.BadRequestException;
 import org.example.backend.mapper.Account.client.ClientMapper;
 import org.example.backend.mapper.job.*;
 import org.example.backend.repository.*;
+import org.example.backend.service.impl.account.client.ClientServiceImpl;
 import org.example.backend.service.impl.account.freelancer.FreelancerServiceImpl;
 import org.example.backend.service.intf.job.JobService;
 import org.springframework.stereotype.Service;
@@ -58,10 +56,15 @@ public class JobServiceImpl implements JobService {
     private final SoldPackageRepository soldPackageRepository;
     private final FreelancerRepository freelancerRepository;
     private final FreelancerServiceImpl freelancerServiceImpl;
+    private final ClientServiceImpl clientServiceImpl;
 
     @Override
     @Transactional
     public JobDetailDTOResponse updateJob(Long id, JobDetailDTORequest jobDetailDTORequest) {
+        if (!clientServiceImpl.checkValidClient(jobDetailDTORequest.getClientId())) {
+            throw new BadRequestException("Client is banned");
+        }
+
         Job job = jobRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Job not found"));
 
@@ -141,6 +144,10 @@ public class JobServiceImpl implements JobService {
     public CreateJobDTOResponse createJob(CreateJobDTORequest createJobDTORequest) {
         Client client = clientRepository.findById(createJobDTORequest.getClientId())
                 .orElseThrow(() -> new BadRequestException("Client not found"));
+
+        if (!clientServiceImpl.checkValidClient(createJobDTORequest.getClientId())) {
+            throw new BadRequestException("Client is banned");
+        }
 
         SoldPackage soldPackage = soldPackageRepository.findTopByClientIdAndStatusOrderByStartDateDesc(client.getId(), true);
 
@@ -246,9 +253,10 @@ public class JobServiceImpl implements JobService {
         return jobs;
     }*/
     private final ClientMapper clientMapper;
+
     @Override
     public List<JobDTOResponse> findAllJobs(Long freelancerId) {
-        List<JobDTOResponse> jobs = jobRepository.findByStatus(StatusJob.OPEN).stream()
+        List<JobDTOResponse> jobs = jobRepository.findOpenJobsWithNonBannedClients(StatusJob.OPEN, StatusAccount.BANNED).stream()
                 .map(job -> {
                     JobDTOResponse dto = jobMapper.toResponseDto(job);
                     Long clientId = job.getClient().getId();
@@ -351,7 +359,7 @@ public class JobServiceImpl implements JobService {
 
                 Long clientId = sp.getClient().getId();
                 if (!usedClientIds.contains(clientId)) {
-                    List<Job> jobsByClient = jobRepository.findByClientIdOrderByCreatedAtDesc(clientId);
+                    List<Job> jobsByClient = jobRepository.findByClientIdAndStatusNotBannedOrderByCreatedAtDesc(clientId, StatusAccount.BANNED);
                     for (Job job : jobsByClient) {
                         if (result.size() < 6) {
                             JobWithPackageDTOResponse dto = jobMapper.toResponseWithPackageDto(job, type);
@@ -391,7 +399,7 @@ public class JobServiceImpl implements JobService {
         Long categoryId = (freelancerCategory != null) ? freelancerCategory.getId() : null;
         log.info("Freelancer {} belongs to category ID: {}", freelancerId, categoryId);
 
-        List<Job> recommendedJobs = jobRepository.findRecommendedJobsForFreelancer(categoryId);
+        List<Job> recommendedJobs = jobRepository.findRecommendedJobsForFreelancer(categoryId, StatusAccount.BANNED);
         log.info("Found {} recommended jobs for category ID: {}", recommendedJobs.size(), categoryId);
 
         List<JobDTOResponse> result = recommendedJobs.stream()
@@ -439,6 +447,7 @@ public class JobServiceImpl implements JobService {
             jobRepository.save(job.get());
             return true;
         }
+
         return false;
     }
 
