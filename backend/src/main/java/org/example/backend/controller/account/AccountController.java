@@ -89,6 +89,19 @@ public class AccountController {
                 .build();
     }
 
+    @PostMapping("/admin/verify")
+    public ResponseObject<StatusAccountDTOResponse> activeAccount(@RequestParam String email) {
+        Boolean response = accountService.activeAccount(email);
+        return ResponseObject
+                .<StatusAccountDTOResponse>builder()
+                .message("UnBan account")
+                .status(HttpStatus.OK.value())
+                .data(StatusAccountDTOResponse.builder()
+                        .status(response ? "Unban account successful" : "Unban account failed")
+                        .build())
+                .build();
+    }
+
     @GetMapping("/locations")
     public ResponseObject<List<LocationDTOResponse>> getLocations() {
         List<LocationDTOResponse> response = accountService.getLocations();
