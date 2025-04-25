@@ -180,7 +180,6 @@ public class AppointmentServiceImpl implements AppointmentService {
 
             FreelancerJob freelancerJob = freelancerJobRepository.findById(request.getFreelancerJobId())
                     .orElseThrow(() -> new NotFoundException("FreelancerJob not found with id: " + request.getFreelancerJobId()));
-
             appointment.setFreelancerJob(freelancerJob);
         }
 
@@ -198,6 +197,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         response.setPhone(user.getPhoneNumber());
         response.setJobId(job.getId());
         response.setJobTitle(job.getTitle());
+        notifyService.sendNotification(freelancerJob.getFreelancer().getUser().getId(), "Khách hàng có công việc: "+ freelancerJob.getJob().getTitle() + " vừa thay đổi lịch hẹn, vui lòng kiểm tra lại", "freelancer/appointment");
 
         return response;
     }
