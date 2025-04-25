@@ -44,4 +44,7 @@ public class Appointment extends AbstractEntity<Long> {
     @OneToOne
     @JoinColumn(name = "freelancer_job_id")
     private FreelancerJob freelancerJob;
+
+    @Column(name = "is_completed")
+    private Boolean isCompleted = false;
 }
