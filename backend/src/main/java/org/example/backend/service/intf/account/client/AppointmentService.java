@@ -12,4 +12,6 @@ public interface AppointmentService extends BaseService<AppointmentDetailDTORequ
     List<AppointmentDetailDTOResponse> getAllAppointmentsByFreelancerId(Long freelancerId);
 
     AppointmentDetailDTOResponse update(Long id, AppointmentDetailDTORequest request);
+
+    String markAppointmentAsCompleted(Long id);
 }
