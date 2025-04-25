@@ -37,12 +37,13 @@ public interface FreelancerJobRepository extends JpaRepository<FreelancerJob, Lo
             "LEFT JOIN FETCH j.category cg " +
             "LEFT JOIN FETCH j.jobSkills js " +
             "LEFT JOIN FETCH j.client c " +
-            "WHERE fj.status IN (:status, :approvedStatus) " +
+            "WHERE fj.status IN (:status, :approvedStatus, :rejectStatus) " +
             "AND fj.freelancer.id = :freelancerId")
     List<FreelancerJob> findFreelancerJobsByStatusAndFreelancerId(
             @Param("freelancerId") Long freelancerId,
             @Param("status") StatusFreelancerJob status,
-            @Param("approvedStatus") StatusFreelancerJob approvedStatus
+            @Param("approvedStatus") StatusFreelancerJob approvedStatus,
+            @Param("rejectStatus") StatusFreelancerJob rejectStatus
     );
 
 
