@@ -11,6 +11,7 @@ import org.example.backend.dto.response.account.AccountDTOResponse;
 import org.example.backend.dto.response.account.AuthenticationDtoResponse;
 import org.example.backend.entity.child.account.Account;
 import org.example.backend.enums.RoleUser;
+import org.example.backend.enums.StatusAccount;
 import org.example.backend.repository.AccountRepository;
 import org.example.backend.service.impl.account.AccountServiceImpl;
 import org.example.backend.service.impl.account.AuthenticationServiceImpl;
@@ -55,11 +56,15 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         }
 
         Optional<Account> account = accountRepository.findByEmail(email);
-
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
         if (account.isPresent()) {
+            if (account.get().getStatus().equals(StatusAccount.BANNED)){
+                String redirectUrl = urlUI + "/banned-account-callback";
+                response.sendRedirect(redirectUrl);
+                return;
+            }
             try {
                 AuthenticationDtoResponse authenticationDtoResponse = accountServiceImpl.handleOAuth2Login(oauthUser);
 
