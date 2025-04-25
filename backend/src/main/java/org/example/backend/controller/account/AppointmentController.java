@@ -65,4 +65,10 @@ public class AppointmentController {
                 .build());
     }
 
+    @PostMapping("/{id}/complete")
+    public ResponseEntity<String> markAppointmentAsCompleted(@PathVariable Long id) {
+        String result = appointmentService.markAppointmentAsCompleted(id);
+        return ResponseEntity.ok(result);
+    }
+
 }

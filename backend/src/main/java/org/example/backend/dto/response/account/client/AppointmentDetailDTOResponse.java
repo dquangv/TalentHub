@@ -23,4 +23,5 @@ public class AppointmentDetailDTOResponse {
     private String link;
     private Long jobId;
     private String jobTitle;
+    private Boolean isCompleted = false;
 }

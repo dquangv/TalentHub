@@ -19,6 +19,7 @@ import org.example.backend.repository.FreelancerRepository;
 import org.example.backend.service.impl.notify.NotifyService;
 import org.example.backend.service.intf.account.client.AppointmentService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -113,7 +114,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                     response.setPhone(user.getPhoneNumber());
                     response.setJobId(job.getId());
                     response.setJobTitle(job.getTitle());
-
+                    response.setIsCompleted(appointment.getIsCompleted());
                     return response;
                 })
                 .collect(Collectors.toList());
@@ -139,7 +140,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             response.setPhone(user.getPhoneNumber());
             response.setJobId(job.getId());
             response.setJobTitle(job.getTitle());
-
+            response.setIsCompleted(appointment.getIsCompleted());
             return response;
         }).collect(Collectors.toList());
     }
@@ -179,7 +180,6 @@ public class AppointmentServiceImpl implements AppointmentService {
 
             FreelancerJob freelancerJob = freelancerJobRepository.findById(request.getFreelancerJobId())
                     .orElseThrow(() -> new NotFoundException("FreelancerJob not found with id: " + request.getFreelancerJobId()));
-
             appointment.setFreelancerJob(freelancerJob);
         }
 
@@ -197,7 +197,20 @@ public class AppointmentServiceImpl implements AppointmentService {
         response.setPhone(user.getPhoneNumber());
         response.setJobId(job.getId());
         response.setJobTitle(job.getTitle());
+        notifyService.sendNotification(freelancerJob.getFreelancer().getUser().getId(), "Khách hàng có công việc: "+ freelancerJob.getJob().getTitle() + " vừa thay đổi lịch hẹn, vui lòng kiểm tra lại", "freelancer/appointment");
 
         return response;
+    }
+
+    @Override
+    @Transactional
+    public String markAppointmentAsCompleted(Long id) {
+        return appointmentRepository.findById(id)
+                .map(appointment -> {
+                    appointment.setIsCompleted(true);
+                    appointmentRepository.save(appointment);
+                    return "Appointment marked as completed successfully";
+                })
+                .orElseThrow(() -> new RuntimeException("Appointment with ID " + id + " not found"));
     }
 }
