@@ -140,7 +140,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             response.setPhone(user.getPhoneNumber());
             response.setJobId(job.getId());
             response.setJobTitle(job.getTitle());
-
+            response.setIsCompleted(appointment.getIsCompleted());
             return response;
         }).collect(Collectors.toList());
     }
