@@ -152,7 +152,7 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
 
                     soldPackageRepository.save(soldPackage);
 
-                    emailService.sendEmail(accountRequestDTO.getEmail(), EmailType.COMPANY_VERIFICATION_REQUEST, "");
+                    emailService.sendEmail(accountRequestDTO.getFirstName(), EmailType.COMPANY_VERIFICATION_REQUEST, "");
                 }
             }
         } catch (IllegalArgumentException e) {
@@ -211,7 +211,7 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
                     freelancer.setUser(user);
                     freelancerRepository.save(freelancer);
 
-                    emailService.sendEmail(accountRequestDTO.getEmail(), EmailType.REGISTER_SUCCESS, "Account is registered");
+                    emailService.sendEmail(accountRequestDTO.getFirstName(), EmailType.REGISTER_SUCCESS, "Account is registered");
                 }
                 case CLIENT -> {
                     Client client = new Client();
@@ -232,7 +232,7 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
 
                     soldPackageRepository.save(soldPackage);
 
-                    emailService.sendEmail(accountRequestDTO.getEmail(), EmailType.COMPANY_VERIFICATION_REQUEST, "");
+                    emailService.sendEmail(accountRequestDTO.getFirstName(), EmailType.COMPANY_VERIFICATION_REQUEST, "");
                 }
             }
         } catch (IllegalArgumentException e) {
@@ -414,7 +414,7 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
 
                     soldPackageRepository.save(soldPackage);
 
-                    emailService.sendEmail(email, EmailType.COMPANY_VERIFICATION_REQUEST, "");
+                    emailService.sendEmail(user.getFirstName(), EmailType.COMPANY_VERIFICATION_REQUEST, "");
                     System.out.println(email);
                 }
             }
