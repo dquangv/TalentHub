@@ -145,6 +145,20 @@ public class EmailServiceImpl implements EmailService {
         String mainContent = "";
 
         switch (emailType) {
+            case REGISTER_SUCCESS:
+                mainContent = """
+                    <h2 style="color: #4F46E5; margin-bottom: 20px;">Welcome to Talent Hub! 🎉</h2>
+                    <p>Hello %s,</p>
+                    <p>We're thrilled to have you join our community! Your registration was successful, and you're now part of a growing network of talented professionals.</p>
+                    <p>Here's what you can do next:</p>
+                    <ul style="padding-left: 20px;">
+                        <li>Complete your profile</li>
+                        <li>Browse available projects</li>
+                        <li>Connect with other professionals</li>
+                    </ul>
+                    <a href="#" class="button">Get Started</a>
+                    """.formatted(to);
+                break;
             case OTP:
                 mainContent = """
                     <h2 style="color: #4F46E5; margin-bottom: 20px;">Your OTP Code</h2>

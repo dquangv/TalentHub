@@ -5,12 +5,14 @@ import org.example.backend.dto.ResponseObject;
 import org.example.backend.dto.request.account.client.ClientDTORequest;
 import org.example.backend.dto.request.account.client.UpdatePriceAndTypeDTORequest;
 import org.example.backend.dto.response.account.client.*;
+import org.example.backend.entity.child.account.client.Client;
 import org.example.backend.service.intf.account.client.ClientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/clients")
@@ -107,6 +109,19 @@ public class ClientController {
                 .message("Client detail retrieved successfully")
                 .status(HttpStatus.OK.value())
                 .data(clientDetail)
+                .build();
+    }
+
+    @GetMapping("/notify-for-clients")
+    public ResponseObject<String> getClients(
+            @RequestParam Long freelancerId) {
+
+        clientService.findClientsByDiamondPackageAndCategory(freelancerId);
+
+        return ResponseObject.<String>builder()
+                .message("Clients with diamond package")
+                .status(HttpStatus.OK.value())
+                .data("Notify successfully")
                 .build();
     }
 }

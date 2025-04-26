@@ -34,4 +34,15 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     List<Client> findByUser_Account_StatusNot(StatusAccount status);
 
 
+    @Query("SELECT DISTINCT c " +
+            "FROM Client c " +
+            "INNER JOIN SoldPackage sp ON sp.client = c " +
+            "INNER JOIN sp.voucherPackage vp " +
+            "INNER JOIN Job j ON j.client = c " +
+            "INNER JOIN j.category cat " +
+            "WHERE vp.typePackage = org.example.backend.enums.TypePackage.DIAMOND " +
+            "AND cat.id = :categoryId " +
+            "AND sp.status = true")
+    List<Client> findClientsByDiamondPackageAndCategoryId(@Param("categoryId") Long categoryId);
+
 }
