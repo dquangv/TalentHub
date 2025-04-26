@@ -17,7 +17,9 @@ import org.example.backend.entity.child.account.freelancer.Freelancer;
 import org.example.backend.entity.child.account.freelancer.FreelancerSkill;
 import org.example.backend.entity.child.job.*;
 import org.example.backend.enums.*;
+import org.example.backend.exception.AuthenticationException;
 import org.example.backend.exception.BadRequestException;
+import org.example.backend.exception.CommonException;
 import org.example.backend.mapper.Account.client.ClientMapper;
 import org.example.backend.mapper.job.*;
 import org.example.backend.repository.*;
@@ -149,29 +151,29 @@ public class JobServiceImpl implements JobService {
     @Override
     public CreateJobDTOResponse createJob(CreateJobDTORequest createJobDTORequest) {
         Client client = clientRepository.findById(createJobDTORequest.getClientId())
-                .orElseThrow(() -> new BadRequestException("Client not found"));
+                .orElseThrow(() -> new AuthenticationException("Client not found"));
 
         if (!clientServiceImpl.checkValidClient(createJobDTORequest.getClientId())) {
-            throw new BadRequestException("Client is banned");
+            throw new AuthenticationException("Client is banned");
         }
 
         SoldPackage soldPackage = soldPackageRepository.findTopByClientIdAndStatusOrderByStartDateDesc(client.getId(), true);
 
         if (soldPackage == null) {
-            throw new BadRequestException("Sold package not found");
+            throw new CommonException("Sold package not found");
         }
 
         Long numberPost = soldPackage.getNumberPost();
         Long numberPosted = soldPackage.getNumberPosted();
 
         if (numberPosted >= numberPost) {
-            throw new BadRequestException("You have used up all your posts");
+            throw new CommonException("You have used up all your posts");
         }
 
         createJobDTORequest.setClientId(client.getId());
 
         Category category = categoryRepository.findById(createJobDTORequest.getCategoryId())
-                .orElseThrow(() -> new BadRequestException("Category not found"));
+                .orElseThrow(() -> new CommonException("Category not found"));
 
         createJobDTORequest.setCategoryId(category.getId());
 
@@ -187,7 +189,7 @@ public class JobServiceImpl implements JobService {
 
         skillIds.forEach(skillId -> {
             Skill skill = skillRepository.findById(skillId)
-                    .orElseThrow(() -> new BadRequestException("Skilll id not found"));
+                    .orElseThrow(() -> new CommonException("Skilll id not found"));
 
             JobSkill jobSkill = new JobSkill();
             jobSkill.setSkill(skill);
