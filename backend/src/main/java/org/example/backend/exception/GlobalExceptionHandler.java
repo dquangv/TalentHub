@@ -102,4 +102,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.EXPECTATION_FAILED);
     }
 
+    @ExceptionHandler(CommonException.class)
+    public ResponseEntity<Map<String, Object>> handleCommonException(AuthenticationException ex) {
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put("statusCode", HttpStatus.EXPECTATION_FAILED.value());
+        errorResponse.put("message", ex.getMessage());
+        errorResponse.put("error", "Invalid Token");
+        errorResponse.put("timestamp", System.currentTimeMillis());
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.EXPECTATION_FAILED);
+    }
+
 }
