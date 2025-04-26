@@ -26,4 +26,6 @@ public interface ClientService {
     List<ActiveClientDTOResponse> getAllActiveClients();
 
     ClientDetailDTOResponse getClientDetail(Long clientId);
+
+    void findClientsByDiamondPackageAndCategory(Long freelancerId);
 }

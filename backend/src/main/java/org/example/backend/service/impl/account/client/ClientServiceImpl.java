@@ -10,6 +10,8 @@ import org.example.backend.entity.child.account.client.Client;
 import org.example.backend.entity.child.account.User;
 import org.example.backend.entity.child.account.client.ClientReview;
 import org.example.backend.entity.child.account.client.Company;
+import org.example.backend.entity.child.account.freelancer.Freelancer;
+import org.example.backend.entity.child.job.Category;
 import org.example.backend.entity.child.job.FreelancerJob;
 import org.example.backend.enums.StatusAccount;
 import org.example.backend.exception.BadRequestException;
@@ -18,6 +20,7 @@ import org.example.backend.mapper.Account.client.ActiveClientMapper;
 import org.example.backend.mapper.Account.client.ClientMapper;
 import org.example.backend.mapper.Account.client.UpdatePriceAndTypeMapper;
 import org.example.backend.repository.*;
+import org.example.backend.service.impl.notify.NotifyService;
 import org.example.backend.service.intf.account.client.ClientService;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +42,8 @@ public class ClientServiceImpl implements ClientService {
     private final ClientReviewRepository clientReviewRepository;
     private final ActiveClientMapper activeClientMapper;
     private final FreelancerJobRepository freelancerJobRepository;
+    private final NotifyService notifyService;
+    private final FreelancerRepository freelancerRepository;
 
     @Override
     public ClientDTOResponse create(ClientDTORequest clientDTORequest) {
@@ -89,6 +94,7 @@ public class ClientServiceImpl implements ClientService {
         return clientRepository.findById(clientId)
                 .orElseThrow(() -> new BadRequestException("Client not found"));
     }
+
     @Override
     public UpdatePriceAndTypeDTOResponse updatePriceAndType(UpdatePriceAndTypeDTORequest updatePriceAndTypeDTORequest) {
 
@@ -104,6 +110,7 @@ public class ClientServiceImpl implements ClientService {
 
         return updatePriceAndTypeMapper.toResponseDto(updatedClient);
     }
+
     @Override
     public List<CompanyDTOResponse> getCompaniesByClientId(Long clientId) {
         // First verify client exists
@@ -158,6 +165,7 @@ public class ClientServiceImpl implements ClientService {
 
         return response;
     }
+
     @Override
     public ClientDetailDTOResponse getClientDetail(Long clientId) {
         Client client = clientRepository.findById(clientId)
@@ -235,5 +243,15 @@ public class ClientServiceImpl implements ClientService {
         }
 
         return true;
+    }
+
+    public void findClientsByDiamondPackageAndCategory(Long freelancerId) {
+        Freelancer freelancer = freelancerRepository.findById(freelancerId).get();
+        Category category = freelancer.getCategory();
+        if (category != null) {
+            clientRepository.findClientsByDiamondPackageAndCategoryId(category.getId()).stream().forEach(el -> {
+                notifyService.sendNotification(el.getUser().getId(), "Có 1 ứng viên tiềm năng phù hợp với công việc của bạn!", "freelancers/" + freelancerId);
+            });
+        }
     }
 }
