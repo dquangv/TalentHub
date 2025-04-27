@@ -1584,22 +1584,65 @@ FROM job WHERE title = 'Quản lý fanpage Facebook'
 
 INSERT INTO banner (title, image, status, vendor, duration, created_at, updated_at, price, start_time, end_time, logo)
 VALUES
+    ('Tuyển dụng Chuyên viên khai thác dự án bất động sản',
+     'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/chuyen-vien-khai-thac-du-an-bat-dong-san-BatDongSanBacBo.jpg',
+     true,
+     'Bất Động Sản Bắc Bộ',
+     30,
+     NOW(),
+     NULL,
+     2500000,
+     NOW(),
+     DATE_ADD(NOW(), INTERVAL 30 DAY),
+     NULL),
 
-    ('Khuyến mãi Mùa Hè cùng VinFast', 'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/vinfast.jpg', true, 'VinFast', 15, NOW(), NULL, 5000000,
-     NOW(), DATE_ADD(NOW(), INTERVAL 15 DAY), NULL),
+    ('Tuyển dụng Chuyên viên tư vấn bất động sản',
+     'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/chuyen-vien-tj-van-bat-dong-san-CENGROUP.jpg',
+     true,
+     'CENGROUP',
+     25,
+     NOW(),
+     NULL,
+     2800000,
+     NOW(),
+     DATE_ADD(NOW(), INTERVAL 25 DAY),
+     NULL),
 
-    ('Viettel - Internet tốc độ cao ưu đãi lớn', 'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/viettel.jpg', true, 'Viettel', 20, NOW(), NULL,
-     2000000, NOW(), DATE_ADD(NOW(), INTERVAL 20 DAY), NULL),
+    ('Tuyển dụng Sales bán bất động sản',
+     'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/tuyendungsalesbanbatdongsan-SAIGONLAND.jpg',
+     true,
+     'SAIGONLAND',
+     20,
+     NOW(),
+     NULL,
+     2200000,
+     NOW(),
+     DATE_ADD(NOW(), INTERVAL 20 DAY),
+     NULL),
 
-    ('FPT Play - Xem phim thả ga', 'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/fptshop.webp', true, 'FPT Telecom', 10, NOW(), NULL, 1500000, NOW(),
-     DATE_ADD(NOW(), INTERVAL 10 DAY), NULL),
+    ('Tuyển dụng thợ xây dựng, lao động phổ thông',
+     'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/tuyendungthoxaydunglaodongphothong-CongtyThanhCongIII.jpg',
+     true,
+     'Công ty Thành Công III',
+     15,
+     NOW(),
+     NULL,
+     1800000,
+     NOW(),
+     DATE_ADD(NOW(), INTERVAL 15 DAY),
+     NULL),
 
-    ('Highlands Coffee - Giảm giá 50% thức uống', 'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/highlands.jpg', true, 'Highlands Coffee', 7,
-     NOW(), NULL, 1000000, NOW(), DATE_ADD(NOW(), INTERVAL 7 DAY), NULL),
-
-    ('Thế Giới Di Động - Mua sắm công nghệ giá sốc', 'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/thegioididong.png', true, 'Thế Giới Di Động', 14, NOW(),
-     NULL, 3000000, NOW(), DATE_ADD(NOW(), INTERVAL 14 DAY), NULL);
-
+    ('Tuyển dụng truyền thông và marketing',
+     'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/tuyendungtruyenthongvamarketing-MTDGroup.jpg',
+     true,
+     'MTD Group',
+     25,
+     NOW(),
+     NULL,
+     2600000,
+     NOW(),
+     DATE_ADD(NOW(), INTERVAL 25 DAY),
+     NULL);
 
 INSERT INTO account (email, password, role, created_at, updated_at, status, lat, lng)
 VALUES
