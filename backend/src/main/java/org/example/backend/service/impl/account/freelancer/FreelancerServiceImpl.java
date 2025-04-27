@@ -52,7 +52,7 @@ public class FreelancerServiceImpl implements FreelancerService {
                 updatedFreelancer.getDescription(),
                 updatedFreelancer.getCategory() != null && updatedFreelancer.getCategory().getCategoryTitle() != null
                         ? updatedFreelancer.getCategory().getCategoryTitle()
-                        : "No category",
+                        : "Chưa có",
                 updatedFreelancer.getUser().getId(),
                 updatedFreelancer.getUser().getImage(),
                 clientReviewRepository.findAverageRating(updatedFreelancer.getId()),
@@ -86,7 +86,7 @@ public class FreelancerServiceImpl implements FreelancerService {
                 f.getDescription(),
                 f.getCategory() != null && f.getCategory().getCategoryTitle() != null
                         ? f.getCategory().getCategoryTitle()
-                        : "No category",
+                        : "Chưa có",
                 f.getUser().getId(),
                 f.getUser().getImage(),
                 clientReviewRepository.findAverageRating(f.getId()),
@@ -109,7 +109,7 @@ public class FreelancerServiceImpl implements FreelancerService {
                 f.getDescription(),
                 f.getCategory() != null && f.getCategory().getCategoryTitle() != null
                         ? f.getCategory().getCategoryTitle()
-                        : "No category",
+                        : "Chưa có",
                 f.getUser().getId(),
                 f.getUser().getImage(),
                 clientReviewRepository.findAverageRating(f.getId()),
@@ -130,7 +130,7 @@ public class FreelancerServiceImpl implements FreelancerService {
                         f.getDescription(),
                         f.getCategory() != null && f.getCategory().getCategoryTitle() != null
                                 ? f.getCategory().getCategoryTitle()
-                                : "No category",
+                                : "Chưa có",
                         f.getUser().getId(),
                         f.getUser().getImage(),
                        clientReviewRepository.findAverageRating(f.getId()),
@@ -153,7 +153,7 @@ public class FreelancerServiceImpl implements FreelancerService {
                         f.getDescription(),
                         f.getCategory() != null && f.getCategory().getCategoryTitle() != null
                                 ? f.getCategory().getCategoryTitle()
-                                : "No category",
+                                : "Chưa có",
                         f.getUser().getId(),
                         f.getUser().getImage(),
                         clientReviewRepository.findAverageRating(f.getId()),
@@ -217,7 +217,7 @@ public class FreelancerServiceImpl implements FreelancerService {
                         f.getDescription(),
                         f.getCategory() != null && f.getCategory().getCategoryTitle() != null
                                 ? f.getCategory().getCategoryTitle()
-                                : "No category",
+                                : "Chưa có",
                         f.getUser().getId(),
                         f.getUser().getImage(),
                         clientReviewRepository.findAverageRating(f.getId()),
