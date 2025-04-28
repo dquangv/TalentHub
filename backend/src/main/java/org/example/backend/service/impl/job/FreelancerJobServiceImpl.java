@@ -348,8 +348,8 @@ public class FreelancerJobServiceImpl implements FreelancerJobService {
                         SaveJobDTOResponse dto = saveJobMapper.toResponseDto(freelancerJob);
                         Long id = freelancerJob.getJob().getClient().getId();
                         Company company = companyRepository.getCompanyByClientId(id)
-                                .orElseThrow(() -> new RuntimeException("Company not found for client ID: " + id));
-                        dto.setCompanyName(company.getCompanyName());
+                                .orElse(null);
+                        dto.setCompanyName(company != null ? company.getCompanyName() : null);
                         return dto;
                     })
                     .collect(Collectors.toList());
