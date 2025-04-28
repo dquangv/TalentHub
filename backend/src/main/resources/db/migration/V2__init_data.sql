@@ -1594,7 +1594,7 @@ VALUES
      2500000,
      NOW(),
      DATE_ADD(NOW(), INTERVAL 30 DAY),
-     NULL),
+     "https://th.bing.com/th/id/R.6ccd56c3a1435882c417ca8425b6fa87?rik=6r8rTYQXRwEz%2bA&riu=http%3a%2f%2fbatdongsanbacbo.vn%2fwp-content%2fuploads%2f2023%2f07%2flogo-6-350x116-1.png&ehk=iW4%2b9Wm60NdKtywwbtLRplPSRcyM15uCteCL4kQMV1M%3d&risl=&pid=ImgRaw&r=0"),
 
     ('Tuyển dụng Chuyên viên tư vấn bất động sản',
      'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/chuyen-vien-tj-van-bat-dong-san-CENGROUP.jpg',
@@ -1606,7 +1606,7 @@ VALUES
      2800000,
      NOW(),
      DATE_ADD(NOW(), INTERVAL 25 DAY),
-     NULL),
+     "https://th.bing.com/th/id/ODLS.f8a9a213-b6ca-41a5-ad75-c96f769253de?w=32&h=32&qlt=90&pcl=fffffa&o=6&pid=1.2"),
 
     ('Tuyển dụng Sales bán bất động sản',
      'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/tuyendungsalesbanbatdongsan-SAIGONLAND.jpg',
@@ -1618,7 +1618,7 @@ VALUES
      2200000,
      NOW(),
      DATE_ADD(NOW(), INTERVAL 20 DAY),
-     NULL),
+     "https://saigonland.group/wp-content/uploads/2023/04/logo-sgl.png"),
 
     ('Tuyển dụng thợ xây dựng, lao động phổ thông',
      'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/tuyendungthoxaydunglaodongphothong-CongtyThanhCongIII.jpg',
@@ -1630,7 +1630,7 @@ VALUES
      1800000,
      NOW(),
      DATE_ADD(NOW(), INTERVAL 15 DAY),
-     NULL),
+     "https://seeklogo.com/images/T/thanh-thanh-cong-ttc-logo-F3EADFD06D-seeklogo.com.png"),
 
     ('Tuyển dụng truyền thông và marketing',
      'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/tuyendungtruyenthongvamarketing-MTDGroup.jpg',
@@ -1642,7 +1642,7 @@ VALUES
      2600000,
      NOW(),
      DATE_ADD(NOW(), INTERVAL 25 DAY),
-     NULL);
+     "https://quattror.com/wp-content/uploads/2023/01/mtd-group-logo-1024x233.png");
 
 INSERT INTO account (email, password, role, created_at, updated_at, status, lat, lng)
 VALUES
