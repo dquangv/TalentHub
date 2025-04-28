@@ -22,9 +22,10 @@ public interface PostedJobsMapper extends BaseMapper<Job, PostJobsDTORequest, Po
     PostJobsDTOResponse toResponseDto(Job job);
 
     default Long countApplicants(Job job) {
-        return job.getFreelancerJobs().stream()
-                .filter(freelancerJob -> freelancerJob.getStatus() != StatusFreelancerJob.Viewed)
+        Long count = job.getFreelancerJobs().stream()
+                .filter(freelancerJob -> freelancerJob.getStatus() != StatusFreelancerJob.Viewed && freelancerJob.getStatus() != null)
                 .count();
+        return count;
     }
 
 }
