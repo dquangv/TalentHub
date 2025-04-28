@@ -1609,7 +1609,7 @@ VALUES
      "https://th.bing.com/th/id/ODLS.f8a9a213-b6ca-41a5-ad75-c96f769253de?w=32&h=32&qlt=90&pcl=fffffa&o=6&pid=1.2"),
 
     ('Tuyển dụng Sales bán bất động sản',
-     'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/3.webp',
+     'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/tuyendungsalesbanbatdongsan-SAIGONLAND.jpg',
      true,
      'SAIGONLAND',
      20,
@@ -1621,7 +1621,7 @@ VALUES
      "https://saigonland.group/wp-content/uploads/2023/04/logo-sgl.png"),
 
     ('Tuyển dụng thợ xây dựng, lao động phổ thông',
-     'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/4.webp',
+     'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/tuyendungthoxaydunglaodongphothong-CongtyThanhCongIII.jpg',
      true,
      'Công ty Thành Công III',
      15,
@@ -1633,7 +1633,7 @@ VALUES
      "https://seeklogo.com/images/T/thanh-thanh-cong-ttc-logo-F3EADFD06D-seeklogo.com.png"),
 
     ('Tuyển dụng truyền thông và marketing',
-     'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/5.webp',
+     'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/tuyendungtruyenthongvamarketing-MTDGroup.jpg',
      true,
      'MTD Group',
      25,
