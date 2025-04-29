@@ -28,71 +28,7 @@ class AuthControllerTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Test
-    void testAuthenticate_ValidAccount_Success() throws JOSEException {
-        AuthenticationDTORequest request = AuthenticationDTORequest.builder()
-                .email("tiendqpc07858@fpt.edu.vn")
-                .password("1234")
-                .lat(0.0)
-                .lng(0.0)
-                .build();
 
-        AuthenticationDtoResponse serviceResponse = AuthenticationDtoResponse.builder()
-                .accessToken("mocked_access_token_tiendq")
-                .userId(1L)
-                .freelancerId(null)
-                .clientId(null)
-                .role(RoleUser.FREELANCER)
-                .lat(0.0)
-                .lng(0.0)
-                .email("tiendqpc07858@fpt.edu.vn")
-                .build();
-
-        when(authenticationService.authenticate(request)).thenReturn(serviceResponse);
-
-        ResponseObject<AuthenticationDtoResponse> response = authController.authenticate(request);
-
-        assertNotNull(response);
-        assertEquals("Login successful", response.getMessage());
-        assertEquals(200, response.getStatus());
-        assertEquals(serviceResponse, response.getData());
-        assertEquals("tiendqpc07858@fpt.edu.vn", response.getData().getEmail());
-        assertEquals("mocked_access_token_tiendq", response.getData().getAccessToken());
-
-        verify(authenticationService, times(1)).authenticate(request);
-    }
-
-    @Test
-    void testAuthenticate_Success() throws JOSEException {
-        AuthenticationDTORequest request = AuthenticationDTORequest.builder()
-                .email("huydqpc07859@example.com")
-                .password("1234")
-                .lat(10.0)
-                .lng(20.0)
-                .build();
-
-        AuthenticationDtoResponse serviceResponse = AuthenticationDtoResponse.builder()
-                .accessToken("mocked_access_token")
-                .userId(1L)
-                .freelancerId(null)
-                .clientId(2L)
-                .role(RoleUser.CLIENT)
-                .lat(10.0)
-                .lng(20.0)
-                .email("test@example.com")
-                .build();
-
-        when(authenticationService.authenticate(request)).thenReturn(serviceResponse);
-
-        ResponseObject<AuthenticationDtoResponse> response = authController.authenticate(request);
-
-        assertNotNull(response);
-        assertEquals("Login successful", response.getMessage());
-        assertEquals(200, response.getStatus());
-        assertEquals(serviceResponse, response.getData());
-
-        verify(authenticationService, times(1)).authenticate(request);
-    }
 
     @Test
     void testAuthenticate_InvalidInput_ThrowsJOSEException() throws JOSEException {

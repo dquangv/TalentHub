@@ -240,14 +240,31 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
         }
 
         try {
-            return authenticationService.authenticate(AuthenticationDTORequest.builder().email(account.getEmail())
+            AuthenticationDTORequest authRequest = AuthenticationDTORequest.builder()
+                    .email(account.getEmail())
                     .lat(account.getLat())
                     .lng(account.getLng())
-                    .password(accountRequestDTO.getPassword()).build());
+                    .password(accountRequestDTO.getPassword())
+                    .build();
+
+            Object authResult = authenticationService.authenticate(authRequest);
+
+            if (authResult instanceof AuthenticationDtoResponse) {
+                return (AuthenticationDtoResponse) authResult;
+            } else {
+                return AuthenticationDtoResponse.builder()
+                        .accessToken(authenticationServiceImpl.generateAccessToken(account))
+                        .userId(user.getId())
+                        .role(account.getRole())
+                        .email(account.getEmail())
+                        .lat(account.getLat() != null ? account.getLat() : 0)
+                        .lng(account.getLng() != null ? account.getLng() : 0)
+                        .mfaEnabled(account.getMfaEnabled() != null ? account.getMfaEnabled() : false)
+                        .build();
+            }
         } catch (JOSEException e) {
             throw new RuntimeException(e);
         }
-//        return accountMapper.toResponseDto(savedAccount);
     }
 
 

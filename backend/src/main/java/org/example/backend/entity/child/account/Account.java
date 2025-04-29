@@ -60,7 +60,11 @@ public class Account extends AbstractEntity<Long> {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+    @Column(name = "mfa_enabled")
+    private Boolean mfaEnabled = false;
 
+    @Column(name = "mfa_secret")
+    private String mfaSecret;
 
 
 //    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
