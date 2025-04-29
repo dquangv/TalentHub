@@ -17,5 +17,6 @@ public class AuthenticationDtoResponse {
     private double lat;
     private double lng;
     private String email;
+    private boolean mfaEnabled;
 //    private String refreshToken;
 }

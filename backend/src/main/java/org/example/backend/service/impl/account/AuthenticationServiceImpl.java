@@ -8,6 +8,8 @@ import com.nimbusds.jwt.SignedJWT;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.account.AuthenticationDTORequest;
 import org.example.backend.dto.request.account.IntrospectDTORequest;
+import org.example.backend.dto.request.account.MfaLoginVerificationRequest;
+import org.example.backend.dto.response.account.MfaChallengeResponse;
 import org.example.backend.dto.response.account.RefreshTokenDTOResponse;
 import org.example.backend.dto.response.account.AuthenticationDtoResponse;
 import org.example.backend.dto.response.account.IntrospectDtoResponse;
@@ -35,10 +37,7 @@ import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -49,27 +48,134 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserRepository userRepository;
     private final FreelancerRepository freelancerRepository;
     private final ClientRepository clientRepository;
-
+    private final MfaServiceImpl mfaService;
     private final PasswordEncoder passwordEncoder;
+    private final Map<String, AuthenticationContext> mfaPendingAuthentications = new HashMap<>();
 
     @Value("${jwt.secret-key}")
     protected String SECRET_KEY;
+
+    private static class AuthenticationContext {
+        private final String email;
+        private final String tempToken;
+        private final long createdAt;
+        private final Double lat;
+        private final Double lng;
+
+        public AuthenticationContext(String email, String tempToken, Double lat, Double lng) {
+            this.email = email;
+            this.tempToken = tempToken;
+            this.createdAt = System.currentTimeMillis();
+            this.lat = lat;
+            this.lng = lng;
+        }
+
+        public boolean isExpired() {
+            // Phiên hết hạn sau 5 phút
+            return System.currentTimeMillis() - createdAt > 5 * 60 * 1000;
+        }
+    }
+
     @Override
-    public AuthenticationDtoResponse authenticate(AuthenticationDTORequest request) throws JOSEException {
+    public Object authenticate(AuthenticationDTORequest request) throws JOSEException {
         String email = request.getEmail();
 
         Account account = accountRepository.getByEmail(email)
                 .orElseThrow(() -> new AuthenticationException("Tài khoản không tồn tại."));
+
+        // Bước 1: Kiểm tra mật khẩu
         if (!passwordEncoder.matches(request.getPassword(), account.getPassword())) {
             log.info("Wrong password.");
             throw new AuthenticationException("Mật khẩu không đúng.");
         }
+
+        // Bước 2: Kiểm tra trạng thái tài khoản
         if(account.getStatus().equals(StatusAccount.BANNED)){
             throw new AuthenticationException("Tài khoản đã bị khóa.");
         }
+
+        // Bước 3: Kiểm tra xem tài khoản có bật 2FA không
+        if (account.getMfaEnabled() != null && account.getMfaEnabled()) {
+            // Nếu bật 2FA, trả về thách thức xác thực
+            String tempToken = generateTempToken(account);
+
+            // Lưu thông tin phiên đăng nhập
+            mfaPendingAuthentications.put(email, new AuthenticationContext(
+                    email, tempToken, request.getLat(), request.getLng()
+            ));
+
+            return MfaChallengeResponse.builder()
+                    .email(email)
+                    .requiresMfa(true)
+                    .tempToken(tempToken)
+                    .build();
+        }
+
+        // Nếu không bật 2FA, tiến hành đăng nhập bình thường
+        return completeAuthentication(account, request.getLat(), request.getLng());
+    }
+
+    @Override
+    public AuthenticationDtoResponse verifyMfaAndLogin(MfaLoginVerificationRequest request) throws JOSEException {
+        String email = request.getEmail();
+        String tempToken = request.getTempToken();
+        String mfaCode = request.getMfaCode();
+
+        // Kiểm tra xem có phiên đăng nhập đang chờ xác thực không
+        AuthenticationContext context = mfaPendingAuthentications.get(email);
+        if (context == null) {
+            throw new AuthenticationException("Không tìm thấy phiên đăng nhập");
+        }
+
+        // Kiểm tra token tạm thời
+        if (!context.tempToken.equals(tempToken)) {
+            throw new AuthenticationException("Token không hợp lệ");
+        }
+
+        // Kiểm tra hết hạn
+        if (context.isExpired()) {
+            mfaPendingAuthentications.remove(email);
+            throw new AuthenticationException("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại");
+        }
+
+        // Kiểm tra mã 2FA
+        Account account = accountRepository.getByEmail(email)
+                .orElseThrow(() -> new AuthenticationException("Tài khoản không tồn tại."));
+
+        if (!mfaService.verifyCodeDuringAuthentication(email, mfaCode)) {
+            throw new AuthenticationException("Mã xác thực 2FA không đúng");
+        }
+
+        // Xóa phiên đăng nhập tạm thời
+        mfaPendingAuthentications.remove(email);
+
+        // Hoàn tất quá trình đăng nhập
+        return completeAuthentication(account, context.lat, context.lng);
+    }
+    private String generateTempToken(Account account) throws JOSEException {
+        JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS256);
+
+        JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
+                .subject(account.getEmail())
+                .jwtID(generateUUID())
+                .issuer("talent_hubs.com")
+                .claim("type", "temp") // Token tạm thời
+                .issueTime(new Date())
+                .expirationTime(Date.from(Instant.now().plus(5, ChronoUnit.MINUTES))) // Hết hạn sau 5 phút
+                .build();
+
+        Payload payload = new Payload(jwtClaimsSet.toJSONObject());
+        JWSObject jwsObject = new JWSObject(jwsHeader, payload);
+        jwsObject.sign(new MACSigner(SECRET_KEY.getBytes()));
+
+        return jwsObject.serialize();
+    }
+    /**
+     * Phương thức để hoàn tất quá trình đăng nhập sau khi xác thực thành công
+     */
+    private AuthenticationDtoResponse completeAuthentication(Account account, Double lat, Double lng) throws JOSEException {
         User user = userRepository.findById(account.getId())
                 .orElseThrow(() -> new AuthenticationException("Không tìm thấy người dùng với id: " + account.getId()));
-
 
         Long userId = user.getId();
         Long freelancerId = null;
@@ -86,13 +192,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
             clientId = client.getId();
         }
-        System.out.println("lat " + request.getLat());
-        System.out.println("lng " + request.getLng());
-        if (request.getLat() != 0){
-            account.setLat(request.getLat());
+
+        if (lat != null && lat != 0){
+            account.setLat(lat);
         }
-        if (request.getLng() != 0) {
-            account.setLng(request.getLng());
+        if (lng != null && lng != 0) {
+            account.setLng(lng);
         }
 
         accountRepository.save(account);
@@ -107,9 +212,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .lat(account.getLat() != null ? account.getLat() : 0)
                 .lng(account.getLng() != null ? account.getLng() : 0)
                 .email(account.getEmail())
+                .mfaEnabled(account.getMfaEnabled() != null ? account.getMfaEnabled() : false)
                 .build();
     }
-
 
 
     @Override
