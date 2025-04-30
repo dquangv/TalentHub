@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -23,4 +24,9 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     Long countAccountsByRoleAndMonth(@Param("year") int year, @Param("month") int month, @Param("role") RoleUser role);
 
     Optional<Account> findByUser(User user);
+    @Query("SELECT a FROM Account a LEFT JOIN FETCH a.user")
+    List<Account> findAllWithUsers();
+
+    @Query("SELECT a FROM Account a LEFT JOIN FETCH a.user WHERE a.lat IS NOT NULL AND a.lng IS NOT NULL")
+    List<Account> findAllWithLocation();
 }
