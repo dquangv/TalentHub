@@ -9,6 +9,7 @@ import org.example.backend.enums.RoleUser;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LocationDTOResponse {
+    private String address;
     private Double lat;
     private Double lng;
     private RoleUser role;
