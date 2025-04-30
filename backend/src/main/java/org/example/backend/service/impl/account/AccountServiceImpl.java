@@ -507,6 +507,36 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
 
     @Override
     public List<LocationDTOResponse> getLocations() {
-        return accountRepository.findAll().stream().map(locationMapper::toResponseDTO).toList();
+        // Lấy tất cả các user có account
+        List<User> usersWithAccount = userRepository.findAll().stream()
+                .filter(user -> user.getAccount() != null)
+                .collect(Collectors.toList());
+
+        // Tạo danh sách LocationDTOResponse từ thông tin user và account
+        return usersWithAccount.stream()
+                .map(user -> {
+                    Account account = user.getAccount();
+                    String address = "";
+
+                    // Tạo address từ province và country
+                    if (user.getProvince() != null && !user.getProvince().isEmpty()) {
+                        address += user.getProvince();
+                        if (user.getCountry() != null && !user.getCountry().isEmpty()) {
+                            address += ", " + user.getCountry();
+                        }
+                    } else if (user.getCountry() != null && !user.getCountry().isEmpty()) {
+                        address = user.getCountry();
+                    } else {
+                        address = "Email: " + account.getEmail();
+                    }
+
+                    return LocationDTOResponse.builder()
+                            .address(address)
+                            .lat(account.getLat())
+                            .lng(account.getLng())
+                            .role(account.getRole())
+                            .build();
+                })
+                .toList();
     }
 }

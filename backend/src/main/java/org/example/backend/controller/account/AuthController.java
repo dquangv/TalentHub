@@ -10,7 +10,7 @@ import org.example.backend.dto.response.account.AuthenticationDtoResponse;
 import org.example.backend.dto.response.account.IntrospectDtoResponse;
 import org.example.backend.dto.response.account.MfaChallengeResponse;
 import org.example.backend.dto.response.account.RefreshTokenDTOResponse;
-import org.example.backend.service.intf.account.AuthenticationService;
+import org.example.backend.service.impl.account.AuthenticationServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -21,7 +21,7 @@ import java.text.ParseException;
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
-    private final AuthenticationService authenticationService;
+    private final AuthenticationServiceImpl authenticationService;
 
     @PostMapping("/login")
     public ResponseObject<?> authenticate(@Valid @RequestBody AuthenticationDTORequest request) throws JOSEException {

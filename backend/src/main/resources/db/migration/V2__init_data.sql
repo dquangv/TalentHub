@@ -1654,11 +1654,11 @@ VALUES
 
 INSERT INTO users (first_name, last_name, phone_number, province, country, title, introduction, image, account_id)
 VALUES
-    ('Hạnh', 'Phạm', '0912345678', 'Hải Phòng', 'Việt Nam', 'UI/UX Designer', 'Chuyên thiết kế giao diện cho các ứng dụng di động và website với 5 năm kinh nghiệm.', 'hanhpham.png', 16),
-    ('Duy', 'Lê', '0923456789', 'Bình Dương', 'Việt Nam', 'DevOps Engineer', 'Chuyên gia triển khai hệ thống CI/CD, Docker và Kubernetes với kinh nghiệm quốc tế.', 'duyle.png', 17),
-    ('Thu', 'Nguyễn', '0934567890', 'Huế', 'Việt Nam', 'Content Writer', 'Nhà văn sáng tạo với khả năng viết nội dung marketing hấp dẫn và tối ưu SEO.', 'thunguyen.png', 18),
-    ('Bảo', 'Trần', '0945678901', 'Đà Lạt', 'Việt Nam', 'Game Developer', 'Lập trình viên game với chuyên môn Unity và Unreal Engine, từng phát hành nhiều game indie.', 'baotran.png', 19),
-    ('Mai', 'Lý', '0956789012', 'Vũng Tàu', 'Việt Nam', 'Digital Illustrator', 'Họa sĩ kỹ thuật số chuyên vẽ minh họa cho sách, truyện tranh và ứng dụng.', 'maily.png', 20);
+    ('Hạnh', 'Phạm', '0912345678', 'Quận Lê Chân', 'Thành phố Hải Phòng', 'UI/UX Designer', 'Chuyên thiết kế giao diện cho các ứng dụng di động và website với 5 năm kinh nghiệm.', 'hanhpham.png', 16),
+    ('Duy', 'Lê', '0923456789', 'Thành phố Thuận An', 'Tỉnh Bình Dương', 'DevOps Engineer', 'Chuyên gia triển khai hệ thống CI/CD, Docker và Kubernetes với kinh nghiệm quốc tế.', 'duyle.png', 17),
+    ('Thu', 'Nguyễn', '0934567890', 'Quận Hải Châu', 'Thành phố Đà Nẵng', 'Content Writer', 'Nhà văn sáng tạo với khả năng viết nội dung marketing hấp dẫn và tối ưu SEO.', 'thunguyen.png', 18),
+    ('Bảo', 'Trần', '0945678901', 'Thành phố Đà Lạt', 'Tỉnh Lâm Đồng', 'Game Developer', 'Lập trình viên game với chuyên môn Unity và Unreal Engine, từng phát hành nhiều game indie.', 'baotran.png', 19),
+    ('Mai', 'Lý', '0956789012', 'Thành phố Vũng Tàu', 'Tỉnh Bà Rịa - Vũng Tàu', 'Digital Illustrator', 'Họa sĩ kỹ thuật số chuyên vẽ minh họa cho sách, truyện tranh và ứng dụng.', 'maily.png', 20);
 INSERT INTO freelancer (hourly_rate, description, category_id, user_id)
 VALUES
     (19.00, 'UI/UX Designer với 5 năm kinh nghiệm thiết kế giao diện người dùng cho website và ứng dụng di động.', 2, 16),
@@ -1901,12 +1901,11 @@ VALUES
 -- Thêm thông tin người dùng
 INSERT INTO users (first_name, last_name, phone_number, province, country, title, introduction, image, account_id)
 VALUES
-    ('Tuấn', 'Nguyễn Văn', '0901234567', 'Hồ Chí Minh', 'Việt Nam', 'Full-stack Developer', 'Chuyên gia phát triển ứng dụng web với 8 năm kinh nghiệm, sử dụng MERN stack và .NET Core.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/user1.jpg', 21),
-    ('Minh', 'Nguyễn Quang', '0912345678', 'Hồ Chí Minh', 'Việt Nam', 'AI Engineer', 'Kỹ sư AI với nền tảng vững chắc về Machine Learning và Deep Learning, 5 năm kinh nghiệm.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/user2.jpg', 22),
-    ('Linh', 'Đặng Thị', '0923456789', 'Đà Nẵng', 'Việt Nam', 'Marketing Director', 'Giám đốc Marketing với hơn 10 năm kinh nghiệm trong lĩnh vực thương mại điện tử và bán lẻ.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/user3.jpg', 23),
-    ('Phương', 'Nguyễn Thanh', '0934567890', 'Hà Nội', 'Việt Nam', 'Product Manager', 'Quản lý sản phẩm với chuyên môn về các ứng dụng di động và phân tích người dùng.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/user4.jpg', 24),
-    ('Hiền', 'Trần Thị', '0945678901', 'Hồ Chí Minh', 'Việt Nam', 'UX Researcher', 'Chuyên gia nghiên cứu trải nghiệm người dùng với 6 năm kinh nghiệm, chuyên về thiết kế lấy người dùng làm trung tâm.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/user5.jpg', 25);
-
+    ('Tuấn', 'Nguyễn Văn', '0901234567', 'Quận 7', 'Thành phố Hồ Chí Minh', 'Full-stack Developer', 'Chuyên gia phát triển ứng dụng web với 8 năm kinh nghiệm, sử dụng MERN stack và .NET Core.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/user1.jpg', 21),
+    ('Minh', 'Nguyễn Quang', '0912345678', 'Quận Bình Thạnh', 'Thành phố Hồ Chí Minh', 'AI Engineer', 'Kỹ sư AI với nền tảng vững chắc về Machine Learning và Deep Learning, 5 năm kinh nghiệm.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/user2.jpg', 22),
+    ('Linh', 'Đặng Thị', '0923456789', 'Quận Thanh Khê', 'Thành phố Đà Nẵng', 'Marketing Director', 'Giám đốc Marketing với hơn 10 năm kinh nghiệm trong lĩnh vực thương mại điện tử và bán lẻ.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/user3.jpg', 23),
+    ('Phương', 'Nguyễn Thanh', '0934567890', 'Quận Ba Đình', 'Thành phố Hà Nội', 'Product Manager', 'Quản lý sản phẩm với chuyên môn về các ứng dụng di động và phân tích người dùng.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/user4.jpg', 24),
+    ('Hiền', 'Trần Thị', '0945678901', 'Quận Phú Nhuận', 'Thành phố Hồ Chí Minh', 'UX Researcher', 'Chuyên gia nghiên cứu trải nghiệm người dùng với 6 năm kinh nghiệm, chuyên về thiết kế lấy người dùng làm trung tâm.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/user5.jpg', 25);
 -- Thêm freelancer
 INSERT INTO freelancer (hourly_rate, description, category_id, user_id)
 VALUES
@@ -2386,12 +2385,11 @@ VALUES
 -- Thêm thông tin user
 INSERT INTO users (first_name, last_name, phone_number, province, country, title, introduction, image, account_id)
 VALUES
-    ('Hoàng', 'Vũ Trọng', '0912345678', 'Hồ Chí Minh', 'Việt Nam', 'DevOps & Cloud Architect', 'Kiến trúc sư Cloud với 10 năm kinh nghiệm xây dựng hạ tầng quy mô lớn, chuyên AWS/GCP và Kubernetes.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/user6.jpg', 26),
-    ('Trang', 'Nguyễn Thị', '0923456789', 'Hà Nội', 'Việt Nam', 'Blockchain Developer', 'Nhà phát triển Blockchain với 5 năm kinh nghiệm xây dựng DApps, Smart Contracts và giải pháp Web3.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/user7.jpg', 27),
-    ('Đức', 'Nguyễn Văn', '0934567890', 'Đà Lạt', 'Việt Nam', 'Startup Founder', 'Nhà sáng lập startup công nghệ trong lĩnh vực du lịch, tìm kiếm đối tác phát triển sản phẩm.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/user8.jpg', 28),
-    ('Anh', 'Nguyễn Tuấn', '0945678901', 'Huế', 'Việt Nam', 'E-commerce Director', 'Giám đốc thương mại điện tử với 8 năm kinh nghiệm quản lý và phát triển các nền tảng bán lẻ trực tuyến.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/user9.jpg', 29),
-    ('Hải', 'Lê Thanh', '0956789012', 'Cần Thơ', 'Việt Nam', 'Data Engineer', 'Kỹ sư dữ liệu với chuyên môn về xây dựng data pipeline, ETL và data warehouse trên các nền tảng cloud.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/user10.jpg', 30);
-
+    ('Hoàng', 'Vũ Trọng', '0912345678', 'Quận Tân Bình', 'Thành phố Hồ Chí Minh', 'DevOps & Cloud Architect', 'Kiến trúc sư Cloud với 10 năm kinh nghiệm xây dựng hạ tầng quy mô lớn, chuyên AWS/GCP và Kubernetes.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/user6.jpg', 26),
+    ('Trang', 'Nguyễn Thị', '0923456789', 'Quận Cầu Giấy', 'Thành phố Hà Nội', 'Blockchain Developer', 'Nhà phát triển Blockchain với 5 năm kinh nghiệm xây dựng DApps, Smart Contracts và giải pháp Web3.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/user7.jpg', 27),
+    ('Đức', 'Nguyễn Văn', '0934567890', 'Thành phố Đà Lạt', 'Tỉnh Lâm Đồng', 'Startup Founder', 'Nhà sáng lập startup công nghệ trong lĩnh vực du lịch, tìm kiếm đối tác phát triển sản phẩm.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/user8.jpg', 28),
+    ('Anh', 'Nguyễn Tuấn', '0945678901', 'Thành phố Huế', 'Tỉnh Thừa Thiên Huế', 'E-commerce Director', 'Giám đốc thương mại điện tử với 8 năm kinh nghiệm quản lý và phát triển các nền tảng bán lẻ trực tuyến.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/user9.jpg', 29),
+    ('Hải', 'Lê Thanh', '0956789012', 'Quận Ninh Kiều', 'Thành phố Cần Thơ', 'Data Engineer', 'Kỹ sư dữ liệu với chuyên môn về xây dựng data pipeline, ETL và data warehouse trên các nền tảng cloud.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/user10.jpg', 30);
 
 -- Thêm freelancer
 INSERT INTO freelancer (hourly_rate, description, category_id, user_id)
@@ -2925,47 +2923,46 @@ VALUES
 INSERT INTO users (first_name, last_name, phone_number, province, country, title, introduction, image, account_id)
 VALUES
     -- Thêm 10 freelancer mới
-    ('Thủy', 'Phạm Thị Thanh', '0912345671', 'Hồ Chí Minh', 'Việt Nam', 'Content Strategist', 'Chuyên gia xây dựng chiến lược nội dung với 7 năm kinh nghiệm tại các công ty truyền thông lớn.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman12.jpg', 31),
+    ('Thủy', 'Phạm Thị Thanh', '0912345671', 'Quận 1', 'Thành phố Hồ Chí Minh', 'Content Strategist', 'Chuyên gia xây dựng chiến lược nội dung với 7 năm kinh nghiệm tại các công ty truyền thông lớn.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman12.jpg', 31),
 
-    ('Sơn', 'Nguyễn Thành', '0923456782', 'Hồ Chí Minh', 'Việt Nam', 'Cybersecurity Expert', 'Chuyên gia an ninh mạng với chứng chỉ CISSP, CEH và kinh nghiệm bảo vệ hệ thống cho các tổ chức tài chính.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man7.jpg', 32),
+    ('Sơn', 'Nguyễn Thành', '0923456782', 'Quận 2', 'Thành phố Hồ Chí Minh', 'Cybersecurity Expert', 'Chuyên gia an ninh mạng với chứng chỉ CISSP, CEH và kinh nghiệm bảo vệ hệ thống cho các tổ chức tài chính.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man7.jpg', 32),
 
-    ('Hằng', 'Lê Thị', '0934567893', 'Hồ Chí Minh', 'Việt Nam', 'Financial Analyst', 'Chuyên gia phân tích tài chính với bằng CFA, chuyên về mô hình tài chính và đánh giá dự án đầu tư.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman13.jpg', 33),
+    ('Hằng', 'Lê Thị', '0934567893', 'Quận 3', 'Thành phố Hồ Chí Minh', 'Financial Analyst', 'Chuyên gia phân tích tài chính với bằng CFA, chuyên về mô hình tài chính và đánh giá dự án đầu tư.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman13.jpg', 33),
 
-    ('Khôi', 'Phạm Đăng', '0945678904', 'Hồ Chí Minh', 'Việt Nam', 'Game Designer', 'Nhà thiết kế game với kinh nghiệm làm việc tại các studio game hàng đầu Việt Nam và quốc tế.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man8.jpg', 34),
+    ('Khôi', 'Phạm Đăng', '0945678904', 'Quận Thủ Đức', 'Thành phố Hồ Chí Minh', 'Game Designer', 'Nhà thiết kế game với kinh nghiệm làm việc tại các studio game hàng đầu Việt Nam và quốc tế.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man8.jpg', 34),
 
-    ('Linh', 'Trần Kim', '0956789015', 'Hà Nội', 'Việt Nam', 'Social Media Manager', 'Chuyên gia quản lý mạng xã hội với kinh nghiệm xây dựng chiến lược và tạo nội dung viral cho nhiều thương hiệu lớn.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman10.jpg', 35),
+    ('Linh', 'Trần Kim', '0956789015', 'Quận Hoàn Kiếm', 'Thành phố Hà Nội', 'Social Media Manager', 'Chuyên gia quản lý mạng xã hội với kinh nghiệm xây dựng chiến lược và tạo nội dung viral cho nhiều thương hiệu lớn.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman10.jpg', 35),
 
-    ('Hùng', 'Nguyễn Tiến', '0967890126', 'Hà Nội', 'Việt Nam', 'WordPress Developer', 'Chuyên gia phát triển website WordPress với hơn 100 dự án thành công cho doanh nghiệp và cá nhân.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man9.jpg', 36),
+    ('Hùng', 'Nguyễn Tiến', '0967890126', 'Quận Tây Hồ', 'Thành phố Hà Nội', 'WordPress Developer', 'Chuyên gia phát triển website WordPress với hơn 100 dự án thành công cho doanh nghiệp và cá nhân.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man9.jpg', 36),
 
-    ('Thủy', 'Vũ Thị', '0978901237', 'Đà Nẵng', 'Việt Nam', 'Product Manager', 'Quản lý sản phẩm với kinh nghiệm phát triển sản phẩm số từ ý tưởng đến thị trường cho nhiều startup công nghệ.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman11.jpg', 37),
+    ('Thủy', 'Vũ Thị', '0978901237', 'Quận Sơn Trà', 'Thành phố Đà Nẵng', 'Product Manager', 'Quản lý sản phẩm với kinh nghiệm phát triển sản phẩm số từ ý tưởng đến thị trường cho nhiều startup công nghệ.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman11.jpg', 37),
 
-    ('Đức', 'Nguyễn Minh', '0989012348', 'Đà Nẵng', 'Việt Nam', 'System Administrator', 'Quản trị hệ thống với chuyên môn về Linux, Windows Server và Cloud Infrastructure trên AWS và Azure.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man10.jpg', 38),
+    ('Đức', 'Nguyễn Minh', '0989012348', 'Quận Liên Chiểu', 'Thành phố Đà Nẵng', 'System Administrator', 'Quản trị hệ thống với chuyên môn về Linux, Windows Server và Cloud Infrastructure trên AWS và Azure.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man10.jpg', 38),
 
-    ('Hương', 'Nguyễn Thị', '0990123459', 'Cần Thơ', 'Việt Nam', 'Translator & Interpreter', 'Biên dịch viên tiếng Anh - Việt với kinh nghiệm phiên dịch cho các hội nghị quốc tế và dự án đa ngành.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman8.jpg', 39),
+    ('Hương', 'Nguyễn Thị', '0990123459', 'Quận Bình Thủy', 'Thành phố Cần Thơ', 'Translator & Interpreter', 'Biên dịch viên tiếng Anh - Việt với kinh nghiệm phiên dịch cho các hội nghị quốc tế và dự án đa ngành.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman8.jpg', 39),
 
-    ('Trường', 'Cao Văn', '0901234560', 'Cần Thơ', 'Việt Nam', 'Unity Developer', 'Lập trình viên Unity với kinh nghiệm phát triển game mobile và XR (AR/VR) cho nhiều nền tảng.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man11.jpg', 40),
+    ('Trường', 'Cao Văn', '0901234560', 'Quận Cái Răng', 'Thành phố Cần Thơ', 'Unity Developer', 'Lập trình viên Unity với kinh nghiệm phát triển game mobile và XR (AR/VR) cho nhiều nền tảng.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man11.jpg', 40),
 
     -- Thêm 10 client mới
-    ('Minh', 'Nguyễn Thanh', '0912345677', 'Hồ Chí Minh', 'Việt Nam', 'CEO', 'Nhà sáng lập startup fintech, đang mở rộng các giải pháp thanh toán số cho thị trường Đông Nam Á.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man12.jpg', 41),
+    ('Minh', 'Nguyễn Thanh', '0912345677', 'Quận 10', 'Thành phố Hồ Chí Minh', 'CEO', 'Nhà sáng lập startup fintech, đang mở rộng các giải pháp thanh toán số cho thị trường Đông Nam Á.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man12.jpg', 41),
 
-    ('Anh', 'Đỗ Tuấn', '0923456788', 'Hồ Chí Minh', 'Việt Nam', 'CTO', 'Giám đốc công nghệ với hơn 15 năm kinh nghiệm trong ngành phần mềm và giải pháp số.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man13.jpg', 42),
+    ('Anh', 'Đỗ Tuấn', '0923456788', 'Quận Bình Tân', 'Thành phố Hồ Chí Minh', 'CTO', 'Giám đốc công nghệ với hơn 15 năm kinh nghiệm trong ngành phần mềm và giải pháp số.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man13.jpg', 42),
 
-    ('Trang', 'Phạm Thị', '0934567899', 'Hà Nội', 'Việt Nam', 'Marketing Director', 'Giám đốc marketing với chuyên môn về chiến lược thương hiệu và marketing số cho thị trường Việt Nam.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman7.jpg', 43),
+    ('Trang', 'Phạm Thị', '0934567899', 'Quận Hai Bà Trưng', 'Thành phố Hà Nội', 'Marketing Director', 'Giám đốc marketing với chuyên môn về chiến lược thương hiệu và marketing số cho thị trường Việt Nam.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman7.jpg', 43),
 
-    ('Nam', 'Vũ Thành', '0945678900', 'Hà Nội', 'Việt Nam', 'Product Owner', 'Product Owner với kinh nghiệm phát triển sản phẩm theo phương pháp Agile/Scrum cho nhiều ngành.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man14.jpg', 44),
+    ('Nam', 'Vũ Thành', '0945678900', 'Quận Long Biên', 'Thành phố Hà Nội', 'Product Owner', 'Product Owner với kinh nghiệm phát triển sản phẩm theo phương pháp Agile/Scrum cho nhiều ngành.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man14.jpg', 44),
 
-    ('Phương', 'Nguyễn Thị', '0956789011', 'Đà Nẵng', 'Việt Nam', 'HR Manager', 'Quản lý nhân sự với chuyên môn về phát triển tổ chức và xây dựng văn hóa doanh nghiệp công nghệ.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman1.jpg', 45),
+    ('Phương', 'Nguyễn Thị', '0956789011', 'Quận Hải Châu', 'Thành phố Đà Nẵng', 'HR Manager', 'Quản lý nhân sự với chuyên môn về phát triển tổ chức và xây dựng văn hóa doanh nghiệp công nghệ.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/woman1.jpg', 45),
 
-    ('Long', 'Nguyễn Văn', '0967890122', 'Đà Nẵng', 'Việt Nam', 'Business Development Manager', 'Quản lý phát triển kinh doanh với mạng lưới rộng khắp trong ngành CNTT và thương mại điện tử.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man1.jpg', 46),
+    ('Long', 'Nguyễn Văn', '0967890122', 'Quận Ngũ Hành Sơn', 'Thành phố Đà Nẵng', 'Business Development Manager', 'Quản lý phát triển kinh doanh với mạng lưới rộng khắp trong ngành CNTT và thương mại điện tử.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man1.jpg', 46),
 
-    ('Thanh', 'Lê Văn', '0978901233', 'Cần Thơ', 'Việt Nam', 'Project Manager', 'Quản lý dự án với chứng chỉ PMP và kinh nghiệm điều phối các dự án phần mềm quốc tế.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man2.jpg', 47),
+    ('Thanh', 'Lê Văn', '0978901233', 'Quận Ô Môn', 'Thành phố Cần Thơ', 'Project Manager', 'Quản lý dự án với chứng chỉ PMP và kinh nghiệm điều phối các dự án phần mềm quốc tế.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man2.jpg', 47),
 
-    ('Tuấn', 'Phạm Đình', '0989012344', 'Cần Thơ', 'Việt Nam', 'Creative Director', 'Giám đốc sáng tạo với chuyên môn về thiết kế thương hiệu và chiến dịch truyền thông đa kênh.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man3.png', 48),
+    ('Tuấn', 'Phạm Đình', '0989012344', 'Quận Thốt Nốt', 'Thành phố Cần Thơ', 'Creative Director', 'Giám đốc sáng tạo với chuyên môn về thiết kế thương hiệu và chiến dịch truyền thông đa kênh.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man3.png', 48),
 
-    ('Hải', 'Vũ Thanh', '0990123455', 'Đà Lạt', 'Việt Nam', 'E-commerce Manager', 'Quản lý thương mại điện tử với kinh nghiệm xây dựng và phát triển các nền tảng bán hàng trực tuyến.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man4.jpg', 49),
+    ('Hải', 'Vũ Thanh', '0990123455', 'Thành phố Bảo Lộc', 'Tỉnh Lâm Đồng', 'E-commerce Manager', 'Quản lý thương mại điện tử với kinh nghiệm xây dựng và phát triển các nền tảng bán hàng trực tuyến.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man4.jpg', 49),
 
-    ('Hoàng', 'Lê Thanh', '0901234566', 'Nha Trang', 'Việt Nam', 'Digital Transformation Consultant', 'Chuyên gia tư vấn chuyển đổi số với kinh nghiệm giúp các doanh nghiệp truyền thống áp dụng công nghệ mới.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man5.jpg', 50);
-
+    ('Hoàng', 'Lê Thanh', '0901234566', 'Thành phố Nha Trang', 'Tỉnh Khánh Hòa', 'Digital Transformation Consultant', 'Chuyên gia tư vấn chuyển đổi số với kinh nghiệm giúp các doanh nghiệp truyền thống áp dụng công nghệ mới.', 'https://raw.githubusercontent.com/quangbm0807/static-assets/refs/heads/main/avatar/man5.jpg', 50);
 -- Thêm freelancer
 INSERT INTO freelancer (hourly_rate, description, category_id, user_id)
 VALUES
