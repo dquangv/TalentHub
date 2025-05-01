@@ -42,6 +42,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.management.relation.Role;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -303,31 +304,69 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
     public AccountDTOResponse handleOAuth2Register(OAuth2User oauthUser) {
         System.out.println("oauth2 " + oauthUser.toString());
 
-        String registrationId = ((OAuth2AuthenticationToken) SecurityContextHolder.getContext().getAuthentication()).getAuthorizedClientRegistrationId();
+        String registrationId = ((OAuth2AuthenticationToken) SecurityContextHolder.getContext().getAuthentication())
+                .getAuthorizedClientRegistrationId();
         System.out.println("OAuth2 provider: " + registrationId);
 
         String email = null;
-        String firstName = oauthUser.getAttribute("given_name");
-        String lastName = oauthUser.getAttribute("family_name");
-        String pictureUrl = oauthUser.getAttribute("picture");
+        String firstName = null;
+        String lastName = null;
+        String pictureUrl = null;
 
         if ("google".equals(registrationId)) {
             email = oauthUser.getAttribute("email");
+            firstName = oauthUser.getAttribute("given_name");
+            lastName = oauthUser.getAttribute("family_name");
+            pictureUrl = oauthUser.getAttribute("picture");
             System.out.println("Google login, using email: " + email);
         } else if ("facebook".equals(registrationId)) {
             String fullName = oauthUser.getAttribute("name");
-            firstName = fullName.split(" ")[0];
-            lastName = fullName.split(" ")[1];
+            if (fullName != null && fullName.contains(" ")) {
+                String[] nameParts = fullName.split(" ");
+                firstName = nameParts[0];
+                lastName = nameParts.length > 1 ? nameParts[1] : "";
+            } else {
+                firstName = fullName;
+                lastName = "";
+            }
             email = oauthUser.getAttribute("id") + "@facebook.com";
+            pictureUrl = oauthUser.getAttribute("picture") != null ?
+                    oauthUser.getAttribute("picture").toString() : null;
             System.out.println("Facebook login, using Facebook ID as email: " + email);
+        } else if ("github".equals(registrationId)) {
+            // Xử lý GitHub
+            email = oauthUser.getAttribute("email");
+
+            // Nếu email null, sử dụng login name
+            if (email == null) {
+                String login = oauthUser.getAttribute("login");
+                if (login != null) {
+                    email = login + "@github.user";
+                }
+            }
+
+            // Lấy tên đầy đủ và chia thành first name và last name
+            String fullName = oauthUser.getAttribute("name");
+            if (fullName != null && fullName.contains(" ")) {
+                String[] nameParts = fullName.split(" ", 2);
+                firstName = nameParts[0];
+                lastName = nameParts[1];
+            } else {
+                firstName = fullName != null ? fullName : oauthUser.getAttribute("login");
+                lastName = "";
+            }
+
+            // Lấy URL hình ảnh
+            pictureUrl = oauthUser.getAttribute("avatar_url");
+
+            System.out.println("GitHub login, using email: " + email);
         }
 
         Account newAccount = new Account();
         newAccount.setEmail(email);
         newAccount.setLng(0.0);
         newAccount.setLat(0.0);
-
-        //        newAccount.setStatus(true);
+        newAccount.setStatus(StatusAccount.VERIFIED); // Đã thiết lập status
         accountRepository.save(newAccount);
 
         User user = new User();
@@ -336,7 +375,6 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
         user.setFirstName(firstName);
         user.setLastName(lastName);
         userRepository.save(user);
-//        emailService.sendEmail(email, EmailType.REGISTER_SUCCESS, "Account is registered");
 
         return accountMapper.toResponseDto(newAccount);
     }
@@ -353,7 +391,16 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
             email = oauthUser.getAttribute("email");
         } else if ("facebook".equals(registrationId)) {
             email = oauthUser.getAttribute("id") + "@facebook.com";
+        }else if ("github".equals(registrationId)) {
+            email = oauthUser.getAttribute("email");
+            if (email == null) {
+                List<Map<String, Object>> emails = (List<Map<String, Object>>) oauthUser.getAttribute("emails");
+                if (emails != null && !emails.isEmpty()) {
+                    email = (String) emails.get(0).get("email");
+                }
+            }
         }
+
 
         Account account = accountRepository.getByEmail(email).orElseThrow(() -> new IllegalArgumentException("Không tìm thấy account với email này"));
         User user = userRepository.findById(account.getId()).orElseThrow(() -> new IllegalArgumentException("Không tìm thấy user với account này"));
@@ -380,6 +427,7 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
                 .clientId(clientId)
                 .role(account.getRole())
                 .lat(account.getLat() != null ? account.getLat() : 0)
+                .email(account.getEmail())
                 .lng(account.getLng() != null ? account.getLng() : 0)
                 .build();
     }

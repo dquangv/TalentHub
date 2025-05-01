@@ -26,6 +26,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.security.core.Authentication;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -53,14 +55,43 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
             email = oauthUser.getAttribute("email");
         } else if ("facebook".equals(registrationId)) {
             email = oauthUser.getAttribute("id") + "@facebook.com";
+        }else if ("github".equals(registrationId)) {
+            // Thử lấy email trực tiếp
+            email = oauthUser.getAttribute("email");
+            System.out.println("GitHub direct email: " + email);
+
+            // Nếu null, thử lấy từ danh sách emails
+            if (email == null) {
+                Object emailsObj = oauthUser.getAttribute("emails");
+                System.out.println("GitHub emails object: " + emailsObj);
+
+                if (emailsObj instanceof List) {
+                    List<?> emails = (List<?>) emailsObj;
+                    if (!emails.isEmpty() && emails.get(0) instanceof Map) {
+                        Map<?, ?> firstEmail = (Map<?, ?>) emails.get(0);
+                        email = (String) firstEmail.get("email");
+                        System.out.println("GitHub email from list: " + email);
+                    }
+                }
+            }
+
+            // Nếu vẫn null, dùng login name tạm thời
+            if (email == null) {
+                String login = oauthUser.getAttribute("login");
+                if (login != null) {
+                    email = login + "@github.user";
+                    System.out.println("Using GitHub login as email: " + email);
+                }
+            }
         }
+
 
         Optional<Account> account = accountRepository.findByEmail(email);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
         if (account.isPresent()) {
-            if (account.get().getStatus().equals(StatusAccount.BANNED)){
+            if (account.get().getStatus() != null && account.get().getStatus().equals(StatusAccount.BANNED)){
                 String redirectUrl = urlUI + "/banned-account-callback";
                 response.sendRedirect(redirectUrl);
                 return;
@@ -74,7 +105,9 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
                         + "&freelancerId=" + authenticationDtoResponse.getFreelancerId()
                         + "&userId=" + authenticationDtoResponse.getUserId()
                         + "&lat=" + authenticationDtoResponse.getLat()
+                        + "&email=" + authenticationDtoResponse.getEmail()
                         + "&lng=" + authenticationDtoResponse.getLng();
+
                 response.sendRedirect(redirectUrl);
             } catch (JOSEException e) {
                 throw new RuntimeException("Error generating JWT token", e);
