@@ -390,7 +390,7 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
                 .clientId(clientId)
                 .role(account.getRole())
                 .lat(account.getLat() != null ? account.getLat() : 0)
-                .email(email)
+                .email(account.getEmail())
                 .lng(account.getLng() != null ? account.getLng() : 0)
                 .build();
     }
