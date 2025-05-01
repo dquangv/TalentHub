@@ -1584,18 +1584,6 @@ FROM job WHERE title = 'Quản lý fanpage Facebook'
 
 INSERT INTO banner (title, image, status, vendor, duration, created_at, updated_at, price, start_time, end_time, logo)
 VALUES
-    ('Tuyển dụng Chuyên viên khai thác dự án bất động sản',
-     'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/1.png',
-     true,
-     'Bất Động Sản Bắc Bộ',
-     30,
-     NOW(),
-     NULL,
-     2500000,
-     NOW(),
-     DATE_ADD(NOW(), INTERVAL 30 DAY),
-     "https://th.bing.com/th/id/R.6ccd56c3a1435882c417ca8425b6fa87?rik=6r8rTYQXRwEz%2bA&riu=http%3a%2f%2fbatdongsanbacbo.vn%2fwp-content%2fuploads%2f2023%2f07%2flogo-6-350x116-1.png&ehk=iW4%2b9Wm60NdKtywwbtLRplPSRcyM15uCteCL4kQMV1M%3d&risl=&pid=ImgRaw&r=0"),
-
     ('Tuyển dụng Chuyên viên tư vấn bất động sản',
      'https://raw.githubusercontent.com/quangbm0807/static-assets/main/banner/2.png',
      true,
