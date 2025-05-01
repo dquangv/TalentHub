@@ -74,7 +74,9 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
                         + "&freelancerId=" + authenticationDtoResponse.getFreelancerId()
                         + "&userId=" + authenticationDtoResponse.getUserId()
                         + "&lat=" + authenticationDtoResponse.getLat()
+                        + "&email=" + authenticationDtoResponse.getEmail()
                         + "&lng=" + authenticationDtoResponse.getLng();
+
                 response.sendRedirect(redirectUrl);
             } catch (JOSEException e) {
                 throw new RuntimeException("Error generating JWT token", e);
