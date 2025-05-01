@@ -42,6 +42,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.management.relation.Role;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -353,7 +354,16 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
             email = oauthUser.getAttribute("email");
         } else if ("facebook".equals(registrationId)) {
             email = oauthUser.getAttribute("id") + "@facebook.com";
+        }else if ("github".equals(registrationId)) {
+            email = oauthUser.getAttribute("email");
+            if (email == null) {
+                List<Map<String, Object>> emails = (List<Map<String, Object>>) oauthUser.getAttribute("emails");
+                if (emails != null && !emails.isEmpty()) {
+                    email = (String) emails.get(0).get("email");
+                }
+            }
         }
+
 
         Account account = accountRepository.getByEmail(email).orElseThrow(() -> new IllegalArgumentException("Không tìm thấy account với email này"));
         User user = userRepository.findById(account.getId()).orElseThrow(() -> new IllegalArgumentException("Không tìm thấy user với account này"));
@@ -380,7 +390,7 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
                 .clientId(clientId)
                 .role(account.getRole())
                 .lat(account.getLat() != null ? account.getLat() : 0)
-                .email(account.getEmail())
+                .email(email)
                 .lng(account.getLng() != null ? account.getLng() : 0)
                 .build();
     }
