@@ -26,6 +26,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.security.core.Authentication;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -53,7 +55,16 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
             email = oauthUser.getAttribute("email");
         } else if ("facebook".equals(registrationId)) {
             email = oauthUser.getAttribute("id") + "@facebook.com";
+        }else if ("github".equals(registrationId)) {
+            email = oauthUser.getAttribute("email");
+            if (email == null) {
+                List<Map<String, Object>> emails = (List<Map<String, Object>>) oauthUser.getAttribute("emails");
+                if (emails != null && !emails.isEmpty()) {
+                    email = (String) emails.get(0).get("email");
+                }
+            }
         }
+
 
         Optional<Account> account = accountRepository.findByEmail(email);
         response.setContentType("application/json");
