@@ -65,6 +65,8 @@ public class Account extends AbstractEntity<Long> {
 
     @Column(name = "mfa_secret")
     private String mfaSecret;
+    @Column(name = "is_o_auth_account")
+    private Boolean isOAuthAccount = false;
 
 
 //    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

@@ -83,7 +83,6 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         } else {
             try {
                 AccountDTOResponse accountDTOResponse = accountServiceImpl.handleOAuth2Register(oauthUser);
-
                 String redirectUrl = urlUI + "/choose-role?email=" + accountDTOResponse.getEmail();
                 response.sendRedirect(redirectUrl);
             } catch (Exception e) {

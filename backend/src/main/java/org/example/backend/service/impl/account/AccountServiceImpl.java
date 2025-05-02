@@ -481,6 +481,8 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
         newAccount.setLng(0.0);
         newAccount.setLat(0.0);
         newAccount.setStatus(StatusAccount.VERIFIED);
+        newAccount.setIsOAuthAccount(true);
+
         // Role chưa được thiết lập ở đây, người dùng sẽ chọn role sau
         accountRepository.save(newAccount);
 
@@ -527,7 +529,11 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
                     clientRepository.save(client);
                     authenticationDtoResponse.setClientId(client.getId());
 
-                    account.get().setStatus(StatusAccount.UNVERIFIED);
+                    if (account.get().getIsOAuthAccount() != null && account.get().getIsOAuthAccount()) {
+                        account.get().setStatus(StatusAccount.VERIFIED);
+                    } else {
+                        account.get().setStatus(StatusAccount.UNVERIFIED);
+                    }
                     accountRepository.save(account.get());
 
                     VoucherPackage voucherPackage = voucherPackageRepository.findTopByTypePackageOrderByIdDesc(TypePackage.NORMAL);
@@ -545,7 +551,6 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
                     soldPackageRepository.save(soldPackage);
 
                     emailService.sendEmail(user.getFirstName(), EmailType.COMPANY_VERIFICATION_REQUEST, "");
-                    System.out.println(email);
                 }
             }
         } catch (IllegalArgumentException e) {
