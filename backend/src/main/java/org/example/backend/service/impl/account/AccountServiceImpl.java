@@ -68,24 +68,33 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
         Optional<Account> accountOptional = accountRepository.findByEmail(email);
         if (accountOptional.isPresent()) {
             Account account = accountOptional.get();
-            System.out.println("password: " + account.getPassword());
-            System.out.println("currentPassword: " + currentPassword);
 
-            if (passwordEncoder.matches(currentPassword, account.getPassword())) {
+            // Check if this is initial password setup (password is null or empty)
+            boolean isInitialSetup = account.getPassword() == null || account.getPassword().trim().isEmpty();
+
+            // If this is initial setup OR the current password matches
+            if (isInitialSetup || passwordEncoder.matches(currentPassword, account.getPassword())) {
                 account.setPassword(passwordEncoder.encode(newPassword));
                 accountRepository.save(account);
                 return true;
             }
         }
-
         return false;
     }
-
     @Override
     public Boolean checkEmail(String email) {
         return accountRepository.existsByEmail(email);
     }
-
+    @Override
+    public boolean isPasswordSet(String email) {
+        Optional<Account> accountOptional = accountRepository.findByEmail(email);
+        if (accountOptional.isPresent()) {
+            Account account = accountOptional.get();
+            String password = account.getPassword();
+            return password != null && !password.trim().isEmpty();
+        }
+        return false;
+    }
     @Transactional
     @Override
     public AccountDTOResponse create(AccountDTORequest accountRequestDTO) {

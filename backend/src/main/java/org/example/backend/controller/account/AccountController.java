@@ -216,4 +216,14 @@ public class AccountController {
                 .data(authenticationDtoResponse)
                 .build());
     }
+
+    @GetMapping("/is-password-set")
+    public ResponseObject<Boolean> isPasswordSet(@RequestParam String email) {
+        boolean isSet = accountService.isPasswordSet(email);
+        return ResponseObject.<Boolean>builder()
+                .message("Password status checked")
+                .status(HttpStatus.OK.value())
+                .data(isSet)
+                .build();
+    }
 }
