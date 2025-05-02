@@ -550,6 +550,7 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
                 .clientId(authenticationDtoResponse.getClientId())
                 .role(account.get().getRole())
                 .lat(lat)
+                .email(account.get().getEmail())
                 .lng(lng)
                 .build();
     }
