@@ -24,6 +24,7 @@ public interface AccountService extends BaseService<AccountDTORequest, AccountDT
     public AuthenticationDtoResponse updateAccountRole(String email, RoleUser role, double lat, double lng) throws JOSEException;
 
     Boolean checkEmail(String email);
+    boolean isPasswordSet(String email);
 
     public List<AdminAccountDTOResponse> getAllByAdmin();
 

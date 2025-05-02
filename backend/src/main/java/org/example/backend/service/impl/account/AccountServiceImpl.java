@@ -68,24 +68,33 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
         Optional<Account> accountOptional = accountRepository.findByEmail(email);
         if (accountOptional.isPresent()) {
             Account account = accountOptional.get();
-            System.out.println("password: " + account.getPassword());
-            System.out.println("currentPassword: " + currentPassword);
 
-            if (passwordEncoder.matches(currentPassword, account.getPassword())) {
+            // Check if this is initial password setup (password is null or empty)
+            boolean isInitialSetup = account.getPassword() == null || account.getPassword().trim().isEmpty();
+
+            // If this is initial setup OR the current password matches
+            if (isInitialSetup || passwordEncoder.matches(currentPassword, account.getPassword())) {
                 account.setPassword(passwordEncoder.encode(newPassword));
                 accountRepository.save(account);
                 return true;
             }
         }
-
         return false;
     }
-
     @Override
     public Boolean checkEmail(String email) {
         return accountRepository.existsByEmail(email);
     }
-
+    @Override
+    public boolean isPasswordSet(String email) {
+        Optional<Account> accountOptional = accountRepository.findByEmail(email);
+        if (accountOptional.isPresent()) {
+            Account account = accountOptional.get();
+            String password = account.getPassword();
+            return password != null && !password.trim().isEmpty();
+        }
+        return false;
+    }
     @Transactional
     @Override
     public AccountDTOResponse create(AccountDTORequest accountRequestDTO) {
@@ -301,123 +310,75 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
         return null;
     }
 
-    public AccountDTOResponse handleOAuth2Register(OAuth2User oauthUser) {
-        System.out.println("oauth2 " + oauthUser.toString());
-
+    @Transactional
+    public AuthenticationDtoResponse handleOAuth2Login(OAuth2User oauthUser) throws JOSEException {
         String registrationId = ((OAuth2AuthenticationToken) SecurityContextHolder.getContext().getAuthentication())
                 .getAuthorizedClientRegistrationId();
         System.out.println("OAuth2 provider: " + registrationId);
 
         String email = null;
-        String firstName = null;
-        String lastName = null;
-        String pictureUrl = null;
 
         if ("google".equals(registrationId)) {
             email = oauthUser.getAttribute("email");
-            firstName = oauthUser.getAttribute("given_name");
-            lastName = oauthUser.getAttribute("family_name");
-            pictureUrl = oauthUser.getAttribute("picture");
-            System.out.println("Google login, using email: " + email);
         } else if ("facebook".equals(registrationId)) {
-            String fullName = oauthUser.getAttribute("name");
-            if (fullName != null && fullName.contains(" ")) {
-                String[] nameParts = fullName.split(" ");
-                firstName = nameParts[0];
-                lastName = nameParts.length > 1 ? nameParts[1] : "";
-            } else {
-                firstName = fullName;
-                lastName = "";
-            }
             email = oauthUser.getAttribute("id") + "@facebook.com";
-            pictureUrl = oauthUser.getAttribute("picture") != null ?
-                    oauthUser.getAttribute("picture").toString() : null;
-            System.out.println("Facebook login, using Facebook ID as email: " + email);
         } else if ("github".equals(registrationId)) {
-            // Xử lý GitHub
+            // Try to get email directly
             email = oauthUser.getAttribute("email");
 
-            // Nếu email null, sử dụng login name
+            // If null, try to get from emails list
+            if (email == null) {
+                Object emailsObj = oauthUser.getAttribute("emails");
+                if (emailsObj instanceof List) {
+                    List<?> emails = (List<?>) emailsObj;
+                    if (!emails.isEmpty() && emails.get(0) instanceof Map) {
+                        Map<?, ?> firstEmail = (Map<?, ?>) emails.get(0);
+                        email = (String) firstEmail.get("email");
+                    }
+                }
+            }
+
+            // If still null, use login name
             if (email == null) {
                 String login = oauthUser.getAttribute("login");
                 if (login != null) {
                     email = login + "@github.user";
                 }
             }
-
-            // Lấy tên đầy đủ và chia thành first name và last name
-            String fullName = oauthUser.getAttribute("name");
-            if (fullName != null && fullName.contains(" ")) {
-                String[] nameParts = fullName.split(" ", 2);
-                firstName = nameParts[0];
-                lastName = nameParts[1];
-            } else {
-                firstName = fullName != null ? fullName : oauthUser.getAttribute("login");
-                lastName = "";
-            }
-
-            // Lấy URL hình ảnh
-            pictureUrl = oauthUser.getAttribute("avatar_url");
-
-            System.out.println("GitHub login, using email: " + email);
         }
 
-        Account newAccount = new Account();
-        newAccount.setEmail(email);
-        newAccount.setLng(0.0);
-        newAccount.setLat(0.0);
-        newAccount.setStatus(StatusAccount.VERIFIED); // Đã thiết lập status
-        accountRepository.save(newAccount);
+        // Try to find the account, if not found, register it first
+        Optional<Account> accountOpt = accountRepository.findByEmail(email);
+        if (!accountOpt.isPresent()) {
+            // If account doesn't exist, create it first
+            AccountDTOResponse newAccountResponse = handleOAuth2Register(oauthUser);
+            accountOpt = accountRepository.findByEmail(newAccountResponse.getEmail());
 
-        User user = new User();
-        user.setAccount(newAccount);
-        user.setImage(pictureUrl);
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        userRepository.save(user);
-
-        return accountMapper.toResponseDto(newAccount);
-    }
-
-
-    @Transactional
-    public AuthenticationDtoResponse handleOAuth2Login(OAuth2User oauthUser) throws JOSEException {
-        String registrationId = ((OAuth2AuthenticationToken) SecurityContextHolder.getContext().getAuthentication()).getAuthorizedClientRegistrationId();
-        System.out.println("OAuth2 provider: " + registrationId);
-
-        String email = null;
-
-        if ("google".equals(registrationId)) {
-            email = oauthUser.getAttribute("email");
-        } else if ("facebook".equals(registrationId)) {
-            email = oauthUser.getAttribute("id") + "@facebook.com";
-        }else if ("github".equals(registrationId)) {
-            email = oauthUser.getAttribute("email");
-            if (email == null) {
-                List<Map<String, Object>> emails = (List<Map<String, Object>>) oauthUser.getAttribute("emails");
-                if (emails != null && !emails.isEmpty()) {
-                    email = (String) emails.get(0).get("email");
-                }
+            if (!accountOpt.isPresent()) {
+                throw new IllegalArgumentException("Failed to create account during OAuth2 login");
             }
         }
 
-
-        Account account = accountRepository.getByEmail(email).orElseThrow(() -> new IllegalArgumentException("Không tìm thấy account với email này"));
-        User user = userRepository.findById(account.getId()).orElseThrow(() -> new IllegalArgumentException("Không tìm thấy user với account này"));
+        Account account = accountOpt.get();
+        User user = userRepository.findById(account.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy user với account này"));
 
         Long freelancerId = null;
         Long clientId = null;
 
-        if (account.getRole().equals(RoleUser.FREELANCER)) {
-            Freelancer freelancer = freelancerRepository.findByUserId(user.getId())
-                    .orElseThrow(() -> new IllegalIdentifierException("Không tìm thấy freelancer với id: " + user.getId()));
-
-            freelancerId = freelancer.getId();
-        } else {
-            Client client = clientRepository.findByUserId(user.getId())
-                    .orElseThrow(() -> new IllegalIdentifierException("Không tìm thấy client với id: " + user.getId()));
-
-            clientId = client.getId();
+        // Only check for freelancer/client if role is set
+        if (account.getRole() != null) {
+            if (account.getRole().equals(RoleUser.FREELANCER)) {
+                Optional<Freelancer> freelancerOpt = freelancerRepository.findByUserId(user.getId());
+                if (freelancerOpt.isPresent()) {
+                    freelancerId = freelancerOpt.get().getId();
+                }
+            } else if (account.getRole().equals(RoleUser.CLIENT)) {
+                Optional<Client> clientOpt = clientRepository.findByUserId(user.getId());
+                if (clientOpt.isPresent()) {
+                    clientId = clientOpt.get().getId();
+                }
+            }
         }
 
         return AuthenticationDtoResponse.builder()
@@ -432,7 +393,113 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
                 .build();
     }
 
+    public AccountDTOResponse handleOAuth2Register(OAuth2User oauthUser) {
+        System.out.println("Đăng ký người dùng OAuth2 " + oauthUser.toString());
 
+        String registrationId = ((OAuth2AuthenticationToken) SecurityContextHolder.getContext().getAuthentication())
+                .getAuthorizedClientRegistrationId();
+        System.out.println("Nhà cung cấp OAuth2 cho đăng ký: " + registrationId);
+
+        String email = null;
+        String firstName = null;
+        String lastName = null;
+        String pictureUrl = null;
+
+        if ("google".equals(registrationId)) {
+            email = oauthUser.getAttribute("email");
+            firstName = oauthUser.getAttribute("given_name");
+            lastName = oauthUser.getAttribute("family_name");
+            pictureUrl = oauthUser.getAttribute("picture");
+            System.out.println("Đăng ký Google, sử dụng email: " + email);
+        } else if ("facebook".equals(registrationId)) {
+            String fullName = oauthUser.getAttribute("name");
+            if (fullName != null && fullName.contains(" ")) {
+                String[] nameParts = fullName.split(" ");
+                firstName = nameParts[0];
+                lastName = nameParts.length > 1 ? nameParts[1] : "";
+            } else {
+                firstName = fullName;
+                lastName = "";
+            }
+            email = oauthUser.getAttribute("id") + "@facebook.com";
+            Map<String, Object> pictureData = oauthUser.getAttribute("picture");
+            if (pictureData != null && pictureData.containsKey("data")) {
+                Map<String, Object> data = (Map<String, Object>) pictureData.get("data");
+                if (data.containsKey("url")) {
+                    pictureUrl = (String) data.get("url");
+                }
+            }
+            System.out.println("Đăng ký Facebook, sử dụng ID Facebook làm email: " + email);
+        } else if ("github".equals(registrationId)) {
+            // Lấy email từ GitHub
+            email = oauthUser.getAttribute("email");
+            System.out.println("GitHub email trực tiếp: " + email);
+
+            // Nếu email null, dùng login name
+            if (email == null) {
+                String login = oauthUser.getAttribute("login");
+                if (login != null) {
+                    email = login + "@github.user";
+                    System.out.println("Sử dụng tên đăng nhập GitHub làm email: " + email);
+                }
+            }
+
+            // Lấy tên đầy đủ và tách thành first name và last name
+            String fullName = oauthUser.getAttribute("name");
+            if (fullName != null && fullName.contains(" ")) {
+                String[] nameParts = fullName.split(" ", 2);
+                firstName = nameParts[0];
+                lastName = nameParts[1];
+            } else {
+                firstName = fullName != null ? fullName : oauthUser.getAttribute("login");
+                lastName = "";
+            }
+
+            // Lấy URL hình ảnh
+            pictureUrl = oauthUser.getAttribute("avatar_url");
+            System.out.println("Picture URL: " + pictureUrl);
+
+            System.out.println("Đăng ký GitHub, sử dụng email: " + email);
+        }
+
+        // Kiểm tra email có hợp lệ không
+        if (email == null || email.isEmpty()) {
+            throw new IllegalArgumentException("Không thể lấy email từ tài khoản OAuth2");
+        }
+
+        // Kiểm tra tài khoản đã tồn tại chưa
+        Optional<Account> existingAccount = accountRepository.findByEmail(email);
+        if (existingAccount.isPresent()) {
+            System.out.println("Tài khoản với email " + email + " đã tồn tại, trả về thông tin hiện có");
+            return accountMapper.toResponseDto(existingAccount.get());
+        }
+
+        // Tạo tài khoản mới
+        System.out.println("Tạo tài khoản mới với email: " + email);
+        Account newAccount = new Account();
+        newAccount.setEmail(email);
+        newAccount.setLng(0.0);
+        newAccount.setLat(0.0);
+        newAccount.setStatus(StatusAccount.VERIFIED);
+        newAccount.setIsOAuthAccount(true);
+
+        // Role chưa được thiết lập ở đây, người dùng sẽ chọn role sau
+        accountRepository.save(newAccount);
+
+        User user = new User();
+        user.setAccount(newAccount);
+        user.setImage(pictureUrl);
+        // Đảm bảo firstName không null
+        user.setFirstName(firstName != null ? firstName : "User");
+        user.setLastName(lastName != null ? lastName : "");
+        userRepository.save(user);
+
+        newAccount.setUser(user);
+        accountRepository.save(newAccount);
+
+        System.out.println("Đã tạo tài khoản mới thành công với ID: " + newAccount.getId());
+        return accountMapper.toResponseDto(newAccount);
+    }
     @Override
     public AuthenticationDtoResponse updateAccountRole(String email, RoleUser role, double lat, double lng) throws JOSEException {
         AuthenticationDtoResponse authenticationDtoResponse = new AuthenticationDtoResponse();
@@ -462,7 +529,11 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
                     clientRepository.save(client);
                     authenticationDtoResponse.setClientId(client.getId());
 
-                    account.get().setStatus(StatusAccount.UNVERIFIED);
+                    if (account.get().getIsOAuthAccount() != null && account.get().getIsOAuthAccount()) {
+                        account.get().setStatus(StatusAccount.VERIFIED);
+                    } else {
+                        account.get().setStatus(StatusAccount.UNVERIFIED);
+                    }
                     accountRepository.save(account.get());
 
                     VoucherPackage voucherPackage = voucherPackageRepository.findTopByTypePackageOrderByIdDesc(TypePackage.NORMAL);
@@ -480,7 +551,6 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
                     soldPackageRepository.save(soldPackage);
 
                     emailService.sendEmail(user.getFirstName(), EmailType.COMPANY_VERIFICATION_REQUEST, "");
-                    System.out.println(email);
                 }
             }
         } catch (IllegalArgumentException e) {
@@ -494,6 +564,7 @@ public class AccountServiceImpl extends SimpleUrlAuthenticationSuccessHandler im
                 .clientId(authenticationDtoResponse.getClientId())
                 .role(account.get().getRole())
                 .lat(lat)
+                .email(account.get().getEmail())
                 .lng(lng)
                 .build();
     }
