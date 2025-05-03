@@ -35,3 +35,4 @@ build/
 src/main/resources/application.properties
 backend/Dockerfile
 backend/wait-for-mysql.sh
+face-recognization/.env
