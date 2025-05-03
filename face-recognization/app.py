@@ -35,15 +35,6 @@ def base64_to_image(base64_str):
         return None
 
 
-# @app.route("/api/register-face", methods=["POST"])
-# def register_face():
-#     data = request.json
-#     image = base64_to_image(data["image"])
-#     user_id = data["userId"]
-#     path = os.path.join(UPLOAD_FOLDER, f"{user_id}.jpg")
-#     cv2.imwrite(path, image)
-#     return jsonify({"message": "Saved"}), 200
-
 @app.route("/api/register-face", methods=["POST"])
 def register_face():
     data = request.json
@@ -77,7 +68,7 @@ def register_face():
             idx += 1
 
     total_images = sum(len(imgs) for imgs in images_by_dir.values())
-    success = len(saved) == total_images  # tất cả ảnh lưu được mới tính là thành công
+    success = len(saved) == total_images
 
     return jsonify({
         "success": success,
@@ -86,50 +77,6 @@ def register_face():
         "skipped_indices": skipped
     }), 200
 
-
-
-
-
-# @app.route("/api/verify-face", methods=["POST"])
-# def verify_face():
-#     data = request.json
-#     user_id = data["userId"]
-#     image = base64_to_image(data["image"])
-    
-#     # Lưu ảnh xác thực vào cùng thư mục với timestamp
-#     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-#     verify_path = os.path.join(UPLOAD_FOLDER, f"{user_id}_verify_{timestamp}.jpg")
-#     cv2.imwrite(verify_path, image)
-
-#     try:
-#         registered_image_path = os.path.join(UPLOAD_FOLDER, f"{user_id}.jpg")
-#         print(registered_image_path)
-#         if not os.path.exists(registered_image_path):
-#             return jsonify({"success": False, "message": "No registered face found"})
-
-#         img_registered = face_recognition.load_image_file(registered_image_path)
-#         img_registered = cv2.cvtColor(img_registered, cv2.COLOR_BGR2RGB)
-#         encode_registered = face_recognition.face_encodings(img_registered)[0]
-
-#         img_check = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-#         encode_check = face_recognition.face_encodings(img_check)[0]
-
-#         result = bool(face_recognition.compare_faces([encode_registered], encode_check)[0])
-#         distance = float(face_recognition.face_distance([encode_registered], encode_check)[0])
-
-
-#         print(f"[INFO] Comparison result for user {user_id}:")
-#         print(f"        Match: {result}")
-#         print(f"        Distance: {distance}")
-
-#         return jsonify({
-#             "success": result, 
-#             "distance": float(distance),
-#             "registered_image": registered_image_path,
-#             "verify_image": verify_path
-#         })
-#     except Exception as e:
-#         return jsonify({"success": False, "error": str(e)}), 500
 
 @app.route("/api/verify-face", methods=["POST"])
 def verify_face():
