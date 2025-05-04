@@ -1132,11 +1132,11 @@ public class ChatbotService {
                 fallbackRow.put("sample_jobs", "Frontend Developer, Web Developer, UI Developer");
                 fallbackRow.put("popular_jobs", "Frontend Developer, Web Developer, UI Developer");
             } else if (sql.toLowerCase().contains("category")) {
-                fallbackRow.put("category", "Web Development");
+                fallbackRow.put("category", "Lập trình & Phát triển phần mềm");
                 fallbackRow.put("job_count", 25);
                 fallbackRow.put("sample_jobs", "Frontend Developer, Backend Developer, Full Stack Developer");
-                fallbackRow.put("top_categories", "Web Development, Mobile Development, UI/UX Design");
-                fallbackRow.put("top_category", "Web Development");
+                fallbackRow.put("top_categories", "Lập trình & Phát triển phần mềm, Mobile Development, UI/UX Design");
+                fallbackRow.put("top_category", "Lập trình & Phát triển phần mềm");
             } else {
                 fallbackRow.put("top_skills", "JavaScript, Python, Java, React, SQL");
                 fallbackRow.put("top_skill", "JavaScript");
@@ -1206,7 +1206,7 @@ public class ChatbotService {
 
         // Tìm kiếm các danh mục phổ biến trong câu hỏi
         List<String> commonCategories = Arrays.asList(
-                "IT", "Web Development", "Mobile Development", "Design", "Marketing",
+                "IT", "Lập trình & Phát triển phần mềm", "Mobile Development", "Design", "Marketing",
                 "SEO", "Content Writing", "Copywriting", "Data Entry", "Customer Service",
                 "Sales", "Finance", "Accounting", "Human Resources", "Legal",
                 "Engineering", "Translation", "Teaching", "Research", "Writing"
@@ -1676,7 +1676,7 @@ public class ChatbotService {
             case "job_count_by_skill":
                 return phraseText.replaceAll("\\{skill\\}", "React");
             case "job_count_by_category":
-                return phraseText.replaceAll("\\{category\\}", "Web Development");
+                return phraseText.replaceAll("\\{category\\}", "Lập trình & Phát triển phần mềm");
             default:
                 return phraseText;
         }
@@ -1741,7 +1741,7 @@ public class ChatbotService {
             case "job_count_by_category":
                 defaultQuestions.add("Hiện tại có bao nhiêu công việc với danh mục IT?");
                 defaultQuestions.add("Có bao nhiêu việc làm trong ngành Marketing?");
-                defaultQuestions.add("Web Development có bao nhiêu công việc?");
+                defaultQuestions.add("Lập trình & Phát triển phần mềm có bao nhiêu công việc?");
                 break;
             case "help":
                 defaultQuestions.add("Bạn có thể giúp gì cho tôi?");
