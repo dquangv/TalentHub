@@ -8,7 +8,8 @@ import os
 from datetime import datetime
 
 app = Flask(__name__)
-FRONTEND_ORIGIN = os.getenv("FRONTEND_ORIGIN", "http://localhost:5173")
+FRONTEND_ORIGIN = os.getenv("FRONTEND_ORIGIN", "http://localhost:5173/")
+# FRONTEND_ORIGIN = os.getenv("FRONTEND_ORIGIN", "https://talenthub.io.vn/")
 UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER", "faces")
 
 CORS(app, resources={r"/api/*": {"origins": FRONTEND_ORIGIN}})
@@ -98,8 +99,8 @@ def verify_face():
 
         encodings = []
         for file in os.listdir(user_folder):
-            if file.startswith("verify_"):
-                continue  # bỏ qua ảnh xác thực cũ
+            # if file.startswith("verify_"):
+            #     continue  # bỏ qua ảnh xác thực cũ
             img_path = os.path.join(user_folder, file)
             img = face_recognition.load_image_file(img_path)
             faces = face_recognition.face_encodings(img)
