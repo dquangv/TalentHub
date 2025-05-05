@@ -167,7 +167,7 @@ public class JobServiceImpl implements JobService {
         Long numberPosted = soldPackage.getNumberPosted();
 
         if (numberPosted >= numberPost) {
-            throw new CommonException("You have used up all your posts");
+            throw new CommonException("Bạn đã sử dụng hết số bài đăng!");
         }
 
         createJobDTORequest.setClientId(client.getId());
