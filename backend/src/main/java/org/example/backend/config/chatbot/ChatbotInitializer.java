@@ -131,12 +131,14 @@ public class ChatbotInitializer {
                         " JOIN skill s ON js.skill_id = s.id " +
                         " WHERE " +
                         " LOWER(s.skill_name) LIKE LOWER('%{{skills}}%') " +
+                        " AND j.status = 'OPEN' " +
                         " LIMIT 3) as popular_jobs " +
                         "FROM job j " +
                         "JOIN job_skill js ON j.id = js.job_id " +
                         "JOIN skill s ON js.skill_id = s.id " +
                         "WHERE " +
-                        "LOWER(s.skill_name) LIKE LOWER('%{{skills}}%')"
+                        "LOWER(s.skill_name) LIKE LOWER('%{{skills}}%') " +
+                        "AND j.status = 'OPEN'"
         );
         chatResponseRepository.save(response);
 
@@ -148,6 +150,7 @@ public class ChatbotInitializer {
         fallbackResponse.setRequiresDbQuery(false);
         chatResponseRepository.save(fallbackResponse);
     }
+
     private void createJobCountBySkillIntent() {
         ChatIntent intent = new ChatIntent();
         intent.setIntentName("job_count_by_skill");
@@ -193,6 +196,7 @@ public class ChatbotInitializer {
                         "JOIN job_skill js ON j.id = js.job_id " +
                         "JOIN skill s ON js.skill_id = s.id " +
                         "WHERE LOWER(s.skill_name) LIKE LOWER('%{{skill}}%') " +
+                        "AND j.status = 'OPEN' " +
                         "GROUP BY s.skill_name " +
                         "LIMIT 1"
         );
@@ -247,6 +251,8 @@ public class ChatbotInitializer {
                         "    (SELECT s.skill_name, COUNT(js.job_id) as job_count " +
                         "     FROM skill s " +
                         "     JOIN job_skill js ON s.id = js.skill_id " +
+                        "     JOIN job j ON js.job_id = j.id " +
+                        "     WHERE j.status = 'OPEN' " +
                         "     GROUP BY s.skill_name " +
                         "     ORDER BY job_count DESC " +
                         "     LIMIT 1) AS top_single" +
@@ -255,6 +261,8 @@ public class ChatbotInitializer {
                         "    (SELECT s.skill_name, COUNT(js.job_id) as job_count " +
                         "     FROM skill s " +
                         "     JOIN job_skill js ON s.id = js.skill_id " +
+                        "     JOIN job j ON js.job_id = j.id " +
+                        "     WHERE j.status = 'OPEN' " +
                         "     GROUP BY s.skill_name " +
                         "     ORDER BY job_count DESC " +
                         "     LIMIT 1) AS top_count" +
@@ -263,6 +271,8 @@ public class ChatbotInitializer {
                         "    (SELECT s.skill_name, COUNT(js.job_id) as job_count " +
                         "     FROM skill s " +
                         "     JOIN job_skill js ON s.id = js.skill_id " +
+                        "     JOIN job j ON js.job_id = j.id " +
+                        "     WHERE j.status = 'OPEN' " +
                         "     GROUP BY s.skill_name " +
                         "     ORDER BY job_count DESC " +
                         "     LIMIT 5) AS skill_data"
@@ -310,7 +320,7 @@ public class ChatbotInitializer {
                         "    (SELECT c.category_title, COUNT(j.id) as job_count " +
                         "     FROM category c " +
                         "     JOIN job j ON c.id = j.category_id " +
-                        "     WHERE j.status = 'POSTED' " +
+                        "     WHERE j.status = 'OPEN' " +
                         "     GROUP BY c.category_title " +
                         "     ORDER BY job_count DESC " +
                         "     LIMIT 1) AS top_single) AS top_category, " +
@@ -318,7 +328,7 @@ public class ChatbotInitializer {
                         "    (SELECT c.category_title, COUNT(j.id) as job_count " +
                         "     FROM category c " +
                         "     JOIN job j ON c.id = j.category_id " +
-                        "     WHERE j.status = 'POSTED' " +
+                        "     WHERE j.status = 'OPEN' " +
                         "     GROUP BY c.category_title " +
                         "     ORDER BY job_count DESC " +
                         "     LIMIT 1) AS top_count) AS job_count " +
@@ -326,7 +336,7 @@ public class ChatbotInitializer {
                         "    (SELECT c.category_title, COUNT(j.id) as job_count " +
                         "     FROM category c " +
                         "     JOIN job j ON c.id = j.category_id " +
-                        "     WHERE j.status = 'POSTED' " +
+                        "     WHERE j.status = 'OPEN' " +
                         "     GROUP BY c.category_title " +
                         "     ORDER BY job_count DESC " +
                         "     LIMIT 5) AS cat_data;"
@@ -377,6 +387,7 @@ public class ChatbotInitializer {
                         "FROM job j " +
                         "JOIN category c ON j.category_id = c.id " +
                         "WHERE LOWER(c.category_title) LIKE LOWER('%{{category}}%') " +
+                        "AND j.status = 'OPEN' " +
                         "GROUP BY c.category_title " +
                         "LIMIT 1"
         );
