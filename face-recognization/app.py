@@ -99,8 +99,8 @@ def verify_face():
 
         encodings = []
         for file in os.listdir(user_folder):
-            # if file.startswith("verify_"):
-            #     continue  # bỏ qua ảnh xác thực cũ
+            #if file.startswith("verify_"):
+            #    continue  # bỏ qua ảnh xác thực cũ
             img_path = os.path.join(user_folder, file)
             img = face_recognition.load_image_file(img_path)
             faces = face_recognition.face_encodings(img)
@@ -122,6 +122,10 @@ def verify_face():
         # So sánh
         results = face_recognition.compare_faces(encodings, encode_check)
         distances = face_recognition.face_distance(encodings, encode_check)
+
+	#THRESHOLD = 0.5
+	#results = face_recognition.compare_faces(encodings, encode_check, tolerance=THRESHOLD)
+
 
         success = any(results)
         min_distance = float(min(distances)) if distances.any() else None
